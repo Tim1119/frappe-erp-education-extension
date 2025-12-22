@@ -1,0 +1,97 @@
+{
+ "actions": [
+  {
+   "label": "Recalculate Results",
+   "name": "recalculate_results",
+   "python": "batch_recalculate_term_results",
+   "requires_permission": "Write",
+   "type": "server"
+  }
+ ],
+ "allow_rename": 1,
+ "autoname": "format:{academic_year}-{academic_term}",
+ "creation": "2025-12-09 14:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "academic_year",
+  "academic_term",
+  "assessment_group",
+  "student_group",
+  "section_break_3",
+  "recalculation_status",
+  "recalculation_log"
+ ],
+ "fields": [
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fieldname": "assessment_group",
+   "fieldtype": "Link",
+   "label": "Assessment Group",
+   "options": "Assessment Group",
+   "reqd": 1
+  },
+  {
+   "fieldname": "student_group", 
+   "fieldtype": "Link",
+   "label": "Student Group",
+   "options": "Student Group",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "recalculation_status",
+   "fieldtype": "Data",
+   "label": "Recalculation Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "recalculation_log",
+   "fieldtype": "Small Text",
+   "label": "Recalculation Log",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-09 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Education Extension",
+ "name": "Term Result Recalculation",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "set_user_permissions": 1,
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

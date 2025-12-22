@@ -1,0 +1,46 @@
+{
+  "doctype": "DocType",
+  "name": "Bulk Certificate Student",
+  "module": "Education Extension",
+  "istable": 1,
+  "editable_grid": 1,
+  "fields": [
+    {
+      "fieldname": "select",
+      "fieldtype": "Check",
+      "label": "Select",
+      "in_list_view": 1,
+      "default": "1"
+    },
+    {
+      "fieldname": "student",
+      "fieldtype": "Link",
+      "label": "Student",
+      "options": "Student",
+      "in_list_view": 1,
+      "reqd": 1
+    },
+    {
+      "fieldname": "student_name",
+      "fieldtype": "Data",
+      "label": "Student Name",
+      "fetch_from": "student.student_name",
+      "in_list_view": 1,
+      "read_only": 1
+    },
+    {
+      "fieldname": "certificate_generated",
+      "fieldtype": "Check",
+      "label": "Certificate Generated",
+      "in_list_view": 1,
+      "read_only": 1,
+      "default": "0"
+    },
+    {
+      "fieldname": "certificate_link",
+      "fieldtype": "Data",
+      "label": "Certificate Link",
+      "read_only": 1
+    }
+  ]
+}

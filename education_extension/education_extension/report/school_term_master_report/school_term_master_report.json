@@ -1,0 +1,57 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2025-11-06 12:00:00.000000",
+ "disable_prepared_report": 1,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "is_standard": "Yes",
+ "modified": "2025-11-06 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Education Extension",
+ "name": "School Term Master Report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Student Term Result",
+ "report_name": "School Term Master Report",
+ "report_type": "Script Report",
+ "filters": [
+  {
+   "fieldname": "academic_year",
+   "label": "Academic Year",
+   "fieldtype": "Link",
+   "options": "Academic Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "label": "Academic Term",
+   "fieldtype": "Link",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fieldname": "assessment_group",
+   "label": "Assessment Group",
+   "fieldtype": "Link",
+   "options": "Assessment Group",
+   "reqd": 1
+  },
+  {
+   "fieldname": "student_group",
+   "label": "Class / Student Group",
+   "fieldtype": "Link",
+   "options": "Student Group",
+   "reqd": 1
+  }
+ ],
+ "roles": [
+  {
+   "role": "Academics User"
+  },
+  {
+   "role": "Administrator"
+  }
+ ]
+}

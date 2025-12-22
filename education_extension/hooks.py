@@ -242,3 +242,36 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+doc_events = {
+    "Assessment Criteria": {
+        "validate": "education_extension.overrides.assessment_criteria.validate_assessment_criteria"
+    }
+}
+
+# role_home_page = {
+#     "Student": "/student-portal"
+# }
+
+# boot_session = "education_extension.custom_login.boot_session"
+
+
+# get_home_page = "education_extension.custom_login.get_home_page"
+
+# education_extension/hooks.py
+
+# on_session_creation = [
+#     "education_extension.custom_login.redirect_student"
+# ]
+
+get_website_user_home_page = "education_extension.custom_login.get_website_user_home_page"
+
+role_home_page = {
+    "Student": "/student-portal"
+}
+
+# Scheduled Events
+scheduler_events = {
+    "daily": [
+        "education_extension.education_extension.doctype.student_birthday_reminder.student_birthday_reminder.send_birthday_reminders"
+    ]
+}

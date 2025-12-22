@@ -1,0 +1,86 @@
+{
+ "doctype": "DocType",
+ "name": "Individual Certificate",
+ "module": "Education Extension",
+ "autoname": "format:CERT-{YYYY}-{#####}",
+ "editable_grid": 1,
+ "field_order": [
+  "student_section",
+  "certificate_title",
+  "certificate_type",
+  "certificate_date",
+  "student",
+  "academic_year",
+  "certificate_file",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "student_section",
+   "fieldtype": "Section Break",
+   "label": "Student"
+  },
+  {
+   "fieldname": "certificate_title",
+   "fieldtype": "Data",
+   "label": "Certificate Title",
+   "reqd": 1
+  },
+    {
+    "fieldname": "certificate_type",
+    "fieldtype": "Select",
+    "label": "Certificate Type",
+    "options": "General\nClass\nAcademic\nBehavioural\nSports",
+    "reqd": 1
+    },
+  {
+   "fieldname": "certificate_date",
+   "fieldtype": "Date",
+   "label": "Certificate Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "awardee",
+   "fieldtype": "Link",
+   "label": "Student (Awardee)",
+   "options": "Student",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "certificate_file",
+   "fieldtype": "Attach",
+   "label": "Certificate File",
+   "reqd": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1
+  },
+  {
+   "role": "Academics User",
+   "read": 1,
+   "create": 1
+  },
+  {
+   "role": "Student",
+   "read": 1
+  }
+ ]
+}

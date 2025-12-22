@@ -1,0 +1,126 @@
+{
+  "doctype": "DocType",
+  "name": "Bulk Certificate Generator",
+  "module": "Education Extension",
+  "autoname": "format:BCG-{YYYY}-{#####}",
+  "editable_grid": 1,
+  "is_submittable": 1,
+  "field_order": [
+    "certificate_details_section",
+    "certificate_title",
+    "certificate_date",
+    "certificate_type",
+    "column_break_1",
+    "class_arm",
+    "certificate_file",
+    "section_break_1",
+    "description",
+    "students_section",
+    "students",
+    "amended_from"
+  ],
+  "fields": [
+    {
+      "fieldname": "certificate_details_section",
+      "fieldtype": "Section Break",
+      "label": "Certificate Details"
+    },
+    {
+      "fieldname": "certificate_title",
+      "fieldtype": "Data",
+      "label": "Certificate Title",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "certificate_date",
+      "fieldtype": "Date",
+      "label": "Certificate Date",
+      "reqd": 1,
+      "default": "Today",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "certificate_type",
+      "fieldtype": "Select",
+      "label": "Certificate Type",
+      "options": "Achievement\nParticipation\nCompletion\nMerit\nHonor Roll\nPerfect Attendance\nGood Conduct\nSports\nAcademics\nOther",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "class_arm",
+      "fieldtype": "Link",
+      "label": "Class",
+      "options": "Student Group",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "certificate_file",
+      "fieldtype": "Attach",
+      "label": "Certificate Template File"
+    },
+    {
+      "fieldname": "section_break_1",
+      "fieldtype": "Section Break"
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Text Editor",
+      "label": "Description"
+    },
+    {
+      "fieldname": "students_section",
+      "fieldtype": "Section Break",
+      "label": "Students"
+    },
+    {
+      "fieldname": "students",
+      "fieldtype": "Table",
+      "label": "Students",
+      "options": "Bulk Certificate Student",
+      "reqd": 1
+    },
+    {
+      "fieldname": "amended_from",
+      "fieldtype": "Link",
+      "label": "Amended From",
+      "options": "Bulk Certificate Generator",
+      "read_only": 1,
+      "no_copy": 1,
+      "print_hide": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1,
+      "cancel": 1,
+      "amend": 1
+    },
+    {
+      "role": "Academics User",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1,
+      "cancel": 1
+    },
+    {
+      "role": "Education Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1,
+      "cancel": 1
+    }
+  ],
+  "links": []
+}
