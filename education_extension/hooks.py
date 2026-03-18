@@ -243,9 +243,9 @@ app_license = "mit"
 # }
 
 doc_events = {
-    "Assessment Criteria": {
-        "validate": "education_extension.overrides.assessment_criteria.validate_assessment_criteria"
-    }
+	"Assessment Criteria": {
+		"validate": "education_extension.overrides.assessment_criteria.validate_assessment_criteria"
+	}
 }
 
 # role_home_page = {
@@ -265,13 +265,18 @@ doc_events = {
 
 get_website_user_home_page = "education_extension.custom_login.get_website_user_home_page"
 
-role_home_page = {
-    "Student": "/student-portal"
-}
+role_home_page = {"Student": "/student-portal"}
 
 # Scheduled Events
 scheduler_events = {
-    "daily": [
-        "education_extension.education_extension.doctype.student_birthday_reminder.student_birthday_reminder.send_birthday_reminders"
-    ]
+	"daily": [
+		"education_extension.education_extension.doctype.student_birthday_reminder.student_birthday_reminder.send_birthday_reminders"
+	]
 }
+
+website_route_rules = [
+	{"from_route": "/guardian-dashboard", "to_route": "guardian-portal"},
+	{"from_route": "/guardian-dashboard/<path:app_path>", "to_route": "guardian-portal"},
+]
+
+app_include_js = "/assets/education_extension/js/guardian_portal.js"

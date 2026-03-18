@@ -36,54 +36,89 @@ import frappe
 import frappe
 from frappe import _
 
+
 def redirect_student(login_manager=None, **kwargs):
-    """
-    Called on session creation to redirect students to portal
-    """
-    try:
-        user = frappe.session.user
-        
-        # Skip for Administrator and Guest
-        if user in ["Administrator", "Guest"]:
-            return
-            
-        roles = frappe.get_roles(user)
-        
-        # Redirect students to portal
-        if "Student" in roles:
-            # Don't redirect admins who also have student role
-            if "System Manager" not in roles and "Administrator" not in roles:
-                frappe.local.response["type"] = "redirect"
-                frappe.local.response["location"] = "/student-portal"
-                
-    except Exception as e:
-        frappe.log_error(frappe.get_traceback(), "Student Redirect Error")
+	"""
+	Called on session creation to redirect students to portal
+	"""
+	try:
+		user = frappe.session.user
+
+		# Skip for Administrator and Guest
+		if user in ["Administrator", "Guest"]:
+			return
+
+		roles = frappe.get_roles(user)
+
+		# Redirect students to portal
+		if "Student" in roles:
+			# Don't redirect admins who also have student role
+			if "System Manager" not in roles and "Administrator" not in roles:
+				frappe.local.response["type"] = "redirect"
+				frappe.local.response["location"] = "/student-portal"
+
+	except Exception as e:
+		frappe.log_error(frappe.get_traceback(), "Student Redirect Error")
+
 
 # education_extension/education_extension/custom_login.py
 
 import frappe
 from frappe import _
 
+# def get_website_user_home_page(user):
+#     """
+#     This determines where users go after login
+#     """
+#     try:
+#         # Skip system users
+#         if user in ["Administrator", "Guest"]:
+#             return None
+
+#         roles = frappe.get_roles(user)
+
+#         # Don't redirect admins
+#         if "System Manager" in roles or "Administrator" in roles:
+#             return None
+
+#         # Redirect students to portal
+#         if "Student" in roles:
+#             return "/student-portal"
+
+#     except Exception as e:
+#         frappe.log_error(frappe.get_traceback(), "Get Website User Home Page Error")
+
+#     return None
+
+
+import frappe
+from frappe import _
+
+
 def get_website_user_home_page(user):
-    """
-    This determines where users go after login
-    """
-    try:
-        # Skip system users
-        if user in ["Administrator", "Guest"]:
-            return None
-            
-        roles = frappe.get_roles(user)
-        
-        # Don't redirect admins
-        if "System Manager" in roles or "Administrator" in roles:
-            return None
-            
-        # Redirect students to portal
-        if "Student" in roles:
-            return "/student-portal"
-            
-    except Exception as e:
-        frappe.log_error(frappe.get_traceback(), "Get Website User Home Page Error")
-    
-    return None
+	"""
+	This determines where users go after login
+	"""
+	try:
+		if user in ["Administrator", "Guest"]:
+			return None
+
+		roles = frappe.get_roles(user)
+
+		# Don't redirect admins
+		if "System Manager" in roles or "Administrator" in roles:
+			return None
+
+		# Redirect guardians to guardian portal
+		is_guardian = frappe.db.exists("Guardian", {"email_address": user})
+		if is_guardian:
+			return "/guardian-dashboard"
+
+		# Redirect students to student portal
+		if "Student" in roles:
+			return "/student-portal"
+
+	except Exception as e:
+		frappe.log_error(frappe.get_traceback(), "Get Website User Home Page Error")
+
+	return None
