@@ -65,9 +65,10 @@ function getEventsForDay(date) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem;
+  padding: 1rem 1.25rem 1.25rem;  /* ← increase bottom padding */
   border-bottom: 1px solid #e5e7eb;
 }
+
 .g-cal :deep(.vc-title) {
   font-size: 1rem;
   font-weight: 700;
@@ -76,6 +77,11 @@ function getEventsForDay(date) {
   text-align: center;
   pointer-events: none;
 }
+.g-cal :deep(.vc-title-wrapper) {
+  margin-left: 3rem;
+}
+
+
 .g-cal :deep(.vc-arrow) {
   border-radius: 8px;
   width: 32px;

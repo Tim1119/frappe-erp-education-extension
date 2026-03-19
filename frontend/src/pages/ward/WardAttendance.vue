@@ -146,11 +146,16 @@ function labelClass(status) {
 
 .cal-wrap :deep(.vc-header) {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 1rem 1.25rem; border-bottom: 1px solid #e5e7eb;
+  padding: 1rem 1.25rem 1.25rem;  /* ← increase bottom padding */
+  border-bottom: 1px solid #e5e7eb;
 }
+
 .cal-wrap :deep(.vc-title) {
   font-size: 1rem; font-weight: 700; color: #111827;
   flex: 1; text-align: center; pointer-events: none;
+}
+.cal-wrap :deep(.vc-title-wrapper) {
+  margin-left: 3rem;
 }
 .cal-wrap :deep(.vc-arrow) {
   border-radius: 8px; width: 32px; height: 32px;
