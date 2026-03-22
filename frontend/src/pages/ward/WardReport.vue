@@ -146,7 +146,7 @@
             <svg viewBox="0 0 20 20" fill="currentColor" style="width:15px;height:15px;">
               <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a1 1 0 001 1h8a1 1 0 001-1v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a1 1 0 00-1-1H6a1 1 0 00-1 1zm2 0h6v3H7V4zm-1 9v-1h8v3H6v-2h1a1 1 0 000-2H6v-.001zm7 0h1v2h-1v-2z" clip-rule="evenodd"/>
             </svg>
-            {{ printingReports[report.name] ? 'Opening...' : 'Print' }}
+            {{ printingReports[report.name] ? 'Opening...' : 'View Result' }}
           </button>
         </div>
 
@@ -275,26 +275,35 @@ function ordinal(n) {
 // Print
 const printingReports = reactive({})
 
-async function getPrintFormat(program) {
+const getPrintFormatForProgram = async (program) => {
   try {
-    const res = await fetch('/api/method/education.education.api.get_school_print_format')
-    const data = await res.json()
-    const isSecondary = ['jss', 'ss', 'secondary', 'high school', 'senior', 'junior secondary']
-      .some(k => (program || '').toLowerCase().includes(k))
-    return isSecondary
-      ? data.message?.secondary_print_format || 'Standard'
-      : data.message?.primary_print_format || 'Standard'
-  } catch {
+    const result = await apiCall('/api/method/education_extension.guardian.get_ward_print_format')
+    const primaryFormat = result.message?.primary_print_format || 'Standard'
+    const secondaryFormat = result.message?.secondary_print_format || 'Standard'
+    return isSecondaryProgram(program) ? secondaryFormat : primaryFormat
+  } catch (error) {
+    console.error('Error fetching school print format:', error)
     return 'Standard'
   }
 }
 
-async function printReport(report) {
-  printingReports[report.name] = true
+const printReport = async (report) => {
   try {
-    const format = await getPrintFormat(report.program)
-    const url = `/printview?doctype=School%20Term%20Result&name=${encodeURIComponent(report.name)}&format=${encodeURIComponent(format)}&no_letterhead=1`
-    window.open(url, '_blank')
+    printingReports[report.name] = true
+    const format = await getPrintFormatForProgram(report.program)
+    const printUrl = `/printview?doctype=School%20Term%20Result&name=${encodeURIComponent(report.name)}&format=${encodeURIComponent(format)}&no_letterhead=1`
+    
+    // Open and auto-trigger print dialog
+    const printWindow = window.open(printUrl, '_blank')
+    if (printWindow) {
+      printWindow.addEventListener('load', () => {
+        setTimeout(() => {
+          printWindow.print()
+        }, 500) // small delay to ensure page fully renders
+      })
+    }
+  } catch (error) {
+    console.error('Error printing report:', error)
   } finally {
     printingReports[report.name] = false
   }
