@@ -277,12 +277,24 @@ const printingReports = reactive({})
 
 const getPrintFormatForProgram = async (program) => {
   try {
+    console.log('🔍 Fetching print format for program:', program)
     const result = await apiCall('/api/method/education_extension.guardian.get_ward_print_format')
+    console.log('📄 Raw API result:', result)
+    console.log('📄 result.message:', result.message)
+    
     const primaryFormat = result.message?.primary_print_format || 'Standard'
     const secondaryFormat = result.message?.secondary_print_format || 'Standard'
-    return isSecondaryProgram(program) ? secondaryFormat : primaryFormat
+    
+    console.log('✅ Primary format:', primaryFormat)
+    console.log('✅ Secondary format:', secondaryFormat)
+    console.log('🏫 Is secondary program:', isSecondaryProgram(program))
+    
+    const chosen = isSecondaryProgram(program) ? secondaryFormat : primaryFormat
+    console.log('🖨️ Chosen format:', chosen)
+    
+    return chosen
   } catch (error) {
-    console.error('Error fetching school print format:', error)
+    console.error('❌ Error fetching print format:', error)
     return 'Standard'
   }
 }
