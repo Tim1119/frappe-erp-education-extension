@@ -1078,7 +1078,6 @@ from frappe import _
 
 @frappe.whitelist()
 def get_linked_students():
-	frappe.local.response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
 	user = frappe.session.user
 
 	# 1. Strict Exclusion: Block Guests and Administrators

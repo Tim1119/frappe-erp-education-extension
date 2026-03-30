@@ -110,6 +110,7 @@ const wardBasic = createResource({
 })
 
 const wardInfo = computed(() => {
+  console.log("wardBasic.data:", wardBasic.data);
   if (!wardBasic.data) return null
   return wardBasic.data.find(w => w.name === studentId.value)
 })
