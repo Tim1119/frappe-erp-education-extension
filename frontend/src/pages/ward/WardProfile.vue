@@ -97,6 +97,7 @@ const data = createResource({
   url: 'education_extension.guardian.get_ward_details',
   params: { student_id: route.params.studentId },
   auto: true,
+  cache: false,
 })
 
 function initials(name) {

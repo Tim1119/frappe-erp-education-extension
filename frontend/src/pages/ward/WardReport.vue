@@ -177,6 +177,7 @@ const data = createResource({
   url: 'education_extension.guardian.get_ward_reports',
   params: { student_id: route.params.studentId },
   auto: true,
+  cache: false,
 })
 
 // Filters

@@ -1078,6 +1078,7 @@ from frappe import _
 
 @frappe.whitelist()
 def get_linked_students():
+	frappe.local.response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
 	user = frappe.session.user
 
 	# 1. Strict Exclusion: Block Guests and Administrators
@@ -1603,16 +1604,14 @@ def get_ward_grades_table(student_id):
 	}
 
 
-
-
 @frappe.whitelist()
 def get_ward_print_format():
-    try:
-        settings = frappe.get_doc("School Settings", "School Settings")
-        return {
-            "primary_print_format": settings.primary_school_print_format or "Standard",
-            "secondary_print_format": settings.secondary_school_print_format or "Standard",
-        }
-    except Exception as e:
-        frappe.log_error(f"Error getting print format: {str(e)}")
-        return {"primary_print_format": "Standard", "secondary_print_format": "Standard"}
+	try:
+		settings = frappe.get_doc("School Settings", "School Settings")
+		return {
+			"primary_print_format": settings.primary_school_print_format or "Standard",
+			"secondary_print_format": settings.secondary_school_print_format or "Standard",
+		}
+	except Exception as e:
+		frappe.log_error(f"Error getting print format: {str(e)}")
+		return {"primary_print_format": "Standard", "secondary_print_format": "Standard"}

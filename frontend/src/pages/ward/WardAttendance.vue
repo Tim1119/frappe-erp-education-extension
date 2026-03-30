@@ -72,6 +72,7 @@ const data = createResource({
   url: 'education_extension.guardian.get_ward_attendance',
   params: { student_id: route.params.studentId },
   auto: true,
+   cache: false,
 })
 
 const recordsByDate = computed(() => {

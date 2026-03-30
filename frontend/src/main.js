@@ -13,6 +13,7 @@ import {
 const app = createApp(App)
 
 setConfig('resourceFetcher', frappeRequest)
+setConfig('cache', false)
 
 app.use(createPinia())
 app.use(router)

@@ -100,11 +100,13 @@ const sidebarCollapsed = ref(window.innerWidth < 768)
 const schoolInfo = createResource({
   url: 'education.education.api.get_school_abbr_logo',
   auto: true,
+  cache: false,
 })
 
 const wardBasic = createResource({
   url: 'education_extension.guardian.get_linked_students',
   auto: true,
+  cache: false,
 })
 
 const wardInfo = computed(() => {

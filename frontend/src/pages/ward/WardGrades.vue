@@ -80,6 +80,7 @@ const data = createResource({
   url: 'education_extension.guardian.get_ward_grades_table',
   params: { student_id: route.params.studentId },
   auto: true,
+  cache: false,
   onSuccess(d) {
     if (d.programs?.length) {
       selectedProgram.value = d.programs[d.programs.length - 1].program

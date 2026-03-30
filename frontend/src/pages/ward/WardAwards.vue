@@ -147,6 +147,7 @@ const data = createResource({
   url: 'education_extension.guardian.get_ward_awards',
   params: { student_id: route.params.studentId },
   auto: true,
+  cache: false,
 })
 
 function stripHtml(html) {

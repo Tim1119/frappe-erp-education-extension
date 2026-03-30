@@ -98,11 +98,13 @@ const session = sessionStore()
 const wards = createResource({
   url: 'education_extension.guardian.get_linked_students',
   auto: true,
+  cache: false,
 })
 
 const schoolInfo = createResource({
   url: 'education.education.api.get_school_abbr_logo',
   auto: true,
+  cache: false,
 })
 
 function initials(name) {
