@@ -43,7 +43,7 @@
           <Button
             v-if="column.key === 'cta' && row.status !== 'Paid'"
             @click="openModal(row)"
-            class="hover:bg-gray-900 hover:text-white flex flex-column items-center justify-center"
+            class="hover:bg-gray-900 hover:text-white flex items-center justify-center"
             icon-left="credit-card"
             label="Pay Now"
           />

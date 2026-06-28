@@ -123,9 +123,7 @@
           </div>
         </div>
 
-        <p v-if="cert.description" class="text-sm text-gray-700 mb-4 line-clamp-3">
-          {{ cert.description }}
-        </p>
+        <div v-if="cert.description" class="text-sm text-gray-700 mb-4 line-clamp-3" v-html="cert.description"></div>
 
         <div class="flex justify-end items-center border-t pt-4">
           <Button 
