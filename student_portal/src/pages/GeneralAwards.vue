@@ -227,10 +227,10 @@ const loadCertificates = async () => {
   
   try {
     // Load certificates
-    const certsResponse = await call('education.education.api.get_student_bulk_certificates')
+    const certsResponse = await call('education_extension.student_portal_api.get_student_bulk_certificates')
     
     // Load filter options
-    const filtersResponse = await call('education.education.api.get_bulk_certificate_filters')
+    const filtersResponse = await call('education_extension.student_portal_api.get_bulk_certificate_filters')
     
     // Process certificates
     allCertificates.value = (certsResponse || []).map(cert => {

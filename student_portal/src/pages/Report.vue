@@ -397,7 +397,7 @@ const isSecondaryProgram = (program) => {
 const getPrintFormatForProgram = async (program) => {
   try {
     // First get the school settings with both primary and secondary formats
-    const result = await apiCall(`/api/method/education.education.api.get_school_print_format`)
+    const result = await apiCall(`/api/method/education_extension.student_portal_api.get_school_print_format`)
     
     const primaryFormat = result.message?.primary_print_format || "Standard"
     const secondaryFormat = result.message?.secondary_print_format || "Standard"
@@ -449,7 +449,7 @@ const loadReports = async () => {
     isLoading.value = !allReports.value.length
     isRefreshing.value = true
     
-    const result = await apiCall('/api/method/education.education.api.get_student_reports_with_program')
+    const result = await apiCall('/api/method/education_extension.student_portal_api.get_student_reports_with_program')
     allReports.value = result.message || []
     
   } catch (error) {

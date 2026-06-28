@@ -153,7 +153,7 @@ const loadAwards = async () => {
   errorMessage.value = ''
   
   try {
-    const res = await call('education.education.api.get_individual_awards')
+    const res = await call('education_extension.student_portal_api.get_individual_awards')
     
     allAwards.value = (res || []).map(a => ({
       name: a.name,
@@ -180,7 +180,7 @@ const clearFilters = () => {
 
 const downloadCertificate = (award) => {
   window.open(
-    `/api/method/education.education.api.download_certificate?doctype=Individual%20Certificate&award=${award.name}`,
+    `/api/method/education_extension.student_portal_api.download_certificate?doctype=Individual%20Certificate&award=${award.name}`,
     '_blank'
   )
 }
