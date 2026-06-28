@@ -4,9 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && yarn copy-html-entry",
-    "preview": "vite preview",
-    "copy-html-entry": "cp ../education_extension/public/student_portal/index.html ../education_extension/www/student-portal.html"
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@vueuse/core": "^10.0.0",
