@@ -4,7 +4,15 @@ import path from 'path'
 
 export default defineConfig({
   base: '/assets/education_extension/student_portal/',
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    {
+      name: 'remove-index-html',
+      generateBundle(options, bundle) {
+        delete bundle['index.html']
+      }
+    }
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
@@ -15,11 +23,10 @@ export default defineConfig({
     emptyOutDir: true,
     target: 'es2015',
     rollupOptions: {
-      input: path.resolve(__dirname, 'src/main.js'),
       output: {
-        entryFileNames: `[name].js`,
-        chunkFileNames: `[name].js`,
-        assetFileNames: `[name].[ext]`
+        entryFileNames: '[name].js',
+        chunkFileNames: '[name].js',
+        assetFileNames: '[name].[ext]'
       }
     }
   },
