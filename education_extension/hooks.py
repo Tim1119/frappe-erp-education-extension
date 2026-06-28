@@ -277,10 +277,10 @@ scheduler_events = {
 }
 
 website_route_rules = [
-	{"from_route": "/guardian-dashboard", "to_route": "guardian-portal"},
-	{"from_route": "/guardian-dashboard/<path:app_path>", "to_route": "guardian-portal"},
-	{"from_route": "/student-portal", "to_route": "student-portal"},
-	{"from_route": "/student-portal/<path:app_path>", "to_route": "student-portal"},
+    {"from_route": "/guardian-dashboard", "to_route": "guardian-portal"},
+    {"from_route": "/guardian-dashboard/<path:app_path>", "to_route": "guardian-portal"},
+    {"from_route": "/student-portal", "to_route": "student_portal"},
+    {"from_route": "/student-portal/<path:app_path>", "to_route": "student_portal"},
 ]
 
 app_include_js = "/assets/education_extension/js/guardian_portal.js"
