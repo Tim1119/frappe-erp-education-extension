@@ -1,11 +1,8 @@
 import './index.css'
-
 import { createApp } from 'vue'
 import router from './router'
 import App from './App.vue'
 import { createPinia } from 'pinia'
-// import '../polyfills'
-
 import {
   Button,
   Card,
@@ -15,12 +12,30 @@ import {
   resourcesPlugin,
 } from 'frappe-ui'
 
-// create a pinia instance
+function getCookie(name) {
+  let r = document.cookie.match('\\b' + name + '=([^;]*)\\b')
+  return r ? r[1] : undefined
+}
+
+window.csrf_token = window.frappe?.csrf_token
+
+setConfig('resourceFetcher', (url, options) => {
+  if (!options) options = {}
+  if (!options.headers) options.headers = {}
+  options.credentials = 'include'
+
+  const token = getCookie('csrf_token') || window.frappe?.csrf_token
+  if (token && token !== 'Guest') {
+    options.headers['X-Frappe-CSRF-Token'] = token
+  }
+
+  return frappeRequest(url, options)
+})
+
+setConfig('cache', false)
+
 let pinia = createPinia()
-
 let app = createApp(App)
-
-setConfig('resourceFetcher', frappeRequest)
 
 app.use(pinia)
 app.use(router)
