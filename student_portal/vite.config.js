@@ -15,6 +15,7 @@ export default defineConfig({
     emptyOutDir: true,
     target: 'es2015',
     rollupOptions: {
+      input: path.resolve(__dirname, 'src/main.js'),
       output: {
         entryFileNames: `[name].js`,
         chunkFileNames: `[name].js`,
