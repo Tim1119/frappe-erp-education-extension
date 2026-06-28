@@ -52,7 +52,9 @@ def get_school_print_format():
 
 @frappe.whitelist()
 def get_individual_awards():
-	"""Returns Individual Certificates for the logged-in student."""
+	"""Returns Individual Certificates for the logged-in student.
+	Individual Certificate uses 'awardee' as the student link field.
+	"""
 	email = frappe.session.user
 	if email == "Guest":
 		frappe.throw(_("Authentication required"), frappe.AuthenticationError)
@@ -63,7 +65,7 @@ def get_individual_awards():
 
 	awards = frappe.db.get_list(
 		"Individual Certificate",
-		filters={"student": student, "docstatus": 1},
+		filters={"awardee": student, "docstatus": 1},
 		fields=[
 			"name",
 			"certificate_title",
@@ -96,7 +98,7 @@ def download_certificate(doctype, award):
 
 @frappe.whitelist()
 def get_student_bulk_certificates():
-	"""Returns Bulk Certificates for student groups the logged-in student belongs to."""
+	"""Returns Bulk Certificate Generators for class arms the logged-in student belongs to."""
 	email = frappe.session.user
 	if email == "Guest":
 		frappe.throw(_("Authentication required"), frappe.AuthenticationError)
@@ -105,19 +107,19 @@ def get_student_bulk_certificates():
 	if not student:
 		return []
 
-	# Get student groups the student belongs to
 	student_groups = frappe.db.get_list(
 		"Student Group Student",
 		filters={"student": student, "active": 1},
 		pluck="parent",
+		ignore_permissions=True,
 	)
 
 	if not student_groups:
 		return []
 
 	certificates = frappe.db.get_list(
-		"Bulk Certificate",
-		filters={"student_group": ["in", student_groups], "docstatus": 1},
+		"Bulk Certificate Generator",
+		filters={"class_arm": ["in", student_groups], "docstatus": 1},
 		fields=[
 			"name",
 			"certificate_title",
@@ -125,11 +127,16 @@ def get_student_bulk_certificates():
 			"description",
 			"certificate_type",
 			"academic_year",
-			"student_group",
+			"class_arm",
 			"certificate_file",
 		],
 		order_by="certificate_date desc",
+		ignore_permissions=True,
 	)
+
+	for cert in certificates:
+		cert["student_group"] = cert.pop("class_arm", None)
+
 	return certificates
 
 
@@ -148,15 +155,17 @@ def get_bulk_certificate_filters():
 		"Student Group Student",
 		filters={"student": student, "active": 1},
 		pluck="parent",
+		ignore_permissions=True,
 	)
 
 	if not student_groups:
 		return {"years": [], "categories": [], "student_groups": []}
 
 	certificates = frappe.db.get_list(
-		"Bulk Certificate",
-		filters={"student_group": ["in", student_groups], "docstatus": 1},
-		fields=["certificate_date", "certificate_type", "student_group", "academic_year"],
+		"Bulk Certificate Generator",
+		filters={"class_arm": ["in", student_groups], "docstatus": 1},
+		fields=["certificate_date", "certificate_type", "class_arm", "academic_year"],
+		ignore_permissions=True,
 	)
 
 	years = sorted(
@@ -164,7 +173,7 @@ def get_bulk_certificate_filters():
 		reverse=True,
 	)
 	categories = sorted(list(set(c.certificate_type for c in certificates if c.certificate_type)))
-	groups = sorted(list(set(c.student_group for c in certificates if c.student_group)))
+	groups = sorted(list(set(c.class_arm for c in certificates if c.class_arm)))
 
 	return {
 		"years": years,
