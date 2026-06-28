@@ -17,18 +17,16 @@ function getCookie(name) {
   return r ? r[1] : undefined
 }
 
-window.csrf_token = window.frappe?.csrf_token
+const csrfToken = getCookie('csrf_token') || window.csrf_token || window.frappe?.csrf_token
+window.csrf_token = csrfToken
 
 setConfig('resourceFetcher', (url, options) => {
   if (!options) options = {}
   if (!options.headers) options.headers = {}
   options.credentials = 'include'
-
-  const token = getCookie('csrf_token') || window.frappe?.csrf_token
-  if (token && token !== 'Guest') {
-    options.headers['X-Frappe-CSRF-Token'] = token
+  if (csrfToken && csrfToken !== 'Guest') {
+    options.headers['X-Frappe-CSRF-Token'] = csrfToken
   }
-
   return frappeRequest(url, options)
 })
 
