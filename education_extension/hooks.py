@@ -265,8 +265,10 @@ doc_events = {
 
 get_website_user_home_page = "education_extension.custom_login.get_website_user_home_page"
 
-role_home_page = {"Student": "/student-portal"}
-
+role_home_page = {
+	"Guardian": "/guardian-dashboard",
+	"Student": "/student-portal",
+}
 # Scheduled Events
 scheduler_events = {
 	"daily": [
@@ -277,6 +279,8 @@ scheduler_events = {
 website_route_rules = [
 	{"from_route": "/guardian-dashboard", "to_route": "guardian-portal"},
 	{"from_route": "/guardian-dashboard/<path:app_path>", "to_route": "guardian-portal"},
+	{"from_route": "/student-portal", "to_route": "student-portal"},
+	{"from_route": "/student-portal/<path:app_path>", "to_route": "student-portal"},
 ]
 
 app_include_js = "/assets/education_extension/js/guardian_portal.js"
