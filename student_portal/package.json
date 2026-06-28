@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build && yarn copy-html-entry",
     "preview": "vite preview",
-    "copy-html-entry": "cp ../public/student_portal/index.html ../education_extension/www/student-portal.html"
+    "copy-html-entry": "cp ../education_extension/public/student_portal/index.html ../education_extension/www/student-portal.html"
   },
   "dependencies": {
     "@vueuse/core": "^10.0.0",

@@ -11,7 +11,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '../public/student_portal',
+    outDir: '../education_extension/public/student_portal',
     emptyOutDir: true,
     target: 'es2015',
     rollupOptions: {
