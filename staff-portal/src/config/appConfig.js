@@ -34,7 +34,7 @@ export const navigation = {
       g: 'Academics',
       items: [
         ['students', 'Students', GraduationCap],
-        ['student-groups', 'Student Groups', Users2],
+        ['class-arms', 'Class Arms', Users2],
         ['attendance', 'Attendance', CalendarCheck],
         ['assessments', 'Assessments', ClipboardList],
         ['results', 'School Term Results', Award],
@@ -68,7 +68,7 @@ export function pathFor(key) {
   const map = {
     dashboard: '/dashboard',
     students: '/dashboard/students',
-    'student-groups': '/dashboard/student-groups',
+    'class-arms': '/dashboard/class-arms',
     attendance: '/dashboard/attendance',
     assessments: '/dashboard/assessments',
     results: '/dashboard/results',

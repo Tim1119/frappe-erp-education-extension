@@ -9,7 +9,7 @@ import { cx } from '../../utils/format';
 import { getNavigation, pathFor, roleMeta, displayScope } from '../../config/appConfig';
 
 const END_MATCH_KEYS = [
-  'dashboard', 'students', 'student-groups', 'attendance', 'assessments',
+  'dashboard', 'students', 'class-arms', 'attendance', 'assessments',
   'results', 'schedule', 'teachers', 'guardians', 'fees', 'hr', 'reports', 'settings',
 ];
 

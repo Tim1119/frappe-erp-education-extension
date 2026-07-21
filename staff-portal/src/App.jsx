@@ -8,7 +8,12 @@ import StudentsPage from './pages/students/StudentsPage';
 import StudentProfilePage from './pages/students/StudentProfilePage';
 import StudentFormPage from './pages/students/StudentFormPage';
 
-import StudentGroupsPage from './pages/StudentGroupsPage';
+import ClassArmsPage from './pages/class-arms/ClassArmsPage';
+import ClassArmFormPage from './pages/class-arms/ClassArmFormPage'
+import ClassArmProfilePage from './pages/class-arms/ClassArmProfilePage'
+
+
+
 import AttendancePage from './pages/AttendancePage';
 import AssessmentsPage from './pages/AssessmentsPage';
 import ResultsPage from './pages/ResultsPage';
@@ -62,18 +67,22 @@ export default function App() {
         element={<Protected><AppShell /></Protected>}
       >
         <Route index element={<Dashboard />} />
-        {/* <Route path="students" element={<StudentsPage />} /> */}
+        
+
+        {/* -------students --------- */}
         <Route path="students" element={<StudentsPage />} />
-
         <Route path="students/new" element={<StudentFormPage />} />
-
         <Route path="students/:id/edit" element={<StudentFormPage />} />
-
         <Route path="students/:id" element={<StudentProfilePage />} />
 
-{/* <Route path="student-groups" element={<StudentGroupsPage />} /> */}
 
-        <Route path="student-groups" element={<StudentGroupsPage />} />
+        {/* ------- class arms --------  */}
+
+        <Route path="class-arms" element={<ClassArmsPage />} />
+        <Route path="class-arms/new" element={<ClassArmFormPage />} />
+        <Route path="class-arms/:id/edit" element={<ClassArmFormPage />} />
+        <Route path="class-arms/:id" element={<ClassArmProfilePage />} />
+
         <Route path="attendance" element={<AttendancePage />} />
         <Route path="assessments" element={<AssessmentsPage />} />
         <Route path="results" element={<ResultsPage />} />
