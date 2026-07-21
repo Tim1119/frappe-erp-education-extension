@@ -8759,29 +8759,27 @@ let qy = Symbol("VirtualContext"),
 								}
 							},
 						},
-						i.value
-							.getVirtualItems()
-							.map((l) =>
-								br(
-									e.default({
-										option: n.virtual.value.options[l.index],
-										open: n.comboboxState.value === 0,
-									})[0],
-									{
-										key: `${o.value}-${l.index}`,
-										"data-index": l.index,
-										"aria-setsize": n.virtual.value.options.length,
-										"aria-posinset": l.index + 1,
-										style: {
-											position: "absolute",
-											top: 0,
-											left: 0,
-											transform: `translateY(${l.start}px)`,
-											overflowAnchor: "none",
-										},
+						i.value.getVirtualItems().map((l) =>
+							br(
+								e.default({
+									option: n.virtual.value.options[l.index],
+									open: n.comboboxState.value === 0,
+								})[0],
+								{
+									key: `${o.value}-${l.index}`,
+									"data-index": l.index,
+									"aria-setsize": n.virtual.value.options.length,
+									"aria-posinset": l.index + 1,
+									style: {
+										position: "absolute",
+										top: 0,
+										left: 0,
+										transform: `translateY(${l.start}px)`,
+										overflowAnchor: "none",
 									},
-								),
+								},
 							),
+						),
 					),
 				]
 			);

@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
-import { PageHeader } from '../../components/ui/Primitives.jsx';
-import StudentForm from './components/StudentForm.jsx';
+import { PageHeader } from "../../components/ui/Primitives.jsx";
+import StudentForm from "./components/StudentForm.jsx";
 
 import {
   getStudent,
   createStudent,
   updateStudent,
-} from '../../services/studentService.js';
+} from "../../services/studentService.js";
 
-import { getErrorMessage } from '../../utils/errors.js';
+import { getErrorMessage } from "../../utils/errors.js";
 
 export default function StudentFormPage() {
   const navigate = useNavigate();
@@ -44,10 +44,10 @@ export default function StudentFormPage() {
 
       if (editing) {
         result = await updateStudent(id, values);
-        toast.success('Student updated');
+        toast.success("Student updated");
       } else {
         result = await createStudent(values);
-        toast.success('Student created');
+        toast.success("Student created");
       }
 
       const studentName = result?.name || id;
@@ -65,7 +65,7 @@ export default function StudentFormPage() {
     <>
       <PageHeader
         eyebrow="Students"
-        title={editing ? 'Edit Student' : 'Create Student'}
+        title={editing ? "Edit Student" : "Create Student"}
       />
 
       <StudentForm student={student} onSave={save} />

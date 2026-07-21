@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
-import { PageHeader } from '../../components/ui/Primitives.jsx';
-import ClassArmForm from './components/ClassArmForm.jsx';
+import { PageHeader } from "../../components/ui/Primitives.jsx";
+import ClassArmForm from "./components/ClassArmForm.jsx";
 
 import {
   getClassArm,
   createClassArm,
   updateClassArm,
   getStudentGroupOptions,
-} from '../../services/classArmsService.js';
+} from "../../services/classArmsService.js";
 
-import { getErrorMessage } from '../../utils/errors.js';
+import { getErrorMessage } from "../../utils/errors.js";
 
 export default function ClassArmFormPage() {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function ClassArmFormPage() {
         ? await updateClassArm(name, values)
         : await createClassArm(values);
 
-      toast.success(editing ? 'Class arm updated' : 'Class arm created');
+      toast.success(editing ? "Class arm updated" : "Class arm created");
       navigate(`/dashboard/class-arms/${encodeURIComponent(result.name)}`);
     } catch (err) {
       toast.error(getErrorMessage(err));
@@ -65,8 +65,16 @@ export default function ClassArmFormPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Academics" title={editing ? 'Edit Class Arm' : 'Create Class Arm'} />
-      <ClassArmForm group={group} options={options} onSave={save} saving={saving} />
+      <PageHeader
+        eyebrow="Academics"
+        title={editing ? "Edit Class Arm" : "Create Class Arm"}
+      />
+      <ClassArmForm
+        group={group}
+        options={options}
+        onSave={save}
+        saving={saving}
+      />
     </>
   );
 }

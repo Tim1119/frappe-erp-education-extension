@@ -1,4 +1,4 @@
 <template lang="">
-  <div>Home</div>
+	<div>Home</div>
 </template>
 <script setup></script>

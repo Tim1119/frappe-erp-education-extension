@@ -1,48 +1,41 @@
-import './index.css'
-import { createApp } from 'vue'
-import router from './router'
-import App from './App.vue'
-import { createPinia } from 'pinia'
-import {
-  Button,
-  Card,
-  Input,
-  setConfig,
-  frappeRequest,
-  resourcesPlugin,
-} from 'frappe-ui'
+import "./index.css";
+import { createApp } from "vue";
+import router from "./router";
+import App from "./App.vue";
+import { createPinia } from "pinia";
+import { Button, Card, Input, setConfig, frappeRequest, resourcesPlugin } from "frappe-ui";
 
 function getCookie(name) {
-  let r = document.cookie.match('\\b' + name + '=([^;]*)\\b')
-  return r ? r[1] : undefined
+	let r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+	return r ? r[1] : undefined;
 }
 
-const csrfToken = getCookie('csrf_token') || window.csrf_token || window.frappe?.csrf_token
-window.csrf_token = csrfToken
+const csrfToken = getCookie("csrf_token") || window.csrf_token || window.frappe?.csrf_token;
+window.csrf_token = csrfToken;
 
-setConfig('resourceFetcher', (url, options) => {
-  if (!options) options = {}
-  if (!options.headers) options.headers = {}
-  options.credentials = 'include'
-  if (csrfToken && csrfToken !== 'Guest') {
-    options.headers['X-Frappe-CSRF-Token'] = csrfToken
-  }
-  return frappeRequest(url, options)
-})
+setConfig("resourceFetcher", (url, options) => {
+	if (!options) options = {};
+	if (!options.headers) options.headers = {};
+	options.credentials = "include";
+	if (csrfToken && csrfToken !== "Guest") {
+		options.headers["X-Frappe-CSRF-Token"] = csrfToken;
+	}
+	return frappeRequest(url, options);
+});
 
-setConfig('cache', false)
+setConfig("cache", false);
 
-let pinia = createPinia()
-let app = createApp(App)
+let pinia = createPinia();
+let app = createApp(App);
 
-app.use(pinia)
-app.use(router)
-app.use(resourcesPlugin)
+app.use(pinia);
+app.use(router);
+app.use(resourcesPlugin);
 
-app.component('Button', Button)
-app.component('Card', Card)
-app.component('Input', Input)
+app.component("Button", Button);
+app.component("Card", Card);
+app.component("Input", Input);
 
 router.isReady().then(() => {
-  app.mount('#app')
-})
+	app.mount("#app");
+});
