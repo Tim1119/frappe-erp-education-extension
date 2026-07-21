@@ -1,1 +1,603 @@
-import{e as w,_ as M,f as k,a6 as q,o as n,c as s,n as t,t as i,y as l,a5 as j,K as z,W as L,a as C,C as O,u,w as F,T as W,a7 as G,q as P,v as U,U as J,F as A,p as K,I as Q,b as X,J as Y}from"./vendor.js";import{C as Z}from"./style.js";const B=w(null);function ee(){function e(r){B.value=r}function c(){B.value=null}return{activeEventId:B,setActive:e,closeAll:c}}const y=e=>(P("data-v-170c0a32"),e=e(),U(),e),te={style:{position:"relative"}},oe=["onClick"],ne={style:{"font-size":"0.7rem","font-weight":"600",color:"#1e293b","white-space":"nowrap",overflow:"hidden","text-overflow":"ellipsis",margin:"0"}},ae={key:0,style:{"font-size":"0.65rem",color:"#64748b",margin:"0","white-space":"nowrap"}},se={style:{margin:"0","font-size":"0.8125rem","font-weight":"700",color:"#1e293b","line-height":"1.3"}},re={key:0,style:{"font-weight":"400",color:"#475569"}},ie={style:{padding:"12px 16px 14px",display:"flex","flex-direction":"column",gap:"10px"}},de={key:0,style:{display:"flex",gap:"10px","align-items":"center"}},le=y(()=>t("svg",{style:{width:"15px",height:"15px",color:"#6b7280","flex-shrink":"0"},viewBox:"0 0 20 20",fill:"#6b7280"},[t("path",{"fill-rule":"evenodd",d:"M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z","clip-rule":"evenodd"})],-1)),ce={style:{"font-size":"0.8125rem",color:"#374151"}},ue={key:1,style:{display:"flex",gap:"10px","align-items":"center"}},fe=y(()=>t("svg",{style:{width:"15px",height:"15px","flex-shrink":"0"},viewBox:"0 0 20 20",fill:"#6b7280"},[t("path",{"fill-rule":"evenodd",d:"M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z","clip-rule":"evenodd"})],-1)),ve={style:{"font-size":"0.8125rem",color:"#374151"}},pe={key:2,style:{display:"flex",gap:"10px","align-items":"center"}},he=y(()=>t("svg",{style:{width:"15px",height:"15px","flex-shrink":"0"},viewBox:"0 0 20 20",fill:"#6b7280"},[t("path",{"fill-rule":"evenodd",d:"M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z","clip-rule":"evenodd"})],-1)),me={style:{"font-size":"0.8125rem",color:"#374151"}},ge={key:3,style:{display:"flex",gap:"10px","align-items":"center"}},be=y(()=>t("svg",{style:{width:"15px",height:"15px","flex-shrink":"0"},viewBox:"0 0 20 20",fill:"#6b7280"},[t("path",{"fill-rule":"evenodd",d:"M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1h-2a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z","clip-rule":"evenodd"})],-1)),_e={style:{"font-size":"0.8125rem",color:"#374151"}},xe={props:{event:{type:Object,required:!0},date:{type:Date,required:!0}},setup(e){const c=e,{activeEventId:r,setActive:f}=ee(),a=k(()=>r.value===c.event.name),o=w(null),d=w({});function v(p){if(a.value){f(null);return}f(c.event.name),J(()=>{const h=p.target.closest("[style]").getBoundingClientRect(),_=o.value;if(!_)return;let m=h.bottom+6,g=h.left;g+260>window.innerWidth&&(g=window.innerWidth-270),m+200>window.innerHeight&&(m=h.top-_.offsetHeight-6),d.value={top:m+"px",left:g+"px"}})}function b(p){a.value&&o.value&&!o.value.contains(p.target)&&f(null)}document.addEventListener("click",b),q(()=>document.removeEventListener("click",b));const x={blue:{bg:"#dbeafe",border:"#2563eb"},green:{bg:"#dcfce7",border:"#16a34a"},red:{bg:"#fee2e2",border:"#dc2626"},orange:{bg:"#ffedd5",border:"#ea580c"},yellow:{bg:"#fef9c3",border:"#ca8a04"},teal:{bg:"#ccfbf1",border:"#0d9488"},violet:{bg:"#ede9fe",border:"#7c3aed"},cyan:{bg:"#cffafe",border:"#0891b2"},purple:{bg:"#f3e8ff",border:"#9333ea"},pink:{bg:"#fce7f3",border:"#db2777"},amber:{bg:"#fef3c7",border:"#d97706"}};function N(p){return new Date(p).toDateString().split(" ").slice(0,3).join(", ")}return(p,h)=>{var _,m,g,V,S,E;return n(),s("div",te,[t("div",{onClick:j(v,["stop"]),style:z({width:"100%",padding:"3px 6px",borderRadius:"6px",cursor:"pointer",borderLeft:"3px solid",marginBottom:"2px",overflow:"hidden",backgroundColor:((m=x[(_=e.event)==null?void 0:_.color])==null?void 0:m.bg)||"#dbeafe",borderColor:((V=x[(g=e.event)==null?void 0:g.color])==null?void 0:V.border)||"#2563eb"})},[t("p",ne,i(e.event.title||e.event.course),1),e.event.from_time?(n(),s("p",ae,i((S=e.event.from_time)==null?void 0:S.substring(0,5))+" \u2013 "+i((E=e.event.to_time)==null?void 0:E.substring(0,5)),1)):l("",!0)],12,oe),(n(),L(G,{to:"body"},[C(W,{name:"popup"},{default:O(()=>{var I,$,H,D,R,T;return[u(a)?(n(),s("div",{key:0,ref_key:"popupRef",ref:o,style:z([d.value,{position:"fixed","z-index":"9999",background:"#fff",border:"1px solid #e5e7eb","border-radius":"12px","box-shadow":"0 8px 32px rgba(0,0,0,0.14)","min-width":"240px","max-width":"300px"}]),onClick:h[0]||(h[0]=j(()=>{},["stop"]))},[t("div",{style:z({background:(($=x[(I=e.event)==null?void 0:I.color])==null?void 0:$.bg)||"#dbeafe",borderBottom:"1px solid "+(((D=x[(H=e.event)==null?void 0:H.color])==null?void 0:D.border)||"#2563eb"),padding:"12px 16px 10px",borderRadius:"12px 12px 0 0"})},[t("p",se,[F(i(e.event.title||e.event.course)+" ",1),e.event.instructor?(n(),s("span",re," by "+i(e.event.instructor),1)):l("",!0)])],4),t("div",ie,[e.event.schedule_date?(n(),s("div",de,[le,t("span",ce,i(N(e.event.schedule_date)),1)])):l("",!0),e.event.from_time?(n(),s("div",ue,[fe,t("span",ve,i((R=e.event.from_time)==null?void 0:R.substring(0,5))+" \u2013 "+i((T=e.event.to_time)==null?void 0:T.substring(0,5)),1)])):l("",!0),e.event.instructor?(n(),s("div",pe,[he,t("span",me,i(e.event.instructor),1)])):l("",!0),e.event.room?(n(),s("div",ge,[be,t("span",_e,"Room: "+i(e.event.room),1)])):l("",!0)])],4)):l("",!0)]}),_:1})]))])}}};var ye=M(xe,[["__scopeId","data-v-170c0a32"]]);const we={class:"g-cal"},ke={class:"g-day__num"},ze={class:"g-events"},Ce={props:{events:{type:Array,default:()=>[]}},setup(e){const c=e,r=k(()=>{const a={};return c.events.forEach(o=>{const d=o.date||o.schedule_date;if(!d)return;const v=new Date(d).toISOString().split("T")[0];a[v]||(a[v]=[]),a[v].push(o)}),a});function f(a){const o=new Date(a).toISOString().split("T")[0];return r.value[o]||[]}return(a,o)=>(n(),s("div",we,[C(u(Z),{expanded:"","first-day-of-week":1,attributes:[]},{"day-content":O(({day:d,dayEvents:v})=>[t("div",{class:Q(["g-day",{"g-day--out":!d.inMonth}])},[t("span",ke,i(d.day),1),t("div",ze,[(n(!0),s(A,null,K(f(d.date),b=>(n(),L(ye,{key:b.name,event:b,date:d.date},null,8,["event","date"]))),128))])],2)]),_:1})]))}};var Be=M(Ce,[["__scopeId","data-v-00cf192a"]]);const Ve={style:{display:"flex","flex-direction":"column",gap:"1rem",height:"100%"}},Se={key:0,style:{display:"flex","justify-content":"center",padding:"3rem"}},Ee=t("div",{class:"w-8 h-8 border-2 border-gray-200 border-t-gray-800 rounded-full animate-spin"},null,-1),Ie=[Ee],$e={key:0,class:"inline-block bg-blue-50 text-blue-700 text-sm font-semibold px-3 py-1.5 rounded-full"},He={style:{background:"#fff",border:"1px solid #e5e7eb","border-radius":"12px",overflow:"hidden",flex:"1"}},Te={setup(e){const c=Y(),r=X({url:"education_extension.guardian.get_ward_schedule",params:{student_id:c.params.studentId},auto:!0,cache:!1}),f=k(()=>{var a;return((a=r.data)==null?void 0:a.schedule)?r.data.schedule.map(o=>({name:o.name,title:o.course,date:o.schedule_date,schedule_date:o.schedule_date,from_time:o.from_time,to_time:o.to_time,room:o.room,instructor:o.instructor,color:"blue"})):[]});return(a,o)=>(n(),s("div",Ve,[u(r).loading?(n(),s("div",Se,Ie)):u(r).data?(n(),s(A,{key:1},[u(r).data.enrollment?(n(),s("div",$e,i(u(r).data.enrollment.program)+" \xB7 "+i(u(r).data.enrollment.academic_year),1)):l("",!0),t("div",He,[C(Be,{events:u(f)},null,8,["events"])])],64)):l("",!0)]))}};export{Te as default};
+import {
+	e as w,
+	_ as M,
+	f as k,
+	a6 as q,
+	o as n,
+	c as s,
+	n as t,
+	t as i,
+	y as l,
+	a5 as j,
+	K as z,
+	W as L,
+	a as C,
+	C as O,
+	u,
+	w as F,
+	T as W,
+	a7 as G,
+	q as P,
+	v as U,
+	U as J,
+	F as A,
+	p as K,
+	I as Q,
+	b as X,
+	J as Y,
+} from "./vendor.js";
+import { C as Z } from "./style.js";
+const B = w(null);
+function ee() {
+	function e(r) {
+		B.value = r;
+	}
+	function c() {
+		B.value = null;
+	}
+	return { activeEventId: B, setActive: e, closeAll: c };
+}
+const y = (e) => (P("data-v-170c0a32"), (e = e()), U(), e),
+	te = { style: { position: "relative" } },
+	oe = ["onClick"],
+	ne = {
+		style: {
+			"font-size": "0.7rem",
+			"font-weight": "600",
+			color: "#1e293b",
+			"white-space": "nowrap",
+			overflow: "hidden",
+			"text-overflow": "ellipsis",
+			margin: "0",
+		},
+	},
+	ae = {
+		key: 0,
+		style: { "font-size": "0.65rem", color: "#64748b", margin: "0", "white-space": "nowrap" },
+	},
+	se = {
+		style: {
+			margin: "0",
+			"font-size": "0.8125rem",
+			"font-weight": "700",
+			color: "#1e293b",
+			"line-height": "1.3",
+		},
+	},
+	re = { key: 0, style: { "font-weight": "400", color: "#475569" } },
+	ie = {
+		style: {
+			padding: "12px 16px 14px",
+			display: "flex",
+			"flex-direction": "column",
+			gap: "10px",
+		},
+	},
+	de = { key: 0, style: { display: "flex", gap: "10px", "align-items": "center" } },
+	le = y(() =>
+		t(
+			"svg",
+			{
+				style: { width: "15px", height: "15px", color: "#6b7280", "flex-shrink": "0" },
+				viewBox: "0 0 20 20",
+				fill: "#6b7280",
+			},
+			[
+				t("path", {
+					"fill-rule": "evenodd",
+					d: "M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z",
+					"clip-rule": "evenodd",
+				}),
+			],
+			-1,
+		),
+	),
+	ce = { style: { "font-size": "0.8125rem", color: "#374151" } },
+	ue = { key: 1, style: { display: "flex", gap: "10px", "align-items": "center" } },
+	fe = y(() =>
+		t(
+			"svg",
+			{
+				style: { width: "15px", height: "15px", "flex-shrink": "0" },
+				viewBox: "0 0 20 20",
+				fill: "#6b7280",
+			},
+			[
+				t("path", {
+					"fill-rule": "evenodd",
+					d: "M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z",
+					"clip-rule": "evenodd",
+				}),
+			],
+			-1,
+		),
+	),
+	ve = { style: { "font-size": "0.8125rem", color: "#374151" } },
+	pe = { key: 2, style: { display: "flex", gap: "10px", "align-items": "center" } },
+	he = y(() =>
+		t(
+			"svg",
+			{
+				style: { width: "15px", height: "15px", "flex-shrink": "0" },
+				viewBox: "0 0 20 20",
+				fill: "#6b7280",
+			},
+			[
+				t("path", {
+					"fill-rule": "evenodd",
+					d: "M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z",
+					"clip-rule": "evenodd",
+				}),
+			],
+			-1,
+		),
+	),
+	me = { style: { "font-size": "0.8125rem", color: "#374151" } },
+	ge = { key: 3, style: { display: "flex", gap: "10px", "align-items": "center" } },
+	be = y(() =>
+		t(
+			"svg",
+			{
+				style: { width: "15px", height: "15px", "flex-shrink": "0" },
+				viewBox: "0 0 20 20",
+				fill: "#6b7280",
+			},
+			[
+				t("path", {
+					"fill-rule": "evenodd",
+					d: "M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1h-2a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z",
+					"clip-rule": "evenodd",
+				}),
+			],
+			-1,
+		),
+	),
+	_e = { style: { "font-size": "0.8125rem", color: "#374151" } },
+	xe = {
+		props: { event: { type: Object, required: !0 }, date: { type: Date, required: !0 } },
+		setup(e) {
+			const c = e,
+				{ activeEventId: r, setActive: f } = ee(),
+				a = k(() => r.value === c.event.name),
+				o = w(null),
+				d = w({});
+			function v(p) {
+				if (a.value) {
+					f(null);
+					return;
+				}
+				(f(c.event.name),
+					J(() => {
+						const h = p.target.closest("[style]").getBoundingClientRect(),
+							_ = o.value;
+						if (!_) return;
+						let m = h.bottom + 6,
+							g = h.left;
+						(g + 260 > window.innerWidth && (g = window.innerWidth - 270),
+							m + 200 > window.innerHeight && (m = h.top - _.offsetHeight - 6),
+							(d.value = { top: m + "px", left: g + "px" }));
+					}));
+			}
+			function b(p) {
+				a.value && o.value && !o.value.contains(p.target) && f(null);
+			}
+			(document.addEventListener("click", b),
+				q(() => document.removeEventListener("click", b)));
+			const x = {
+				blue: { bg: "#dbeafe", border: "#2563eb" },
+				green: { bg: "#dcfce7", border: "#16a34a" },
+				red: { bg: "#fee2e2", border: "#dc2626" },
+				orange: { bg: "#ffedd5", border: "#ea580c" },
+				yellow: { bg: "#fef9c3", border: "#ca8a04" },
+				teal: { bg: "#ccfbf1", border: "#0d9488" },
+				violet: { bg: "#ede9fe", border: "#7c3aed" },
+				cyan: { bg: "#cffafe", border: "#0891b2" },
+				purple: { bg: "#f3e8ff", border: "#9333ea" },
+				pink: { bg: "#fce7f3", border: "#db2777" },
+				amber: { bg: "#fef3c7", border: "#d97706" },
+			};
+			function N(p) {
+				return new Date(p).toDateString().split(" ").slice(0, 3).join(", ");
+			}
+			return (p, h) => {
+				var _, m, g, V, S, E;
+				return (
+					n(),
+					s("div", te, [
+						t(
+							"div",
+							{
+								onClick: j(v, ["stop"]),
+								style: z({
+									width: "100%",
+									padding: "3px 6px",
+									borderRadius: "6px",
+									cursor: "pointer",
+									borderLeft: "3px solid",
+									marginBottom: "2px",
+									overflow: "hidden",
+									backgroundColor:
+										((m = x[(_ = e.event) == null ? void 0 : _.color]) == null
+											? void 0
+											: m.bg) || "#dbeafe",
+									borderColor:
+										((V = x[(g = e.event) == null ? void 0 : g.color]) == null
+											? void 0
+											: V.border) || "#2563eb",
+								}),
+							},
+							[
+								t("p", ne, i(e.event.title || e.event.course), 1),
+								e.event.from_time
+									? (n(),
+										s(
+											"p",
+											ae,
+											i(
+												(S = e.event.from_time) == null
+													? void 0
+													: S.substring(0, 5),
+											) +
+												" \u2013 " +
+												i(
+													(E = e.event.to_time) == null
+														? void 0
+														: E.substring(0, 5),
+												),
+											1,
+										))
+									: l("", !0),
+							],
+							12,
+							oe,
+						),
+						(n(),
+						L(G, { to: "body" }, [
+							C(
+								W,
+								{ name: "popup" },
+								{
+									default: O(() => {
+										var I, $, H, D, R, T;
+										return [
+											u(a)
+												? (n(),
+													s(
+														"div",
+														{
+															key: 0,
+															ref_key: "popupRef",
+															ref: o,
+															style: z([
+																d.value,
+																{
+																	position: "fixed",
+																	"z-index": "9999",
+																	background: "#fff",
+																	border: "1px solid #e5e7eb",
+																	"border-radius": "12px",
+																	"box-shadow":
+																		"0 8px 32px rgba(0,0,0,0.14)",
+																	"min-width": "240px",
+																	"max-width": "300px",
+																},
+															]),
+															onClick:
+																h[0] ||
+																(h[0] = j(() => {}, ["stop"])),
+														},
+														[
+															t(
+																"div",
+																{
+																	style: z({
+																		background:
+																			(($ =
+																				x[
+																					(I =
+																						e.event) ==
+																					null
+																						? void 0
+																						: I.color
+																				]) == null
+																				? void 0
+																				: $.bg) ||
+																			"#dbeafe",
+																		borderBottom:
+																			"1px solid " +
+																			(((D =
+																				x[
+																					(H =
+																						e.event) ==
+																					null
+																						? void 0
+																						: H.color
+																				]) == null
+																				? void 0
+																				: D.border) ||
+																				"#2563eb"),
+																		padding: "12px 16px 10px",
+																		borderRadius:
+																			"12px 12px 0 0",
+																	}),
+																},
+																[
+																	t("p", se, [
+																		F(
+																			i(
+																				e.event.title ||
+																					e.event.course,
+																			) + " ",
+																			1,
+																		),
+																		e.event.instructor
+																			? (n(),
+																				s(
+																					"span",
+																					re,
+																					" by " +
+																						i(
+																							e.event
+																								.instructor,
+																						),
+																					1,
+																				))
+																			: l("", !0),
+																	]),
+																],
+																4,
+															),
+															t("div", ie, [
+																e.event.schedule_date
+																	? (n(),
+																		s("div", de, [
+																			le,
+																			t(
+																				"span",
+																				ce,
+																				i(
+																					N(
+																						e.event
+																							.schedule_date,
+																					),
+																				),
+																				1,
+																			),
+																		]))
+																	: l("", !0),
+																e.event.from_time
+																	? (n(),
+																		s("div", ue, [
+																			fe,
+																			t(
+																				"span",
+																				ve,
+																				i(
+																					(R =
+																						e.event
+																							.from_time) ==
+																						null
+																						? void 0
+																						: R.substring(
+																								0,
+																								5,
+																							),
+																				) +
+																					" \u2013 " +
+																					i(
+																						(T =
+																							e.event
+																								.to_time) ==
+																							null
+																							? void 0
+																							: T.substring(
+																									0,
+																									5,
+																								),
+																					),
+																				1,
+																			),
+																		]))
+																	: l("", !0),
+																e.event.instructor
+																	? (n(),
+																		s("div", pe, [
+																			he,
+																			t(
+																				"span",
+																				me,
+																				i(
+																					e.event
+																						.instructor,
+																				),
+																				1,
+																			),
+																		]))
+																	: l("", !0),
+																e.event.room
+																	? (n(),
+																		s("div", ge, [
+																			be,
+																			t(
+																				"span",
+																				_e,
+																				"Room: " +
+																					i(
+																						e.event
+																							.room,
+																					),
+																				1,
+																			),
+																		]))
+																	: l("", !0),
+															]),
+														],
+														4,
+													))
+												: l("", !0),
+										];
+									}),
+									_: 1,
+								},
+							),
+						])),
+					])
+				);
+			};
+		},
+	};
+var ye = M(xe, [["__scopeId", "data-v-170c0a32"]]);
+const we = { class: "g-cal" },
+	ke = { class: "g-day__num" },
+	ze = { class: "g-events" },
+	Ce = {
+		props: { events: { type: Array, default: () => [] } },
+		setup(e) {
+			const c = e,
+				r = k(() => {
+					const a = {};
+					return (
+						c.events.forEach((o) => {
+							const d = o.date || o.schedule_date;
+							if (!d) return;
+							const v = new Date(d).toISOString().split("T")[0];
+							(a[v] || (a[v] = []), a[v].push(o));
+						}),
+						a
+					);
+				});
+			function f(a) {
+				const o = new Date(a).toISOString().split("T")[0];
+				return r.value[o] || [];
+			}
+			return (a, o) => (
+				n(),
+				s("div", we, [
+					C(
+						u(Z),
+						{ expanded: "", "first-day-of-week": 1, attributes: [] },
+						{
+							"day-content": O(({ day: d, dayEvents: v }) => [
+								t(
+									"div",
+									{ class: Q(["g-day", { "g-day--out": !d.inMonth }]) },
+									[
+										t("span", ke, i(d.day), 1),
+										t("div", ze, [
+											(n(!0),
+											s(
+												A,
+												null,
+												K(
+													f(d.date),
+													(b) => (
+														n(),
+														L(
+															ye,
+															{
+																key: b.name,
+																event: b,
+																date: d.date,
+															},
+															null,
+															8,
+															["event", "date"],
+														)
+													),
+												),
+												128,
+											)),
+										]),
+									],
+									2,
+								),
+							]),
+							_: 1,
+						},
+					),
+				])
+			);
+		},
+	};
+var Be = M(Ce, [["__scopeId", "data-v-00cf192a"]]);
+const Ve = { style: { display: "flex", "flex-direction": "column", gap: "1rem", height: "100%" } },
+	Se = { key: 0, style: { display: "flex", "justify-content": "center", padding: "3rem" } },
+	Ee = t(
+		"div",
+		{ class: "w-8 h-8 border-2 border-gray-200 border-t-gray-800 rounded-full animate-spin" },
+		null,
+		-1,
+	),
+	Ie = [Ee],
+	$e = {
+		key: 0,
+		class: "inline-block bg-blue-50 text-blue-700 text-sm font-semibold px-3 py-1.5 rounded-full",
+	},
+	He = {
+		style: {
+			background: "#fff",
+			border: "1px solid #e5e7eb",
+			"border-radius": "12px",
+			overflow: "hidden",
+			flex: "1",
+		},
+	},
+	Te = {
+		setup(e) {
+			const c = Y(),
+				r = X({
+					url: "education_extension.guardian.get_ward_schedule",
+					params: { student_id: c.params.studentId },
+					auto: !0,
+					cache: !1,
+				}),
+				f = k(() => {
+					var a;
+					return ((a = r.data) == null ? void 0 : a.schedule)
+						? r.data.schedule.map((o) => ({
+								name: o.name,
+								title: o.course,
+								date: o.schedule_date,
+								schedule_date: o.schedule_date,
+								from_time: o.from_time,
+								to_time: o.to_time,
+								room: o.room,
+								instructor: o.instructor,
+								color: "blue",
+							}))
+						: [];
+				});
+			return (a, o) => (
+				n(),
+				s("div", Ve, [
+					u(r).loading
+						? (n(), s("div", Se, Ie))
+						: u(r).data
+							? (n(),
+								s(
+									A,
+									{ key: 1 },
+									[
+										u(r).data.enrollment
+											? (n(),
+												s(
+													"div",
+													$e,
+													i(u(r).data.enrollment.program) +
+														" \xB7 " +
+														i(u(r).data.enrollment.academic_year),
+													1,
+												))
+											: l("", !0),
+										t("div", He, [
+											C(Be, { events: u(f) }, null, 8, ["events"]),
+										]),
+									],
+									64,
+								))
+							: l("", !0),
+				])
+			);
+		},
+	};
+export { Te as default };

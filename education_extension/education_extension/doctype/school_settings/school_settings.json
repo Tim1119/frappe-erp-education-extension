@@ -1,191 +1,191 @@
 {
- "actions": [],
- "allow_rename": 1,
- "creation": "2025-10-16 13:06:11.960654",
- "custom": 1,
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "school",
-  "section_break_qpdk",
-  "next_term_start_date_section",
-  "next_term_start_date",
-  "school_result_settings_section",
-  "assessment_criteria_item",
-  "overall_grading_scale_for_result_section",
-  "overall_grading_scale",
-  "section_break_zbkv",
-  "secondary_school_print_format",
-  "column_break_gias",
-  "primary_school_print_format",
-  "section_break_hnpj",
-  "remark_score_for_secondary_school",
-  "column_break_lbzi",
-  "remark_score_for_primary_school",
-  "principal_signature_section",
-  "principal_signature",
-  "headteachers_signature_section",
-  "headteacher_signature",
-  "school_stamp_section",
-  "primary_school_stamp_image",
-  "column_break_ihxe",
-  "secondary_school_stamp_image"
- ],
- "fields": [
-  {
-   "fieldname": "school",
-   "fieldtype": "Link",
-   "label": "School",
-   "options": "Company"
-  },
-  {
-   "fieldname": "section_break_qpdk",
-   "fieldtype": "Section Break",
-   "label": "Next Term Start Date"
-  },
-  {
-   "fieldname": "next_term_start_date_section",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "next_term_start_date",
-   "fieldtype": "Date",
-   "label": "Next Term Start Date"
-  },
-  {
-   "fieldname": "school_result_settings_section",
-   "fieldtype": "Section Break",
-   "label": "School Result Settings"
-  },
-  {
-   "fieldname": "assessment_criteria_item",
-   "fieldtype": "Table",
-   "label": "Assessment Criteria Item",
-   "options": "Assessment Criteria Item"
-  },
-  {
-   "fieldname": "overall_grading_scale_for_result_section",
-   "fieldtype": "Section Break",
-   "label": "Overall Grading Scale For Result"
-  },
-  {
-   "fieldname": "overall_grading_scale",
-   "fieldtype": "Table",
-   "label": "Overall Term Grading Scale",
-   "options": "Term Result Grade Scale"
-  },
-  {
-   "fieldname": "section_break_zbkv",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "secondary_school_print_format",
-   "fieldtype": "Link",
-   "label": "Secondary School Print Format",
-   "options": "Print Format"
-  },
-  {
-   "fieldname": "column_break_gias",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "primary_school_print_format",
-   "fieldtype": "Link",
-   "label": "Primary School Print Format",
-   "options": "Print Format"
-  },
-  {
-   "fieldname": "section_break_hnpj",
-   "fieldtype": "Section Break",
-   "label": "Remark Score For School ( Good Standing or Non Good Standing)"
-  },
-  {
-   "description": "This scores spefices tha mark above which Secondary School Students get a remark of Good or Fail",
-   "fieldname": "remark_score_for_secondary_school",
-   "fieldtype": "Int",
-   "in_list_view": 1,
-   "label": "Remark Score For Secondary School",
-   "reqd": 1
-  },
-  {
-   "fieldname": "column_break_lbzi",
-   "fieldtype": "Column Break"
-  },
-  {
-   "description": "This scores specifies the mark above which primary school get a remark of Good or Fail",
-   "fieldname": "remark_score_for_primary_school",
-   "fieldtype": "Int",
-   "in_list_view": 1,
-   "label": "Remark Score For Primary School",
-   "reqd": 1
-  },
-  {
-   "description": "Principla signature fo results",
-   "fieldname": "principal_signature_section",
-   "fieldtype": "Section Break",
-   "label": "Principal Signature"
-  },
-  {
-   "fieldname": "principal_signature",
-   "fieldtype": "Attach Image",
-   "label": "Principal's Signature"
-  },
-  {
-   "description": "Head teacher signature for results",
-   "fieldname": "headteachers_signature_section",
-   "fieldtype": "Section Break",
-   "label": "Headteacher's Signature"
-  },
-  {
-   "fieldname": "headteacher_signature",
-   "fieldtype": "Attach Image",
-   "label": "Headteacher Signature"
-  },
-  {
-   "fieldname": "school_stamp_section",
-   "fieldtype": "Section Break",
-   "label": "School Stamp"
-  },
-  {
-   "fieldname": "primary_school_stamp_image",
-   "fieldtype": "Attach Image",
-   "label": "Primary School Stamp Image"
-  },
-  {
-   "fieldname": "column_break_ihxe",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "secondary_school_stamp_image",
-   "fieldtype": "Attach Image",
-   "label": "Secondary School Stamp Image"
-  }
- ],
- "grid_page_length": 50,
- "index_web_pages_for_search": 1,
- "issingle": 1,
- "links": [],
- "modified": "2026-03-26 08:51:01.261873",
- "modified_by": "t.ajani@rhocom.ng",
- "module": "Education Extension",
- "name": "School Settings",
- "owner": "t.ajani@rhocom.ng",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "print": 1,
-   "read": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  }
- ],
- "row_format": "Dynamic",
- "rows_threshold_for_grid_search": 20,
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": []
+  "actions": [],
+  "allow_rename": 1,
+  "creation": "2025-10-16 13:06:11.960654",
+  "custom": 1,
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "school",
+    "section_break_qpdk",
+    "next_term_start_date_section",
+    "next_term_start_date",
+    "school_result_settings_section",
+    "assessment_criteria_item",
+    "overall_grading_scale_for_result_section",
+    "overall_grading_scale",
+    "section_break_zbkv",
+    "secondary_school_print_format",
+    "column_break_gias",
+    "primary_school_print_format",
+    "section_break_hnpj",
+    "remark_score_for_secondary_school",
+    "column_break_lbzi",
+    "remark_score_for_primary_school",
+    "principal_signature_section",
+    "principal_signature",
+    "headteachers_signature_section",
+    "headteacher_signature",
+    "school_stamp_section",
+    "primary_school_stamp_image",
+    "column_break_ihxe",
+    "secondary_school_stamp_image"
+  ],
+  "fields": [
+    {
+      "fieldname": "school",
+      "fieldtype": "Link",
+      "label": "School",
+      "options": "Company"
+    },
+    {
+      "fieldname": "section_break_qpdk",
+      "fieldtype": "Section Break",
+      "label": "Next Term Start Date"
+    },
+    {
+      "fieldname": "next_term_start_date_section",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "next_term_start_date",
+      "fieldtype": "Date",
+      "label": "Next Term Start Date"
+    },
+    {
+      "fieldname": "school_result_settings_section",
+      "fieldtype": "Section Break",
+      "label": "School Result Settings"
+    },
+    {
+      "fieldname": "assessment_criteria_item",
+      "fieldtype": "Table",
+      "label": "Assessment Criteria Item",
+      "options": "Assessment Criteria Item"
+    },
+    {
+      "fieldname": "overall_grading_scale_for_result_section",
+      "fieldtype": "Section Break",
+      "label": "Overall Grading Scale For Result"
+    },
+    {
+      "fieldname": "overall_grading_scale",
+      "fieldtype": "Table",
+      "label": "Overall Term Grading Scale",
+      "options": "Term Result Grade Scale"
+    },
+    {
+      "fieldname": "section_break_zbkv",
+      "fieldtype": "Section Break"
+    },
+    {
+      "fieldname": "secondary_school_print_format",
+      "fieldtype": "Link",
+      "label": "Secondary School Print Format",
+      "options": "Print Format"
+    },
+    {
+      "fieldname": "column_break_gias",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "primary_school_print_format",
+      "fieldtype": "Link",
+      "label": "Primary School Print Format",
+      "options": "Print Format"
+    },
+    {
+      "fieldname": "section_break_hnpj",
+      "fieldtype": "Section Break",
+      "label": "Remark Score For School ( Good Standing or Non Good Standing)"
+    },
+    {
+      "description": "This scores spefices tha mark above which Secondary School Students get a remark of Good or Fail",
+      "fieldname": "remark_score_for_secondary_school",
+      "fieldtype": "Int",
+      "in_list_view": 1,
+      "label": "Remark Score For Secondary School",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_lbzi",
+      "fieldtype": "Column Break"
+    },
+    {
+      "description": "This scores specifies the mark above which primary school get a remark of Good or Fail",
+      "fieldname": "remark_score_for_primary_school",
+      "fieldtype": "Int",
+      "in_list_view": 1,
+      "label": "Remark Score For Primary School",
+      "reqd": 1
+    },
+    {
+      "description": "Principla signature fo results",
+      "fieldname": "principal_signature_section",
+      "fieldtype": "Section Break",
+      "label": "Principal Signature"
+    },
+    {
+      "fieldname": "principal_signature",
+      "fieldtype": "Attach Image",
+      "label": "Principal's Signature"
+    },
+    {
+      "description": "Head teacher signature for results",
+      "fieldname": "headteachers_signature_section",
+      "fieldtype": "Section Break",
+      "label": "Headteacher's Signature"
+    },
+    {
+      "fieldname": "headteacher_signature",
+      "fieldtype": "Attach Image",
+      "label": "Headteacher Signature"
+    },
+    {
+      "fieldname": "school_stamp_section",
+      "fieldtype": "Section Break",
+      "label": "School Stamp"
+    },
+    {
+      "fieldname": "primary_school_stamp_image",
+      "fieldtype": "Attach Image",
+      "label": "Primary School Stamp Image"
+    },
+    {
+      "fieldname": "column_break_ihxe",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "secondary_school_stamp_image",
+      "fieldtype": "Attach Image",
+      "label": "Secondary School Stamp Image"
+    }
+  ],
+  "grid_page_length": 50,
+  "index_web_pages_for_search": 1,
+  "issingle": 1,
+  "links": [],
+  "modified": "2026-03-26 08:51:01.261873",
+  "modified_by": "t.ajani@rhocom.ng",
+  "module": "Education Extension",
+  "name": "School Settings",
+  "owner": "t.ajani@rhocom.ng",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "print": 1,
+      "read": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    }
+  ],
+  "row_format": "Dynamic",
+  "rows_threshold_for_grid_search": 20,
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": []
 }

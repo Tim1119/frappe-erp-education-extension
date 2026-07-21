@@ -1,135 +1,135 @@
 {
- "actions": [],
- "allow_rename": 1,
- "creation": "2024-01-01 00:00:00.000000",
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "enabled",
-  "column_break_2",
-  "company",
-  "section_break_3",
-  "days_in_advance",
-  "send_notification",
-  "send_email",
-  "column_break_7",
-  "notification_message",
-  "section_break_9",
-  "email_template",
-  "column_break_11",
-  "recipients"
- ],
- "fields": [
-  {
-   "default": "1",
-   "fieldname": "enabled",
-   "fieldtype": "Check",
-   "label": "Enabled"
-  },
-  {
-   "fieldname": "column_break_2",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "company",
-   "fieldtype": "Link",
-   "label": "Company",
-   "options": "Company"
-  },
-  {
-   "fieldname": "section_break_3",
-   "fieldtype": "Section Break",
-   "label": "Reminder Settings"
-  },
-  {
-   "default": "0",
-   "description": "Number of days before birthday to send reminder (0 = on the day)",
-   "fieldname": "days_in_advance",
-   "fieldtype": "Int",
-   "label": "Days in Advance"
-  },
-  {
-   "default": "1",
-   "fieldname": "send_notification",
-   "fieldtype": "Check",
-   "label": "Send System Notification"
-  },
-  {
-   "default": "1",
-   "fieldname": "send_email",
-   "fieldtype": "Check",
-   "label": "Send Email"
-  },
-  {
-   "fieldname": "column_break_7",
-   "fieldtype": "Column Break"
-  },
-  {
-   "depends_on": "send_notification",
-   "description": "Message to show in notification",
-   "fieldname": "notification_message",
-   "fieldtype": "Text",
-   "label": "Notification Message"
-  },
-  {
-   "depends_on": "send_email",
-   "fieldname": "section_break_9",
-   "fieldtype": "Section Break",
-   "label": "Email Settings"
-  },
-  {
-   "depends_on": "send_email",
-   "description": "Leave blank to use default template",
-   "fieldname": "email_template",
-   "fieldtype": "Link",
-   "label": "Email Template",
-   "options": "Email Template"
-  },
-  {
-   "fieldname": "column_break_11",
-   "fieldtype": "Column Break"
-  },
-  {
-   "depends_on": "send_email",
-   "description": "Additional recipients (administrators, teachers, etc.) who should receive ALL birthday notifications. Students and guardians are automatically included. (comma separated)",
-   "fieldname": "recipients",
-   "fieldtype": "Small Text",
-   "label": "Additional Recipients"
-  }
- ],
- "index_web_pages_for_search": 1,
- "issingle": 1,
- "links": [],
- "modified": "2024-01-01 00:00:00.000000",
- "modified_by": "Administrator",
- "module": "Education Extension",
- "name": "Student Birthday Reminder",
- "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "print": 1,
-   "read": 1,
-   "role": "System Manager",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "print": 1,
-   "read": 1,
-   "role": "Academics User",
-   "share": 1,
-   "write": 1
-  }
- ],
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": [],
- "track_changes": 1
+  "actions": [],
+  "allow_rename": 1,
+  "creation": "2024-01-01 00:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "enabled",
+    "column_break_2",
+    "company",
+    "section_break_3",
+    "days_in_advance",
+    "send_notification",
+    "send_email",
+    "column_break_7",
+    "notification_message",
+    "section_break_9",
+    "email_template",
+    "column_break_11",
+    "recipients"
+  ],
+  "fields": [
+    {
+      "default": "1",
+      "fieldname": "enabled",
+      "fieldtype": "Check",
+      "label": "Enabled"
+    },
+    {
+      "fieldname": "column_break_2",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "company",
+      "fieldtype": "Link",
+      "label": "Company",
+      "options": "Company"
+    },
+    {
+      "fieldname": "section_break_3",
+      "fieldtype": "Section Break",
+      "label": "Reminder Settings"
+    },
+    {
+      "default": "0",
+      "description": "Number of days before birthday to send reminder (0 = on the day)",
+      "fieldname": "days_in_advance",
+      "fieldtype": "Int",
+      "label": "Days in Advance"
+    },
+    {
+      "default": "1",
+      "fieldname": "send_notification",
+      "fieldtype": "Check",
+      "label": "Send System Notification"
+    },
+    {
+      "default": "1",
+      "fieldname": "send_email",
+      "fieldtype": "Check",
+      "label": "Send Email"
+    },
+    {
+      "fieldname": "column_break_7",
+      "fieldtype": "Column Break"
+    },
+    {
+      "depends_on": "send_notification",
+      "description": "Message to show in notification",
+      "fieldname": "notification_message",
+      "fieldtype": "Text",
+      "label": "Notification Message"
+    },
+    {
+      "depends_on": "send_email",
+      "fieldname": "section_break_9",
+      "fieldtype": "Section Break",
+      "label": "Email Settings"
+    },
+    {
+      "depends_on": "send_email",
+      "description": "Leave blank to use default template",
+      "fieldname": "email_template",
+      "fieldtype": "Link",
+      "label": "Email Template",
+      "options": "Email Template"
+    },
+    {
+      "fieldname": "column_break_11",
+      "fieldtype": "Column Break"
+    },
+    {
+      "depends_on": "send_email",
+      "description": "Additional recipients (administrators, teachers, etc.) who should receive ALL birthday notifications. Students and guardians are automatically included. (comma separated)",
+      "fieldname": "recipients",
+      "fieldtype": "Small Text",
+      "label": "Additional Recipients"
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "issingle": 1,
+  "links": [],
+  "modified": "2024-01-01 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Education Extension",
+  "name": "Student Birthday Reminder",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "print": 1,
+      "read": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    },
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "print": 1,
+      "read": 1,
+      "role": "Academics User",
+      "share": 1,
+      "write": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 1
 }

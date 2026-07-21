@@ -1,56 +1,56 @@
 {
- "actions": [],
- "allow_rename": 1,
- "creation": "2025-10-14 12:00:00.000000",
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "grade_code",
-  "min_percentage",
-  "max_percentage",
-  "description"
- ],
- "fields": [
-  {
-   "fieldname": "grade_code",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Grade",
-   "reqd": 1
-  },
-  {
-   "fieldname": "min_percentage",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Minimum Percentage",
-   "reqd": 1
-  },
-  {
-   "fieldname": "max_percentage",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Maximum Percentage",
-   "reqd": 1
-  },
-  {
-   "fieldname": "description",
-   "fieldtype": "Small Text",
-   "in_list_view": 1,
-   "label": "Description"
-  }
- ],
- "index_web_pages_for_search": 1,
- "istable": 1,
- "links": [],
- "modified": "2025-10-14 12:00:00.000000",
- "modified_by": "Administrator",
- "module": "Education Extension",
- "name": "Term Result Grade Scale",
- "owner": "Administrator",
- "permissions": [],
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": [],
- "track_changes": 1
+  "actions": [],
+  "allow_rename": 1,
+  "creation": "2025-10-14 12:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "grade_code",
+    "min_percentage",
+    "max_percentage",
+    "description"
+  ],
+  "fields": [
+    {
+      "fieldname": "grade_code",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Grade",
+      "reqd": 1
+    },
+    {
+      "fieldname": "min_percentage",
+      "fieldtype": "Float",
+      "in_list_view": 1,
+      "label": "Minimum Percentage",
+      "reqd": 1
+    },
+    {
+      "fieldname": "max_percentage",
+      "fieldtype": "Float",
+      "in_list_view": 1,
+      "label": "Maximum Percentage",
+      "reqd": 1
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Small Text",
+      "in_list_view": 1,
+      "label": "Description"
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "istable": 1,
+  "links": [],
+  "modified": "2025-10-14 12:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Education Extension",
+  "name": "Term Result Grade Scale",
+  "owner": "Administrator",
+  "permissions": [],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 1
 }

@@ -1,58 +1,58 @@
 {
- "doctype": "DocType",
- "name": "Bulk School Term Class Result Generator",
- "module": "Education Extension",
- "autoname": "format:BSTCRG-{YYYY}-{#####}",
- "editable_grid": 1,
- "is_submittable": 0,
- "field_order": [
-  "assessment_group",
-  "academic_year",
-  "academic_term",
-  "class_arm"
- ],
- "fields": [
-  {
-   "fieldname": "assessment_group",
-   "fieldtype": "Link",
-   "label": "Assessment Group",
-   "options": "Assessment Group",
-   "reqd": 1
-  },
-  {
-   "fieldname": "academic_year",
-   "fieldtype": "Link",
-   "label": "Academic Year",
-   "options": "Academic Year",
-   "reqd": 1
-  },
-  {
-   "fieldname": "academic_term",
-   "fieldtype": "Link",
-   "label": "Academic Term",
-   "options": "Academic Term",
-   "reqd": 1
-  },
-  {
-   "fieldname": "student_group",
-   "fieldtype": "Link",
-   "label": "Class Arm",
-   "options": "Class Arm",
-   "reqd": 1
-  }
- ],
- "permissions": [
-  {
-   "role": "System Manager",
-   "read": 1,
-   "write": 1,
-   "create": 1
-  },
-  {
-   "role": "Academics User",
-   "read": 1,
-   "write": 1,
-   "create": 1
-  }
- ]
+  "doctype": "DocType",
+  "name": "Bulk School Term Class Result Generator",
+  "module": "Education Extension",
+  "autoname": "format:BSTCRG-{YYYY}-{#####}",
+  "editable_grid": 1,
+  "is_submittable": 0,
+  "field_order": [
+    "assessment_group",
+    "academic_year",
+    "academic_term",
+    "class_arm"
+  ],
+  "fields": [
+    {
+      "fieldname": "assessment_group",
+      "fieldtype": "Link",
+      "label": "Assessment Group",
+      "options": "Assessment Group",
+      "reqd": 1
+    },
+    {
+      "fieldname": "academic_year",
+      "fieldtype": "Link",
+      "label": "Academic Year",
+      "options": "Academic Year",
+      "reqd": 1
+    },
+    {
+      "fieldname": "academic_term",
+      "fieldtype": "Link",
+      "label": "Academic Term",
+      "options": "Academic Term",
+      "reqd": 1
+    },
+    {
+      "fieldname": "student_group",
+      "fieldtype": "Link",
+      "label": "Class Arm",
+      "options": "Class Arm",
+      "reqd": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    },
+    {
+      "role": "Academics User",
+      "read": 1,
+      "write": 1,
+      "create": 1
+    }
+  ]
 }

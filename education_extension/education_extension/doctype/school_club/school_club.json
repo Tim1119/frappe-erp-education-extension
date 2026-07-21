@@ -1,116 +1,116 @@
 {
- "actions": [],
- "allow_rename": 1,
- "creation": "2024-01-01 00:00:00.000000",
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "club_name",
-  "academic_year",
-  "column_break_3",
-  "status",
-  "section_break_4",
-  "description",
-  "section_break_6",
-  "club_instructors",
-  "section_break_8",
-  "club_members"
- ],
- "fields": [
-  {
-   "fieldname": "club_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Club Name",
-   "reqd": 1,
-   "unique": 0
-  },
-  {
-   "fieldname": "academic_year",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Academic Year",
-   "options": "Academic Year",
-   "reqd": 1
-  },
-  {
-   "fieldname": "column_break_3",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "Active",
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Status",
-   "options": "Active\nInactive",
-   "reqd": 1
-  },
-  {
-   "fieldname": "section_break_4",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "description",
-   "fieldtype": "Text Editor",
-   "label": "Description"
-  },
-  {
-   "fieldname": "section_break_6",
-   "fieldtype": "Section Break",
-   "label": "Club Instructors"
-  },
-  {
-   "fieldname": "club_instructors",
-   "fieldtype": "Table",
-   "label": "Club Instructors",
-   "options": "Club Instructor",
-   "reqd": 1
-  },
-  {
-   "fieldname": "section_break_8",
-   "fieldtype": "Section Break",
-   "label": "Club Members"
-  },
-  {
-   "fieldname": "club_members",
-   "fieldtype": "Table",
-   "label": "Club Members",
-   "options": "Club Member"
-  },
-  {
-   "fieldname": "project_carried_out",
-   "fieldtype": "Text Editor",
-   "label": "Project Carried Out",
-   "description": "Briefly describe the projects completed by the club. (you can ignore if interhousesport club)"
-}
- ],
- "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2024-01-01 00:00:00.000000",
- "modified_by": "Administrator",
- "module": "Education Extension",
- "name": "School Club",
- "naming_rule": "Expression",
- "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Academics User",
-   "share": 1,
-   "write": 1
-  }
- ],
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": [],
- "track_changes": 1
+  "actions": [],
+  "allow_rename": 1,
+  "creation": "2024-01-01 00:00:00.000000",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "club_name",
+    "academic_year",
+    "column_break_3",
+    "status",
+    "section_break_4",
+    "description",
+    "section_break_6",
+    "club_instructors",
+    "section_break_8",
+    "club_members"
+  ],
+  "fields": [
+    {
+      "fieldname": "club_name",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Club Name",
+      "reqd": 1,
+      "unique": 0
+    },
+    {
+      "fieldname": "academic_year",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "in_standard_filter": 1,
+      "label": "Academic Year",
+      "options": "Academic Year",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "default": "Active",
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "in_list_view": 1,
+      "label": "Status",
+      "options": "Active\nInactive",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_4",
+      "fieldtype": "Section Break"
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Text Editor",
+      "label": "Description"
+    },
+    {
+      "fieldname": "section_break_6",
+      "fieldtype": "Section Break",
+      "label": "Club Instructors"
+    },
+    {
+      "fieldname": "club_instructors",
+      "fieldtype": "Table",
+      "label": "Club Instructors",
+      "options": "Club Instructor",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_break_8",
+      "fieldtype": "Section Break",
+      "label": "Club Members"
+    },
+    {
+      "fieldname": "club_members",
+      "fieldtype": "Table",
+      "label": "Club Members",
+      "options": "Club Member"
+    },
+    {
+      "fieldname": "project_carried_out",
+      "fieldtype": "Text Editor",
+      "label": "Project Carried Out",
+      "description": "Briefly describe the projects completed by the club. (you can ignore if interhousesport club)"
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "links": [],
+  "modified": "2024-01-01 00:00:00.000000",
+  "modified_by": "Administrator",
+  "module": "Education Extension",
+  "name": "School Club",
+  "naming_rule": "Expression",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Academics User",
+      "share": 1,
+      "write": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": [],
+  "track_changes": 1
 }

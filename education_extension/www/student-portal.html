@@ -1,23 +1,21 @@
-{% extends "templates/web.html" %}
-
-{% block content %}
+{% extends "templates/web.html" %} {% block content %}
 <link rel="icon" href="/favicon.png" />
 <div id="app"></div>
 <div id="modals"></div>
 <div id="popovers"></div>
 
 <script>
-  window.csrf_token = '{{ frappe.session.csrf_token }}'
-  window.document.title = '{{ abbr }}'
+	window.csrf_token = "{{ frappe.session.csrf_token }}";
+	window.document.title = "{{ abbr }}";
 </script>
 
 <script type="module" src="/assets/education_extension/student_portal/index.js"></script>
-<link rel="stylesheet" href="/assets/education_extension/student_portal/index.css">
+<link rel="stylesheet" href="/assets/education_extension/student_portal/index.css" />
 
 <style>
-  .navbar,
-  .web-footer {
-    display: none !important;
-  }
+	.navbar,
+	.web-footer {
+		display: none !important;
+	}
 </style>
 {% endblock %}

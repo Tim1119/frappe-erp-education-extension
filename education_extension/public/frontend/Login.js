@@ -1,1 +1,263 @@
-var f=(r,p,o)=>new Promise((i,n)=>{var t=s=>{try{d(o.next(s))}catch(a){n(a)}},c=s=>{try{d(o.throw(s))}catch(a){n(a)}},d=s=>s.done?i(s.value):Promise.resolve(s.value).then(t,c);d((o=o.apply(r,p)).next())});import{_ as y,e as u,A as b,c as _,n as e,a as x,C as k,T as L,D as w,E as V,G as m,H as C,t as g,z,q as M,v as B,w as S,o as h,y as E}from"./vendor.js";import{s as H}from"./index.js";const l=r=>(M("data-v-35899f5e"),r=r(),B(),r),I={class:"login-wrapper"},K={class:"login-card"},N=z('<div class="brand" data-v-35899f5e><div class="brand-icon" data-v-35899f5e><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" data-v-35899f5e><rect width="40" height="40" rx="10" fill="#1a1a1a" data-v-35899f5e></rect><path d="M20 8L32 15V25L20 32L8 25V15L20 8Z" stroke="white" stroke-width="1.5" fill="none" data-v-35899f5e></path><circle cx="20" cy="20" r="3.5" fill="white" data-v-35899f5e></circle></svg></div><h1 class="brand-name" data-v-35899f5e>Guardian Portal</h1></div>',1),P={key:0,class:"error-alert"},T=l(()=>e("svg",{viewBox:"0 0 20 20",fill:"currentColor",class:"alert-icon"},[e("path",{"fill-rule":"evenodd",d:"M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z","clip-rule":"evenodd"})],-1)),D={class:"login-form"},j={class:"field-wrap"},A=l(()=>e("svg",{class:"field-icon",viewBox:"0 0 20 20",fill:"currentColor"},[e("path",{d:"M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"}),e("path",{d:"M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"})],-1)),G=["onKeyup","disabled"],U={class:"field-wrap"},q=l(()=>e("svg",{class:"field-icon",viewBox:"0 0 20 20",fill:"currentColor"},[e("path",{"fill-rule":"evenodd",d:"M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z","clip-rule":"evenodd"})],-1)),F=["type","onKeyup","disabled"],R=l(()=>e("div",{class:"forgot-row"},[e("a",{href:"/update-password",class:"forgot-link"},"Forgot Password?")],-1)),Z=["disabled"],$={key:0},J={key:1,class:"btn-loader"},O=l(()=>e("span",{class:"dot"},null,-1)),Q=l(()=>e("span",{class:"dot"},null,-1)),W=l(()=>e("span",{class:"dot"},null,-1)),X=[O,Q,W],Y=l(()=>e("div",{class:"divider"},[e("span",null,"or")],-1)),ee=["disabled"],se=l(()=>e("p",{class:"powered-by"},[S("Powered by "),e("strong",null,"Rhocom Technology")],-1)),ae={setup(r){const p=H(),o=u(""),i=u(""),n=u(!1),t=u(!1),c=u("");function d(){return f(this,null,function*(){!o.value||!i.value||(c.value="",t.value=!0,yield p.login.submit({usr:o.value,pwd:i.value}),t.value=!1)})}return b(()=>p.login.error,s=>{s&&(t.value=!1,c.value="Invalid email or password. Please try again.")}),(s,a)=>(h(),_("div",I,[e("div",K,[N,x(L,{name:"fade-down"},{default:k(()=>[c.value?(h(),_("div",P,[T,e("span",null,g(c.value),1)])):E("",!0)]),_:1}),e("div",D,[e("div",j,[A,w(e("input",{"onUpdate:modelValue":a[0]||(a[0]=v=>o.value=v),type:"email",placeholder:"you@example.com",autocomplete:"username",onKeyup:m(d,["enter"]),disabled:t.value,class:"field-input"},null,40,G),[[V,o.value]])]),e("div",U,[q,w(e("input",{"onUpdate:modelValue":a[1]||(a[1]=v=>i.value=v),type:n.value?"text":"password",placeholder:"\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",autocomplete:"current-password",onKeyup:m(d,["enter"]),disabled:t.value,class:"field-input"},null,40,F),[[C,i.value]]),e("button",{type:"button",class:"show-btn",onClick:a[2]||(a[2]=v=>n.value=!n.value),tabindex:"-1"},g(n.value?"Hide":"Show"),1)]),R,e("button",{class:"login-btn",onClick:d,disabled:t.value||!o.value||!i.value},[t.value?(h(),_("span",J,X)):(h(),_("span",$,"Login"))],8,Z),Y,e("button",{class:"email-link-btn",disabled:t.value,onClick:a[3]||(a[3]=(...v)=>s.handleEmailLink&&s.handleEmailLink(...v))}," Login with Email Link ",8,ee)]),se])]))}};var ie=y(ae,[["__scopeId","data-v-35899f5e"]]);export{ie as default};
+var f = (r, p, o) =>
+	new Promise((i, n) => {
+		var t = (s) => {
+				try {
+					d(o.next(s));
+				} catch (a) {
+					n(a);
+				}
+			},
+			c = (s) => {
+				try {
+					d(o.throw(s));
+				} catch (a) {
+					n(a);
+				}
+			},
+			d = (s) => (s.done ? i(s.value) : Promise.resolve(s.value).then(t, c));
+		d((o = o.apply(r, p)).next());
+	});
+import {
+	_ as y,
+	e as u,
+	A as b,
+	c as _,
+	n as e,
+	a as x,
+	C as k,
+	T as L,
+	D as w,
+	E as V,
+	G as m,
+	H as C,
+	t as g,
+	z,
+	q as M,
+	v as B,
+	w as S,
+	o as h,
+	y as E,
+} from "./vendor.js";
+import { s as H } from "./index.js";
+const l = (r) => (M("data-v-35899f5e"), (r = r()), B(), r),
+	I = { class: "login-wrapper" },
+	K = { class: "login-card" },
+	N = z(
+		'<div class="brand" data-v-35899f5e><div class="brand-icon" data-v-35899f5e><svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" data-v-35899f5e><rect width="40" height="40" rx="10" fill="#1a1a1a" data-v-35899f5e></rect><path d="M20 8L32 15V25L20 32L8 25V15L20 8Z" stroke="white" stroke-width="1.5" fill="none" data-v-35899f5e></path><circle cx="20" cy="20" r="3.5" fill="white" data-v-35899f5e></circle></svg></div><h1 class="brand-name" data-v-35899f5e>Guardian Portal</h1></div>',
+		1,
+	),
+	P = { key: 0, class: "error-alert" },
+	T = l(() =>
+		e(
+			"svg",
+			{ viewBox: "0 0 20 20", fill: "currentColor", class: "alert-icon" },
+			[
+				e("path", {
+					"fill-rule": "evenodd",
+					d: "M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z",
+					"clip-rule": "evenodd",
+				}),
+			],
+			-1,
+		),
+	),
+	D = { class: "login-form" },
+	j = { class: "field-wrap" },
+	A = l(() =>
+		e(
+			"svg",
+			{ class: "field-icon", viewBox: "0 0 20 20", fill: "currentColor" },
+			[
+				e("path", {
+					d: "M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z",
+				}),
+				e("path", { d: "M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" }),
+			],
+			-1,
+		),
+	),
+	G = ["onKeyup", "disabled"],
+	U = { class: "field-wrap" },
+	q = l(() =>
+		e(
+			"svg",
+			{ class: "field-icon", viewBox: "0 0 20 20", fill: "currentColor" },
+			[
+				e("path", {
+					"fill-rule": "evenodd",
+					d: "M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z",
+					"clip-rule": "evenodd",
+				}),
+			],
+			-1,
+		),
+	),
+	F = ["type", "onKeyup", "disabled"],
+	R = l(() =>
+		e(
+			"div",
+			{ class: "forgot-row" },
+			[e("a", { href: "/update-password", class: "forgot-link" }, "Forgot Password?")],
+			-1,
+		),
+	),
+	Z = ["disabled"],
+	$ = { key: 0 },
+	J = { key: 1, class: "btn-loader" },
+	O = l(() => e("span", { class: "dot" }, null, -1)),
+	Q = l(() => e("span", { class: "dot" }, null, -1)),
+	W = l(() => e("span", { class: "dot" }, null, -1)),
+	X = [O, Q, W],
+	Y = l(() => e("div", { class: "divider" }, [e("span", null, "or")], -1)),
+	ee = ["disabled"],
+	se = l(() =>
+		e(
+			"p",
+			{ class: "powered-by" },
+			[S("Powered by "), e("strong", null, "Rhocom Technology")],
+			-1,
+		),
+	),
+	ae = {
+		setup(r) {
+			const p = H(),
+				o = u(""),
+				i = u(""),
+				n = u(!1),
+				t = u(!1),
+				c = u("");
+			function d() {
+				return f(this, null, function* () {
+					!o.value ||
+						!i.value ||
+						((c.value = ""),
+						(t.value = !0),
+						yield p.login.submit({ usr: o.value, pwd: i.value }),
+						(t.value = !1));
+				});
+			}
+			return (
+				b(
+					() => p.login.error,
+					(s) => {
+						s &&
+							((t.value = !1),
+							(c.value = "Invalid email or password. Please try again."));
+					},
+				),
+				(s, a) => (
+					h(),
+					_("div", I, [
+						e("div", K, [
+							N,
+							x(
+								L,
+								{ name: "fade-down" },
+								{
+									default: k(() => [
+										c.value
+											? (h(),
+												_("div", P, [T, e("span", null, g(c.value), 1)]))
+											: E("", !0),
+									]),
+									_: 1,
+								},
+							),
+							e("div", D, [
+								e("div", j, [
+									A,
+									w(
+										e(
+											"input",
+											{
+												"onUpdate:modelValue":
+													a[0] || (a[0] = (v) => (o.value = v)),
+												type: "email",
+												placeholder: "you@example.com",
+												autocomplete: "username",
+												onKeyup: m(d, ["enter"]),
+												disabled: t.value,
+												class: "field-input",
+											},
+											null,
+											40,
+											G,
+										),
+										[[V, o.value]],
+									),
+								]),
+								e("div", U, [
+									q,
+									w(
+										e(
+											"input",
+											{
+												"onUpdate:modelValue":
+													a[1] || (a[1] = (v) => (i.value = v)),
+												type: n.value ? "text" : "password",
+												placeholder:
+													"\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022",
+												autocomplete: "current-password",
+												onKeyup: m(d, ["enter"]),
+												disabled: t.value,
+												class: "field-input",
+											},
+											null,
+											40,
+											F,
+										),
+										[[C, i.value]],
+									),
+									e(
+										"button",
+										{
+											type: "button",
+											class: "show-btn",
+											onClick: a[2] || (a[2] = (v) => (n.value = !n.value)),
+											tabindex: "-1",
+										},
+										g(n.value ? "Hide" : "Show"),
+										1,
+									),
+								]),
+								R,
+								e(
+									"button",
+									{
+										class: "login-btn",
+										onClick: d,
+										disabled: t.value || !o.value || !i.value,
+									},
+									[
+										t.value
+											? (h(), _("span", J, X))
+											: (h(), _("span", $, "Login")),
+									],
+									8,
+									Z,
+								),
+								Y,
+								e(
+									"button",
+									{
+										class: "email-link-btn",
+										disabled: t.value,
+										onClick:
+											a[3] ||
+											(a[3] = (...v) =>
+												s.handleEmailLink && s.handleEmailLink(...v)),
+									},
+									" Login with Email Link ",
+									8,
+									ee,
+								),
+							]),
+							se,
+						]),
+					])
+				)
+			);
+		},
+	};
+var ie = y(ae, [["__scopeId", "data-v-35899f5e"]]);
+export { ie as default };

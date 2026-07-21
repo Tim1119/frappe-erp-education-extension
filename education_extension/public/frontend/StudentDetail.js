@@ -1,1 +1,370 @@
-import{_ as F,f as h,e as P,b as H,c as t,n as e,u as a,t as r,y,F as q,p as E,I as B,a as V,J as G,x as J,r as I,o as s,C as O,q as U,v as W,w as Z}from"./vendor.js";import{s as K}from"./index.js";const S=c=>(U("data-v-5e062c4a"),c=c(),W(),c),Q={class:"portal-wrap"},X={class:"sidebar-brand"},Y=["src"],e1={key:1,class:"brand-icon"},a1=S(()=>e("svg",{viewBox:"0 0 32 32",fill:"none"},[e("rect",{width:"32",height:"32",rx:"7",fill:"#1a1a1a"}),e("path",{d:"M16 6L26 12V20L16 26L6 20V12L16 6Z",stroke:"white","stroke-width":"1.2",fill:"none"}),e("circle",{cx:"16",cy:"16",r:"2.5",fill:"white"})],-1)),t1=[a1],s1={key:2,class:"brand-name"},o1={key:0,class:"student-pill"},l1={class:"pill-avatar"},n1=["src"],i1={key:1},d1={class:"pill-info"},r1={class:"pill-name"},c1={class:"pill-id"},h1={key:1,class:"student-pill-collapsed"},v1={class:"pill-avatar"},u1=["src"],_1={key:1},p1={class:"sidebar-nav"},g1=["innerHTML"],f1={key:0,class:"nav-label"},m1=["innerHTML"],w1={class:"main-wrap"},b1={class:"portal-navbar"},z1={class:"navbar-left"},x1={class:"navbar-title"},M1={class:"navbar-right"},C1=S(()=>e("svg",{viewBox:"0 0 20 20",fill:"currentColor",width:"16",height:"16"},[e("path",{"fill-rule":"evenodd",d:"M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z","clip-rule":"evenodd"})],-1)),k1=Z(" All Children "),L1=[C1,k1],H1={class:"page-content"},y1={setup(c){const _=G(),A=J(),T=K(),p=h(()=>_.params.studentId),g=h(()=>_.path.split("/").pop()),d=P(window.innerWidth<768),v=H({url:"education.education.api.get_school_abbr_logo",auto:!0,cache:!1}),u=H({url:"education_extension.guardian.get_linked_students",auto:!0,cache:!1}),l=h(()=>(console.log("wardBasic.data:",u.data),u.data?u.data.find(n=>n.name===p.value):null)),f=[{to:"profile",label:"Profile",icon:'<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>'},{to:"report",label:"Report Cards",icon:'<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>'},{to:"attendance",label:"Attendance",icon:'<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>'},{to:"schedule",label:"Schedule",icon:'<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>'},{to:"grades",label:"Grades",icon:'<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/></svg>'},{to:"fees",label:"Fees",icon:'<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>'},{to:"awards",label:"Awards",icon:'<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>'}],$=h(()=>{var n;return((n=f.find(o=>o.to===g.value))==null?void 0:n.label)||"Dashboard"}),D='<svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>',N='<svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>';function m(n){return n?n.split(" ").map(o=>o[0]).slice(0,2).join("").toUpperCase():"?"}return(n,o)=>{var w,b,z,x,M,C,k,L;const R=I("router-link"),j=I("router-view");return s(),t("div",Q,[e("aside",{class:B(["sidebar",{collapsed:d.value}])},[e("div",X,[((w=a(v).data)==null?void 0:w.logo)?(s(),t("img",{key:0,src:a(v).data.logo,class:"brand-logo"},null,8,Y)):(s(),t("div",e1,t1)),d.value?y("",!0):(s(),t("span",s1,r(((b=a(v).data)==null?void 0:b.name)||"Portal"),1))]),d.value?(s(),t("div",h1,[e("div",v1,[((k=a(l))==null?void 0:k.image)?(s(),t("img",{key:0,src:a(l).image,class:"pill-img"},null,8,u1)):(s(),t("span",_1,r(m((L=a(l))==null?void 0:L.student_name)),1))])])):(s(),t("div",o1,[e("div",l1,[((z=a(l))==null?void 0:z.image)?(s(),t("img",{key:0,src:a(l).image,class:"pill-img"},null,8,n1)):(s(),t("span",i1,r(m((x=a(l))==null?void 0:x.student_name)),1))]),e("div",d1,[e("p",r1,r((M=a(l))==null?void 0:M.student_name),1),e("p",c1,r((C=a(l))==null?void 0:C.name),1)])])),e("nav",p1,[(s(),t(q,null,E(f,i=>V(R,{key:i.to,to:`/student/${a(p)}/${i.to}`,class:B(["nav-link",{active:a(g)===i.to}])},{default:O(()=>[e("span",{class:"nav-icon",innerHTML:i.icon},null,8,g1),d.value?y("",!0):(s(),t("span",f1,r(i.label),1))]),_:2},1032,["to","class"])),64))]),e("button",{class:"collapse-btn",onClick:o[0]||(o[0]=i=>d.value=!d.value)},[e("span",{innerHTML:d.value?N:D},null,8,m1)])],2),e("div",w1,[e("header",b1,[e("div",z1,[e("h2",x1,r(a($)),1)]),e("div",M1,[e("button",{class:"back-btn",onClick:o[1]||(o[1]=i=>a(A).push("/"))},L1),e("button",{class:"signout-btn",onClick:o[2]||(o[2]=i=>a(T).logout.submit())},"Sign Out")])]),e("div",H1,[V(j)])])])}}};var I1=F(y1,[["__scopeId","data-v-5e062c4a"]]);export{I1 as default};
+import {
+	_ as F,
+	f as h,
+	e as P,
+	b as H,
+	c as t,
+	n as e,
+	u as a,
+	t as r,
+	y,
+	F as q,
+	p as E,
+	I as B,
+	a as V,
+	J as G,
+	x as J,
+	r as I,
+	o as s,
+	C as O,
+	q as U,
+	v as W,
+	w as Z,
+} from "./vendor.js";
+import { s as K } from "./index.js";
+const S = (c) => (U("data-v-5e062c4a"), (c = c()), W(), c),
+	Q = { class: "portal-wrap" },
+	X = { class: "sidebar-brand" },
+	Y = ["src"],
+	e1 = { key: 1, class: "brand-icon" },
+	a1 = S(() =>
+		e(
+			"svg",
+			{ viewBox: "0 0 32 32", fill: "none" },
+			[
+				e("rect", { width: "32", height: "32", rx: "7", fill: "#1a1a1a" }),
+				e("path", {
+					d: "M16 6L26 12V20L16 26L6 20V12L16 6Z",
+					stroke: "white",
+					"stroke-width": "1.2",
+					fill: "none",
+				}),
+				e("circle", { cx: "16", cy: "16", r: "2.5", fill: "white" }),
+			],
+			-1,
+		),
+	),
+	t1 = [a1],
+	s1 = { key: 2, class: "brand-name" },
+	o1 = { key: 0, class: "student-pill" },
+	l1 = { class: "pill-avatar" },
+	n1 = ["src"],
+	i1 = { key: 1 },
+	d1 = { class: "pill-info" },
+	r1 = { class: "pill-name" },
+	c1 = { class: "pill-id" },
+	h1 = { key: 1, class: "student-pill-collapsed" },
+	v1 = { class: "pill-avatar" },
+	u1 = ["src"],
+	_1 = { key: 1 },
+	p1 = { class: "sidebar-nav" },
+	g1 = ["innerHTML"],
+	f1 = { key: 0, class: "nav-label" },
+	m1 = ["innerHTML"],
+	w1 = { class: "main-wrap" },
+	b1 = { class: "portal-navbar" },
+	z1 = { class: "navbar-left" },
+	x1 = { class: "navbar-title" },
+	M1 = { class: "navbar-right" },
+	C1 = S(() =>
+		e(
+			"svg",
+			{ viewBox: "0 0 20 20", fill: "currentColor", width: "16", height: "16" },
+			[
+				e("path", {
+					"fill-rule": "evenodd",
+					d: "M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z",
+					"clip-rule": "evenodd",
+				}),
+			],
+			-1,
+		),
+	),
+	k1 = Z(" All Children "),
+	L1 = [C1, k1],
+	H1 = { class: "page-content" },
+	y1 = {
+		setup(c) {
+			const _ = G(),
+				A = J(),
+				T = K(),
+				p = h(() => _.params.studentId),
+				g = h(() => _.path.split("/").pop()),
+				d = P(window.innerWidth < 768),
+				v = H({
+					url: "education.education.api.get_school_abbr_logo",
+					auto: !0,
+					cache: !1,
+				}),
+				u = H({
+					url: "education_extension.guardian.get_linked_students",
+					auto: !0,
+					cache: !1,
+				}),
+				l = h(
+					() => (
+						console.log("wardBasic.data:", u.data),
+						u.data ? u.data.find((n) => n.name === p.value) : null
+					),
+				),
+				f = [
+					{
+						to: "profile",
+						label: "Profile",
+						icon: '<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>',
+					},
+					{
+						to: "report",
+						label: "Report Cards",
+						icon: '<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>',
+					},
+					{
+						to: "attendance",
+						label: "Attendance",
+						icon: '<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>',
+					},
+					{
+						to: "schedule",
+						label: "Schedule",
+						icon: '<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>',
+					},
+					{
+						to: "grades",
+						label: "Grades",
+						icon: '<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/></svg>',
+					},
+					{
+						to: "fees",
+						label: "Fees",
+						icon: '<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"/></svg>',
+					},
+					{
+						to: "awards",
+						label: "Awards",
+						icon: '<svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>',
+					},
+				],
+				$ = h(() => {
+					var n;
+					return (
+						((n = f.find((o) => o.to === g.value)) == null ? void 0 : n.label) ||
+						"Dashboard"
+					);
+				}),
+				D =
+					'<svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>',
+				N =
+					'<svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>';
+			function m(n) {
+				return n
+					? n
+							.split(" ")
+							.map((o) => o[0])
+							.slice(0, 2)
+							.join("")
+							.toUpperCase()
+					: "?";
+			}
+			return (n, o) => {
+				var w, b, z, x, M, C, k, L;
+				const R = I("router-link"),
+					j = I("router-view");
+				return (
+					s(),
+					t("div", Q, [
+						e(
+							"aside",
+							{ class: B(["sidebar", { collapsed: d.value }]) },
+							[
+								e("div", X, [
+									((w = a(v).data) == null ? void 0 : w.logo)
+										? (s(),
+											t(
+												"img",
+												{
+													key: 0,
+													src: a(v).data.logo,
+													class: "brand-logo",
+												},
+												null,
+												8,
+												Y,
+											))
+										: (s(), t("div", e1, t1)),
+									d.value
+										? y("", !0)
+										: (s(),
+											t(
+												"span",
+												s1,
+												r(
+													((b = a(v).data) == null ? void 0 : b.name) ||
+														"Portal",
+												),
+												1,
+											)),
+								]),
+								d.value
+									? (s(),
+										t("div", h1, [
+											e("div", v1, [
+												((k = a(l)) == null ? void 0 : k.image)
+													? (s(),
+														t(
+															"img",
+															{
+																key: 0,
+																src: a(l).image,
+																class: "pill-img",
+															},
+															null,
+															8,
+															u1,
+														))
+													: (s(),
+														t(
+															"span",
+															_1,
+															r(
+																m(
+																	(L = a(l)) == null
+																		? void 0
+																		: L.student_name,
+																),
+															),
+															1,
+														)),
+											]),
+										]))
+									: (s(),
+										t("div", o1, [
+											e("div", l1, [
+												((z = a(l)) == null ? void 0 : z.image)
+													? (s(),
+														t(
+															"img",
+															{
+																key: 0,
+																src: a(l).image,
+																class: "pill-img",
+															},
+															null,
+															8,
+															n1,
+														))
+													: (s(),
+														t(
+															"span",
+															i1,
+															r(
+																m(
+																	(x = a(l)) == null
+																		? void 0
+																		: x.student_name,
+																),
+															),
+															1,
+														)),
+											]),
+											e("div", d1, [
+												e(
+													"p",
+													r1,
+													r(
+														(M = a(l)) == null
+															? void 0
+															: M.student_name,
+													),
+													1,
+												),
+												e(
+													"p",
+													c1,
+													r((C = a(l)) == null ? void 0 : C.name),
+													1,
+												),
+											]),
+										])),
+								e("nav", p1, [
+									(s(),
+									t(
+										q,
+										null,
+										E(f, (i) =>
+											V(
+												R,
+												{
+													key: i.to,
+													to: `/student/${a(p)}/${i.to}`,
+													class: B([
+														"nav-link",
+														{ active: a(g) === i.to },
+													]),
+												},
+												{
+													default: O(() => [
+														e(
+															"span",
+															{
+																class: "nav-icon",
+																innerHTML: i.icon,
+															},
+															null,
+															8,
+															g1,
+														),
+														d.value
+															? y("", !0)
+															: (s(), t("span", f1, r(i.label), 1)),
+													]),
+													_: 2,
+												},
+												1032,
+												["to", "class"],
+											),
+										),
+										64,
+									)),
+								]),
+								e(
+									"button",
+									{
+										class: "collapse-btn",
+										onClick: o[0] || (o[0] = (i) => (d.value = !d.value)),
+									},
+									[e("span", { innerHTML: d.value ? N : D }, null, 8, m1)],
+								),
+							],
+							2,
+						),
+						e("div", w1, [
+							e("header", b1, [
+								e("div", z1, [e("h2", x1, r(a($)), 1)]),
+								e("div", M1, [
+									e(
+										"button",
+										{
+											class: "back-btn",
+											onClick: o[1] || (o[1] = (i) => a(A).push("/")),
+										},
+										L1,
+									),
+									e(
+										"button",
+										{
+											class: "signout-btn",
+											onClick: o[2] || (o[2] = (i) => a(T).logout.submit()),
+										},
+										"Sign Out",
+									),
+								]),
+							]),
+							e("div", H1, [V(j)]),
+						]),
+					])
+				);
+			};
+		},
+	};
+var I1 = F(y1, [["__scopeId", "data-v-5e062c4a"]]);
+export { I1 as default };

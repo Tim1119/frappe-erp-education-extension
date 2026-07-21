@@ -1,5 +1,634 @@
-import{p as z,c as S,r as $,q as M,m as A,o,a as y,f as C,w as b,e as w,F as D,i as F,n as N,t as O,b as m,u as d,v as U,d as _,x as j,s as L,y as T,l as G,z as H,A as J,B as K,C as Q}from"./index.js";import{E as I}from"./ErrorMessage.js";import{c as q}from"./index2.js";import{_ as W}from"./MissingData.js";const X={class:"flex flex-col gap-4"},Y={class:"grid grid-cols-2 gap-4"},Z={class:"mb-2 text-sm text-gray-600"},ee={class:"flex flex-row-reverse gap-2"},te={__name:"FeesPaymentDialog",props:{modelValue:{type:Boolean,required:!1},student:{type:Object,required:!0},row:{type:Object,required:!0}},emits:["update:modelValue","success"],setup(B,{emit:E}){const s=B,P=E;z(()=>{const t=document.createElement("script");t.src="https://checkout.razorpay.com/v1/checkout.js",document.body.appendChild(t)});const p=S({url:"education.education.billing.get_payment_options",makeParams(t){return{doctype:"Sales Invoice",docname:s.row.invoice,phone:e.mobile_number,country:e.country}}}),v=S({url:"education.education.billing.handle_payment_success"}),g=S({url:"education.education.billing.handle_payment_failure"});function V(t){if(!e.mobile_number||!e.email){f();return}p.submit({},{onSuccess(a){a.handler=c=>{x(c,t)};let u=new Razorpay(a);u.open(),u.on("payment.failed",c=>R(c)),u.on("payment.success",c=>x(c,t))},onError(a){h(a)}})}function f(){e.mobile_number||(n.value=!1),e.email||(i.value=!1),e.mobile_number&&!e.email&&(n.value=!0,i.value=!1),e.email&&!e.mobile_number&&(i.value=!0,n.value=!1),e.email&&e.mobile_number&&(i.value=!0,n.value=!0)}function x(t,a){v.submit({response:t,against_invoice:s.row.invoice,billing_details:e},{onSuccess(u){a(),P("success")},onError(u){h(u)}})}function R(t){g.submit({response:t,against_invoice:s.row.invoice,billing_details:e},{onError(a){h(a)}})}function h(t){console.log(t),q({message:"Something went wrong",icon:"x",iconClasses:"text-red-600"})}const n=$(!0),i=$(!0),e=M({program:s.row.program||"",student:s.student.student_name||"",amount:s.row.amount||"",id:s.student.name||"",mobile_number:"",email:s.student.student_email_id||"",address_line_1:s.student.address_line_1||"",address_line_2:s.student.address_line_2||"",city:s.student.city||"",state:s.student.state||"",country:s.student.country||"",pincode:s.student.pincode||""}),r=[{section:"Student Details",fields:[{label:"Student",name:"student",type:"data",readonly:!0},{label:"Student",name:"id",type:"data",readonly:!0},{label:"Amount",name:"amount",type:"data",readonly:!0},{label:"Program",name:"program",type:"data",readonly:!0},{label:"Mobile Number",name:"mobile_number",type:"data"},{label:"Email",name:"email",type:"data"}]},{section:"Student Address",fields:[{label:"Address Line 1",name:"address_line_1",type:"data"},{label:"Address Line 2",name:"address_line_2",type:"data"},{label:"City",name:"city",type:"data"},{label:"State",name:"state",type:"data"},{label:"Country",name:"country",type:"data"},{label:"Pincode",name:"pincode",type:"data"}]}];return(t,a)=>{const u=A("Button");return o(),y("div",null,[C(d(j),{options:{title:"Pay Fees",actions:[{label:"Save",variant:"solid"}]},modelValue:B.modelValue,"onUpdate:modelValue":a[2]||(a[2]=c=>P("update:modelValue",c))},{"body-content":b(()=>[w("div",X,[(o(),y(D,null,F(r,c=>w("div",{key:c.section},[w("div",Y,[(o(!0),y(D,null,F(c.fields,l=>(o(),y("div",{key:l.name,class:N(l.hidden&&"hidden")},[w("div",Z,O(l.label),1),l.name==="mobile_number"||l.name==="email"?(o(),m(d(U),{key:0,type:l.type,modelValue:e[l.name],"onUpdate:modelValue":k=>e[l.name]=k,placeholder:l.placeholder,disabled:l.readonly,onChange:a[0]||(a[0]=k=>f())},null,8,["type","modelValue","onUpdate:modelValue","placeholder","disabled"])):(o(),m(d(U),{key:1,type:l.type,modelValue:e[l.name],"onUpdate:modelValue":k=>e[l.name]=k,placeholder:l.placeholder,disabled:l.readonly,onChange:a[1]||(a[1]=k=>f())},null,8,["type","modelValue","onUpdate:modelValue","placeholder","disabled"])),l.name==="mobile_number"&&!n.value?(o(),m(d(I),{key:2,message:"Mobile number is required",class:"pt-2"})):_("",!0),l.name==="email"&&!i.value?(o(),m(d(I),{key:3,message:"Email is Required",class:"pt-2"})):_("",!0)],2))),128))])])),64))])]),actions:b(({close:c})=>[w("div",ee,[C(u,{class:"w-48 h-7",variant:"solid",onClick:l=>V(c),"icon-left":"external-link",loading:d(p).loading,label:"Proceed to Payment"},null,8,["onClick","loading"])])]),_:1},8,["modelValue"])])}}},ae={key:0,class:"px-5 py-4"},ne={key:1},re={__name:"Fees",setup(B){const{getStudentInfo:E}=L();let s=E().value;const P=S({url:"education.education.api.get_student_invoices",params:{student:s.name},onSuccess:n=>{V=n==null?void 0:n.print_format;let i=n==null?void 0:n.invoices;i=i.sort((e,r)=>{const t={Overdue:0,Unpaid:1,Paid:2},a=t[e.status],u=t[r.status];if(a!==u)return a-u}),p.rows=i},auto:!0}),p=M({rows:[],columns:[{label:"Program",key:"program",width:1},{label:"Status",key:"status",width:1},{label:"Payment Date",key:"payment_date",width:1},{label:"Due Date",key:"due_date",width:1},{label:"Amount",key:"amount",width:1},{label:"Invoice",key:"cta",width:1}]}),v=$(null),g=$(!1);let V="Standard";const f=n=>{let i=`/api/method/frappe.utils.print_format.download_pdf?
+import {
+	p as z,
+	c as S,
+	r as $,
+	q as M,
+	m as A,
+	o,
+	a as y,
+	f as C,
+	w as b,
+	e as w,
+	F as D,
+	i as F,
+	n as N,
+	t as O,
+	b as m,
+	u as d,
+	v as U,
+	d as _,
+	x as j,
+	s as L,
+	y as T,
+	l as G,
+	z as H,
+	A as J,
+	B as K,
+	C as Q,
+} from "./index.js";
+import { E as I } from "./ErrorMessage.js";
+import { c as q } from "./index2.js";
+import { _ as W } from "./MissingData.js";
+const X = { class: "flex flex-col gap-4" },
+	Y = { class: "grid grid-cols-2 gap-4" },
+	Z = { class: "mb-2 text-sm text-gray-600" },
+	ee = { class: "flex flex-row-reverse gap-2" },
+	te = {
+		__name: "FeesPaymentDialog",
+		props: {
+			modelValue: { type: Boolean, required: !1 },
+			student: { type: Object, required: !0 },
+			row: { type: Object, required: !0 },
+		},
+		emits: ["update:modelValue", "success"],
+		setup(B, { emit: E }) {
+			const s = B,
+				P = E;
+			z(() => {
+				const t = document.createElement("script");
+				((t.src = "https://checkout.razorpay.com/v1/checkout.js"),
+					document.body.appendChild(t));
+			});
+			const p = S({
+					url: "education.education.billing.get_payment_options",
+					makeParams(t) {
+						return {
+							doctype: "Sales Invoice",
+							docname: s.row.invoice,
+							phone: e.mobile_number,
+							country: e.country,
+						};
+					},
+				}),
+				v = S({ url: "education.education.billing.handle_payment_success" }),
+				g = S({ url: "education.education.billing.handle_payment_failure" });
+			function V(t) {
+				if (!e.mobile_number || !e.email) {
+					f();
+					return;
+				}
+				p.submit(
+					{},
+					{
+						onSuccess(a) {
+							a.handler = (c) => {
+								x(c, t);
+							};
+							let u = new Razorpay(a);
+							(u.open(),
+								u.on("payment.failed", (c) => R(c)),
+								u.on("payment.success", (c) => x(c, t)));
+						},
+						onError(a) {
+							h(a);
+						},
+					},
+				);
+			}
+			function f() {
+				(e.mobile_number || (n.value = !1),
+					e.email || (i.value = !1),
+					e.mobile_number && !e.email && ((n.value = !0), (i.value = !1)),
+					e.email && !e.mobile_number && ((i.value = !0), (n.value = !1)),
+					e.email && e.mobile_number && ((i.value = !0), (n.value = !0)));
+			}
+			function x(t, a) {
+				v.submit(
+					{ response: t, against_invoice: s.row.invoice, billing_details: e },
+					{
+						onSuccess(u) {
+							(a(), P("success"));
+						},
+						onError(u) {
+							h(u);
+						},
+					},
+				);
+			}
+			function R(t) {
+				g.submit(
+					{ response: t, against_invoice: s.row.invoice, billing_details: e },
+					{
+						onError(a) {
+							h(a);
+						},
+					},
+				);
+			}
+			function h(t) {
+				(console.log(t),
+					q({
+						message: "Something went wrong",
+						icon: "x",
+						iconClasses: "text-red-600",
+					}));
+			}
+			const n = $(!0),
+				i = $(!0),
+				e = M({
+					program: s.row.program || "",
+					student: s.student.student_name || "",
+					amount: s.row.amount || "",
+					id: s.student.name || "",
+					mobile_number: "",
+					email: s.student.student_email_id || "",
+					address_line_1: s.student.address_line_1 || "",
+					address_line_2: s.student.address_line_2 || "",
+					city: s.student.city || "",
+					state: s.student.state || "",
+					country: s.student.country || "",
+					pincode: s.student.pincode || "",
+				}),
+				r = [
+					{
+						section: "Student Details",
+						fields: [
+							{ label: "Student", name: "student", type: "data", readonly: !0 },
+							{ label: "Student", name: "id", type: "data", readonly: !0 },
+							{ label: "Amount", name: "amount", type: "data", readonly: !0 },
+							{ label: "Program", name: "program", type: "data", readonly: !0 },
+							{ label: "Mobile Number", name: "mobile_number", type: "data" },
+							{ label: "Email", name: "email", type: "data" },
+						],
+					},
+					{
+						section: "Student Address",
+						fields: [
+							{ label: "Address Line 1", name: "address_line_1", type: "data" },
+							{ label: "Address Line 2", name: "address_line_2", type: "data" },
+							{ label: "City", name: "city", type: "data" },
+							{ label: "State", name: "state", type: "data" },
+							{ label: "Country", name: "country", type: "data" },
+							{ label: "Pincode", name: "pincode", type: "data" },
+						],
+					},
+				];
+			return (t, a) => {
+				const u = A("Button");
+				return (
+					o(),
+					y("div", null, [
+						C(
+							d(j),
+							{
+								options: {
+									title: "Pay Fees",
+									actions: [{ label: "Save", variant: "solid" }],
+								},
+								modelValue: B.modelValue,
+								"onUpdate:modelValue":
+									a[2] || (a[2] = (c) => P("update:modelValue", c)),
+							},
+							{
+								"body-content": b(() => [
+									w("div", X, [
+										(o(),
+										y(
+											D,
+											null,
+											F(r, (c) =>
+												w("div", { key: c.section }, [
+													w("div", Y, [
+														(o(!0),
+														y(
+															D,
+															null,
+															F(
+																c.fields,
+																(l) => (
+																	o(),
+																	y(
+																		"div",
+																		{
+																			key: l.name,
+																			class: N(
+																				l.hidden &&
+																					"hidden",
+																			),
+																		},
+																		[
+																			w(
+																				"div",
+																				Z,
+																				O(l.label),
+																				1,
+																			),
+																			l.name ===
+																				"mobile_number" ||
+																			l.name === "email"
+																				? (o(),
+																					m(
+																						d(U),
+																						{
+																							key: 0,
+																							type: l.type,
+																							modelValue:
+																								e[
+																									l
+																										.name
+																								],
+																							"onUpdate:modelValue":
+																								(
+																									k,
+																								) =>
+																									(e[
+																										l.name
+																									] =
+																										k),
+																							placeholder:
+																								l.placeholder,
+																							disabled:
+																								l.readonly,
+																							onChange:
+																								a[0] ||
+																								(a[0] =
+																									(
+																										k,
+																									) =>
+																										f()),
+																						},
+																						null,
+																						8,
+																						[
+																							"type",
+																							"modelValue",
+																							"onUpdate:modelValue",
+																							"placeholder",
+																							"disabled",
+																						],
+																					))
+																				: (o(),
+																					m(
+																						d(U),
+																						{
+																							key: 1,
+																							type: l.type,
+																							modelValue:
+																								e[
+																									l
+																										.name
+																								],
+																							"onUpdate:modelValue":
+																								(
+																									k,
+																								) =>
+																									(e[
+																										l.name
+																									] =
+																										k),
+																							placeholder:
+																								l.placeholder,
+																							disabled:
+																								l.readonly,
+																							onChange:
+																								a[1] ||
+																								(a[1] =
+																									(
+																										k,
+																									) =>
+																										f()),
+																						},
+																						null,
+																						8,
+																						[
+																							"type",
+																							"modelValue",
+																							"onUpdate:modelValue",
+																							"placeholder",
+																							"disabled",
+																						],
+																					)),
+																			l.name ===
+																				"mobile_number" &&
+																			!n.value
+																				? (o(),
+																					m(d(I), {
+																						key: 2,
+																						message:
+																							"Mobile number is required",
+																						class: "pt-2",
+																					}))
+																				: _("", !0),
+																			l.name === "email" &&
+																			!i.value
+																				? (o(),
+																					m(d(I), {
+																						key: 3,
+																						message:
+																							"Email is Required",
+																						class: "pt-2",
+																					}))
+																				: _("", !0),
+																		],
+																		2,
+																	)
+																),
+															),
+															128,
+														)),
+													]),
+												]),
+											),
+											64,
+										)),
+									]),
+								]),
+								actions: b(({ close: c }) => [
+									w("div", ee, [
+										C(
+											u,
+											{
+												class: "w-48 h-7",
+												variant: "solid",
+												onClick: (l) => V(c),
+												"icon-left": "external-link",
+												loading: d(p).loading,
+												label: "Proceed to Payment",
+											},
+											null,
+											8,
+											["onClick", "loading"],
+										),
+									]),
+								]),
+								_: 1,
+							},
+							8,
+							["modelValue"],
+						),
+					])
+				);
+			};
+		},
+	},
+	ae = { key: 0, class: "px-5 py-4" },
+	ne = { key: 1 },
+	re = {
+		__name: "Fees",
+		setup(B) {
+			const { getStudentInfo: E } = L();
+			let s = E().value;
+			const P = S({
+					url: "education.education.api.get_student_invoices",
+					params: { student: s.name },
+					onSuccess: (n) => {
+						V = n == null ? void 0 : n.print_format;
+						let i = n == null ? void 0 : n.invoices;
+						((i = i.sort((e, r) => {
+							const t = { Overdue: 0, Unpaid: 1, Paid: 2 },
+								a = t[e.status],
+								u = t[r.status];
+							if (a !== u) return a - u;
+						})),
+							(p.rows = i));
+					},
+					auto: !0,
+				}),
+				p = M({
+					rows: [],
+					columns: [
+						{ label: "Program", key: "program", width: 1 },
+						{ label: "Status", key: "status", width: 1 },
+						{ label: "Payment Date", key: "payment_date", width: 1 },
+						{ label: "Due Date", key: "due_date", width: 1 },
+						{ label: "Amount", key: "amount", width: 1 },
+						{ label: "Invoice", key: "cta", width: 1 },
+					],
+				}),
+				v = $(null),
+				g = $(!1);
+			let V = "Standard";
+			const f = (n) => {
+					let i = `/api/method/frappe.utils.print_format.download_pdf?
 		doctype=${encodeURIComponent("Sales Invoice")}
 		&name=${encodeURIComponent(n.invoice)}
 		&format=${encodeURIComponent(V)}
-	`;window.open(i,"_blank")},x=n=>{v.value=n,g.value=!0},R=()=>{P.reload(),q({title:"Payment successful",icon:"check",iconClasses:"text-green-600"})},h=n=>({Paid:"green",Unpaid:"red",Overdue:"red","Partly Paid":"orange"})[n];return(n,i)=>{const e=A("Button");return p.rows.length>0?(o(),y("div",ae,[p.rows.length>0?(o(),m(d(G),{key:0,columns:p.columns,rows:p.rows,options:{selectable:!1,showTooltip:!1,onRowClick:()=>{}},"row-key":"id"},{default:b(()=>[C(d(T),null,{default:b(()=>[(o(!0),y(D,null,F(p.columns,r=>(o(),m(d(H),{key:r.key,item:r},null,8,["item"]))),128))]),_:1}),(o(!0),y(D,null,F(p.rows,r=>(o(),m(d(J),{key:r.id,row:r},{default:b(({column:t,item:a})=>[C(d(K),{item:a,align:t.align},{default:b(()=>[t.key==="status"?(o(),m(d(Q),{key:0,variant:"subtle",theme:h(r.status)||"gray",size:"md",label:a},null,8,["theme","label"])):_("",!0),t.key==="cta"&&r.status==="Paid"?(o(),m(e,{key:1,onClick:u=>f(r),class:"hover:bg-gray-900 hover:text-white","icon-left":"download",label:"Download Invoice"},null,8,["onClick"])):_("",!0),t.key==="cta"&&r.status!=="Paid"?(o(),m(e,{key:2,onClick:u=>x(r),class:"hover:bg-gray-900 hover:text-white flex flex-column items-center justify-center","icon-left":"credit-card",label:"Pay Now"},null,8,["onClick"])):_("",!0)]),_:2},1032,["item","align"])]),_:2},1032,["row"]))),128))]),_:1},8,["columns","rows"])):_("",!0),v.value?(o(),m(te,{key:1,row:v.value,student:d(s),modelValue:g.value,"onUpdate:modelValue":i[0]||(i[0]=r=>g.value=r),onSuccess:i[1]||(i[1]=r=>R())},null,8,["row","student","modelValue"])):_("",!0)])):(o(),y("div",ne,[C(W,{message:"No Fees found"})]))}}};export{re as default};
+	`;
+					window.open(i, "_blank");
+				},
+				x = (n) => {
+					((v.value = n), (g.value = !0));
+				},
+				R = () => {
+					(P.reload(),
+						q({
+							title: "Payment successful",
+							icon: "check",
+							iconClasses: "text-green-600",
+						}));
+				},
+				h = (n) =>
+					({ Paid: "green", Unpaid: "red", Overdue: "red", "Partly Paid": "orange" })[n];
+			return (n, i) => {
+				const e = A("Button");
+				return p.rows.length > 0
+					? (o(),
+						y("div", ae, [
+							p.rows.length > 0
+								? (o(),
+									m(
+										d(G),
+										{
+											key: 0,
+											columns: p.columns,
+											rows: p.rows,
+											options: {
+												selectable: !1,
+												showTooltip: !1,
+												onRowClick: () => {},
+											},
+											"row-key": "id",
+										},
+										{
+											default: b(() => [
+												C(d(T), null, {
+													default: b(() => [
+														(o(!0),
+														y(
+															D,
+															null,
+															F(
+																p.columns,
+																(r) => (
+																	o(),
+																	m(
+																		d(H),
+																		{ key: r.key, item: r },
+																		null,
+																		8,
+																		["item"],
+																	)
+																),
+															),
+															128,
+														)),
+													]),
+													_: 1,
+												}),
+												(o(!0),
+												y(
+													D,
+													null,
+													F(
+														p.rows,
+														(r) => (
+															o(),
+															m(
+																d(J),
+																{ key: r.id, row: r },
+																{
+																	default: b(
+																		({
+																			column: t,
+																			item: a,
+																		}) => [
+																			C(
+																				d(K),
+																				{
+																					item: a,
+																					align: t.align,
+																				},
+																				{
+																					default: b(
+																						() => [
+																							t.key ===
+																							"status"
+																								? (o(),
+																									m(
+																										d(
+																											Q,
+																										),
+																										{
+																											key: 0,
+																											variant:
+																												"subtle",
+																											theme:
+																												h(
+																													r.status,
+																												) ||
+																												"gray",
+																											size: "md",
+																											label: a,
+																										},
+																										null,
+																										8,
+																										[
+																											"theme",
+																											"label",
+																										],
+																									))
+																								: _(
+																										"",
+																										!0,
+																									),
+																							t.key ===
+																								"cta" &&
+																							r.status ===
+																								"Paid"
+																								? (o(),
+																									m(
+																										e,
+																										{
+																											key: 1,
+																											onClick:
+																												(
+																													u,
+																												) =>
+																													f(
+																														r,
+																													),
+																											class: "hover:bg-gray-900 hover:text-white",
+																											"icon-left":
+																												"download",
+																											label: "Download Invoice",
+																										},
+																										null,
+																										8,
+																										[
+																											"onClick",
+																										],
+																									))
+																								: _(
+																										"",
+																										!0,
+																									),
+																							t.key ===
+																								"cta" &&
+																							r.status !==
+																								"Paid"
+																								? (o(),
+																									m(
+																										e,
+																										{
+																											key: 2,
+																											onClick:
+																												(
+																													u,
+																												) =>
+																													x(
+																														r,
+																													),
+																											class: "hover:bg-gray-900 hover:text-white flex flex-column items-center justify-center",
+																											"icon-left":
+																												"credit-card",
+																											label: "Pay Now",
+																										},
+																										null,
+																										8,
+																										[
+																											"onClick",
+																										],
+																									))
+																								: _(
+																										"",
+																										!0,
+																									),
+																						],
+																					),
+																					_: 2,
+																				},
+																				1032,
+																				["item", "align"],
+																			),
+																		],
+																	),
+																	_: 2,
+																},
+																1032,
+																["row"],
+															)
+														),
+													),
+													128,
+												)),
+											]),
+											_: 1,
+										},
+										8,
+										["columns", "rows"],
+									))
+								: _("", !0),
+							v.value
+								? (o(),
+									m(
+										te,
+										{
+											key: 1,
+											row: v.value,
+											student: d(s),
+											modelValue: g.value,
+											"onUpdate:modelValue":
+												i[0] || (i[0] = (r) => (g.value = r)),
+											onSuccess: i[1] || (i[1] = (r) => R()),
+										},
+										null,
+										8,
+										["row", "student", "modelValue"],
+									))
+								: _("", !0),
+						]))
+					: (o(), y("div", ne, [C(W, { message: "No Fees found" })]));
+			};
+		},
+	};
+export { re as default };

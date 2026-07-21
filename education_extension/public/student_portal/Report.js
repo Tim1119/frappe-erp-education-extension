@@ -1,1 +1,803 @@
-var R=($,C,f)=>new Promise((x,b)=>{var v=r=>{try{i(f.next(r))}catch(w){b(w)}},u=r=>{try{i(f.throw(r))}catch(w){b(w)}},i=r=>r.done?x(r.value):Promise.resolve(r.value).then(v,u);i((f=f.apply($,C)).next())});import{E as J,r as y,q as K,g as T,p as X,o as c,a as m,e as s,f as l,w as d,u as o,_,K as V,h,D as P,F as q,i as H,t as g,b as Q,d as k,n as A,L as W}from"./index.js";const Z={class:"min-h-screen bg-gray-50 px-6 py-8"},ee={class:"mb-8"},te={class:"bg-white rounded-lg p-6 shadow-sm border"},se={class:"flex justify-between items-center"},ae={class:"flex space-x-2"},oe={class:"bg-white rounded-lg shadow-sm border p-6 mb-6"},le={class:"grid grid-cols-1 md:grid-cols-4 gap-4"},re={class:"flex items-end"},ne={key:0,class:"text-center py-12"},ie={key:1,class:"grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"},de={class:"mb-4"},ce={class:"text-lg font-semibold text-gray-900 mb-1"},ue={class:"text-sm text-gray-600"},me={key:0,class:"mb-4"},ge={class:"flex justify-between items-center mb-2"},ve={class:"text-sm font-semibold text-gray-900"},pe={class:"w-full bg-gray-200 rounded-full h-2"},_e={class:"text-right mt-1"},fe={class:"text-xs text-gray-500"},ye={class:"grid grid-cols-3 gap-2 mb-4"},xe={key:0,class:"text-center p-3 bg-gray-50 rounded-lg"},be={class:"text-lg font-semibold text-gray-900"},we={key:1,class:"text-center p-3 bg-gray-50 rounded-lg"},he={class:"text-lg font-semibold text-gray-900"},ke={key:2,class:"text-center p-3 bg-gray-50 rounded-lg"},Ce={class:"flex space-x-2 pt-4 border-t"},Fe={key:2,class:"text-center py-12"},Se={class:"bg-white rounded-lg p-8 shadow-sm border"},Re={class:"text-gray-600 mb-4"},Te={class:"flex items-center justify-between"},Ve={class:"flex items-center"},Ee={class:"text-gray-900"},Pe={__name:"Report",setup($){const C=y(!1),f=y(!1),x=y(""),b=y("success"),v=y([]),u=y(""),i=y(""),r=y(""),w=K({}),U=(a,e)=>{const t=a/e*100;return t>=75?"bg-green-500":t>=50?"bg-yellow-500":"bg-red-500"},Y=T(()=>{const a=[...new Set(v.value.map(e=>e.academic_year))].sort();return[{label:"All Years",value:"",onClick:()=>u.value=""},...a.map(e=>({label:e,value:e,onClick:()=>u.value=e}))]}),z=T(()=>{const a=[...new Set(v.value.map(e=>e.assessment_group))].sort();return[{label:"All Terms",value:"",onClick:()=>i.value=""},...a.map(e=>({label:e,value:e,onClick:()=>i.value=e}))]}),I=T(()=>{const a=[...new Set(v.value.map(e=>e.program).filter(Boolean))].sort();return[{label:"All Programs",value:"",onClick:()=>r.value=""},...a.map(e=>({label:e,value:e,onClick:()=>r.value=e}))]}),j=T(()=>{let a=[...v.value];return u.value&&(a=a.filter(e=>e.academic_year===u.value)),i.value&&(a=a.filter(e=>e.assessment_group===i.value)),r.value&&(a=a.filter(e=>e.program===r.value)),a.sort((e,t)=>e.academic_year!==t.academic_year?t.academic_year.localeCompare(e.academic_year):e.assessment_group.localeCompare(t.assessment_group))}),N=T(()=>u.value||i.value||r.value),O=(a,e="GET",t=null)=>R(this,null,function*(){try{const n={method:e,headers:{"Content-Type":"application/json"}};window.csrf_token?n.headers["X-Frappe-CSRF-Token"]=window.csrf_token:window.frappe&&window.frappe.csrf_token&&(n.headers["X-Frappe-CSRF-Token"]=window.frappe.csrf_token),t&&e!=="GET"&&(n.body=JSON.stringify(t));const F=yield fetch(a,n),S=yield F.text();if(!F.ok)throw new Error(`HTTP ${F.status}: ${S}`);let p;try{p=JSON.parse(S)}catch(Ae){throw new Error(`Invalid JSON response: ${S}`)}if(p.exc_type||p.exception)throw new Error(p.exception||p.exc_type||"Server error");return p}catch(n){throw n}}),M=a=>{if(!a)return!1;const e=a.toLowerCase();return["jss","ss","secondary","high school","senior","junior secondary"].some(n=>e.includes(n))},D=a=>R(this,null,function*(){var e,t;try{const n=yield O("/api/method/education_extension.student_portal_api.get_school_print_format"),F=((e=n.message)==null?void 0:e.primary_print_format)||"Standard",S=((t=n.message)==null?void 0:t.secondary_print_format)||"Standard",p=M(a);return console.log("Program:",a),console.log("Is Secondary:",p),console.log("Primary Format:",F),console.log("Secondary Format:",S),p?S:F}catch(n){return console.error("Error fetching school print format:",n),"Standard"}}),B=()=>R(this,null,function*(){try{C.value=!v.value.length,f.value=!0;const a=yield O("/api/method/education_extension.student_portal_api.get_student_reports_with_program");v.value=a.message||[]}catch(a){E("Error loading reports: "+a.message,"error"),v.value=[]}finally{C.value=!1,f.value=!1}}),L=()=>{u.value="",i.value="",r.value=""},E=(a,e="success")=>{x.value=a,b.value=e,setTimeout(()=>{x.value=""},5e3)},G=a=>R(this,null,function*(){try{w[a.name]=!0;const e=yield D(a.program),t=`/printview?doctype=School%20Term%20Result&name=${encodeURIComponent(a.name)}&format=${encodeURIComponent(e)}&no_letterhead=1`;window.open(t,"_blank"),E("Opening print preview...","success")}catch(e){console.error("Error printing report:",e),E("Error opening print view: "+e.message,"error")}finally{w[a.name]=!1}});return X(()=>{B()}),(a,e)=>(c(),m("div",Z,[s("div",ee,[s("div",te,[s("div",se,[e[5]||(e[5]=s("div",null,[s("h1",{class:"text-3xl font-bold text-gray-900 mb-2"},"My Academic Reports"),s("p",{class:"text-gray-600"},"View and download your term reports")],-1)),s("div",ae,[l(o(h),{onClick:B,loading:f.value,size:"sm",variant:"outline"},{prefix:d(()=>[l(o(_),{name:"refresh-cw",class:"h-4 w-4"})]),default:d(()=>[e[4]||(e[4]=V(" Refresh ",-1))]),_:1},8,["loading"])])])])]),s("div",oe,[e[10]||(e[10]=s("h2",{class:"text-lg font-semibold text-gray-900 mb-4"},"Filter Reports",-1)),s("div",le,[s("div",null,[e[6]||(e[6]=s("label",{class:"block text-sm font-medium text-gray-700 mb-2"},"Class",-1)),l(o(P),{options:I.value,modelValue:r.value,"onUpdate:modelValue":e[0]||(e[0]=t=>r.value=t)},{default:d(({open:t})=>[l(o(h),{label:r.value||"All Classes",class:"w-full justify-between"},{suffix:d(()=>[l(o(_),{name:t?"chevron-up":"chevron-down",class:"h-4 text-gray-600"},null,8,["name"])]),_:2},1032,["label"])]),_:1},8,["options","modelValue"])]),s("div",null,[e[7]||(e[7]=s("label",{class:"block text-sm font-medium text-gray-700 mb-2"},"Academic Year",-1)),l(o(P),{options:Y.value,modelValue:u.value,"onUpdate:modelValue":e[1]||(e[1]=t=>u.value=t)},{default:d(({open:t})=>[l(o(h),{label:u.value||"All Years",class:"w-full justify-between"},{suffix:d(()=>[l(o(_),{name:t?"chevron-up":"chevron-down",class:"h-4 text-gray-600"},null,8,["name"])]),_:2},1032,["label"])]),_:1},8,["options","modelValue"])]),s("div",null,[e[8]||(e[8]=s("label",{class:"block text-sm font-medium text-gray-700 mb-2"},"Term",-1)),l(o(P),{options:z.value,modelValue:i.value,"onUpdate:modelValue":e[2]||(e[2]=t=>i.value=t)},{default:d(({open:t})=>[l(o(h),{label:i.value||"All Terms",class:"w-full justify-between"},{suffix:d(()=>[l(o(_),{name:t?"chevron-up":"chevron-down",class:"h-4 text-gray-600"},null,8,["name"])]),_:2},1032,["label"])]),_:1},8,["options","modelValue"])]),s("div",re,[l(o(h),{onClick:L,class:"w-full",variant:"outline"},{prefix:d(()=>[l(o(_),{name:"x-circle",class:"h-4 w-4"})]),default:d(()=>[e[9]||(e[9]=V(" Clear Filters ",-1))]),_:1})])])]),C.value?(c(),m("div",ne,[...e[11]||(e[11]=[s("div",{class:"animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"},null,-1),s("p",{class:"text-gray-600"},"Loading your reports...",-1)])])):j.value.length>0?(c(),m("div",ie,[(c(!0),m(q,null,H(j.value,t=>(c(),m("div",{key:t.name,class:"bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow"},[s("div",de,[s("h3",ce,g(t.academic_year)+" - "+g(t.assessment_group)+" - "+g(t.program),1),s("p",ue,g(t.academic_term),1)]),t.total_marks_obtained?(c(),m("div",me,[s("div",ge,[e[12]||(e[12]=s("span",{class:"text-sm font-medium text-gray-700"},"Total Score",-1)),s("span",ve,g(t.total_marks_obtained)+"/"+g(t.total_max_marks),1)]),s("div",pe,[s("div",{class:A(["h-2 rounded-full transition-all duration-500",U(t.total_marks_obtained,t.total_max_marks)]),style:W({width:`${t.total_marks_obtained/t.total_max_marks*100}%`})},null,6)]),s("div",_e,[s("span",fe,g(Math.round(t.total_marks_obtained/t.total_max_marks*100))+"% ",1)])])):k("",!0),s("div",ye,[t.term_average?(c(),m("div",xe,[s("div",be,g(t.term_average)+"%",1),e[13]||(e[13]=s("div",{class:"text-xs text-gray-600"},"Average",-1))])):k("",!0),t.overall_grade?(c(),m("div",we,[s("div",he,g(t.overall_grade),1),e[14]||(e[14]=s("div",{class:"text-xs text-gray-600"},"Grade",-1))])):k("",!0),t.class_arm_position?(c(),m("div",ke,[...e[15]||(e[15]=[s("div",{class:"text-sm font-semibold text-gray-900"},"-",-1),s("div",{class:"text-xs text-gray-600"},"Position",-1)])])):k("",!0)]),s("div",Ce,[l(o(h),{onClick:n=>G(t),loading:w[t.name],size:"sm",class:"flex-1"},{prefix:d(()=>[l(o(_),{name:"printer",class:"h-4 w-4"})]),default:d(()=>[e[16]||(e[16]=V(" Print ",-1))]),_:1},8,["onClick","loading"])])]))),128))])):C.value?k("",!0):(c(),m("div",Fe,[s("div",Se,[l(o(_),{name:"file-text",class:"h-12 w-12 text-gray-400 mx-auto mb-4"}),e[18]||(e[18]=s("h3",{class:"text-lg font-medium text-gray-900 mb-2"},"No Reports Found",-1)),s("p",Re,g(N.value?"No reports match your current filters.":"You don't have any reports yet."),1),N.value?(c(),Q(o(h),{key:0,onClick:L,variant:"outline"},{default:d(()=>[...e[17]||(e[17]=[V(" Clear Filters ",-1)])]),_:1})):k("",!0)])])),x.value?(c(),m("div",{key:3,class:A(["fixed bottom-4 right-4 p-4 rounded-lg shadow-lg z-50 max-w-md bg-white border",b.value==="success"?"border-green-200":"border-red-200"])},[s("div",Te,[s("div",Ve,[l(o(_),{name:b.value==="success"?"check-circle":"alert-circle",class:A(["h-5 w-5 mr-2",b.value==="success"?"text-green-600":"text-red-600"])},null,8,["name","class"]),s("span",Ee,g(x.value),1)]),s("button",{onClick:e[3]||(e[3]=t=>x.value=""),class:"ml-4 text-gray-400 hover:text-gray-600"},[l(o(_),{name:"x",class:"h-4 w-4"})])])],2)):k("",!0)]))}};var Ne=J(Pe,[["__scopeId","data-v-dee9816c"]]);export{Ne as default};
+var R = ($, C, f) =>
+	new Promise((x, b) => {
+		var v = (r) => {
+				try {
+					i(f.next(r));
+				} catch (w) {
+					b(w);
+				}
+			},
+			u = (r) => {
+				try {
+					i(f.throw(r));
+				} catch (w) {
+					b(w);
+				}
+			},
+			i = (r) => (r.done ? x(r.value) : Promise.resolve(r.value).then(v, u));
+		i((f = f.apply($, C)).next());
+	});
+import {
+	E as J,
+	r as y,
+	q as K,
+	g as T,
+	p as X,
+	o as c,
+	a as m,
+	e as s,
+	f as l,
+	w as d,
+	u as o,
+	_,
+	K as V,
+	h,
+	D as P,
+	F as q,
+	i as H,
+	t as g,
+	b as Q,
+	d as k,
+	n as A,
+	L as W,
+} from "./index.js";
+const Z = { class: "min-h-screen bg-gray-50 px-6 py-8" },
+	ee = { class: "mb-8" },
+	te = { class: "bg-white rounded-lg p-6 shadow-sm border" },
+	se = { class: "flex justify-between items-center" },
+	ae = { class: "flex space-x-2" },
+	oe = { class: "bg-white rounded-lg shadow-sm border p-6 mb-6" },
+	le = { class: "grid grid-cols-1 md:grid-cols-4 gap-4" },
+	re = { class: "flex items-end" },
+	ne = { key: 0, class: "text-center py-12" },
+	ie = { key: 1, class: "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" },
+	de = { class: "mb-4" },
+	ce = { class: "text-lg font-semibold text-gray-900 mb-1" },
+	ue = { class: "text-sm text-gray-600" },
+	me = { key: 0, class: "mb-4" },
+	ge = { class: "flex justify-between items-center mb-2" },
+	ve = { class: "text-sm font-semibold text-gray-900" },
+	pe = { class: "w-full bg-gray-200 rounded-full h-2" },
+	_e = { class: "text-right mt-1" },
+	fe = { class: "text-xs text-gray-500" },
+	ye = { class: "grid grid-cols-3 gap-2 mb-4" },
+	xe = { key: 0, class: "text-center p-3 bg-gray-50 rounded-lg" },
+	be = { class: "text-lg font-semibold text-gray-900" },
+	we = { key: 1, class: "text-center p-3 bg-gray-50 rounded-lg" },
+	he = { class: "text-lg font-semibold text-gray-900" },
+	ke = { key: 2, class: "text-center p-3 bg-gray-50 rounded-lg" },
+	Ce = { class: "flex space-x-2 pt-4 border-t" },
+	Fe = { key: 2, class: "text-center py-12" },
+	Se = { class: "bg-white rounded-lg p-8 shadow-sm border" },
+	Re = { class: "text-gray-600 mb-4" },
+	Te = { class: "flex items-center justify-between" },
+	Ve = { class: "flex items-center" },
+	Ee = { class: "text-gray-900" },
+	Pe = {
+		__name: "Report",
+		setup($) {
+			const C = y(!1),
+				f = y(!1),
+				x = y(""),
+				b = y("success"),
+				v = y([]),
+				u = y(""),
+				i = y(""),
+				r = y(""),
+				w = K({}),
+				U = (a, e) => {
+					const t = (a / e) * 100;
+					return t >= 75 ? "bg-green-500" : t >= 50 ? "bg-yellow-500" : "bg-red-500";
+				},
+				Y = T(() => {
+					const a = [...new Set(v.value.map((e) => e.academic_year))].sort();
+					return [
+						{ label: "All Years", value: "", onClick: () => (u.value = "") },
+						...a.map((e) => ({ label: e, value: e, onClick: () => (u.value = e) })),
+					];
+				}),
+				z = T(() => {
+					const a = [...new Set(v.value.map((e) => e.assessment_group))].sort();
+					return [
+						{ label: "All Terms", value: "", onClick: () => (i.value = "") },
+						...a.map((e) => ({ label: e, value: e, onClick: () => (i.value = e) })),
+					];
+				}),
+				I = T(() => {
+					const a = [...new Set(v.value.map((e) => e.program).filter(Boolean))].sort();
+					return [
+						{ label: "All Programs", value: "", onClick: () => (r.value = "") },
+						...a.map((e) => ({ label: e, value: e, onClick: () => (r.value = e) })),
+					];
+				}),
+				j = T(() => {
+					let a = [...v.value];
+					return (
+						u.value && (a = a.filter((e) => e.academic_year === u.value)),
+						i.value && (a = a.filter((e) => e.assessment_group === i.value)),
+						r.value && (a = a.filter((e) => e.program === r.value)),
+						a.sort((e, t) =>
+							e.academic_year !== t.academic_year
+								? t.academic_year.localeCompare(e.academic_year)
+								: e.assessment_group.localeCompare(t.assessment_group),
+						)
+					);
+				}),
+				N = T(() => u.value || i.value || r.value),
+				O = (a, e = "GET", t = null) =>
+					R(this, null, function* () {
+						try {
+							const n = {
+								method: e,
+								headers: { "Content-Type": "application/json" },
+							};
+							(window.csrf_token
+								? (n.headers["X-Frappe-CSRF-Token"] = window.csrf_token)
+								: window.frappe &&
+									window.frappe.csrf_token &&
+									(n.headers["X-Frappe-CSRF-Token"] = window.frappe.csrf_token),
+								t && e !== "GET" && (n.body = JSON.stringify(t)));
+							const F = yield fetch(a, n),
+								S = yield F.text();
+							if (!F.ok) throw new Error(`HTTP ${F.status}: ${S}`);
+							let p;
+							try {
+								p = JSON.parse(S);
+							} catch (Ae) {
+								throw new Error(`Invalid JSON response: ${S}`);
+							}
+							if (p.exc_type || p.exception)
+								throw new Error(p.exception || p.exc_type || "Server error");
+							return p;
+						} catch (n) {
+							throw n;
+						}
+					}),
+				M = (a) => {
+					if (!a) return !1;
+					const e = a.toLowerCase();
+					return [
+						"jss",
+						"ss",
+						"secondary",
+						"high school",
+						"senior",
+						"junior secondary",
+					].some((n) => e.includes(n));
+				},
+				D = (a) =>
+					R(this, null, function* () {
+						var e, t;
+						try {
+							const n = yield O(
+									"/api/method/education_extension.student_portal_api.get_school_print_format",
+								),
+								F =
+									((e = n.message) == null ? void 0 : e.primary_print_format) ||
+									"Standard",
+								S =
+									((t = n.message) == null
+										? void 0
+										: t.secondary_print_format) || "Standard",
+								p = M(a);
+							return (
+								console.log("Program:", a),
+								console.log("Is Secondary:", p),
+								console.log("Primary Format:", F),
+								console.log("Secondary Format:", S),
+								p ? S : F
+							);
+						} catch (n) {
+							return (
+								console.error("Error fetching school print format:", n),
+								"Standard"
+							);
+						}
+					}),
+				B = () =>
+					R(this, null, function* () {
+						try {
+							((C.value = !v.value.length), (f.value = !0));
+							const a = yield O(
+								"/api/method/education_extension.student_portal_api.get_student_reports_with_program",
+							);
+							v.value = a.message || [];
+						} catch (a) {
+							(E("Error loading reports: " + a.message, "error"), (v.value = []));
+						} finally {
+							((C.value = !1), (f.value = !1));
+						}
+					}),
+				L = () => {
+					((u.value = ""), (i.value = ""), (r.value = ""));
+				},
+				E = (a, e = "success") => {
+					((x.value = a),
+						(b.value = e),
+						setTimeout(() => {
+							x.value = "";
+						}, 5e3));
+				},
+				G = (a) =>
+					R(this, null, function* () {
+						try {
+							w[a.name] = !0;
+							const e = yield D(a.program),
+								t = `/printview?doctype=School%20Term%20Result&name=${encodeURIComponent(a.name)}&format=${encodeURIComponent(e)}&no_letterhead=1`;
+							(window.open(t, "_blank"), E("Opening print preview...", "success"));
+						} catch (e) {
+							(console.error("Error printing report:", e),
+								E("Error opening print view: " + e.message, "error"));
+						} finally {
+							w[a.name] = !1;
+						}
+					});
+			return (
+				X(() => {
+					B();
+				}),
+				(a, e) => (
+					c(),
+					m("div", Z, [
+						s("div", ee, [
+							s("div", te, [
+								s("div", se, [
+									e[5] ||
+										(e[5] = s(
+											"div",
+											null,
+											[
+												s(
+													"h1",
+													{
+														class: "text-3xl font-bold text-gray-900 mb-2",
+													},
+													"My Academic Reports",
+												),
+												s(
+													"p",
+													{ class: "text-gray-600" },
+													"View and download your term reports",
+												),
+											],
+											-1,
+										)),
+									s("div", ae, [
+										l(
+											o(h),
+											{
+												onClick: B,
+												loading: f.value,
+												size: "sm",
+												variant: "outline",
+											},
+											{
+												prefix: d(() => [
+													l(o(_), {
+														name: "refresh-cw",
+														class: "h-4 w-4",
+													}),
+												]),
+												default: d(() => [
+													e[4] || (e[4] = V(" Refresh ", -1)),
+												]),
+												_: 1,
+											},
+											8,
+											["loading"],
+										),
+									]),
+								]),
+							]),
+						]),
+						s("div", oe, [
+							e[10] ||
+								(e[10] = s(
+									"h2",
+									{ class: "text-lg font-semibold text-gray-900 mb-4" },
+									"Filter Reports",
+									-1,
+								)),
+							s("div", le, [
+								s("div", null, [
+									e[6] ||
+										(e[6] = s(
+											"label",
+											{
+												class: "block text-sm font-medium text-gray-700 mb-2",
+											},
+											"Class",
+											-1,
+										)),
+									l(
+										o(P),
+										{
+											options: I.value,
+											modelValue: r.value,
+											"onUpdate:modelValue":
+												e[0] || (e[0] = (t) => (r.value = t)),
+										},
+										{
+											default: d(({ open: t }) => [
+												l(
+													o(h),
+													{
+														label: r.value || "All Classes",
+														class: "w-full justify-between",
+													},
+													{
+														suffix: d(() => [
+															l(
+																o(_),
+																{
+																	name: t
+																		? "chevron-up"
+																		: "chevron-down",
+																	class: "h-4 text-gray-600",
+																},
+																null,
+																8,
+																["name"],
+															),
+														]),
+														_: 2,
+													},
+													1032,
+													["label"],
+												),
+											]),
+											_: 1,
+										},
+										8,
+										["options", "modelValue"],
+									),
+								]),
+								s("div", null, [
+									e[7] ||
+										(e[7] = s(
+											"label",
+											{
+												class: "block text-sm font-medium text-gray-700 mb-2",
+											},
+											"Academic Year",
+											-1,
+										)),
+									l(
+										o(P),
+										{
+											options: Y.value,
+											modelValue: u.value,
+											"onUpdate:modelValue":
+												e[1] || (e[1] = (t) => (u.value = t)),
+										},
+										{
+											default: d(({ open: t }) => [
+												l(
+													o(h),
+													{
+														label: u.value || "All Years",
+														class: "w-full justify-between",
+													},
+													{
+														suffix: d(() => [
+															l(
+																o(_),
+																{
+																	name: t
+																		? "chevron-up"
+																		: "chevron-down",
+																	class: "h-4 text-gray-600",
+																},
+																null,
+																8,
+																["name"],
+															),
+														]),
+														_: 2,
+													},
+													1032,
+													["label"],
+												),
+											]),
+											_: 1,
+										},
+										8,
+										["options", "modelValue"],
+									),
+								]),
+								s("div", null, [
+									e[8] ||
+										(e[8] = s(
+											"label",
+											{
+												class: "block text-sm font-medium text-gray-700 mb-2",
+											},
+											"Term",
+											-1,
+										)),
+									l(
+										o(P),
+										{
+											options: z.value,
+											modelValue: i.value,
+											"onUpdate:modelValue":
+												e[2] || (e[2] = (t) => (i.value = t)),
+										},
+										{
+											default: d(({ open: t }) => [
+												l(
+													o(h),
+													{
+														label: i.value || "All Terms",
+														class: "w-full justify-between",
+													},
+													{
+														suffix: d(() => [
+															l(
+																o(_),
+																{
+																	name: t
+																		? "chevron-up"
+																		: "chevron-down",
+																	class: "h-4 text-gray-600",
+																},
+																null,
+																8,
+																["name"],
+															),
+														]),
+														_: 2,
+													},
+													1032,
+													["label"],
+												),
+											]),
+											_: 1,
+										},
+										8,
+										["options", "modelValue"],
+									),
+								]),
+								s("div", re, [
+									l(
+										o(h),
+										{ onClick: L, class: "w-full", variant: "outline" },
+										{
+											prefix: d(() => [
+												l(o(_), { name: "x-circle", class: "h-4 w-4" }),
+											]),
+											default: d(() => [
+												e[9] || (e[9] = V(" Clear Filters ", -1)),
+											]),
+											_: 1,
+										},
+									),
+								]),
+							]),
+						]),
+						C.value
+							? (c(),
+								m("div", ne, [
+									...(e[11] ||
+										(e[11] = [
+											s(
+												"div",
+												{
+													class: "animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4",
+												},
+												null,
+												-1,
+											),
+											s(
+												"p",
+												{ class: "text-gray-600" },
+												"Loading your reports...",
+												-1,
+											),
+										])),
+								]))
+							: j.value.length > 0
+								? (c(),
+									m("div", ie, [
+										(c(!0),
+										m(
+											q,
+											null,
+											H(
+												j.value,
+												(t) => (
+													c(),
+													m(
+														"div",
+														{
+															key: t.name,
+															class: "bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow",
+														},
+														[
+															s("div", de, [
+																s(
+																	"h3",
+																	ce,
+																	g(t.academic_year) +
+																		" - " +
+																		g(t.assessment_group) +
+																		" - " +
+																		g(t.program),
+																	1,
+																),
+																s("p", ue, g(t.academic_term), 1),
+															]),
+															t.total_marks_obtained
+																? (c(),
+																	m("div", me, [
+																		s("div", ge, [
+																			e[12] ||
+																				(e[12] = s(
+																					"span",
+																					{
+																						class: "text-sm font-medium text-gray-700",
+																					},
+																					"Total Score",
+																					-1,
+																				)),
+																			s(
+																				"span",
+																				ve,
+																				g(
+																					t.total_marks_obtained,
+																				) +
+																					"/" +
+																					g(
+																						t.total_max_marks,
+																					),
+																				1,
+																			),
+																		]),
+																		s("div", pe, [
+																			s(
+																				"div",
+																				{
+																					class: A([
+																						"h-2 rounded-full transition-all duration-500",
+																						U(
+																							t.total_marks_obtained,
+																							t.total_max_marks,
+																						),
+																					]),
+																					style: W({
+																						width: `${(t.total_marks_obtained / t.total_max_marks) * 100}%`,
+																					}),
+																				},
+																				null,
+																				6,
+																			),
+																		]),
+																		s("div", _e, [
+																			s(
+																				"span",
+																				fe,
+																				g(
+																					Math.round(
+																						(t.total_marks_obtained /
+																							t.total_max_marks) *
+																							100,
+																					),
+																				) + "% ",
+																				1,
+																			),
+																		]),
+																	]))
+																: k("", !0),
+															s("div", ye, [
+																t.term_average
+																	? (c(),
+																		m("div", xe, [
+																			s(
+																				"div",
+																				be,
+																				g(t.term_average) +
+																					"%",
+																				1,
+																			),
+																			e[13] ||
+																				(e[13] = s(
+																					"div",
+																					{
+																						class: "text-xs text-gray-600",
+																					},
+																					"Average",
+																					-1,
+																				)),
+																		]))
+																	: k("", !0),
+																t.overall_grade
+																	? (c(),
+																		m("div", we, [
+																			s(
+																				"div",
+																				he,
+																				g(t.overall_grade),
+																				1,
+																			),
+																			e[14] ||
+																				(e[14] = s(
+																					"div",
+																					{
+																						class: "text-xs text-gray-600",
+																					},
+																					"Grade",
+																					-1,
+																				)),
+																		]))
+																	: k("", !0),
+																t.class_arm_position
+																	? (c(),
+																		m("div", ke, [
+																			...(e[15] ||
+																				(e[15] = [
+																					s(
+																						"div",
+																						{
+																							class: "text-sm font-semibold text-gray-900",
+																						},
+																						"-",
+																						-1,
+																					),
+																					s(
+																						"div",
+																						{
+																							class: "text-xs text-gray-600",
+																						},
+																						"Position",
+																						-1,
+																					),
+																				])),
+																		]))
+																	: k("", !0),
+															]),
+															s("div", Ce, [
+																l(
+																	o(h),
+																	{
+																		onClick: (n) => G(t),
+																		loading: w[t.name],
+																		size: "sm",
+																		class: "flex-1",
+																	},
+																	{
+																		prefix: d(() => [
+																			l(o(_), {
+																				name: "printer",
+																				class: "h-4 w-4",
+																			}),
+																		]),
+																		default: d(() => [
+																			e[16] ||
+																				(e[16] = V(
+																					" Print ",
+																					-1,
+																				)),
+																		]),
+																		_: 1,
+																	},
+																	8,
+																	["onClick", "loading"],
+																),
+															]),
+														],
+													)
+												),
+											),
+											128,
+										)),
+									]))
+								: C.value
+									? k("", !0)
+									: (c(),
+										m("div", Fe, [
+											s("div", Se, [
+												l(o(_), {
+													name: "file-text",
+													class: "h-12 w-12 text-gray-400 mx-auto mb-4",
+												}),
+												e[18] ||
+													(e[18] = s(
+														"h3",
+														{
+															class: "text-lg font-medium text-gray-900 mb-2",
+														},
+														"No Reports Found",
+														-1,
+													)),
+												s(
+													"p",
+													Re,
+													g(
+														N.value
+															? "No reports match your current filters."
+															: "You don't have any reports yet.",
+													),
+													1,
+												),
+												N.value
+													? (c(),
+														Q(
+															o(h),
+															{
+																key: 0,
+																onClick: L,
+																variant: "outline",
+															},
+															{
+																default: d(() => [
+																	...(e[17] ||
+																		(e[17] = [
+																			V(
+																				" Clear Filters ",
+																				-1,
+																			),
+																		])),
+																]),
+																_: 1,
+															},
+														))
+													: k("", !0),
+											]),
+										])),
+						x.value
+							? (c(),
+								m(
+									"div",
+									{
+										key: 3,
+										class: A([
+											"fixed bottom-4 right-4 p-4 rounded-lg shadow-lg z-50 max-w-md bg-white border",
+											b.value === "success"
+												? "border-green-200"
+												: "border-red-200",
+										]),
+									},
+									[
+										s("div", Te, [
+											s("div", Ve, [
+												l(
+													o(_),
+													{
+														name:
+															b.value === "success"
+																? "check-circle"
+																: "alert-circle",
+														class: A([
+															"h-5 w-5 mr-2",
+															b.value === "success"
+																? "text-green-600"
+																: "text-red-600",
+														]),
+													},
+													null,
+													8,
+													["name", "class"],
+												),
+												s("span", Ee, g(x.value), 1),
+											]),
+											s(
+												"button",
+												{
+													onClick:
+														e[3] || (e[3] = (t) => (x.value = "")),
+													class: "ml-4 text-gray-400 hover:text-gray-600",
+												},
+												[l(o(_), { name: "x", class: "h-4 w-4" })],
+											),
+										]),
+									],
+									2,
+								))
+							: k("", !0),
+					])
+				)
+			);
+		},
+	};
+var Ne = J(Pe, [["__scopeId", "data-v-dee9816c"]]);
+export { Ne as default };
