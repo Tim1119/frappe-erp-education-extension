@@ -16,13 +16,18 @@ import AttendancePage from "./pages/AttendancePage";
 import AssessmentsPage from "./pages/AssessmentsPage";
 import ResultsPage from "./pages/ResultsPage";
 import SchedulePage from "./pages/SchedulePage";
-import TeachersPage from "./pages/TeachersPage";
+
+import TeachersPage from "./pages/teachers/TeachersPage";
+import TeacherFormPage from "./pages/teachers/TeacherFormPage";
+import TeacherProfilePage from "./pages/teachers/TeacherProfilePage";
+
 import GuardiansPage from "./pages/GuardiansPage";
 import FeesPage from "./pages/FeesPage";
 import HrPage from "./pages/HrPage";
 import ReportsPage from "./pages/ReportsPage";
 import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
+
 
 function LoadingScreen() {
   return (
@@ -95,12 +100,22 @@ export default function App() {
         <Route path="class-arms/new" element={<ClassArmFormPage />} />
         <Route path="class-arms/:id/edit" element={<ClassArmFormPage />} />
         <Route path="class-arms/:id" element={<ClassArmProfilePage />} />
+        
 
         <Route path="attendance" element={<AttendancePage />} />
         <Route path="assessments" element={<AssessmentsPage />} />
         <Route path="results" element={<ResultsPage />} />
         <Route path="schedule" element={<SchedulePage />} />
+
+
+        {/* ----------teachers -------- */}
+        {/* <Route path="teachers" element={<TeachersPage />} /> */}
         <Route path="teachers" element={<TeachersPage />} />
+      <Route path="teachers/new" element={<TeacherFormPage />} />
+      <Route path="teachers/:id" element={<TeacherProfilePage />} />
+      <Route path="teachers/:id/edit" element={<TeacherFormPage />} />
+
+
         <Route path="guardians" element={<GuardiansPage />} />
         <Route path="fees" element={<FeesPage />} />
         <Route path="hr" element={<HrPage />} />
