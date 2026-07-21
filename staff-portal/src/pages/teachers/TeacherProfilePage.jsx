@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 
 import { PageHeader } from "../../components/ui/Primitives.jsx";
 import TeacherDetails from "./components/TeacherDetails.jsx";
+import ConfirmModal from "../../components/modals/ConfirmModal.jsx";
 
 import { getTeacher, deleteTeacher } from "../../services/teacherService.js";
 import { getErrorMessage } from "../../utils/errors.js";
@@ -14,6 +15,7 @@ export default function TeacherProfilePage() {
 
   const [teacher, setTeacher] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     async function loadTeacher() {
@@ -35,11 +37,10 @@ export default function TeacherProfilePage() {
   }, [id]);
 
   async function handleDelete() {
-    if (!window.confirm(`Delete "${teacher?.instructor_name}"?`)) return;
-    
     try {
       await deleteTeacher(id);
-      toast.success("Teacher deleted");
+      toast.success("Teacher deleted successfully");
+      setDeleteModalOpen(false);
       navigate("/dashboard/teachers");
     } catch (err) {
       toast.error(getErrorMessage(err));
@@ -69,7 +70,7 @@ export default function TeacherProfilePage() {
             </button>
             <button
               className="btn btn-danger"
-              onClick={handleDelete}
+              onClick={() => setDeleteModalOpen(true)}
             >
               Delete
             </button>
@@ -80,6 +81,16 @@ export default function TeacherProfilePage() {
       <div className="panel">
         <TeacherDetails teacher={teacher} />
       </div>
+
+      <ConfirmModal
+        open={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+        title={`Delete ${teacher.instructor_name}?`}
+        message="This action cannot be undone. All data associated with this teacher will be permanently removed."
+        confirmLabel="Delete"
+        variant="danger"
+      />
     </>
   );
 }
