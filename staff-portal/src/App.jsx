@@ -21,7 +21,12 @@ import TeachersPage from "./pages/teachers/TeachersPage";
 import TeacherFormPage from "./pages/teachers/TeacherFormPage";
 import TeacherProfilePage from "./pages/teachers/TeacherProfilePage";
 
-import GuardiansPage from "./pages/GuardiansPage";
+import GuardiansPage from "./pages/guardian/GuardiansPage";
+import GuardianFormPage from "./pages/guardian/GuardianFormPage";
+import GuardianProfilePage from "./pages/guardian/GuardianProfilePage";
+
+
+
 import FeesPage from "./pages/FeesPage";
 import HrPage from "./pages/HrPage";
 import ReportsPage from "./pages/ReportsPage";
@@ -116,7 +121,15 @@ export default function App() {
       <Route path="teachers/:id/edit" element={<TeacherFormPage />} />
 
 
+        {/* <Route path="guardians" element={<GuardiansPage />} /> */}
+
+        {/* ------- guardians --------- */}
         <Route path="guardians" element={<GuardiansPage />} />
+        <Route path="guardians/new" element={<GuardianFormPage />} />
+        <Route path="guardians/:id/edit" element={<GuardianFormPage />} />
+        <Route path="guardians/:id" element={<GuardianProfilePage />} />
+
+
         <Route path="fees" element={<FeesPage />} />
         <Route path="hr" element={<HrPage />} />
         <Route path="reports" element={<ReportsPage />} />
