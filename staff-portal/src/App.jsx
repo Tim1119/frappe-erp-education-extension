@@ -26,8 +26,19 @@ import GuardianFormPage from "./pages/guardian/GuardianFormPage";
 import GuardianProfilePage from "./pages/guardian/GuardianProfilePage";
 
 
+import FeeCategoryPage from "./pages/fee-category/FeeCategoryPage";
+import FeeCategoryFormPage from "./pages/fee-category/FeeCategoryFormPage";
+import FeeCategoryProfilePage from "./pages/fee-category/FeeCategoryProfilePage";
 
-import FeesPage from "./pages/FeesPage";
+import FeeStructurePage from "./pages/fee-structure/FeeStructurePage";
+import FeeStructureFormPage from "./pages/fee-structure/FeeStructureFormPage";
+import FeeStructureProfilePage from "./pages/fee-structure/FeeStructureProfilePage";
+
+
+import FeeSchedulePage from "./pages/fee-schedule/FeeSchedulePage";
+import FeeScheduleFormPage from "./pages/fee-schedule/FeeScheduleFormPage";
+import FeeScheduleProfilePage from "./pages/fee-schedule/FeeScheduleProfilePage";
+
 import HrPage from "./pages/HrPage";
 import ReportsPage from "./pages/ReportsPage";
 import SettingsPage from "./pages/SettingsPage";
@@ -116,12 +127,30 @@ export default function App() {
         {/* ----------teachers -------- */}
         {/* <Route path="teachers" element={<TeachersPage />} /> */}
         <Route path="teachers" element={<TeachersPage />} />
-      <Route path="teachers/new" element={<TeacherFormPage />} />
-      <Route path="teachers/:id" element={<TeacherProfilePage />} />
-      <Route path="teachers/:id/edit" element={<TeacherFormPage />} />
+        <Route path="teachers/new" element={<TeacherFormPage />} />
+        <Route path="teachers/:id" element={<TeacherProfilePage />} />
+        <Route path="teachers/:id/edit" element={<TeacherFormPage />} />
 
+        {/* -------- fee-category ------------- */}
+        <Route path="fee-category" element={<FeeCategoryPage />} />
+        <Route path="fee-category/new" element={<FeeCategoryFormPage />} />
+        <Route path="fee-category/:id/edit" element={<FeeCategoryFormPage />} />
+        <Route path="fee-category/:id" element={<FeeCategoryProfilePage />} />
 
-        {/* <Route path="guardians" element={<GuardiansPage />} /> */}
+        {/* -------- fee-category ------------- */}
+
+        <Route path="fee-structure" element={<FeeStructurePage />} />
+        <Route path="fee-structure/new" element={<FeeStructureFormPage />} />
+        <Route path="fee-structure/:id/edit" element={<FeeStructureFormPage />} />
+        <Route path="fee-structure/:id" element={<FeeStructureProfilePage />} />
+
+        {/* ------- fee schedule --------- */}
+        <Route path="fees" element={<FeeSchedulePage />} />
+        <Route path="fee-schedule" element={<FeeSchedulePage />} />
+        <Route path="fee-schedule/new" element={<FeeScheduleFormPage />} />
+        <Route path="fee-schedule/:id/edit" element={<FeeScheduleFormPage />} />
+        <Route path="fee-schedule/:id" element={<FeeScheduleProfilePage />} />
+        
 
         {/* ------- guardians --------- */}
         <Route path="guardians" element={<GuardiansPage />} />
@@ -130,7 +159,6 @@ export default function App() {
         <Route path="guardians/:id" element={<GuardianProfilePage />} />
 
 
-        <Route path="fees" element={<FeesPage />} />
         <Route path="hr" element={<HrPage />} />
         <Route path="reports" element={<ReportsPage />} />
         <Route path="settings" element={<SettingsPage />} />

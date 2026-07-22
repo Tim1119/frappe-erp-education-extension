@@ -1,0 +1,255 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Eye, Pencil, MoreHorizontal, Trash2, Plus, CheckCircle, XCircle, Clock } from "lucide-react";
+
+import {
+  PageHeader,
+  EmptyState,
+} from "../../components/ui/Primitives.jsx";
+
+import Toolbar from "../../components/shared/Toolbar.jsx";
+import Pager from "../../components/shared/Pager.jsx";
+import ConfirmModal from "../../components/modals/ConfirmModal.jsx";
+
+import { usePagination } from "../../hooks.js";
+import { getErrorMessage } from "../../utils/errors.js";
+
+import {
+  getFeeSchedules,
+  deleteFeeSchedule,
+} from "../../services/feeScheduleService.js";
+
+// Status badge component
+function StatusBadge({ status }) {
+  const statusMap = {
+    "Draft": { label: "Draft", color: "var(--ink-3)", bg: "var(--surface-2)" },
+    "Cancelled": { label: "Cancelled", color: "var(--danger)", bg: "var(--danger-soft)" },
+    "Invoice Pending": { label: "Invoice Pending", color: "var(--warning)", bg: "var(--warning-soft)" },
+    "Order Pending": { label: "Order Pending", color: "var(--warning)", bg: "var(--warning-soft)" },
+    "In Process": { label: "In Process", color: "var(--info)", bg: "var(--info-soft)" },
+    "Invoice Created": { label: "Invoice Created", color: "var(--success)", bg: "var(--success-soft)" },
+    "Order Created": { label: "Order Created", color: "var(--success)", bg: "var(--success-soft)" },
+    "Failed": { label: "Failed", color: "var(--danger)", bg: "var(--danger-soft)" },
+  };
+  
+  const s = statusMap[status] || statusMap["Draft"];
+  
+  return (
+    <span style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "4px",
+      padding: "2px 10px",
+      borderRadius: "12px",
+      fontSize: "12px",
+      fontWeight: 500,
+      backgroundColor: s.bg,
+      color: s.color,
+    }}>
+      {s.label}
+    </span>
+  );
+}
+
+export default function FeeSchedulePage() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const feeStructureFilter = searchParams.get('fee_structure') || '';
+
+  const { page, setPage } = usePagination(1);
+
+  const [items, setItems] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+
+  const [menuId, setMenuId] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+
+  async function loadItems() {
+    try {
+      setLoading(true);
+      const result = await getFeeSchedules({
+        page,
+        search,
+        fee_structure: feeStructureFilter,
+        status: statusFilter,
+      });
+      setItems(result.rows || []);
+      setTotalCount(result.count || 0);
+    } catch (err) {
+      console.error("Error loading fee schedules:", err);
+      toast.error(getErrorMessage(err));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadItems();
+  }, [page, search, statusFilter, feeStructureFilter]);
+
+  async function confirmDelete() {
+    try {
+      await deleteFeeSchedule(deleteTarget.name);
+      toast.success("Fee schedule deleted");
+      setDeleteTarget(null);
+      loadItems();
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    }
+  }
+
+  const subText = feeStructureFilter 
+    ? `Fee schedules for structure: ${feeStructureFilter}` 
+    : `${totalCount} fee schedules`;
+
+  return (
+    <>
+      <PageHeader
+        eyebrow="Fees"
+        title="Fee Schedules"
+        sub={loading ? "Loading..." : subText}
+        button={
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate("/dashboard/fee-schedule/new")}
+          >
+            <Plus size={15} />
+            Add Fee Schedule
+          </button>
+        }
+      />
+
+      <Toolbar
+        search={search}
+        onSearch={setSearch}
+        searchProps={{ style: { flex: "0 0 280px" } }}
+        filters={[
+          {
+            key: "status",
+            label: "Status",
+            value: statusFilter,
+            onChange: setStatusFilter,
+            options: ["Draft", "Cancelled", "Invoice Pending", "Order Pending", "In Process", "Invoice Created", "Order Created", "Failed"],
+          },
+        ]}
+      />
+
+      <div className="panel">
+        <div style={{ overflowX: "auto" }}>
+          <table className="tbl">
+            <thead>
+              <tr>
+                <th>Fee Schedule</th>
+                <th>Fee Structure</th>
+                <th>Class</th>
+                <th>Academic Year</th>
+                <th>Due Date</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <tr key={item.name}>
+                  <td>
+                    <div style={{ fontWeight: 550 }}>{item.name}</div>
+                  </td>
+                  <td className="muted2" style={{ fontSize: 13 }}>
+                    {item.fee_structure || "—"}
+                  </td>
+                  <td className="muted2" style={{ fontSize: 13 }}>
+                    {item.program || "—"}
+                  </td>
+                  <td className="muted2" style={{ fontSize: 13 }}>
+                    {item.academic_year || "—"}
+                  </td>
+                  <td className="muted2" style={{ fontSize: 13 }}>
+                    {item.due_date || "—"}
+                  </td>
+                  <td className="tnum" style={{ fontWeight: 600 }}>
+                    {item.total_amount ? `₦${item.total_amount.toLocaleString()}` : "—"}
+                  </td>
+                  <td>
+                    <StatusBadge status={item.status || "Draft"} />
+                  </td>
+                  <td style={{ position: "relative" }}>
+                    <button
+                      className="iconbtn"
+                      onClick={() =>
+                        setMenuId(menuId === item.name ? null : item.name)
+                      }
+                    >
+                      <MoreHorizontal size={16} />
+                    </button>
+
+                    {menuId === item.name && (
+                      <div
+                        className="rowmenu"
+                        style={{ right: 0, top: 34 }}
+                      >
+                        <button
+                          onClick={() =>
+                            navigate(`/dashboard/fee-schedule/${item.name}`)
+                          }
+                        >
+                          <Eye size={16} />
+                          View
+                        </button>
+
+                        {item.docstatus === 0 && (
+                          <button
+                            onClick={() =>
+                              navigate(`/dashboard/fee-schedule/${item.name}/edit`)
+                            }
+                          >
+                            <Pencil size={16} />
+                            Edit
+                          </button>
+                        )}
+
+                        <div className="divider" style={{ margin: "5px 0" }} />
+
+                        {(item.docstatus === 0 || item.docstatus === 2) && (
+                          <button
+                            className="danger"
+                            onClick={() => {
+                              setMenuId(null);
+                              setDeleteTarget(item);
+                            }}
+                          >
+                            <Trash2 size={16} />
+                            Delete
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {!loading && items.length === 0 && (
+            <EmptyState title="No fee schedules found" />
+          )}
+          <Pager count={totalCount} page={page} setPage={setPage} pageSize={20} />
+        </div>
+      </div>
+
+      <ConfirmModal
+        open={Boolean(deleteTarget)}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={confirmDelete}
+        title={`Delete ${deleteTarget?.name}?`}
+        message="This action cannot be undone."
+        confirmLabel="Delete"
+        variant="danger"
+      />
+    </>
+  );
+}
