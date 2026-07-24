@@ -136,6 +136,7 @@ import {
 	BarChart3,
 	Settings,
 	FileText,
+	BookOpen,
 	Tag,
 } from "lucide-react";
 
@@ -193,6 +194,7 @@ export const navigation = {
 				["students", "Students", GraduationCap],
 				["classes", "Classes", GraduationCap],
 				["class-arms", "Class Arms", Users2],
+				["subjects", "Subjects", BookOpen],
 				["attendance", "Attendance", CalendarCheck],
 				["assessments", "Assessments", ClipboardList],
 				["results", "School Term Results", Award],
@@ -237,7 +239,8 @@ export function pathFor(key) {
   const map = {
     dashboard: "/dashboard",
     students: "/dashboard/students",
-    classes: "/dashboard/classes",  // ADD THIS
+    classes: "/dashboard/classes", 
+	subjects: "/dashboard/subjects",
     "class-arms": "/dashboard/class-arms",
     attendance: "/dashboard/attendance",
     assessments: "/dashboard/assessments",

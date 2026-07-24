@@ -17,6 +17,10 @@ import ClassArmsPage from "./pages/class-arms/ClassArmsPage";
 import ClassArmFormPage from "./pages/class-arms/ClassArmFormPage";
 import ClassArmProfilePage from "./pages/class-arms/ClassArmProfilePage";
 
+import SubjectsPage from "./pages/subject/SubjectsPage";
+import SubjectFormPage from "./pages/subject/SubjectFormPage";
+import SubjectProfilePage from "./pages/subject/SubjectProfilePage";
+
 import AttendancePage from "./pages/AttendancePage";
 import AssessmentsPage from "./pages/AssessmentsPage";
 import ResultsPage from "./pages/ResultsPage";
@@ -129,6 +133,11 @@ export default function App() {
         <Route path="class-arms/:id/edit" element={<ClassArmFormPage />} />
         <Route path="class-arms/:id" element={<ClassArmProfilePage />} />
         
+        {/* ------- class arms --------  */}
+        <Route path="subjects" element={<SubjectsPage />} />
+        <Route path="subjects/new" element={<SubjectFormPage />} />
+        <Route path="subjects/:id/edit" element={<SubjectFormPage />} />
+        <Route path="subjects/:id" element={<SubjectProfilePage />} />
 
         <Route path="attendance" element={<AttendancePage />} />
         <Route path="assessments" element={<AssessmentsPage />} />
