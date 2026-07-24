@@ -21,10 +21,7 @@ import SubjectsPage from "./pages/subject/SubjectsPage";
 import SubjectFormPage from "./pages/subject/SubjectFormPage";
 import SubjectProfilePage from "./pages/subject/SubjectProfilePage";
 
-import AttendancePage from "./pages/AttendancePage";
-import AssessmentsPage from "./pages/AssessmentsPage";
-import ResultsPage from "./pages/ResultsPage";
-import SchedulePage from "./pages/SchedulePage";
+
 
 import TeachersPage from "./pages/teachers/TeachersPage";
 import TeacherFormPage from "./pages/teachers/TeacherFormPage";
@@ -47,6 +44,16 @@ import FeeStructureProfilePage from "./pages/fee-structure/FeeStructureProfilePa
 import FeeSchedulePage from "./pages/fee-schedule/FeeSchedulePage";
 import FeeScheduleFormPage from "./pages/fee-schedule/FeeScheduleFormPage";
 import FeeScheduleProfilePage from "./pages/fee-schedule/FeeScheduleProfilePage";
+
+import ArticlesPage from "./pages/article/ArticlesPage";
+import ArticleFormPage from "./pages/article/ArticleFormPage";
+import ArticleProfilePage from "./pages/article/ArticleProfilePage";
+
+
+import AttendancePage from "./pages/AttendancePage";
+import AssessmentsPage from "./pages/AssessmentsPage";
+import ResultsPage from "./pages/ResultsPage";
+import SchedulePage from "./pages/SchedulePage";
 
 import HrPage from "./pages/HrPage";
 import ReportsPage from "./pages/ReportsPage";
@@ -133,11 +140,21 @@ export default function App() {
         <Route path="class-arms/:id/edit" element={<ClassArmFormPage />} />
         <Route path="class-arms/:id" element={<ClassArmProfilePage />} />
         
-        {/* ------- class arms --------  */}
+        {/* ------- subject --------  */}
         <Route path="subjects" element={<SubjectsPage />} />
         <Route path="subjects/new" element={<SubjectFormPage />} />
         <Route path="subjects/:id/edit" element={<SubjectFormPage />} />
         <Route path="subjects/:id" element={<SubjectProfilePage />} />
+
+        {/* ------- articles--------  */}
+        <Route path="articles" element={<ArticlesPage />} />
+        <Route path="articles/new" element={<ArticleFormPage />} />
+        <Route path="articles/:id/edit" element={<ArticleFormPage />} />
+        <Route path="articles/:id" element={<ArticleProfilePage />} />
+
+
+
+
 
         <Route path="attendance" element={<AttendancePage />} />
         <Route path="assessments" element={<AssessmentsPage />} />

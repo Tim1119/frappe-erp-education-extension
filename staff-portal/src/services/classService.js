@@ -11,6 +11,10 @@ export function getClass(name) {
   return callMethod(`${NS}.class_api.get_class`, { name });
 }
 
+export function getClassConnections(program) {
+  return callMethod(`${NS}.class_api.get_class_connections`, { program });
+}
+
 export function createClass(data) {
   return callMethod(`${NS}.class_api.create_class`, { data });
 }

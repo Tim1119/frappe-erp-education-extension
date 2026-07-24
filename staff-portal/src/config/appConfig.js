@@ -195,6 +195,7 @@ export const navigation = {
 				["classes", "Classes", GraduationCap],
 				["class-arms", "Class Arms", Users2],
 				["subjects", "Subjects", BookOpen],
+				["articles", "Articles", FileText],
 				["attendance", "Attendance", CalendarCheck],
 				["assessments", "Assessments", ClipboardList],
 				["results", "School Term Results", Award],
@@ -241,7 +242,10 @@ export function pathFor(key) {
     students: "/dashboard/students",
     classes: "/dashboard/classes", 
 	subjects: "/dashboard/subjects",
+	articles: "/dashboard/articles",
     "class-arms": "/dashboard/class-arms",
+
+
     attendance: "/dashboard/attendance",
     assessments: "/dashboard/assessments",
     results: "/dashboard/results",
@@ -254,6 +258,12 @@ export function pathFor(key) {
     hr: "/dashboard/hr",
     reports: "/dashboard/reports",
     settings: "/dashboard/settings",
+
+	programs: "/dashboard/programs",
+    "student-enrollments": "/dashboard/student-enrollments",
+    "course-schedules": "/dashboard/course-schedules",
+    "assessment-plans": "/dashboard/assessment-plans",
+    "assessment-results": "/dashboard/assessment-results",
   };
   return map[key] || `/dashboard/${key}`;
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Eye, Pencil, MoreHorizontal, Trash2, Plus } from "lucide-react";
+import { Eye, Pencil, MoreHorizontal, Trash2, Plus, Calendar, User } from "lucide-react";
 
 import {
   PageHeader,
@@ -13,77 +13,84 @@ import Toolbar from "../../components/shared/Toolbar.jsx";
 import Pager from "../../components/shared/Pager.jsx";
 import ConfirmModal from "../../components/modals/ConfirmModal.jsx";
 
-import { usePagination } from "../../hooks.js";
+import { usePagination, useDebounce } from "../../hooks.js";
 import { getErrorMessage } from "../../utils/errors.js";
 
 import {
-  getClasses,
-  deleteClass,
-  getDepartments,
-} from "../../services/classService.js";
+  getArticles,
+  deleteArticle,
+  getTopics,
+} from "../../services/articleService.js";
 
-export default function ClassPage() {
+import { formatDate } from "../../utils/format.js";
+
+export default function ArticlesPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const courseFromUrl = searchParams.get("course") || "";
+  const topicFromUrl = searchParams.get("topic") || "";
 
-  const { page, setPage } = usePagination(1);
+  const { page, setPage, reset } = usePagination(1);
+
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 350);
 
   const [items, setItems] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const [search, setSearch] = useState("");
-  const [departmentFilter, setDepartmentFilter] = useState("");
-  const [courseFilter, setCourseFilter] = useState(courseFromUrl);
-
-  const [departmentOptions, setDepartmentOptions] = useState([]);
+  const [topicFilter, setTopicFilter] = useState(topicFromUrl);
+  const [topicOptions, setTopicOptions] = useState([]);
 
   const [menuId, setMenuId] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+
+  async function loadTopics() {
+    try {
+      const result = await getTopics();
+      setTopicOptions(result.map((item) => item.name));
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    }
+  }
 
   async function loadItems() {
     try {
       setLoading(true);
 
-      const result = await getClasses({
+      const result = await getArticles({
         page,
-        search,
-        department: departmentFilter,
-        course: courseFilter || undefined,
+        page_size: 20,
+        search: debouncedSearch,
+        topic: topicFilter || undefined,
       });
 
       setItems(result.rows || []);
       setTotalCount(result.count || 0);
     } catch (err) {
-      console.error("Error loading classes:", err);
+      console.error("Error loading articles:", err);
       toast.error(getErrorMessage(err));
     } finally {
       setLoading(false);
     }
   }
 
-  async function loadDepartments() {
-    try {
-      const result = await getDepartments();
-      setDepartmentOptions(result.map((item) => item.name));
-    } catch (err) {
-      toast.error(getErrorMessage(err));
-    }
-  }
-
   useEffect(() => {
-    loadDepartments();
+    loadTopics();
   }, []);
 
   useEffect(() => {
     loadItems();
-  }, [page, search, departmentFilter, courseFilter]);
+  }, [page, debouncedSearch, topicFilter]);
+
+  // Reset page when filter changes
+  useEffect(() => {
+    reset();
+  }, [topicFilter]);
 
   async function confirmDelete() {
     try {
-      await deleteClass(deleteTarget.name);
-      toast.success("Class deleted");
+      await deleteArticle(deleteTarget.name);
+      toast.success("Article deleted");
       setDeleteTarget(null);
       loadItems();
     } catch (err) {
@@ -91,34 +98,37 @@ export default function ClassPage() {
     }
   }
 
-  // Get the display name for the filter
-  const getFilterDisplay = () => {
-    if (courseFilter) {
-      return `classes with course: ${courseFilter}`;
+  const getSubText = () => {
+    if (loading) return "Loading...";
+    if (topicFilter) {
+      return `${totalCount} articles for topic: ${topicFilter}`;
     }
-    return `${totalCount} classes`;
+    return `${totalCount} articles`;
   };
 
   return (
     <>
       <PageHeader
         eyebrow="Academics"
-        title="Classes"
-        sub={loading ? "Loading..." : getFilterDisplay()}
+        title="Articles"
+        sub={getSubText()}
         button={
           <button
             className="btn btn-primary"
-            onClick={() => navigate("/dashboard/classes/new")}
+            onClick={() => navigate("/dashboard/articles/new")}
           >
             <Plus size={15} />
-            Add Class
+            Add Article
           </button>
         }
       />
 
       <Toolbar
         search={search}
-        onSearch={setSearch}
+        onSearch={(v) => {
+          setSearch(v);
+          reset();
+        }}
         searchProps={{
           style: {
             flex: "0 0 280px",
@@ -133,11 +143,11 @@ export default function ClassPage() {
         }}
         filters={[
           {
-            key: "department",
-            label: "Department",
-            value: departmentFilter,
-            onChange: setDepartmentFilter,
-            options: departmentOptions,
+            key: "topic",
+            label: "Topic",
+            value: topicFilter,
+            onChange: setTopicFilter,
+            options: topicOptions,
           },
         ]}
       />
@@ -147,9 +157,9 @@ export default function ClassPage() {
           <table className="tbl">
             <thead>
               <tr>
-                <th>Class Name</th>
-                <th>Abbreviation</th>
-                <th>Department</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publish Date</th>
                 <th></th>
               </tr>
             </thead>
@@ -165,21 +175,37 @@ export default function ClassPage() {
                         gap: 10,
                       }}
                     >
-                      <Avatar
-                        name={item.program_name}
-                        src={item.hero_image}
-                        size={34}
-                      />
-                      <div style={{ fontWeight: 550 }}>{item.program_name}</div>
+                      <div
+                        style={{
+                          width: 34,
+                          height: 34,
+                          borderRadius: "50%",
+                          backgroundColor: "var(--brand-soft)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                        }}
+                      >
+                        <span style={{ fontSize: 14, color: "var(--brand)" }}>
+                          A
+                        </span>
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 550 }}>{item.title}</div>
+                        <div className="muted" style={{ fontSize: 11.5 }}>
+                          {item.name}
+                        </div>
+                      </div>
                     </div>
                   </td>
 
                   <td className="muted2" style={{ fontSize: 13 }}>
-                    {item.program_abbreviation || "—"}
+                    {item.author || "—"}
                   </td>
 
                   <td className="muted2" style={{ fontSize: 13 }}>
-                    {item.department || "—"}
+                    {item.publish_date ? formatDate(item.publish_date) : "—"}
                   </td>
 
                   <td style={{ position: "relative" }}>
@@ -202,7 +228,7 @@ export default function ClassPage() {
                       >
                         <button
                           onClick={() =>
-                            navigate(`/dashboard/classes/${item.name}`)
+                            navigate(`/dashboard/articles/${item.name}`)
                           }
                         >
                           <Eye size={16} />
@@ -211,7 +237,7 @@ export default function ClassPage() {
 
                         <button
                           onClick={() =>
-                            navigate(`/dashboard/classes/${item.name}/edit`)
+                            navigate(`/dashboard/articles/${item.name}/edit`)
                           }
                         >
                           <Pencil size={16} />
@@ -245,8 +271,8 @@ export default function ClassPage() {
                 <tr>
                   <td colSpan={4}>
                     <EmptyState
-                      title={courseFilter ? `No classes found for course: ${courseFilter}` : "No classes found"}
-                      sub={courseFilter ? `No class records available for this course.` : "No class records available."}
+                      title={topicFilter ? `No articles found for topic: ${topicFilter}` : "No articles found"}
+                      sub={topicFilter ? `No article records available for this topic.` : "No article records available."}
                     />
                   </td>
                 </tr>
@@ -262,8 +288,8 @@ export default function ClassPage() {
         open={Boolean(deleteTarget)}
         onClose={() => setDeleteTarget(null)}
         onConfirm={confirmDelete}
-        title={`Delete ${deleteTarget?.program_name}?`}
-        message="This action cannot be undone. All data associated with this class will be permanently removed."
+        title={`Delete ${deleteTarget?.title}?`}
+        message="This action cannot be undone. All data associated with this article will be permanently removed."
         confirmLabel="Delete"
         variant="danger"
       />

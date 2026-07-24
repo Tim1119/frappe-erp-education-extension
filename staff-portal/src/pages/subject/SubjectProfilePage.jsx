@@ -1,12 +1,24 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { BookOpen, Building2, FileText, Link2, ExternalLink } from "lucide-react";
+import { 
+  BookOpen, 
+  Building2, 
+  FileText, 
+  Link2, 
+  ExternalLink,
+  GraduationCap,
+  Users,
+  ClipboardList,
+  Award,
+  Calendar,
+  User
+} from "lucide-react";
 
 import { PageHeader, Avatar, EmptyState } from "../../components/ui/Primitives.jsx";
 import ConfirmModal from "../../components/modals/ConfirmModal.jsx";
 
-import { getSubject, deleteSubject } from "../../services/subjectService.js";
+import { getSubject, getSubjectConnections, deleteSubject } from "../../services/subjectService.js";
 import { getErrorMessage } from "../../utils/errors.js";
 
 function Item({ label, value }) {
@@ -37,6 +49,59 @@ function SectionHead({ icon: Icon, title, sub }) {
   );
 }
 
+function ConnectionButton({ icon: Icon, label, path, count, loading }) {
+  const navigate = useNavigate();
+  
+  return (
+    <button
+      onClick={() => navigate(path)}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        padding: "6px 10px",
+        backgroundColor: "var(--surface-2)",
+        border: "1px solid var(--border)",
+        borderRadius: "6px",
+        cursor: "pointer",
+        transition: "all 0.15s",
+        width: "100%",
+        textAlign: "left",
+        color: "var(--ink)",
+        fontSize: "12px",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor = "var(--surface-3)";
+        e.currentTarget.style.borderColor = "var(--brand)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = "var(--surface-2)";
+        e.currentTarget.style.borderColor = "var(--border)";
+      }}
+    >
+      <Icon size={14} style={{ color: "var(--brand)", flexShrink: 0 }} />
+      <span style={{ flex: 1, fontWeight: 500 }}>{label}</span>
+      {loading ? (
+        <span style={{ fontSize: "10px", color: "var(--ink-3)" }}>...</span>
+      ) : (
+        count !== undefined && (
+          <span style={{ 
+            fontSize: "10px", 
+            color: "var(--ink-3)",
+            backgroundColor: "var(--surface)",
+            padding: "1px 6px",
+            borderRadius: "10px",
+            minWidth: "20px",
+            textAlign: "center",
+          }}>
+            {count}
+          </span>
+        )
+      )}
+    </button>
+  );
+}
+
 export default function SubjectProfilePage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -45,6 +110,8 @@ export default function SubjectProfilePage() {
   const [subject, setSubject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [connections, setConnections] = useState(null);
+  const [loadingConnections, setLoadingConnections] = useState(true);
 
   useEffect(() => {
     async function load() {
@@ -61,6 +128,28 @@ export default function SubjectProfilePage() {
     load();
   }, [name]);
 
+  // Fetch connection counts using the backend API
+  useEffect(() => {
+    async function fetchConnections() {
+      if (!subject) return;
+      
+      setLoadingConnections(true);
+      try {
+        const result = await getSubjectConnections(subject.name);
+        setConnections(result);
+      } catch (error) {
+        console.error("Error fetching connections:", error);
+        toast.error("Failed to load connection counts");
+      } finally {
+        setLoadingConnections(false);
+      }
+    }
+
+    if (subject) {
+      fetchConnections();
+    }
+  }, [subject]);
+
   async function handleDelete() {
     try {
       await deleteSubject(name);
@@ -74,6 +163,32 @@ export default function SubjectProfilePage() {
 
   if (loading) return <div className="muted">Loading subject...</div>;
   if (!subject) return <div className="muted">Subject not found</div>;
+
+  // Connection groups
+  const connectionGroups = [
+    {
+      group: "Program and Course",
+      items: [
+        { key: "classes", label: "Class", icon: GraduationCap, path: `/dashboard/classes?course=${subject.name}` },
+        { key: "student_enrollments", label: "Subject Enrollment", icon: Users, path: `/dashboard/program-enrollments?course=${subject.name}` },
+        { key: "subject_schedules", label: "Subject Schedule", icon: Calendar, path: `/dashboard/course-schedules?course=${subject.name}` },
+      ]
+    },
+    {
+      group: "Student",
+      items: [
+        { key: "students", label: "Student", icon: User, path: `/dashboard/students?course=${subject.name}` },
+        { key: "class_arms", label: "Class Arm", icon: Users, path: `/dashboard/class-arms?course=${subject.name}` },
+      ]
+    },
+    {
+      group: "Assessment",
+      items: [
+        { key: "assessment_plans", label: "Assessment Plan", icon: ClipboardList, path: `/dashboard/assessment-plans?course=${subject.name}` },
+        { key: "assessment_results", label: "Assessment Result", icon: Award, path: `/dashboard/assessment-results?course=${subject.name}` },
+      ]
+    },
+  ];
 
   return (
     <>
@@ -98,6 +213,7 @@ export default function SubjectProfilePage() {
         }
       />
 
+      {/* Header card */}
       <div className="panel" style={{ marginBottom: 18 }}>
         <div style={{ display: "flex", gap: 18, alignItems: "center", padding: "4px 18px 20px" }}>
           <Avatar
@@ -127,6 +243,55 @@ export default function SubjectProfilePage() {
           <Item label="Subject Name" value={subject.course_name} />
           <Item label="Department" value={subject.department} />
           <Item label="Default Grading Scale" value={subject.default_grading_scale} />
+        </div>
+      </div>
+
+      {/* Connections - Compact Grid */}
+      <div className="panel" style={{ marginBottom: 18 }}>
+        <div className="panel-head">
+          <div
+            className="panel-title"
+            style={{ display: "flex", alignItems: "center", gap: 8 }}
+          >
+            <Link2 size={15} style={{ color: "var(--ink-4)" }} />
+            Connections
+          </div>
+        </div>
+        <div style={{ padding: "4px 18px 22px" }}>
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(4, 1fr)", 
+            gap: "20px",
+          }}>
+            {connectionGroups.map((group, groupIndex) => (
+              <div key={groupIndex}>
+                <div
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 600,
+                    color: "var(--ink-3)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.5px",
+                    marginBottom: "6px",
+                  }}
+                >
+                  {group.group}
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  {group.items.map((item, itemIndex) => (
+                    <ConnectionButton
+                      key={itemIndex}
+                      icon={item.icon}
+                      label={item.label}
+                      path={item.path}
+                      count={connections?.[item.key]}
+                      loading={loadingConnections}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -183,7 +348,6 @@ export default function SubjectProfilePage() {
             <thead>
               <tr>
                 <th>Assessment Criteria</th>
-                <th>Criteria Group</th>
                 <th>Weightage</th>
               </tr>
             </thead>
@@ -191,9 +355,6 @@ export default function SubjectProfilePage() {
               {subject.assessment_criteria.map((criteria, i) => (
                 <tr key={i} className="row">
                   <td style={{ fontWeight: 550 }}>{criteria.assessment_criteria || "—"}</td>
-                  <td className="muted2" style={{ fontSize: 13 }}>
-                    {criteria.assessment_criteria_group || "—"}
-                  </td>
                   <td>{criteria.weightage || 0}%</td>
                 </tr>
               ))}

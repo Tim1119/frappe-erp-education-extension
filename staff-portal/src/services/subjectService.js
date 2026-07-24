@@ -11,6 +11,10 @@ export function getSubject(name) {
   return callMethod(`${NS}.subject_api.get_subject`, { name });
 }
 
+export function getSubjectConnections(course) {
+  return callMethod(`${NS}.subject_api.get_subject_connections`, { course });
+}
+
 export function createSubject(data) {
   return callMethod(`${NS}.subject_api.create_subject`, { data });
 }
@@ -21,6 +25,14 @@ export function updateSubject(name, data) {
 
 export function deleteSubject(name) {
   return callMethod(`${NS}.subject_api.delete_subject`, { name });
+}
+
+export function createTopic(data) {
+  return callMethod(`${NS}.subject_api.create_topic`, { data });
+}
+
+export function createAssessmentCriteria(data) {
+  return callMethod(`${NS}.subject_api.create_assessment_criteria`, { data });
 }
 
 export function getDepartments() {
@@ -37,16 +49,6 @@ export function getGradingScales() {
 
 export function getAssessmentCriteria() {
   return callMethod(`${NS}.subject_api.get_assessment_criteria`, {});
-}
-
-// NEW: Create a new topic
-export function createTopic(data) {
-  return callMethod(`${NS}.subject_api.create_topic`, { data });
-}
-
-// NEW: Create a new assessment criteria
-export function createAssessmentCriteria(data) {
-  return callMethod(`${NS}.subject_api.create_assessment_criteria`, { data });
 }
 
 export function getDoctypeCount(doctype, filters) {

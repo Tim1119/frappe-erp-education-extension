@@ -53,6 +53,17 @@ export function fmtDate(d) {
 	});
 }
 
+export function formatDate(date) {
+  if (!date) return "";
+  const d = new Date(date);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
+
 export function fmtDateTime(d) {
 	if (!d) return "—";
 	return new Date(d).toLocaleString("en-GB", {
