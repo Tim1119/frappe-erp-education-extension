@@ -309,12 +309,64 @@ def create_student(data):
 
 # ------------------------ dropdown---------------------------
 @frappe.whitelist()
-def get_class_arms():
-    return frappe.get_all(
-        "Student Group",
-        fields=["name"],
-        order_by="name",
+def get_class_arms(
+    page=1,
+    page_size=20,
+    search=None,
+    program=None,
+    academic_year=None,
+    academic_term=None,
+):
+    page = cint(page)
+    page_size = cint(page_size)
+
+    filters = {}
+    or_filters = []
+
+    if program:
+        filters["program"] = program
+    if academic_year:
+        filters["academic_year"] = academic_year
+    if academic_term:
+        filters["academic_term"] = academic_term
+
+    if search:
+        or_filters = [
+            ["name", "like", f"%{search}%"],
+            ["program", "like", f"%{search}%"],
+        ]
+
+    rows = frappe.get_all(
+        "Student Group",  # Assuming class arm is Student Group
+        fields=[
+            "name",
+            "program",
+            "academic_year",
+            "academic_term",
+            "disabled",
+        ],
+        filters=filters,
+        or_filters=or_filters,
+        order_by="modified desc",
+        start=(page - 1) * page_size,
+        page_length=page_size,
     )
+
+    total = frappe.db.count(
+        "Student Group",
+        filters=filters,
+    )
+
+    return {
+        "rows": rows,
+        "count": total,
+        "page": page,
+        "page_size": page_size,
+        "total_pages": (
+            (total + page_size - 1) // page_size
+            if page_size else 1
+        ),
+    }
     
 @frappe.whitelist()
 def get_guardians(search=None):
