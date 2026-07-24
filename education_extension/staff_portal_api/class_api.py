@@ -9,6 +9,7 @@ def get_classes(
     page_size=20,
     search=None,
     department=None,
+    course=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -18,6 +19,26 @@ def get_classes(
 
     if department:
         filters["department"] = department
+
+    if course:
+        # Filter programs that have this course in their Program Course child table
+        program_courses = frappe.get_all(
+            "Program Course",
+            filters={"course": course},
+            fields=["parent"]
+        )
+        program_names = [pc.parent for pc in program_courses]
+        if program_names:
+            filters["name"] = ["in", program_names]
+        else:
+            # If no programs have this course, return empty
+            return {
+                "rows": [],
+                "count": 0,
+                "page": page,
+                "page_size": page_size,
+                "total_pages": 0,
+            }
 
     if search:
         or_filters = [
@@ -66,7 +87,6 @@ def get_class(name):
     doc = frappe.get_doc("Program", name)
     
     result = doc.as_dict()
-    # Ensure courses child table is properly formatted
     if result.get('courses'):
         if not isinstance(result['courses'], list):
             try:
@@ -92,7 +112,6 @@ def create_class(data):
     if data.get("hero_image"):
         doc.hero_image = data.get("hero_image")
     
-    # Handle courses child table
     if data.get("courses"):
         for course_entry in data.get("courses"):
             if course_entry.get("course"):
@@ -126,7 +145,6 @@ def update_class(name, data):
     if "hero_image" in data:
         doc.hero_image = data.get("hero_image")
     
-    # Update courses child table
     if "courses" in data:
         doc.set("courses", [])
         for course_entry in data.get("courses", []):
@@ -154,49 +172,30 @@ def delete_class(name):
 
 @frappe.whitelist()
 def get_departments():
-    """Get all departments for dropdown"""
     try:
-        return frappe.get_all(
-            "Department",
-            fields=["name"],
-            order_by="name",
-            limit_page_length=500
-        )
+        return frappe.get_all("Department", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching departments: {str(e)}", "Class API")
         return []
 
 @frappe.whitelist()
 def get_courses():
-    """Get all courses for dropdown"""
     try:
-        return frappe.get_all(
-            "Course",
-            fields=["name", "course_name"],
-            order_by="course_name",
-            limit_page_length=500
-        )
+        return frappe.get_all("Course", fields=["name", "course_name"], order_by="course_name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching courses: {str(e)}", "Class API")
         return []
 
 @frappe.whitelist()
 def get_programs():
-    """Get all programs for dropdown"""
     try:
-        return frappe.get_all(
-            "Program",
-            fields=["name"],
-            order_by="name",
-            limit_page_length=500
-        )
+        return frappe.get_all("Program", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching programs: {str(e)}", "Class API")
         return []
 
 @frappe.whitelist()
 def get_doctype_count(doctype, filters=None):
-    """Get count for a specific doctype with filters"""
     try:
         if filters:
             if isinstance(filters, str):
@@ -208,3 +207,76 @@ def get_doctype_count(doctype, filters=None):
     except Exception as e:
         frappe.log_error(f"Error getting count for {doctype}: {str(e)}", "Class API")
         return 0
+
+@frappe.whitelist()
+def get_class_connections(program):
+    """Get all connection counts for a program (class)"""
+    if not program:
+        frappe.throw(_("Program name is required"))
+    
+    try:
+        # 1. Student count: Students enrolled in this program
+        student_count = frappe.db.sql("""
+            SELECT COUNT(DISTINCT pe.student) as count
+            FROM `tabProgram Enrollment` pe
+            WHERE pe.program = %s AND pe.docstatus = 1
+        """, (program,), as_dict=True)[0].get("count", 0)
+        
+        # 2. Student Applicant count
+        student_applicant_count = frappe.db.count("Student Applicant", {
+            "program": program
+        })
+        
+        # 3. Student Group (Class Arm) count
+        class_arm_count = frappe.db.count("Student Group", {
+            "program": program
+        })
+        
+        # 4. Student Log count
+        student_log_count = frappe.db.count("Student Log", {
+            "program": program
+        })
+        
+        # 5. Assessment Plan count
+        assessment_plan_count = frappe.db.count("Assessment Plan", {
+            "program": program
+        })
+        
+        # 6. Assessment Result count
+        assessment_result_count = frappe.db.count("Assessment Result", {
+            "program": program
+        })
+        
+        # 7. Fee Structure count
+        fee_structure_count = frappe.db.count("Fee Structure", {
+            "program": program
+        })
+        
+        # 8. Fee Schedule count
+        fee_schedule_count = frappe.db.count("Fee Schedule", {
+            "program": program
+        })
+
+        return {
+            "students": student_count,
+            "student_applicants": student_applicant_count,
+            "class_arms": class_arm_count,
+            "student_logs": student_log_count,
+            "assessment_plans": assessment_plan_count,
+            "assessment_results": assessment_result_count,
+            "fee_structures": fee_structure_count,
+            "fee_schedules": fee_schedule_count,
+        }
+        
+    except Exception as e:
+        frappe.log_error(f"Error fetching connections for program {program}: {str(e)}", "Class API")
+        return {
+            "students": 0,
+            "student_applicants": 0,
+            "class_arms": 0,
+            "student_logs": 0,
+            "assessment_plans": 0,
+            "assessment_results": 0,
+            "fee_structures": 0,
+            "fee_schedules": 0,
+        }

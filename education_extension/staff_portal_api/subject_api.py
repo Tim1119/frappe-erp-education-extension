@@ -90,6 +90,76 @@ def get_subject(name):
     return result
 
 @frappe.whitelist()
+def get_subject_connections(course):
+    """Get all connection counts for a course"""
+    if not course:
+        frappe.throw(_("Course name is required"))
+    
+    try:
+        # 1. Class count: Programs that have this course in their Program Course child table
+        class_count = frappe.db.count("Program Course", {
+            "course": course
+        })
+        
+        # 2. Subject Enrollment count: Program Enrollments for programs that have this course
+        enrollment_count = frappe.db.sql("""
+            SELECT COUNT(DISTINCT pe.name) as count
+            FROM `tabProgram Enrollment` pe
+            INNER JOIN `tabProgram Course` pc ON pc.parent = pe.program
+            WHERE pc.course = %s AND pe.docstatus = 1
+        """, (course,), as_dict=True)[0].get("count", 0)
+        
+        # 3. Subject Schedule count
+        schedule_count = frappe.db.count("Course Schedule", {
+            "course": course
+        })
+        
+        # 4. Student count: Unique students enrolled in programs with this course
+        student_count = frappe.db.sql("""
+            SELECT COUNT(DISTINCT pe.student) as count
+            FROM `tabProgram Enrollment` pe
+            INNER JOIN `tabProgram Course` pc ON pc.parent = pe.program
+            WHERE pc.course = %s AND pe.docstatus = 1
+        """, (course,), as_dict=True)[0].get("count", 0)
+        
+        # 5. Class Arm count: Student Groups with this course
+        class_arm_count = frappe.db.count("Student Group", {
+            "course": course
+        })
+        
+        # 6. Assessment Plan count
+        assessment_plan_count = frappe.db.count("Assessment Plan", {
+            "course": course
+        })
+        
+        # 7. Assessment Result count
+        assessment_result_count = frappe.db.count("Assessment Result", {
+            "course": course
+        })
+
+        return {
+            "classes": class_count,
+            "student_enrollments": enrollment_count,
+            "subject_schedules": schedule_count,
+            "students": student_count,
+            "class_arms": class_arm_count,
+            "assessment_plans": assessment_plan_count,
+            "assessment_results": assessment_result_count,
+        }
+        
+    except Exception as e:
+        frappe.log_error(f"Error fetching connections for course {course}: {str(e)}", "Subject API")
+        return {
+            "classes": 0,
+            "student_enrollments": 0,
+            "subject_schedules": 0,
+            "students": 0,
+            "class_arms": 0,
+            "assessment_plans": 0,
+            "assessment_results": 0,
+        }
+
+@frappe.whitelist()
 def create_subject(data):
     if isinstance(data, str):
         data = json.loads(data)
@@ -119,7 +189,6 @@ def create_subject(data):
             if criteria_entry.get("assessment_criteria"):
                 doc.append("assessment_criteria", {
                     "assessment_criteria": criteria_entry.get("assessment_criteria"),
-                    "assessment_criteria_group": criteria_entry.get("assessment_criteria_group"),
                     "weightage": criteria_entry.get("weightage", 0),
                 })
     
@@ -166,7 +235,6 @@ def update_subject(name, data):
             if criteria_entry.get("assessment_criteria"):
                 doc.append("assessment_criteria", {
                     "assessment_criteria": criteria_entry.get("assessment_criteria"),
-                    "assessment_criteria_group": criteria_entry.get("assessment_criteria_group"),
                     "weightage": criteria_entry.get("weightage", 0),
                 })
     
@@ -184,6 +252,40 @@ def delete_subject(name):
     frappe.db.commit()
 
     return {"message": "Course deleted"}
+
+@frappe.whitelist()
+def create_topic(data):
+    if isinstance(data, str):
+        data = json.loads(data)
+    
+    if frappe.db.exists("Topic", data.get("topic_name")):
+        frappe.throw(_("Topic '{0}' already exists").format(data.get("topic_name")))
+    
+    doc = frappe.new_doc("Topic")
+    doc.topic_name = data.get("topic_name")
+    doc.description = data.get("description", "")
+    
+    doc.insert()
+    frappe.db.commit()
+    
+    return doc.as_dict()
+
+@frappe.whitelist()
+def create_assessment_criteria(data):
+    if isinstance(data, str):
+        data = json.loads(data)
+    
+    if frappe.db.exists("Assessment Criteria", data.get("assessment_criteria")):
+        frappe.throw(_("Assessment Criteria '{0}' already exists").format(data.get("assessment_criteria")))
+    
+    doc = frappe.new_doc("Assessment Criteria")
+    doc.assessment_criteria = data.get("assessment_criteria")
+    doc.assessment_criteria_group = data.get("assessment_criteria_group", "")
+    
+    doc.insert()
+    frappe.db.commit()
+    
+    return doc.as_dict()
 
 @frappe.whitelist()
 def get_departments():
@@ -230,75 +332,3 @@ def get_doctype_count(doctype, filters=None):
     except Exception as e:
         frappe.log_error(f"Error getting count for {doctype}: {str(e)}", "Subject API")
         return 0
-    
-    
-import frappe
-import json
-from frappe import _
-from frappe.utils import cint
-
-# ... existing methods ...
-
-@frappe.whitelist()
-def create_topic(data):
-    """Create a new Topic"""
-    if isinstance(data, str):
-        data = json.loads(data)
-    
-    # Check if topic already exists
-    if frappe.db.exists("Topic", data.get("topic_name")):
-        frappe.throw(_("Topic '{0}' already exists").format(data.get("topic_name")))
-    
-    doc = frappe.new_doc("Topic")
-    doc.topic_name = data.get("topic_name")
-    doc.description = data.get("description", "")
-    
-    # Handle topic content if provided
-    if data.get("topic_content"):
-        for content in data.get("topic_content"):
-            if content.get("content"):
-                doc.append("topic_content", {
-                    "content": content.get("content"),
-                })
-    
-    doc.insert()
-    frappe.db.commit()
-    
-    return doc.as_dict()
-
-@frappe.whitelist()
-def create_assessment_criteria(data):
-    """Create a new Assessment Criteria"""
-    if isinstance(data, str):
-        data = json.loads(data)
-    
-    # Check if assessment criteria already exists
-    if frappe.db.exists("Assessment Criteria", data.get("assessment_criteria")):
-        frappe.throw(_("Assessment Criteria '{0}' already exists").format(data.get("assessment_criteria")))
-    
-    doc = frappe.new_doc("Assessment Criteria")
-    doc.assessment_criteria = data.get("assessment_criteria")
-    doc.assessment_criteria_group = data.get("assessment_criteria_group", "")
-    
-    doc.insert()
-    frappe.db.commit()
-    
-    return doc.as_dict()
-
-@frappe.whitelist()
-def get_topics():
-    try:
-        return frappe.get_all("Topic", fields=["name", "topic_name"], order_by="topic_name", limit_page_length=500)
-    except Exception as e:
-        frappe.log_error(f"Error fetching topics: {str(e)}", "Subject API")
-        return []
-
-@frappe.whitelist()
-def get_assessment_criteria():
-    try:
-        return frappe.get_all("Assessment Criteria", fields=["name"], order_by="name", limit_page_length=500)
-    except Exception as e:
-        frappe.log_error(f"Error fetching assessment criteria: {str(e)}", "Subject API")
-        return []
-
-# ... rest of existing methods ...
