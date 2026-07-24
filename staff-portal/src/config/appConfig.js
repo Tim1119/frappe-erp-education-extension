@@ -136,6 +136,7 @@ import {
 	BarChart3,
 	Settings,
 	FileText,
+	Play,
 	BookOpen,
 	Tag,
 } from "lucide-react";
@@ -196,6 +197,7 @@ export const navigation = {
 				["class-arms", "Class Arms", Users2],
 				["subjects", "Subjects", BookOpen],
 				["articles", "Articles", FileText],
+				["videos", "Videos", Play],
 				["attendance", "Attendance", CalendarCheck],
 				["assessments", "Assessments", ClipboardList],
 				["results", "School Term Results", Award],
@@ -236,16 +238,48 @@ export function getNavigation() {
 }
 
 
+// export function pathFor(key) {
+//   const map = {
+//     dashboard: "/dashboard",
+//     students: "/dashboard/students",
+//     classes: "/dashboard/classes", 
+// 	subjects: "/dashboard/subjects",
+// 	articles: "/dashboard/articles",
+// 	articles: "/dashboard/videos",
+//     "class-arms": "/dashboard/class-arms",
+
+
+//     attendance: "/dashboard/attendance",
+//     assessments: "/dashboard/assessments",
+//     results: "/dashboard/results",
+//     schedule: "/dashboard/schedule",
+//     teachers: "/dashboard/teachers",
+//     guardians: "/dashboard/guardians",
+//     "fee-schedule": "/dashboard/fee-schedule",
+//     "fee-structure": "/dashboard/fee-structure",
+//     "fee-category": "/dashboard/fee-category",
+//     hr: "/dashboard/hr",
+//     reports: "/dashboard/reports",
+//     settings: "/dashboard/settings",
+
+// 	programs: "/dashboard/programs",
+//     "student-enrollments": "/dashboard/student-enrollments",
+//     "course-schedules": "/dashboard/course-schedules",
+//     "assessment-plans": "/dashboard/assessment-plans",
+//     "assessment-results": "/dashboard/assessment-results",
+//   };
+//   return map[key] || `/dashboard/${key}`;
+// }
+
 export function pathFor(key) {
   const map = {
     dashboard: "/dashboard",
     students: "/dashboard/students",
     classes: "/dashboard/classes", 
-	subjects: "/dashboard/subjects",
-	articles: "/dashboard/articles",
+    subjects: "/dashboard/subjects",
+    articles: "/dashboard/articles",
+    videos: "/dashboard/videos",  // FIXED: Changed from "articles" to "videos"
     "class-arms": "/dashboard/class-arms",
-
-
     attendance: "/dashboard/attendance",
     assessments: "/dashboard/assessments",
     results: "/dashboard/results",
@@ -258,8 +292,7 @@ export function pathFor(key) {
     hr: "/dashboard/hr",
     reports: "/dashboard/reports",
     settings: "/dashboard/settings",
-
-	programs: "/dashboard/programs",
+    programs: "/dashboard/programs",
     "student-enrollments": "/dashboard/student-enrollments",
     "course-schedules": "/dashboard/course-schedules",
     "assessment-plans": "/dashboard/assessment-plans",

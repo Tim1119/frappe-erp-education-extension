@@ -312,10 +312,33 @@ import {
   displayScope,
 } from "../../config/appConfig";
 
+// const END_MATCH_KEYS = [
+//   "dashboard",
+//   "students",
+//   "classes",
+//   "class-arms",
+//   "attendance",
+//   "assessments",
+//   "results",
+//   "schedule",
+//   "teachers",
+//   "guardians",
+//   "fees",
+//   "fee-structure",
+//   "fee-category",
+//   "hr",
+//   "reports",
+//   "settings",
+// ];
+
+
 const END_MATCH_KEYS = [
   "dashboard",
   "students",
   "classes",
+  "subjects",
+  "articles",
+  "videos",  // ADD THIS
   "class-arms",
   "attendance",
   "assessments",
@@ -324,12 +347,14 @@ const END_MATCH_KEYS = [
   "teachers",
   "guardians",
   "fees",
+  "fee-schedule",
   "fee-structure",
   "fee-category",
   "hr",
   "reports",
   "settings",
 ];
+
 
 export default function AppShell() {
   const { user, logout } = useAuth();

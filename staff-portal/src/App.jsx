@@ -50,6 +50,10 @@ import ArticleFormPage from "./pages/article/ArticleFormPage";
 import ArticleProfilePage from "./pages/article/ArticleProfilePage";
 
 
+import VideosPage from "./pages/video/VideosPage";
+import VideoFormPage from "./pages/video/VideoFormPage";
+import VideoProfilePage from "./pages/video/VideoProfilePage";
+
 import AttendancePage from "./pages/AttendancePage";
 import AssessmentsPage from "./pages/AssessmentsPage";
 import ResultsPage from "./pages/ResultsPage";
@@ -152,6 +156,11 @@ export default function App() {
         <Route path="articles/:id/edit" element={<ArticleFormPage />} />
         <Route path="articles/:id" element={<ArticleProfilePage />} />
 
+        {/* ------- videos--------  */}
+        <Route path="videos" element={<VideosPage />} />
+        <Route path="videos/new" element={<VideoFormPage />} />
+        <Route path="videos/:id/edit" element={<VideoFormPage />} />
+        <Route path="videos/:id" element={<VideoProfilePage />} />
 
 
 
