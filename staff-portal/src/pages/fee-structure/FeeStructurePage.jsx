@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Eye, Pencil, MoreHorizontal, Trash2, Plus, CheckCircle, XCircle, Clock } from "lucide-react";
 
@@ -54,15 +54,16 @@ function StatusBadge({ status }) {
 
 export default function FeeStructurePage() {
   const navigate = useNavigate();
-  const { page, setPage } = usePagination(1);
+  const [searchParams] = useSearchParams();
+  const { page, setPage, reset } = usePagination(1);
 
   const [items, setItems] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
-  const [programFilter, setProgramFilter] = useState("");
-  const [academicYearFilter, setAcademicYearFilter] = useState("");
+  const [programFilter, setProgramFilter] = useState(searchParams.get("program") || "");
+  const [academicYearFilter, setAcademicYearFilter] = useState(searchParams.get("academic_year") || "");
   
   const [programOptions, setProgramOptions] = useState([]);
   const [academicYearOptions, setAcademicYearOptions] = useState([]);
@@ -109,6 +110,16 @@ export default function FeeStructurePage() {
     loadItems();
   }, [page, search, programFilter, academicYearFilter]);
 
+  // If navigated here with a new ?program=... (e.g. from Connections), sync the filter
+  useEffect(() => {
+    const urlProgram = searchParams.get("program") || "";
+    if (urlProgram !== programFilter) {
+      setProgramFilter(urlProgram);
+      reset();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
   async function confirmDelete() {
     try {
       await deleteFeeStructure(deleteTarget.name);
@@ -139,21 +150,30 @@ export default function FeeStructurePage() {
 
       <Toolbar
         search={search}
-        onSearch={setSearch}
+        onSearch={(v) => {
+          setSearch(v);
+          reset();
+        }}
         searchProps={{ style: { flex: "0 0 280px" } }}
         filters={[
           {
             key: "program",
             label: "Class",
             value: programFilter,
-            onChange: setProgramFilter,
+            onChange: (v) => {
+              setProgramFilter(v);
+              reset();
+            },
             options: programOptions,
           },
           {
             key: "academic_year",
             label: "Academic Year",
             value: academicYearFilter,
-            onChange: setAcademicYearFilter,
+            onChange: (v) => {
+              setAcademicYearFilter(v);
+              reset();
+            },
             options: academicYearOptions,
           },
         ]}

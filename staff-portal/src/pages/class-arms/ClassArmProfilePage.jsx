@@ -90,9 +90,9 @@ export default function ClassArmProfilePage() {
           <Info label="Class" value={group.program ? group.program : "-"} />
           <Info
             label="Course"
-            value={group.course ? group.group_based_on : "-"}
+            value={group.course ? group.course : "-"}
           />
-          <Info label="Batch" value={group.batch ? group.course : "-"} />
+          <Info label="Batch" value={group.batch ? group.batch : "-"} />
           <Info
             label="Student Category"
             value={group.student_category ? group.student_category : "-"}

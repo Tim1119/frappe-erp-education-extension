@@ -8,6 +8,11 @@ import StudentsPage from "./pages/students/StudentsPage";
 import StudentProfilePage from "./pages/students/StudentProfilePage";
 import StudentFormPage from "./pages/students/StudentFormPage";
 
+
+import ClassesPage from "./pages/class/ClassesPage";
+import ClassFormPage from "./pages/class/ClassFormPage";
+import ClassProfilePage from "./pages/class/ClassProfilePage";
+
 import ClassArmsPage from "./pages/class-arms/ClassArmsPage";
 import ClassArmFormPage from "./pages/class-arms/ClassArmFormPage";
 import ClassArmProfilePage from "./pages/class-arms/ClassArmProfilePage";
@@ -109,6 +114,13 @@ export default function App() {
         <Route path="students/new" element={<StudentFormPage />} />
         <Route path="students/:id/edit" element={<StudentFormPage />} />
         <Route path="students/:id" element={<StudentProfilePage />} />
+
+        {/* ------- classes --------- */}
+        <Route path="classes" element={<ClassesPage />} />
+        <Route path="classes/new" element={<ClassFormPage />} />
+        <Route path="classes/:id/edit" element={<ClassFormPage />} />
+        <Route path="classes/:id" element={<ClassProfilePage />} />
+
 
         {/* ------- class arms --------  */}
 

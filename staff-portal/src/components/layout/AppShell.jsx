@@ -315,6 +315,7 @@ import {
 const END_MATCH_KEYS = [
   "dashboard",
   "students",
+  "classes",
   "class-arms",
   "attendance",
   "assessments",

@@ -56,8 +56,9 @@ export default function FeeSchedulePage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const feeStructureFilter = searchParams.get('fee_structure') || '';
+  const programFilterFromUrl = searchParams.get('program') || '';
 
-  const { page, setPage } = usePagination(1);
+  const { page, setPage, reset } = usePagination(1);
 
   const [items, setItems] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -76,6 +77,7 @@ export default function FeeSchedulePage() {
         page,
         search,
         fee_structure: feeStructureFilter,
+        program: programFilterFromUrl,
         status: statusFilter,
       });
       setItems(result.rows || []);
@@ -90,7 +92,13 @@ export default function FeeSchedulePage() {
 
   useEffect(() => {
     loadItems();
-  }, [page, search, statusFilter, feeStructureFilter]);
+  }, [page, search, statusFilter, feeStructureFilter, programFilterFromUrl]);
+
+  // Reset to page 1 whenever the URL-driven filters change
+  useEffect(() => {
+    reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feeStructureFilter, programFilterFromUrl]);
 
   async function confirmDelete() {
     try {
@@ -103,8 +111,10 @@ export default function FeeSchedulePage() {
     }
   }
 
-  const subText = feeStructureFilter 
-    ? `Fee schedules for structure: ${feeStructureFilter}` 
+  const subText = feeStructureFilter
+    ? `Fee schedules for structure: ${feeStructureFilter}`
+    : programFilterFromUrl
+    ? `Fee schedules for class: ${programFilterFromUrl}`
     : `${totalCount} fee schedules`;
 
   return (
@@ -126,14 +136,20 @@ export default function FeeSchedulePage() {
 
       <Toolbar
         search={search}
-        onSearch={setSearch}
+        onSearch={(v) => {
+          setSearch(v);
+          reset();
+        }}
         searchProps={{ style: { flex: "0 0 280px" } }}
         filters={[
           {
             key: "status",
             label: "Status",
             value: statusFilter,
-            onChange: setStatusFilter,
+            onChange: (v) => {
+              setStatusFilter(v);
+              reset();
+            },
             options: ["Draft", "Cancelled", "Invoice Pending", "Order Pending", "In Process", "Invoice Created", "Order Created", "Failed"],
           },
         ]}

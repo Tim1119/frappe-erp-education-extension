@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Eye, Pencil, MoreHorizontal, Trash2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { PageHeader, EmptyState } from "../../components/ui/Primitives.jsx";
 
@@ -20,6 +20,8 @@ import {
 
 export default function ClassArmsPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const program = searchParams.get("program") || undefined;
 
   const { page, setPage, reset } = usePagination(1);
 
@@ -47,6 +49,8 @@ export default function ClassArmsPage() {
         page_size: 20,
 
         search: debouncedSearch,
+
+        program,
       });
 
       setRows(result.rows || []);
@@ -61,7 +65,12 @@ export default function ClassArmsPage() {
 
   useEffect(() => {
     load();
-  }, [page, debouncedSearch]);
+  }, [page, debouncedSearch, program]);
+
+  // Reset to page 1 whenever the program filter changes
+  useEffect(() => {
+    reset();
+  }, [program]);
 
   async function removeClassArm() {
     if (!deleteTarget) return;

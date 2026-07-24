@@ -154,7 +154,9 @@ export default function ClassArmForm({ group, options, onSave, saving }) {
             >
               <option value="">Select</option>
               {options.academic_years.map((x) => (
-                <option key={x}>{x}</option>
+                <option key={x.name} value={x.name}>
+                  {x.name}
+                </option>
               ))}
             </select>
           </div>
@@ -205,7 +207,9 @@ export default function ClassArmForm({ group, options, onSave, saving }) {
             >
               <option value="">Select</option>
               {options.academic_terms.map((x) => (
-                <option key={x}>{x}</option>
+                <option key={x.name} value={x.name}>
+                  {x.name}
+                </option>
               ))}
             </select>
           </div>
@@ -220,7 +224,9 @@ export default function ClassArmForm({ group, options, onSave, saving }) {
               >
                 <option value="">Select</option>
                 {options.programs.map((x) => (
-                  <option key={x}>{x}</option>
+                  <option key={x.name} value={x.name}>
+                    {x.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -236,7 +242,9 @@ export default function ClassArmForm({ group, options, onSave, saving }) {
               >
                 <option value="">Select</option>
                 {options.courses.map((x) => (
-                  <option key={x}>{x}</option>
+                  <option key={x.name} value={x.name}>
+                    {x.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -252,7 +260,9 @@ export default function ClassArmForm({ group, options, onSave, saving }) {
               >
                 <option value="">Select</option>
                 {options.batches.map((x) => (
-                  <option key={x}>{x}</option>
+                  <option key={x.name} value={x.name}>
+                    {x.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -267,7 +277,9 @@ export default function ClassArmForm({ group, options, onSave, saving }) {
             >
               <option value="">Select</option>
               {options.student_categories.map((x) => (
-                <option key={x}>{x}</option>
+                <option key={x.name} value={x.name}>
+                  {x.name}
+                </option>
               ))}
             </select>
           </div>

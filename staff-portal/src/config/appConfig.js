@@ -191,6 +191,7 @@ export const navigation = {
 			g: "Academics",
 			items: [
 				["students", "Students", GraduationCap],
+				["classes", "Classes", GraduationCap],
 				["class-arms", "Class Arms", Users2],
 				["attendance", "Attendance", CalendarCheck],
 				["assessments", "Assessments", ClipboardList],
@@ -231,27 +232,29 @@ export function getNavigation() {
 	return navigation.STAFF;
 }
 
+
 export function pathFor(key) {
-	const map = {
-		dashboard: "/dashboard",
-		students: "/dashboard/students",
-		"class-arms": "/dashboard/class-arms",
-		attendance: "/dashboard/attendance",
-		assessments: "/dashboard/assessments",
-		results: "/dashboard/results",
-		schedule: "/dashboard/schedule",
-		teachers: "/dashboard/teachers",
-		guardians: "/dashboard/guardians",
-		fees: "/dashboard/fees",
-		"fee-structure": "/dashboard/fee-structure",
-		"fee-category": "/dashboard/fee-category",
-		"fee-schedule": "/dashboard/fee-schedule",
-		hr: "/dashboard/hr",
-		reports: "/dashboard/reports",
-		settings: "/dashboard/settings",
-	};
-	return map[key] || `/dashboard/${key}`;
+  const map = {
+    dashboard: "/dashboard",
+    students: "/dashboard/students",
+    classes: "/dashboard/classes",  // ADD THIS
+    "class-arms": "/dashboard/class-arms",
+    attendance: "/dashboard/attendance",
+    assessments: "/dashboard/assessments",
+    results: "/dashboard/results",
+    schedule: "/dashboard/schedule",
+    teachers: "/dashboard/teachers",
+    guardians: "/dashboard/guardians",
+    "fee-schedule": "/dashboard/fee-schedule",
+    "fee-structure": "/dashboard/fee-structure",
+    "fee-category": "/dashboard/fee-category",
+    hr: "/dashboard/hr",
+    reports: "/dashboard/reports",
+    settings: "/dashboard/settings",
+  };
+  return map[key] || `/dashboard/${key}`;
 }
+
 
 export function displayScope() {
 	return "Brightwood International School";

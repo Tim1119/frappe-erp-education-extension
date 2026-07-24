@@ -7,6 +7,7 @@ export function getFeeSchedules({
   page = 1,
   search = "",
   fee_structure = "",
+  program = "",
   status = "",
   pageSize = 20,
 } = {}) {
@@ -15,6 +16,7 @@ export function getFeeSchedules({
     page_size: pageSize,
     search: search || undefined,
     fee_structure: fee_structure || undefined,
+    program: program || undefined,
     status: status || undefined,
   });
 }
