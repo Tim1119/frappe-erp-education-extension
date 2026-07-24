@@ -54,6 +54,12 @@ import VideosPage from "./pages/video/VideosPage";
 import VideoFormPage from "./pages/video/VideoFormPage";
 import VideoProfilePage from "./pages/video/VideoProfilePage";
 
+
+import QuizzesPage from "./pages/quiz/QuizzesPage";
+import QuizFormPage from "./pages/quiz/QuizFormPage";
+import QuizProfilePage from "./pages/quiz/QuizProfilePage";
+
+
 import AttendancePage from "./pages/AttendancePage";
 import AssessmentsPage from "./pages/AssessmentsPage";
 import ResultsPage from "./pages/ResultsPage";
@@ -162,6 +168,12 @@ export default function App() {
         <Route path="videos/:id/edit" element={<VideoFormPage />} />
         <Route path="videos/:id" element={<VideoProfilePage />} />
 
+        {/* ------- quiz --------  */}
+
+        <Route path="quizzes" element={<QuizzesPage />} />
+      <Route path="quizzes/new" element={<QuizFormPage />} />
+      <Route path="quizzes/:id/edit" element={<QuizFormPage />} />
+      <Route path="quizzes/:id" element={<QuizProfilePage />} />
 
 
 

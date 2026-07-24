@@ -198,6 +198,7 @@ export const navigation = {
 				["subjects", "Subjects", BookOpen],
 				["articles", "Articles", FileText],
 				["videos", "Videos", Play],
+				["quizzes", "Quizzes", ClipboardList], 
 				["attendance", "Attendance", CalendarCheck],
 				["assessments", "Assessments", ClipboardList],
 				["results", "School Term Results", Award],
@@ -238,38 +239,7 @@ export function getNavigation() {
 }
 
 
-// export function pathFor(key) {
-//   const map = {
-//     dashboard: "/dashboard",
-//     students: "/dashboard/students",
-//     classes: "/dashboard/classes", 
-// 	subjects: "/dashboard/subjects",
-// 	articles: "/dashboard/articles",
-// 	articles: "/dashboard/videos",
-//     "class-arms": "/dashboard/class-arms",
 
-
-//     attendance: "/dashboard/attendance",
-//     assessments: "/dashboard/assessments",
-//     results: "/dashboard/results",
-//     schedule: "/dashboard/schedule",
-//     teachers: "/dashboard/teachers",
-//     guardians: "/dashboard/guardians",
-//     "fee-schedule": "/dashboard/fee-schedule",
-//     "fee-structure": "/dashboard/fee-structure",
-//     "fee-category": "/dashboard/fee-category",
-//     hr: "/dashboard/hr",
-//     reports: "/dashboard/reports",
-//     settings: "/dashboard/settings",
-
-// 	programs: "/dashboard/programs",
-//     "student-enrollments": "/dashboard/student-enrollments",
-//     "course-schedules": "/dashboard/course-schedules",
-//     "assessment-plans": "/dashboard/assessment-plans",
-//     "assessment-results": "/dashboard/assessment-results",
-//   };
-//   return map[key] || `/dashboard/${key}`;
-// }
 
 export function pathFor(key) {
   const map = {
@@ -278,7 +248,9 @@ export function pathFor(key) {
     classes: "/dashboard/classes", 
     subjects: "/dashboard/subjects",
     articles: "/dashboard/articles",
-    videos: "/dashboard/videos",  // FIXED: Changed from "articles" to "videos"
+    videos: "/dashboard/videos",  
+	quizzes: "/dashboard/quizzes",
+
     "class-arms": "/dashboard/class-arms",
     attendance: "/dashboard/attendance",
     assessments: "/dashboard/assessments",
