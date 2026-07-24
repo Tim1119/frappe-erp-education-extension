@@ -59,6 +59,10 @@ import QuizzesPage from "./pages/quiz/QuizzesPage";
 import QuizFormPage from "./pages/quiz/QuizFormPage";
 import QuizProfilePage from "./pages/quiz/QuizProfilePage";
 
+import TopicsPage from "./pages/topic/TopicsPage";
+import TopicFormPage from "./pages/topic/TopicFormPage";
+import TopicProfilePage from "./pages/topic/TopicProfilePage";
+
 
 import AttendancePage from "./pages/AttendancePage";
 import AssessmentsPage from "./pages/AssessmentsPage";
@@ -175,6 +179,12 @@ export default function App() {
       <Route path="quizzes/:id/edit" element={<QuizFormPage />} />
       <Route path="quizzes/:id" element={<QuizProfilePage />} />
 
+        {/* ------- quiz --------  */}
+
+        <Route path="topics" element={<TopicsPage />} />
+        <Route path="topics/new" element={<TopicFormPage />} />
+        <Route path="topics/:id/edit" element={<TopicFormPage />} />
+        <Route path="topics/:id" element={<TopicProfilePage />} />
 
 
         <Route path="attendance" element={<AttendancePage />} />
@@ -196,7 +206,7 @@ export default function App() {
         <Route path="fee-category/:id/edit" element={<FeeCategoryFormPage />} />
         <Route path="fee-category/:id" element={<FeeCategoryProfilePage />} />
 
-        {/* -------- fee-category ------------- */}
+        {/* -------- fee-structure ------------- */}
 
         <Route path="fee-structure" element={<FeeStructurePage />} />
         <Route path="fee-structure/new" element={<FeeStructureFormPage />} />

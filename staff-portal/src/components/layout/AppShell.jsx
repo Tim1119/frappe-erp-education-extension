@@ -337,6 +337,7 @@ const END_MATCH_KEYS = [
   "students",
   "classes",
   "subjects",
+  "topics",
   "articles",
   "videos",
   "quizzes",  
