@@ -342,6 +342,7 @@ const END_MATCH_KEYS = [
   "videos",
   "quizzes",  
   "class-arms",
+  "classrooms", 
   "attendance",
   "assessments",
   "results",

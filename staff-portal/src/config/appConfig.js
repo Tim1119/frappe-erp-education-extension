@@ -139,6 +139,7 @@ import {
 	Play,
 	BookOpen,
 	Tag,
+	Building2
 } from "lucide-react";
 
 export const chartTokens = {
@@ -200,6 +201,7 @@ export const navigation = {
 				["articles", "Articles", FileText],
 				["videos", "Videos", Play],
 				["quizzes", "Quizzes", ClipboardList], 
+				["classrooms", "Classrooms", Building2],
 				["attendance", "Attendance", CalendarCheck],
 				["assessments", "Assessments", ClipboardList],
 				["results", "School Term Results", Award],
@@ -252,6 +254,7 @@ export function pathFor(key) {
     articles: "/dashboard/articles",
     videos: "/dashboard/videos",  
 	quizzes: "/dashboard/quizzes",
+	classrooms: "/dashboard/classrooms",
 
     "class-arms": "/dashboard/class-arms",
     attendance: "/dashboard/attendance",

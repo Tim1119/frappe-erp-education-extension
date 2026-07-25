@@ -63,6 +63,10 @@ import TopicsPage from "./pages/topic/TopicsPage";
 import TopicFormPage from "./pages/topic/TopicFormPage";
 import TopicProfilePage from "./pages/topic/TopicProfilePage";
 
+import ClassroomsPage from "./pages/classroom/ClassroomsPage";
+import ClassroomFormPage from "./pages/classroom/ClassroomFormPage";
+import ClassroomProfilePage from "./pages/classroom/ClassroomProfilePage";
+
 
 import AttendancePage from "./pages/AttendancePage";
 import AssessmentsPage from "./pages/AssessmentsPage";
@@ -221,11 +225,16 @@ export default function App() {
         <Route path="fee-schedule/:id" element={<FeeScheduleProfilePage />} />
         
 
-        {/* ------- guardians --------- */}
         <Route path="guardians" element={<GuardiansPage />} />
         <Route path="guardians/new" element={<GuardianFormPage />} />
         <Route path="guardians/:id/edit" element={<GuardianFormPage />} />
         <Route path="guardians/:id" element={<GuardianProfilePage />} />
+
+        {/* ------- guardians --------- */}
+        <Route path="classrooms" element={<ClassroomsPage />} />
+        <Route path="classrooms/new" element={<ClassroomFormPage />} />
+        <Route path="classrooms/:id/edit" element={<ClassroomFormPage />} />
+        <Route path="classrooms/:id" element={<ClassroomProfilePage />} />
 
 
         <Route path="hr" element={<HrPage />} />
