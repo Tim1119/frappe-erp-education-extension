@@ -73,6 +73,7 @@ export const navigation = {
 			items: [
 				["students", "Students", GraduationCap],
 				["student-applicants", "Student Applicants", UserPlus],
+				["student-admissions", "Student Admissions", UserPlus],
 				["classes", "Classes", GraduationCap],
 				["class-arms", "Class Arms", Users2],
 				["subjects", "Subjects", BookOpen],
@@ -128,6 +129,7 @@ export function pathFor(key) {
     dashboard: "/dashboard",
     students: "/dashboard/students",
 	"student-applicants": "/dashboard/student-applicants",
+	"student-admission": "/dashboard/student-admissions",
     classes: "/dashboard/classes", 
     subjects: "/dashboard/subjects",
 	topics: "/dashboard/topics", 

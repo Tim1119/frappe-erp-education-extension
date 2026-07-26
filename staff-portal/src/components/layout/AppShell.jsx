@@ -317,6 +317,7 @@ const END_MATCH_KEYS = [
   "dashboard",
   "students",
   "student-applicants",
+  "student-admissions",
   "classes",
   "subjects",
   "topics",

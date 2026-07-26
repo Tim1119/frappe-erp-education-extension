@@ -72,6 +72,10 @@ import StudentApplicantsPage from "./pages/student-applicant/StudentApplicantsPa
 import StudentApplicantFormPage from "./pages/student-applicant/StudentApplicantFormPage";
 import StudentApplicantProfilePage from "./pages/student-applicant/StudentApplicantProfilePage";
 
+import StudentAdmissionsPage from "./pages/student-admission/StudentAdmissionsPage";
+import StudentAdmissionFormPage from "./pages/student-admission/StudentAdmissionFormPage.jsx";
+import StudentAdmissionProfilePage from "./pages/student-admission/StudentAdmissionProfilePage.jsx";
+
 
 
 import AttendancePage from "./pages/AttendancePage";
@@ -202,6 +206,14 @@ export default function App() {
         <Route path="student-applicants/:id/edit" element={<StudentApplicantFormPage />} />
         <Route path="student-applicants/:id" element={<StudentApplicantProfilePage />} />
 
+       
+        {/* ------- student admission --------  */}
+        <Route path="student-admissions" element={<StudentAdmissionsPage />} />
+        <Route path="student-admissions/new" element={<StudentAdmissionFormPage />} />
+        <Route path="student-admissions/:id" element={<StudentAdmissionProfilePage />} />
+        <Route path="student-admissions/:id/edit" element={<StudentAdmissionFormPage />} />
+
+
         <Route path="attendance" element={<AttendancePage />} />
         <Route path="assessments" element={<AssessmentsPage />} />
         <Route path="results" element={<ResultsPage />} />
@@ -236,12 +248,13 @@ export default function App() {
         <Route path="fee-schedule/:id" element={<FeeScheduleProfilePage />} />
         
 
+        {/* ------- guardians --------- */}
         <Route path="guardians" element={<GuardiansPage />} />
         <Route path="guardians/new" element={<GuardianFormPage />} />
         <Route path="guardians/:id/edit" element={<GuardianFormPage />} />
         <Route path="guardians/:id" element={<GuardianProfilePage />} />
 
-        {/* ------- guardians --------- */}
+        {/* ------- classrooms --------- */}
         <Route path="classrooms" element={<ClassroomsPage />} />
         <Route path="classrooms/new" element={<ClassroomFormPage />} />
         <Route path="classrooms/:id/edit" element={<ClassroomFormPage />} />
