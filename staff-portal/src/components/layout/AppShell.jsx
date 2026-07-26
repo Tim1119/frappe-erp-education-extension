@@ -312,29 +312,11 @@ import {
   displayScope,
 } from "../../config/appConfig";
 
-// const END_MATCH_KEYS = [
-//   "dashboard",
-//   "students",
-//   "classes",
-//   "class-arms",
-//   "attendance",
-//   "assessments",
-//   "results",
-//   "schedule",
-//   "teachers",
-//   "guardians",
-//   "fees",
-//   "fee-structure",
-//   "fee-category",
-//   "hr",
-//   "reports",
-//   "settings",
-// ];
-
 
 const END_MATCH_KEYS = [
   "dashboard",
   "students",
+  "student-applicants",
   "classes",
   "subjects",
   "topics",

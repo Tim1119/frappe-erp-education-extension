@@ -68,6 +68,12 @@ import ClassroomFormPage from "./pages/classroom/ClassroomFormPage";
 import ClassroomProfilePage from "./pages/classroom/ClassroomProfilePage";
 
 
+import StudentApplicantsPage from "./pages/student-applicant/StudentApplicantsPage";
+import StudentApplicantFormPage from "./pages/student-applicant/StudentApplicantFormPage";
+import StudentApplicantProfilePage from "./pages/student-applicant/StudentApplicantProfilePage";
+
+
+
 import AttendancePage from "./pages/AttendancePage";
 import AssessmentsPage from "./pages/AssessmentsPage";
 import ResultsPage from "./pages/ResultsPage";
@@ -190,6 +196,11 @@ export default function App() {
         <Route path="topics/:id/edit" element={<TopicFormPage />} />
         <Route path="topics/:id" element={<TopicProfilePage />} />
 
+        {/* ------- student applicant --------  */}
+        <Route path="student-applicants" element={<StudentApplicantsPage />} />
+        <Route path="student-applicants/new" element={<StudentApplicantFormPage />} />
+        <Route path="student-applicants/:id/edit" element={<StudentApplicantFormPage />} />
+        <Route path="student-applicants/:id" element={<StudentApplicantProfilePage />} />
 
         <Route path="attendance" element={<AttendancePage />} />
         <Route path="assessments" element={<AssessmentsPage />} />
