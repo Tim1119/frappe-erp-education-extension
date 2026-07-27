@@ -239,14 +239,6 @@ export const TEACHER_NAV = [
         ],
       },
       {
-        key: "settings-group",
-        label: "Settings",
-        icon: Settings,
-        children: [
-          { key: "education-settings", label: "Education Settings", icon: Settings, path: "/dashboard/education-settings" },
-        ],
-      },
-      {
         key: "admission",
         label: "Admission",
         icon: UserPlus,

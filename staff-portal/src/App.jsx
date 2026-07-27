@@ -93,6 +93,8 @@ import GradingScalesPage from "@/pages/admin/grading-scale/GradingScalesPage";
 import GradingScaleProfilePage from "@/pages/admin/grading-scale/GradingScaleProfilePage";
 import GradingScaleFormPage from "@/pages/admin/grading-scale/GradingScaleFormPage";
 
+import EducationSettingsPage from "@/pages/admin/education-settings/EducationSettingsPage";
+
 // ─── Loading screen ────────────────────────────────────────────────────
 
 function LoadingScreen() {
@@ -268,7 +270,7 @@ export default function App() {
 
         {/* ─── Placeholder routes ─────────────────────────────── */}
         <Route path="student-log" element={<PH title="Student Log" />} />
-        <Route path="education-settings" element={<PH title="Education Settings" />} />
+        <Route path="education-settings" element={<EducationSettingsPage />} />
 
         <Route path="school-settings" element={<PH title="School Settings" />} />
         <Route path="class-enrollment" element={<PH title="Class Enrollment" />} />

@@ -68,29 +68,33 @@ def get_portal_context():
             instructor = instr.name
             instructor_name = instr.instructor_name
 
-    # ── School branding from Education Settings ───────────────────────
+    # ── School branding ─────────────────────────────────────────────────
+    # Full name, abbreviation, and logo live on three different doctypes,
+    # not one doctype with a fallback:
+    #   - school_name: Company.company_name, via School Settings' `school`
+    #     Link (School Settings itself has no name field of its own)
+    #   - school_abbreviation: Education Settings.school_college_name_abbreviation
+    #   - school_logo: Education Settings.school_college_logo (School Settings
+    #     has no logo field -- only signature/stamp Attach Image fields)
 
     school_name = ""
     school_abbreviation = ""
     school_logo = None
 
     try:
-        settings = frappe.get_single("Education Settings")
-        school_name = getattr(settings, "school_name", "") or ""
-        school_abbreviation = getattr(settings, "school_abbreviation", "") or ""
-        school_logo = getattr(settings, "school_logo", None)
+        school_settings = frappe.get_single("School Settings")
+        company = getattr(school_settings, "school", None)
+        if company:
+            school_name = frappe.db.get_value("Company", company, "company_name") or ""
     except Exception:
         pass
 
-    # Fallback: try School Settings (custom doctype from education_extension)
-    if not school_name:
-        try:
-            ss = frappe.get_single("School Settings")
-            school_name = getattr(ss, "school_name", "") or ""
-            school_abbreviation = getattr(ss, "school_abbreviation", "") or ""
-            school_logo = getattr(ss, "school_logo", None) or school_logo
-        except Exception:
-            pass
+    try:
+        settings = frappe.get_single("Education Settings")
+        school_abbreviation = getattr(settings, "school_college_name_abbreviation", "") or ""
+        school_logo = getattr(settings, "school_college_logo", None)
+    except Exception:
+        pass
 
     return {
         "role": "admin" if is_admin else "teacher",
