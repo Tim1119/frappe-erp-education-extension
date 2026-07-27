@@ -1,0 +1,308 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * ─── shadcn/ui CSS variables ──────────────────────────────────────────
+ * The --primary HSL value is overridden by the active color preset.
+ * Default preset: "blue" (same as the original brand color).
+ */
+
+@layer base {
+  :root {
+    --background: 220 14% 96%;
+    --foreground: 228 40% 6%;
+    --card: 0 0% 100%;
+    --card-foreground: 228 40% 6%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 228 40% 6%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 13% 95%;
+    --secondary-foreground: 228 20% 20%;
+    --muted: 220 13% 95%;
+    --muted-foreground: 220 9% 53%;
+    --accent: 220 13% 95%;
+    --accent-foreground: 228 20% 20%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 60%;
+    --radius: 0.5rem;
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 228 20% 20%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 13% 95%;
+    --sidebar-accent-foreground: 228 20% 20%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217 91% 60%;
+
+    /* Legacy design-system tokens (fallback — overridden by applyPreset()
+       in JS on mount; these prevent a flash of unstyled colour before
+       that runs). Used directly in original component inline styles. */
+    --brand: hsl(217 91% 60%);
+    --brand-2: hsl(217 91% 60%);
+    --brand-3: hsl(217 91% 45%);
+    --brand-soft: hsl(217 90% 95%);
+    --brand-ink: hsl(217 80% 38%);
+    --ink: hsl(228 40% 6%);
+    --ink-2: hsl(217 15% 30%);
+    --ink-3: hsl(220 9% 53%);
+    --ink-4: hsl(217 10% 65%);
+    --surface: hsl(0 0% 100%);
+    --surface-2: hsl(220 13% 95%);
+    --surface-3: hsl(217 35% 92%);
+    --surface-4: hsl(217 22% 88%);
+    --success-soft: hsl(160 70% 94%);
+    --success-ink: hsl(160 84% 26%);
+    --warning-soft: hsl(38 92% 94%);
+    --warning-ink: hsl(38 80% 32%);
+    --danger: hsl(0 72% 48%);
+    --danger-soft: hsl(0 84% 95%);
+    --danger-ink: hsl(0 72% 40%);
+    --info: hsl(205 90% 45%);
+    --info-soft: hsl(205 90% 95%);
+    --purple: hsl(258 80% 58%);
+    --purple-soft: hsl(258 80% 95%);
+  }
+
+  .dark {
+    --background: 228 33% 4%;
+    --foreground: 220 20% 96%;
+    --card: 228 24% 7%;
+    --card-foreground: 220 20% 96%;
+    --popover: 228 24% 7%;
+    --popover-foreground: 220 20% 96%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 225 19% 13%;
+    --secondary-foreground: 220 20% 80%;
+    --muted: 225 19% 13%;
+    --muted-foreground: 220 9% 53%;
+    --accent: 225 19% 13%;
+    --accent-foreground: 220 20% 80%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 160 84% 39%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --border: 225 18% 16%;
+    --input: 225 18% 16%;
+    --ring: 217 91% 60%;
+
+    /* Sidebar */
+    --sidebar-background: 228 30% 5%;
+    --sidebar-foreground: 220 20% 80%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 225 19% 12%;
+    --sidebar-accent-foreground: 220 20% 80%;
+    --sidebar-border: 225 18% 16%;
+    --sidebar-ring: 217 91% 60%;
+
+    /* Legacy design-system tokens (fallback — overridden by applyPreset() in JS) */
+    --brand: hsl(217 91% 60%);
+    --brand-2: hsl(217 91% 60%);
+    --brand-3: hsl(217 91% 70%);
+    --brand-soft: hsl(217 40% 16%);
+    --brand-ink: hsl(217 91% 75%);
+    --ink: hsl(220 20% 96%);
+    --ink-2: hsl(220 15% 82%);
+    --ink-3: hsl(220 9% 53%);
+    --ink-4: hsl(217 10% 45%);
+    --surface: hsl(228 24% 7%);
+    --surface-2: hsl(225 19% 13%);
+    --surface-3: hsl(217 25% 14%);
+    --surface-4: hsl(217 22% 18%);
+    --success-soft: hsl(160 45% 14%);
+    --success-ink: hsl(160 70% 70%);
+    --warning-soft: hsl(38 60% 14%);
+    --warning-ink: hsl(38 92% 75%);
+    --danger: hsl(0 72% 58%);
+    --danger-soft: hsl(0 45% 15%);
+    --danger-ink: hsl(0 80% 78%);
+    --info: hsl(205 90% 60%);
+    --info-soft: hsl(205 50% 15%);
+    --purple: hsl(258 80% 72%);
+    --purple-soft: hsl(258 40% 16%);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv01", "cv03", "ss01";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* ─── Tabular numbers for data ──────────────────────────────────────── */
+.tnum {
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Compatibility classes for original page components ────────────── */
+/* These map the old CSS class names to Tailwind-equivalent styles so   */
+/* the original form/detail components render correctly without needing */
+/* to rewrite 10,000+ lines of JSX immediately.                        */
+
+.panel {
+  @apply rounded-xl border bg-card text-card-foreground shadow-sm;
+}
+.panel-head {
+  @apply border-b px-5 py-4;
+}
+.panel-title {
+  @apply text-sm font-semibold;
+}
+.panel-sub {
+  @apply text-xs text-muted-foreground mt-1;
+}
+
+.grid-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px 24px;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 18px 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.label {
+  @apply text-sm font-medium leading-none text-foreground/90;
+}
+
+.input,
+.select {
+  @apply flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors;
+  @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
+}
+.select {
+  @apply appearance-none bg-no-repeat;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-position: right 8px center;
+  padding-right: 28px;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors;
+  @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
+}
+.btn-primary {
+  @apply bg-primary text-primary-foreground shadow hover:bg-primary/90;
+}
+.btn-secondary {
+  @apply border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground;
+}
+.btn-danger {
+  @apply bg-destructive text-destructive-foreground shadow hover:bg-destructive/90;
+}
+
+.btn-outline {
+  @apply border border-input bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground;
+}
+.btn-success {
+  @apply bg-success text-success-foreground shadow hover:bg-success/90;
+}
+.btn-sm {
+  @apply h-8 px-3 text-xs rounded-md;
+}
+
+.badge {
+  @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold;
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+}
+
+.chip {
+  @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium;
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+}
+.chip button {
+  @apply grid h-3.5 w-3.5 place-items-center text-muted-foreground;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.iconbtn {
+  @apply inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors;
+  @apply hover:bg-accent hover:text-accent-foreground;
+  background: none;
+  border: none;
+}
+
+.tbl {
+  @apply w-full caption-bottom text-sm;
+}
+.tbl thead tr {
+  @apply border-b;
+}
+.tbl th {
+  @apply h-10 px-4 text-left align-middle font-medium text-muted-foreground;
+}
+.tbl tbody tr {
+  @apply border-b transition-colors hover:bg-muted/50;
+}
+.tbl td {
+  @apply p-4 align-middle;
+}
+
+.rowmenu {
+  @apply absolute z-50 min-w-[140px] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md;
+}
+.rowmenu button {
+  @apply relative flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors;
+  @apply hover:bg-accent hover:text-accent-foreground;
+  background: none;
+  border: none;
+}
+.rowmenu button.danger {
+  @apply text-destructive hover:text-destructive;
+}
+.rowmenu .divider {
+  @apply -mx-1 my-1 h-px bg-border;
+}
+
+.muted {
+  @apply text-muted-foreground;
+}
+.muted2 {
+  @apply text-muted-foreground/80;
+}
+
+/* ─── Scrollbar styling ─────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-border rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/30;
+}

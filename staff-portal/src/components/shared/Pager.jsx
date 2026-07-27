@@ -1,55 +1,38 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const PAGE_SIZE = 8;
+export default function Pager({ page, setPage, pageSize = 20, count = 0 }) {
+  const totalPages = Math.max(1, Math.ceil(count / pageSize));
+  const from = count === 0 ? 0 : (page - 1) * pageSize + 1;
+  const to = Math.min(page * pageSize, count);
 
-/** Shared pagination footer. `rows` is the full filtered array; slices client-side. */
-export function usePager(rows, page, setPage, pageSize = PAGE_SIZE) {
-  const totalPages = Math.max(1, Math.ceil(rows.length / pageSize));
-  const start = (page - 1) * pageSize;
-  const pageRows = rows.slice(start, start + pageSize);
-  return { pageRows, totalPages, start, pageSize };
-}
-
-/**
- * `rows`: pass the full filtered array for client-side pagination, OR
- * `count`: pass the server-reported total when the page you're given is
- * already paginated server-side (e.g. via useDocList / Frappe REST paging).
- */
-export default function Pager({
-  rows,
-  count,
-  page,
-  setPage,
-  pageSize = PAGE_SIZE,
-}) {
-  const total = count ?? rows?.length ?? 0;
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  const start = (page - 1) * pageSize;
   return (
-    <div className="pager">
-      <span className="tnum muted">
-        {total
-          ? `${Math.min(start + 1, total)}–${Math.min(start + pageSize, total)} of ${total}`
-          : "0 records"}
+    <div className="flex items-center justify-between border-t px-2 py-3 text-sm text-muted-foreground">
+      <span>
+        {count === 0 ? "No results" : `${from}–${to} of ${count}`}
       </span>
-      <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-        <button
-          className="pg-btn"
+      <div className="flex items-center gap-1">
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-8 w-8"
           disabled={page <= 1}
-          onClick={() => setPage((p) => Math.max(1, p - 1))}
+          onClick={() => setPage(page - 1)}
         >
-          <ChevronLeft size={15} />
-        </button>
-        <span style={{ fontSize: 12.5, color: "var(--ink-3)" }}>
-          {page} / {totalPages}
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <span className="min-w-[60px] text-center text-xs">
+          Page {page} of {totalPages}
         </span>
-        <button
-          className="pg-btn"
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-8 w-8"
           disabled={page >= totalPages}
-          onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+          onClick={() => setPage(page + 1)}
         >
-          <ChevronRight size={15} />
-        </button>
+          <ChevronRight className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );

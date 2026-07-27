@@ -1,75 +1,64 @@
-import { Search, Plus, Download } from "lucide-react";
+import { Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 /**
- * Shared list-page toolbar: search box + arbitrary filter <select>s + actions.
- * Used by Students, Student Groups, Attendance, Assessments, Results, Teachers,
- * Guardians, Fees and HR list pages so the search/filter UI stays consistent.
+ * Toolbar with a search input and optional filter dropdowns.
+ *
+ * @param {{ search: string, onSearch: (v: string) => void,
+ *           filters?: Array<{ key: string, label: string, value: string,
+ *                             onChange: (v: string) => void,
+ *                             options: string[] }> }} props
  */
-export default function Toolbar({
-  search,
-  onSearch,
-  filters = [],
-  onCreate,
-  createLabel,
-  onExport,
-  extra,
-  searchProps = {},
-  filterProps = {},
-}) {
+export default function Toolbar({ search, onSearch, filters = [] }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: 10,
-        flexWrap: "wrap",
-        alignItems: "center",
-        marginBottom: 16,
-      }}
-    >
-      <div
-        className="input-ico"
-        style={{ maxWidth: 280, flex: "1 1 220px", ...searchProps.style }}
-      >
-        <Search />
-        <input
-          className="input"
-          placeholder="Search…"
+    <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+      {/* Search */}
+      <div className="relative w-full sm:max-w-xs">
+        <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          placeholder="Search..."
           value={search}
           onChange={(e) => onSearch(e.target.value)}
+          className="pl-8 pr-8"
         />
+        {search && (
+          <button
+            onClick={() => onSearch("")}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        )}
       </div>
 
+      {/* Filters */}
       {filters.map((f) => (
-        <select
+        <Select
           key={f.key}
-          className="select"
-          value={f.value}
-          onChange={(e) => f.onChange(e.target.value)}
-          style={{ minWidth: 150, ...filterProps.style }}
+          value={f.value || "__all__"}
+          onValueChange={(v) => f.onChange(v === "__all__" ? "" : v)}
         >
-          <option value="">{f.allLabel || `All ${f.label}`}</option>
-          {f.options.map((o) => (
-            <option key={o} value={o}>
-              {o}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className="w-full sm:w-[160px]">
+            <SelectValue placeholder={f.label} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="__all__">All {f.label}</SelectItem>
+            {f.options.map((opt) => (
+              <SelectItem key={opt} value={opt}>
+                {opt}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       ))}
-
-      <div style={{ flex: 1 }} />
-      {extra}
-      {onExport && (
-        <button className="btn btn-outline" onClick={onExport}>
-          <Download size={15} />
-          Export
-        </button>
-      )}
-      {onCreate && (
-        <button className="btn btn-primary" onClick={onCreate}>
-          <Plus size={15} />
-          {createLabel || "Add"}
-        </button>
-      )}
     </div>
   );
 }
