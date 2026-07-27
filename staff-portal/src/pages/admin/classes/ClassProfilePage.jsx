@@ -89,7 +89,7 @@ export default function ClassProfilePage() {
         title={`Delete ${classData.program_name}?`}
         message="This action cannot be undone. All data associated with this class will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

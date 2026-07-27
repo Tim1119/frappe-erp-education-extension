@@ -228,7 +228,7 @@ export default function TeachersPage() {
         title={`Delete ${deleteTarget?.instructor_name}?`}
         message="This action cannot be undone."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

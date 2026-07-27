@@ -279,7 +279,7 @@ export default function FeeStructurePage() {
         title={`Delete ${deleteTarget?.program} fee structure?`}
         message="This action cannot be undone."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

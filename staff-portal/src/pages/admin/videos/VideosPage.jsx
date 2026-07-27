@@ -297,7 +297,7 @@ export default function VideosPage() {
         title={`Delete ${deleteTarget?.title}?`}
         message="This action cannot be undone. All data associated with this video will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

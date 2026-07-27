@@ -207,7 +207,7 @@ export default function FeeScheduleProfilePage() {
         title="Cancel Fee Schedule?"
         message="This action will cancel the fee schedule. This cannot be undone."
         confirmLabel="Cancel"
-        variant="danger"
+        variant="destructive"
         busy={actionLoading}
       />
 
@@ -231,7 +231,7 @@ export default function FeeScheduleProfilePage() {
         title={`Delete ${feeSchedule.name}?`}
         message="This action cannot be undone. All data associated with this fee schedule will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
         busy={actionLoading}
       />
     </>

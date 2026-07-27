@@ -271,7 +271,7 @@ export default function FeeSchedulePage() {
         title={`Delete ${deleteTarget?.name}?`}
         message="This action cannot be undone."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

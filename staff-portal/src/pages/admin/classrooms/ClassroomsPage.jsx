@@ -189,7 +189,7 @@ export default function ClassroomsPage() {
         title={`Delete ${deleteTarget?.room_name}?`}
         message="This action cannot be undone. All data associated with this classroom will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

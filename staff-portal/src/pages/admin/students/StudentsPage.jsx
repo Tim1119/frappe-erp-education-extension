@@ -262,7 +262,7 @@ export default function StudentsPage() {
 
         confirmLabel="Delete"
 
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

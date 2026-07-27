@@ -232,7 +232,7 @@ export default function ClassArmsPage() {
 
         confirmLabel="Delete"
 
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

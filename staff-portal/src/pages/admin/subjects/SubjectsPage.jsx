@@ -225,7 +225,7 @@ export default function SubjectsPage() {
         title={`Delete ${deleteTarget?.course_name}?`}
         message="This action cannot be undone. All data associated with this subject will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

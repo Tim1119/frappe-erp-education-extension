@@ -259,7 +259,7 @@ export default function StudentApplicantsPage() {
         title={`Delete ${deleteTarget?.title || deleteTarget?.first_name}?`}
         message="This action cannot be undone. All data associated with this student applicant will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

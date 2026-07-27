@@ -481,7 +481,7 @@ export default function QuizProfilePage() {
         title={`Delete ${quiz.title}?`}
         message="This action cannot be undone. All data associated with this quiz will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

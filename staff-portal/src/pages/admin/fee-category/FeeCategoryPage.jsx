@@ -176,7 +176,7 @@ export default function FeeCategoryPage() {
         title={`Delete ${deleteTarget?.category_name}?`}
         message="This action cannot be undone. All data associated with this fee category will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

@@ -445,7 +445,7 @@ export default function StudentApplicantProfilePage() {
         title={`Delete ${fullName}?`}
         message="This action cannot be undone. All data associated with this student applicant will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

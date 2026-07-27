@@ -241,7 +241,7 @@ export default function StudentAdmissionProfilePage() {
         title={`Delete ${admission.title || admission.name}?`}
         message="This action cannot be undone. All data associated with this student admission will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

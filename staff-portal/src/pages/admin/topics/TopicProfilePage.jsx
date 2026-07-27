@@ -434,7 +434,7 @@ export default function TopicProfilePage() {
         title={`Delete ${topic.topic_name}?`}
         message="This action cannot be undone. All data associated with this topic will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

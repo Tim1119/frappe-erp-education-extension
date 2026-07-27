@@ -211,7 +211,7 @@ export default function StudentAdmissionsPage() {
         title={`Delete ${deleteTarget?.title || deleteTarget?.name} admission?`}
         message="This action cannot be undone."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

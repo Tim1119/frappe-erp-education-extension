@@ -97,7 +97,7 @@
 //         title={`Delete ${feeStructure.program} fee structure?`}
 //         message="This action cannot be undone. All data associated with this fee structure will be permanently removed."
 //         confirmLabel="Delete"
-//         variant="danger"
+//         variant="destructive"
 //       />
 //     </>
 //   );
@@ -267,7 +267,7 @@ export default function FeeStructureProfilePage() {
         title={`Delete ${feeStructure.program} fee structure?`}
         message="This action cannot be undone. All data associated with this fee structure will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
 
       <ConfirmModal
@@ -287,7 +287,7 @@ export default function FeeStructureProfilePage() {
         title={`Cancel ${feeStructure.program} fee structure?`}
         message="This marks the fee structure as cancelled."
         confirmLabel="Cancel Document"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );

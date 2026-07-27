@@ -712,7 +712,7 @@ export default function FeeScheduleForm({ feeSchedule, onSave, onSubmit, onCance
         title="Cancel Fee Schedule?"
         message="This action will cancel the fee schedule. This cannot be undone."
         confirmLabel="Cancel Schedule"
-        variant="danger"
+        variant="destructive"
         busy={actionLoading}
       />
 

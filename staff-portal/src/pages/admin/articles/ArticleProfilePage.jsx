@@ -166,7 +166,7 @@ export default function ArticleProfilePage() {
         title={`Delete ${article.title}?`}
         message="This action cannot be undone. All data associated with this article will be permanently removed."
         confirmLabel="Delete"
-        variant="danger"
+        variant="destructive"
       />
     </>
   );
