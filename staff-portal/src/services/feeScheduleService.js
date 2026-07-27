@@ -9,6 +9,9 @@ export function getFeeSchedules({
   fee_structure = "",
   program = "",
   status = "",
+  academic_year = "",
+  academic_term = "",
+  student_category = "",
   pageSize = 20,
 } = {}) {
   return api(`${METHOD}.get_fee_schedules`, {
@@ -18,6 +21,9 @@ export function getFeeSchedules({
     fee_structure: fee_structure || undefined,
     program: program || undefined,
     status: status || undefined,
+    academic_year: academic_year || undefined,
+    academic_term: academic_term || undefined,
+    student_category: student_category || undefined,
   });
 }
 

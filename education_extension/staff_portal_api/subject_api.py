@@ -9,6 +9,7 @@ def get_subjects(
     page_size=20,
     search=None,
     department=None,
+    topic=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -18,6 +19,23 @@ def get_subjects(
 
     if department:
         filters["department"] = department
+
+    if topic:
+        # Topic -> Course Topic rows referencing it -> parent Courses (Subjects)
+        course_names = frappe.get_all(
+            "Course Topic",
+            filters={"topic": topic, "parenttype": "Course"},
+            pluck="parent",
+        )
+        if not course_names:
+            return {
+                "rows": [],
+                "count": 0,
+                "page": page,
+                "page_size": page_size,
+                "total_pages": 0,
+            }
+        filters["name"] = ["in", course_names]
 
     if search:
         or_filters = [

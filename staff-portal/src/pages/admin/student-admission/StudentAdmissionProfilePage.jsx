@@ -114,8 +114,8 @@ export default function StudentAdmissionProfilePage() {
     {
       group: "Student",
       items: [
-        { label: "Student Applicant", icon: BookOpen, path: `/dashboard/student-applicants?admission=${encodeURIComponent(admission.name)}` },
-        { label: "Student", icon: BookOpen, path: `/dashboard/students?admission=${encodeURIComponent(admission.name)}` },
+        { label: "Student Applicant", icon: BookOpen, path: `/dashboard/student-applicants?student_admission=${encodeURIComponent(admission.name)}` },
+        { label: "Student", icon: BookOpen, path: `/dashboard/students?student_admission=${encodeURIComponent(admission.name)}` },
       ],
     },
   ];

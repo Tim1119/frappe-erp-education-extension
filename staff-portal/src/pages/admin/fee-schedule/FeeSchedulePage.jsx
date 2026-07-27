@@ -12,6 +12,7 @@ import Toolbar from "@/components/shared/Toolbar";
 import Pager from "@/components/shared/Pager";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import ActiveFilterChip from "@/components/shared/ActiveFilterChip";
 
 import { usePagination } from "@/hooks";
 import { getErrorMessage } from "@/utils/errors.js";
@@ -19,6 +20,8 @@ import { getErrorMessage } from "@/utils/errors.js";
 import {
   getFeeSchedules,
   deleteFeeSchedule,
+  getAcademicYears,
+  getAcademicTerms,
 } from "@/services/feeScheduleService.js";
 
 // Status badge component
@@ -55,9 +58,16 @@ function StatusBadge({ status }) {
 
 export default function FeeSchedulePage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const feeStructureFilter = searchParams.get('fee_structure') || '';
   const programFilterFromUrl = searchParams.get('program') || '';
+  const studentCategoryFilter = searchParams.get('student_category') || '';
+
+  function clearParam(key) {
+    const next = new URLSearchParams(searchParams);
+    next.delete(key);
+    setSearchParams(next);
+  }
 
   const { page, setPage, reset } = usePagination(1);
 
@@ -67,7 +77,23 @@ export default function FeeSchedulePage() {
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [academicYearFilter, setAcademicYearFilter] = useState(searchParams.get("academic_year") || "");
+  const [academicTermFilter, setAcademicTermFilter] = useState(searchParams.get("academic_term") || "");
+  const [academicYearOptions, setAcademicYearOptions] = useState([]);
+  const [academicTermOptions, setAcademicTermOptions] = useState([]);
   const [deleteTarget, setDeleteTarget] = useState(null);
+
+  useEffect(() => {
+    getAcademicYears()
+      .then((r) => setAcademicYearOptions((r || []).map((y) => y.name)))
+      .catch(() => setAcademicYearOptions([]));
+  }, []);
+
+  useEffect(() => {
+    getAcademicTerms(academicYearFilter || undefined)
+      .then((r) => setAcademicTermOptions((r || []).map((t) => t.name)))
+      .catch(() => setAcademicTermOptions([]));
+  }, [academicYearFilter]);
 
   async function loadItems() {
     try {
@@ -78,6 +104,9 @@ export default function FeeSchedulePage() {
         fee_structure: feeStructureFilter,
         program: programFilterFromUrl,
         status: statusFilter,
+        academic_year: academicYearFilter,
+        academic_term: academicTermFilter,
+        student_category: studentCategoryFilter,
       });
       setItems(result.rows || []);
       setTotalCount(result.count || 0);
@@ -91,13 +120,13 @@ export default function FeeSchedulePage() {
 
   useEffect(() => {
     loadItems();
-  }, [page, search, statusFilter, feeStructureFilter, programFilterFromUrl]);
+  }, [page, search, statusFilter, feeStructureFilter, programFilterFromUrl, academicYearFilter, academicTermFilter, studentCategoryFilter]);
 
   // Reset to page 1 whenever the URL-driven filters change
   useEffect(() => {
     reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [feeStructureFilter, programFilterFromUrl]);
+  }, [feeStructureFilter, programFilterFromUrl, studentCategoryFilter]);
 
   async function confirmDelete() {
     try {
@@ -151,8 +180,32 @@ export default function FeeSchedulePage() {
             },
             options: ["Draft", "Cancelled", "Invoice Pending", "Order Pending", "In Process", "Invoice Created", "Order Created", "Failed"],
           },
+          {
+            key: "academic_year",
+            label: "Academic Year",
+            value: academicYearFilter,
+            onChange: (v) => {
+              setAcademicYearFilter(v);
+              reset();
+            },
+            options: academicYearOptions,
+          },
+          {
+            key: "academic_term",
+            label: "Academic Term",
+            value: academicTermFilter,
+            onChange: (v) => {
+              setAcademicTermFilter(v);
+              reset();
+            },
+            options: academicTermOptions,
+          },
         ]}
       />
+
+      <ActiveFilterChip label="Fee Structure" value={feeStructureFilter} onClear={() => clearParam("fee_structure")} />
+      <ActiveFilterChip label="Class" value={programFilterFromUrl} onClear={() => clearParam("program")} />
+      <ActiveFilterChip label="Student Category" value={studentCategoryFilter} onClear={() => clearParam("student_category")} />
 
       <div className="panel">
         <div style={{ overflowX: "auto" }}>

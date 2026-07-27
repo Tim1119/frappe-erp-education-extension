@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
@@ -15,30 +15,26 @@ import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
 import { usePagination } from "@/hooks";
 import {
-  getAcademicTerms,
-  deleteAcademicTerm,
   getAcademicYears,
-} from "@/services/academicTermService";
+  deleteAcademicYear,
+} from "@/services/academicYearService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 
-export default function AcademicTermsPage() {
+export default function AcademicYearsPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const { page, setPage } = usePagination(1);
 
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [yearFilter, setYearFilter] = useState(searchParams.get("academic_year") || "");
-  const [yearOptions, setYearOptions] = useState([]);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   async function load() {
     try {
       setLoading(true);
-      const r = await getAcademicTerms({ page, search, academic_year: yearFilter });
+      const r = await getAcademicYears({ page, search });
       setRows(r.rows || []);
       setTotal(r.count || 0);
     } catch (err) {
@@ -49,19 +45,13 @@ export default function AcademicTermsPage() {
   }
 
   useEffect(() => {
-    getAcademicYears()
-      .then((r) => setYearOptions((r || []).map((y) => y.name)))
-      .catch(() => {});
-  }, []);
-
-  useEffect(() => {
     load();
-  }, [page, search, yearFilter]);
+  }, [page, search]);
 
   async function confirmDelete() {
     try {
-      await deleteAcademicTerm(deleteTarget.name);
-      toast.success("Academic term deleted");
+      await deleteAcademicYear(deleteTarget.name);
+      toast.success("Academic year deleted");
       setDeleteTarget(null);
       load();
     } catch (err) {
@@ -72,35 +62,24 @@ export default function AcademicTermsPage() {
   return (
     <>
       <PageHeader
-        title="Academic Terms"
-        description={loading ? "Loading…" : `${total} academic terms`}
+        title="Academic Years"
+        description={loading ? "Loading…" : `${total} academic years`}
       >
-        <Button onClick={() => navigate("/dashboard/academic-term/new")}>
-          <Plus className="mr-2 h-4 w-4" /> Add Academic Term
+        <Button onClick={() => navigate("/dashboard/academic-year/new")}>
+          <Plus className="mr-2 h-4 w-4" /> Add Academic Year
         </Button>
       </PageHeader>
 
       <Toolbar
         search={search}
         onSearch={(v) => { setSearch(v); setPage(1); }}
-        filters={[
-          {
-            key: "academic_year",
-            label: "Academic Year",
-            value: yearFilter,
-            onChange: (v) => { setYearFilter(v); setPage(1); },
-            options: yearOptions,
-          },
-        ]}
       />
 
       <Card>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Title</TableHead>
               <TableHead>Academic Year</TableHead>
-              <TableHead>Term Name</TableHead>
               <TableHead className="hidden sm:table-cell">Start Date</TableHead>
               <TableHead className="hidden sm:table-cell">End Date</TableHead>
               <TableHead className="w-10" />
@@ -111,17 +90,15 @@ export default function AcademicTermsPage() {
               <TableRow
                 key={r.name}
                 className="cursor-pointer"
-                onClick={() => navigate(`/dashboard/academic-term/${encodeURIComponent(r.name)}`)}
+                onClick={() => navigate(`/dashboard/academic-year/${encodeURIComponent(r.name)}`)}
               >
-                <TableCell className="font-medium">{r.title || r.name}</TableCell>
-                <TableCell>{r.academic_year || "—"}</TableCell>
-                <TableCell>{r.term_name || "—"}</TableCell>
-                <TableCell className="hidden sm:table-cell">{fmtDate(r.term_start_date)}</TableCell>
-                <TableCell className="hidden sm:table-cell">{fmtDate(r.term_end_date)}</TableCell>
+                <TableCell className="font-medium">{r.academic_year_name || r.name}</TableCell>
+                <TableCell className="hidden sm:table-cell">{fmtDate(r.year_start_date)}</TableCell>
+                <TableCell className="hidden sm:table-cell">{fmtDate(r.year_end_date)}</TableCell>
                 <TableCell onClick={(e) => e.stopPropagation()}>
                   <RowActionsMenu
-                    onView={() => navigate(`/dashboard/academic-term/${encodeURIComponent(r.name)}`)}
-                    onEdit={() => navigate(`/dashboard/academic-term/${encodeURIComponent(r.name)}/edit`)}
+                    onView={() => navigate(`/dashboard/academic-year/${encodeURIComponent(r.name)}`)}
+                    onEdit={() => navigate(`/dashboard/academic-year/${encodeURIComponent(r.name)}/edit`)}
                     onDelete={() => setDeleteTarget(r)}
                   />
                 </TableCell>
@@ -129,8 +106,8 @@ export default function AcademicTermsPage() {
             ))}
             {!loading && rows.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6}>
-                  <EmptyState title="No academic terms found" />
+                <TableCell colSpan={4}>
+                  <EmptyState title="No academic years found" />
                 </TableCell>
               </TableRow>
             )}
@@ -143,7 +120,7 @@ export default function AcademicTermsPage() {
         open={Boolean(deleteTarget)}
         onClose={() => setDeleteTarget(null)}
         onConfirm={confirmDelete}
-        title={`Delete ${deleteTarget?.title || deleteTarget?.name}?`}
+        title={`Delete ${deleteTarget?.academic_year_name || deleteTarget?.name}?`}
         description="This action cannot be undone."
       />
     </>

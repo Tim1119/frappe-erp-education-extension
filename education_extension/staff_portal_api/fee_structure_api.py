@@ -10,6 +10,8 @@ def get_fee_structures(
     search=None,
     program=None,
     academic_year=None,
+    academic_term=None,
+    student_category=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -19,9 +21,15 @@ def get_fee_structures(
 
     if program:
         filters["program"] = program
-    
+
     if academic_year:
         filters["academic_year"] = academic_year
+
+    if academic_term:
+        filters["academic_term"] = academic_term
+
+    if student_category:
+        filters["student_category"] = student_category
 
     if search:
         or_filters = [

@@ -194,7 +194,7 @@ export default function ClassroomProfilePage() {
           key: "subject_schedules",
           label: "Subject Schedule", 
           icon: Calendar, 
-          path: `/dashboard/course-schedules?room=${classroom.name}` 
+          path: `/dashboard/subject-schedule?room=${classroom.name}`
         },
       ]
     },
@@ -205,7 +205,7 @@ export default function ClassroomProfilePage() {
           key: "assessment_plans",
           label: "Assessment Plan", 
           icon: ClipboardList, 
-          path: `/dashboard/assessment-plans?room=${classroom.name}` 
+          path: `/dashboard/assessment-plan?room=${classroom.name}`
         },
       ]
     },

@@ -9,6 +9,7 @@ import Toolbar from "@/components/shared/Toolbar";
 import Pager from "@/components/shared/Pager";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import ActiveFilterChip from "@/components/shared/ActiveFilterChip";
 
 import { useDebounce, usePagination } from "@/hooks";
 
@@ -22,8 +23,15 @@ import {
 
 export default function SubjectsPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const departmentFromUrl = searchParams.get("department") || undefined;
+  const topicFilter = searchParams.get("topic") || "";
+
+  function clearParam(key) {
+    const next = new URLSearchParams(searchParams);
+    next.delete(key);
+    setSearchParams(next);
+  }
 
   const { page, setPage, reset } = usePagination(1);
 
@@ -61,6 +69,7 @@ export default function SubjectsPage() {
         page_size: 20,
         search: debouncedSearch,
         department: departmentFilter || undefined,
+        topic: topicFilter || undefined,
       });
 
       setRows(result.rows || []);
@@ -74,12 +83,12 @@ export default function SubjectsPage() {
 
   useEffect(() => {
     load();
-  }, [page, debouncedSearch, departmentFilter]);
+  }, [page, debouncedSearch, departmentFilter, topicFilter]);
 
-  // Reset to page 1 whenever the department filter changes
+  // Reset to page 1 whenever a filter changes
   useEffect(() => {
     reset();
-  }, [departmentFilter]);
+  }, [departmentFilter, topicFilter]);
 
   async function removeSubject() {
     if (!deleteTarget) return;
@@ -126,6 +135,8 @@ export default function SubjectsPage() {
           },
         ]}
       />
+
+      <ActiveFilterChip label="Topic" value={topicFilter} onClear={() => clearParam("topic")} />
 
       <div className="panel">
         <div style={{ overflowX: "auto" }}>

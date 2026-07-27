@@ -13,6 +13,7 @@ import Toolbar from "@/components/shared/Toolbar";
 import Pager from "@/components/shared/Pager";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import ActiveFilterChip from "@/components/shared/ActiveFilterChip";
 
 import { usePagination, useDebounce } from "@/hooks";
 import { getErrorMessage } from "@/utils/errors.js";
@@ -24,7 +25,14 @@ import {
 
 export default function TopicsPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const quizFilter = searchParams.get("quiz") || "";
+
+  function clearParam(key) {
+    const next = new URLSearchParams(searchParams);
+    next.delete(key);
+    setSearchParams(next);
+  }
 
   const { page, setPage, reset } = usePagination(1);
 
@@ -44,6 +52,7 @@ export default function TopicsPage() {
         page,
         page_size: 20,
         search: debouncedSearch,
+        quiz: quizFilter || undefined,
       });
 
       setItems(result.rows || []);
@@ -58,7 +67,11 @@ export default function TopicsPage() {
 
   useEffect(() => {
     loadItems();
-  }, [page, debouncedSearch]);
+  }, [page, debouncedSearch, quizFilter]);
+
+  useEffect(() => {
+    reset();
+  }, [quizFilter]);
 
   async function confirmDelete() {
     try {
@@ -100,6 +113,8 @@ export default function TopicsPage() {
           },
         }}
       />
+
+      <ActiveFilterChip label="Quiz" value={quizFilter} onClear={() => clearParam("quiz")} />
 
       <div className="panel">
         <div style={{ overflowX: "auto" }}>

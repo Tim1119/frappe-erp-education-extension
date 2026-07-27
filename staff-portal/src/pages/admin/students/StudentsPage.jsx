@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Eye, Pencil, MoreHorizontal, Trash2 } from "lucide-react";
 
@@ -14,6 +14,7 @@ import Toolbar from "@/components/shared/Toolbar";
 import Pager from "@/components/shared/Pager";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import ActiveFilterChip from "@/components/shared/ActiveFilterChip";
 
 import { usePagination } from "@/hooks";
 
@@ -27,8 +28,17 @@ import { getErrorMessage } from "@/utils/errors.js";
 
 export default function StudentsPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const courseFilter = searchParams.get("course") || "";
+  const studentAdmissionFilter = searchParams.get("student_admission") || "";
 
-  const { page, setPage } = usePagination(1);
+  function clearParam(key) {
+    const next = new URLSearchParams(searchParams);
+    next.delete(key);
+    setSearchParams(next);
+  }
+
+  const { page, setPage, reset } = usePagination(1);
 
   const [students, setStudents] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -37,7 +47,7 @@ export default function StudentsPage() {
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [classArmFilter, setClassArmFilter] = useState("");
+  const [classArmFilter, setClassArmFilter] = useState(searchParams.get("class_arm") || "");
 
   const [classArmOptions, setClassArmOptions] = useState([]);
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -51,6 +61,8 @@ export default function StudentsPage() {
         search,
         status: statusFilter,
         class_arm: classArmFilter,
+        course: courseFilter || undefined,
+        student_admission: studentAdmissionFilter || undefined,
       });
 
       setStudents(result.rows || []);
@@ -78,7 +90,12 @@ export default function StudentsPage() {
 
   useEffect(() => {
     loadStudents();
-  }, [page, search, statusFilter, classArmFilter]);
+  }, [page, search, statusFilter, classArmFilter, courseFilter, studentAdmissionFilter]);
+
+  // Reset to page 1 whenever a URL-driven filter changes
+  useEffect(() => {
+    reset();
+  }, [courseFilter, studentAdmissionFilter]);
 
   async function confirmDelete() {
     try {
@@ -146,6 +163,9 @@ export default function StudentsPage() {
           },
         ]}
       />
+
+      <ActiveFilterChip label="Subject" value={courseFilter} onClear={() => clearParam("course")} />
+      <ActiveFilterChip label="Student Admission" value={studentAdmissionFilter} onClear={() => clearParam("student_admission")} />
 
       <div className="panel">
         <div

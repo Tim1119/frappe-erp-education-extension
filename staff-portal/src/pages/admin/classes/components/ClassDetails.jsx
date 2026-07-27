@@ -153,7 +153,7 @@ export default function ClassDetails({ classData }) {
           label: "Class Enrollment", 
           icon: GraduationCap, 
           doctype: "Program Enrollment",
-          path: `/dashboard/program-enrollments?program=${classData.name}`,
+          path: `/dashboard/class-enrollment?program=${classData.name}`,
         },
       ]
     },
@@ -172,7 +172,7 @@ export default function ClassDetails({ classData }) {
           label: "Student Log", 
           icon: ClipboardList, 
           doctype: "Student Log",
-          path: `/dashboard/student-logs?program=${classData.name}`,
+          path: `/dashboard/student-log?program=${classData.name}`,
         },
       ]
     },
@@ -184,14 +184,14 @@ export default function ClassDetails({ classData }) {
           label: "Assessment Plan", 
           icon: Award, 
           doctype: "Assessment Plan",
-          path: `/dashboard/assessment-plans?program=${classData.name}`,
+          path: `/dashboard/assessment-plan?program=${classData.name}`,
         },
         { 
           key: "assessment_results",
           label: "Assessment Result", 
           icon: ClipboardList, 
           doctype: "Assessment Result",
-          path: `/dashboard/assessment-results?program=${classData.name}`,
+          path: `/dashboard/assessment-result?program=${classData.name}`,
         },
       ]
     },

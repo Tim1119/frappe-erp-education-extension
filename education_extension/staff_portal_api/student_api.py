@@ -12,6 +12,8 @@ def get_students(
     search=None,
     status=None,
     class_arm=None,
+    course=None,
+    student_admission=None,
 ):
     """
     Returns paginated students for the staff portal.
@@ -33,6 +35,12 @@ def get_students(
             ["name", "like", f"%{search}%"],
             ["student_email_id", "like", f"%{search}%"],
         ]
+
+    # Students filtered down by one or more chained lookups (class_arm,
+    # course, student_admission) get intersected -- a student must satisfy
+    # every chained filter that was supplied, not just the last one applied.
+    name_filter_sets = []
+
     if class_arm:
         student_names = frappe.get_all(
             "Student Group Student",
@@ -41,8 +49,46 @@ def get_students(
             },
             pluck="student",
         )
+        name_filter_sets.append(set(student_names))
 
-        if not student_names:
+    if course:
+        # Course -> Student Group(s) teaching it -> students in those groups
+        group_names = frappe.get_all(
+            "Student Group",
+            filters={"course": course},
+            pluck="name",
+        )
+        student_names = (
+            frappe.get_all(
+                "Student Group Student",
+                filters={"parent": ["in", group_names]},
+                pluck="student",
+            )
+            if group_names else []
+        )
+        name_filter_sets.append(set(student_names))
+
+    if student_admission:
+        # Student Admission -> Student Applicant(s) it admitted -> Student
+        # records created from those applicants
+        applicant_names = frappe.get_all(
+            "Student Applicant",
+            filters={"student_admission": student_admission},
+            pluck="name",
+        )
+        student_names = (
+            frappe.get_all(
+                "Student",
+                filters={"student_applicant": ["in", applicant_names]},
+                pluck="name",
+            )
+            if applicant_names else []
+        )
+        name_filter_sets.append(set(student_names))
+
+    if name_filter_sets:
+        matching_names = set.intersection(*name_filter_sets)
+        if not matching_names:
             return {
                 "rows": [],
                 "count": 0,
@@ -50,8 +96,7 @@ def get_students(
                 "page_size": page_size,
                 "total_pages": 0,
             }
-
-        filters["name"] = ["in", student_names]
+        filters["name"] = ["in", list(matching_names)]
 
     rows = frappe.get_all(
         "Student",

@@ -170,8 +170,8 @@ export default function SubjectProfilePage() {
       group: "Class and Subject",
       items: [
         { key: "classes", label: "Class", icon: GraduationCap, path: `/dashboard/classes?course=${subject.name}` },
-        { key: "student_enrollments", label: "Subject Enrollment", icon: Users, path: `/dashboard/program-enrollments?course=${subject.name}` },
-        { key: "subject_schedules", label: "Subject Schedule", icon: Calendar, path: `/dashboard/course-schedules?course=${subject.name}` },
+        { key: "student_enrollments", label: "Subject Enrollment", icon: Users, path: `/dashboard/subject-enrollment?course=${subject.name}` },
+        { key: "subject_schedules", label: "Subject Schedule", icon: Calendar, path: `/dashboard/subject-schedule?course=${subject.name}` },
       ]
     },
     {
@@ -184,8 +184,8 @@ export default function SubjectProfilePage() {
     {
       group: "Assessment",
       items: [
-        { key: "assessment_plans", label: "Assessment Plan", icon: ClipboardList, path: `/dashboard/assessment-plans?course=${subject.name}` },
-        { key: "assessment_results", label: "Assessment Result", icon: Award, path: `/dashboard/assessment-results?course=${subject.name}` },
+        { key: "assessment_plans", label: "Assessment Plan", icon: ClipboardList, path: `/dashboard/assessment-plan?course=${subject.name}` },
+        { key: "assessment_results", label: "Assessment Result", icon: Award, path: `/dashboard/assessment-result?course=${subject.name}` },
       ]
     },
   ];

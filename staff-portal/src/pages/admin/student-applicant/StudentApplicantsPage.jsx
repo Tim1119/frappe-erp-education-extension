@@ -8,6 +8,7 @@ import Toolbar from "@/components/shared/Toolbar";
 import Pager from "@/components/shared/Pager";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import ActiveFilterChip from "@/components/shared/ActiveFilterChip";
 
 import { usePagination, useDebounce } from "@/hooks";
 import { getErrorMessage } from "@/utils/errors.js";
@@ -16,6 +17,8 @@ import {
   getStudentApplicants,
   deleteStudentApplicant,
   getPrograms,
+  getAcademicYears,
+  getAcademicTerms,
 } from "@/services/studentApplicantService.js";
 
 function StatusBadgeComponent({ status }) {
@@ -46,9 +49,18 @@ function StatusBadgeComponent({ status }) {
 
 export default function StudentApplicantsPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const programFromUrl = searchParams.get("program") || "";
   const statusFromUrl = searchParams.get("status") || "";
+  const academicYearFromUrl = searchParams.get("academic_year") || "";
+  const academicTermFromUrl = searchParams.get("academic_term") || "";
+  const studentAdmission = searchParams.get("student_admission") || undefined;
+
+  function clearParam(key) {
+    const next = new URLSearchParams(searchParams);
+    next.delete(key);
+    setSearchParams(next);
+  }
 
   const { page, setPage, reset } = usePagination(1);
 
@@ -61,8 +73,12 @@ export default function StudentApplicantsPage() {
 
   const [programFilter, setProgramFilter] = useState(programFromUrl);
   const [statusFilter, setStatusFilter] = useState(statusFromUrl);
+  const [academicYearFilter, setAcademicYearFilter] = useState(academicYearFromUrl);
+  const [academicTermFilter, setAcademicTermFilter] = useState(academicTermFromUrl);
   const [programOptions, setProgramOptions] = useState([]);
   const [statusOptions] = useState(["Applied", "Approved", "Rejected", "Admitted"]);
+  const [academicYearOptions, setAcademicYearOptions] = useState([]);
+  const [academicTermOptions, setAcademicTermOptions] = useState([]);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   async function loadPrograms() {
@@ -74,6 +90,21 @@ export default function StudentApplicantsPage() {
     }
   }
 
+  async function loadAcademicYears() {
+    try {
+      const result = await getAcademicYears();
+      setAcademicYearOptions((result || []).map((item) => item.name));
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    }
+  }
+
+  useEffect(() => {
+    getAcademicTerms(academicYearFilter || undefined)
+      .then((r) => setAcademicTermOptions((r || []).map((t) => t.name)))
+      .catch(() => setAcademicTermOptions([]));
+  }, [academicYearFilter]);
+
   async function loadItems() {
     try {
       setLoading(true);
@@ -83,6 +114,9 @@ export default function StudentApplicantsPage() {
         search: debouncedSearch,
         program: programFilter || undefined,
         application_status: statusFilter || undefined,
+        academic_year: academicYearFilter || undefined,
+        academic_term: academicTermFilter || undefined,
+        student_admission: studentAdmission,
       });
       setItems(result.rows || []);
       setTotalCount(result.count || 0);
@@ -96,15 +130,16 @@ export default function StudentApplicantsPage() {
 
   useEffect(() => {
     loadPrograms();
+    loadAcademicYears();
   }, []);
 
   useEffect(() => {
     loadItems();
-  }, [page, debouncedSearch, programFilter, statusFilter]);
+  }, [page, debouncedSearch, programFilter, statusFilter, academicYearFilter, academicTermFilter, studentAdmission]);
 
   useEffect(() => {
     reset();
-  }, [programFilter, statusFilter]);
+  }, [programFilter, statusFilter, academicYearFilter, academicTermFilter, studentAdmission]);
 
   async function confirmDelete() {
     try {
@@ -143,7 +178,15 @@ export default function StudentApplicantsPage() {
         filters={[
           { key: "program", label: "Class", value: programFilter, onChange: setProgramFilter, options: programOptions },
           { key: "status", label: "Status", value: statusFilter, onChange: setStatusFilter, options: statusOptions },
+          { key: "academic_year", label: "Academic Year", value: academicYearFilter, onChange: setAcademicYearFilter, options: academicYearOptions },
+          { key: "academic_term", label: "Academic Term", value: academicTermFilter, onChange: setAcademicTermFilter, options: academicTermOptions },
         ]}
+      />
+
+      <ActiveFilterChip
+        label="Student Admission"
+        value={studentAdmission}
+        onClear={() => clearParam("student_admission")}
       />
 
       <div className="panel">

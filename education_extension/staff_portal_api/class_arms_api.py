@@ -11,6 +11,7 @@ def get_class_arms(
     program=None,
     academic_year=None,
     academic_term=None,
+    course=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -24,6 +25,8 @@ def get_class_arms(
         filters["academic_year"] = academic_year
     if academic_term:
         filters["academic_term"] = academic_term
+    if course:
+        filters["course"] = course
 
     if search:
         or_filters = [

@@ -21,6 +21,8 @@ import {
   deleteFeeStructure,
   getPrograms,
   getAcademicYears,
+  getAcademicTerms,
+  getStudentCategories,
 } from "@/services/feeStructureService.js";
 
 // Status badge component
@@ -65,23 +67,35 @@ export default function FeeStructurePage() {
   const [search, setSearch] = useState("");
   const [programFilter, setProgramFilter] = useState(searchParams.get("program") || "");
   const [academicYearFilter, setAcademicYearFilter] = useState(searchParams.get("academic_year") || "");
-  
+  const [academicTermFilter, setAcademicTermFilter] = useState(searchParams.get("academic_term") || "");
+  const [studentCategoryFilter, setStudentCategoryFilter] = useState(searchParams.get("student_category") || "");
+
   const [programOptions, setProgramOptions] = useState([]);
   const [academicYearOptions, setAcademicYearOptions] = useState([]);
+  const [academicTermOptions, setAcademicTermOptions] = useState([]);
+  const [studentCategoryOptions, setStudentCategoryOptions] = useState([]);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   async function loadFilters() {
     try {
-      const [programs, academicYears] = await Promise.all([
+      const [programs, academicYears, studentCategories] = await Promise.all([
         getPrograms(),
         getAcademicYears(),
+        getStudentCategories(),
       ]);
       setProgramOptions(programs.map(p => p.name));
       setAcademicYearOptions(academicYears.map(y => y.name));
+      setStudentCategoryOptions(studentCategories.map(c => c.name));
     } catch (err) {
       toast.error(getErrorMessage(err));
     }
   }
+
+  useEffect(() => {
+    getAcademicTerms(academicYearFilter || undefined)
+      .then((r) => setAcademicTermOptions((r || []).map((t) => t.name)))
+      .catch(() => setAcademicTermOptions([]));
+  }, [academicYearFilter]);
 
   async function loadItems() {
     try {
@@ -91,6 +105,8 @@ export default function FeeStructurePage() {
         search,
         program: programFilter,
         academic_year: academicYearFilter,
+        academic_term: academicTermFilter,
+        student_category: studentCategoryFilter,
       });
       setItems(result.rows || []);
       setTotalCount(result.count || 0);
@@ -107,15 +123,20 @@ export default function FeeStructurePage() {
 
   useEffect(() => {
     loadItems();
-  }, [page, search, programFilter, academicYearFilter]);
+  }, [page, search, programFilter, academicYearFilter, academicTermFilter, studentCategoryFilter]);
 
-  // If navigated here with a new ?program=... (e.g. from Connections), sync the filter
+  // If navigated here with a new query filter (e.g. from Connections), sync it
   useEffect(() => {
     const urlProgram = searchParams.get("program") || "";
-    if (urlProgram !== programFilter) {
-      setProgramFilter(urlProgram);
-      reset();
-    }
+    const urlAcademicYear = searchParams.get("academic_year") || "";
+    const urlAcademicTerm = searchParams.get("academic_term") || "";
+    const urlStudentCategory = searchParams.get("student_category") || "";
+    let changed = false;
+    if (urlProgram !== programFilter) { setProgramFilter(urlProgram); changed = true; }
+    if (urlAcademicYear !== academicYearFilter) { setAcademicYearFilter(urlAcademicYear); changed = true; }
+    if (urlAcademicTerm !== academicTermFilter) { setAcademicTermFilter(urlAcademicTerm); changed = true; }
+    if (urlStudentCategory !== studentCategoryFilter) { setStudentCategoryFilter(urlStudentCategory); changed = true; }
+    if (changed) reset();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
@@ -174,6 +195,26 @@ export default function FeeStructurePage() {
               reset();
             },
             options: academicYearOptions,
+          },
+          {
+            key: "academic_term",
+            label: "Academic Term",
+            value: academicTermFilter,
+            onChange: (v) => {
+              setAcademicTermFilter(v);
+              reset();
+            },
+            options: academicTermOptions,
+          },
+          {
+            key: "student_category",
+            label: "Student Category",
+            value: studentCategoryFilter,
+            onChange: (v) => {
+              setStudentCategoryFilter(v);
+              reset();
+            },
+            options: studentCategoryOptions,
           },
         ]}
       />

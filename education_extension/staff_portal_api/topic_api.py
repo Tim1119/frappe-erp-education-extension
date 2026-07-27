@@ -8,12 +8,34 @@ def get_topics(
     page=1,
     page_size=20,
     search=None,
+    quiz=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
 
     filters = {}
     or_filters = []
+
+    if quiz:
+        # Quiz -> Topic Content rows referencing it (Dynamic Link) -> parent Topics
+        topic_names = frappe.get_all(
+            "Topic Content",
+            filters={
+                "content_type": "Quiz",
+                "content": quiz,
+                "parenttype": "Topic",
+            },
+            pluck="parent",
+        )
+        if not topic_names:
+            return {
+                "rows": [],
+                "count": 0,
+                "page": page,
+                "page_size": page_size,
+                "total_pages": 0,
+            }
+        filters["name"] = ["in", topic_names]
 
     if search:
         or_filters = [

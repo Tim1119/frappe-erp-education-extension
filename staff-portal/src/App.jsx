@@ -77,6 +77,18 @@ import AcademicTermsPage from "@/pages/admin/academic-term/AcademicTermsPage";
 import AcademicTermProfilePage from "@/pages/admin/academic-term/AcademicTermProfilePage";
 import AcademicTermFormPage from "@/pages/admin/academic-term/AcademicTermFormPage";
 
+import StudentCategoriesPage from "@/pages/admin/student-category/StudentCategoriesPage";
+import StudentCategoryProfilePage from "@/pages/admin/student-category/StudentCategoryProfilePage";
+import StudentCategoryFormPage from "@/pages/admin/student-category/StudentCategoryFormPage";
+
+import StudentBatchNamesPage from "@/pages/admin/student-batch-name/StudentBatchNamesPage";
+import StudentBatchNameProfilePage from "@/pages/admin/student-batch-name/StudentBatchNameProfilePage";
+import StudentBatchNameFormPage from "@/pages/admin/student-batch-name/StudentBatchNameFormPage";
+
+import AcademicYearsPage from "@/pages/admin/academic-year/AcademicYearsPage";
+import AcademicYearProfilePage from "@/pages/admin/academic-year/AcademicYearProfilePage";
+import AcademicYearFormPage from "@/pages/admin/academic-year/AcademicYearFormPage";
+
 // ─── Loading screen ────────────────────────────────────────────────────
 
 function LoadingScreen() {
@@ -224,17 +236,31 @@ export default function App() {
         <Route path="academic-term/new" element={<AcademicTermFormPage />} />
         <Route path="academic-term/:id/edit" element={<AcademicTermFormPage />} />
         <Route path="academic-term/:id" element={<AcademicTermProfilePage />} />
-       
+
+        {/* ─── Student Category ───────────────────────────── */}
+        <Route path="student-category" element={<StudentCategoriesPage />} />
+        <Route path="student-category/new" element={<StudentCategoryFormPage />} />
+        <Route path="student-category/:id/edit" element={<StudentCategoryFormPage />} />
+        <Route path="student-category/:id" element={<StudentCategoryProfilePage />} />
+
+        {/* ─── Student Batch Name ─────────────────────────── */}
+        <Route path="student-batch-name" element={<StudentBatchNamesPage />} />
+        <Route path="student-batch-name/new" element={<StudentBatchNameFormPage />} />
+        <Route path="student-batch-name/:id/edit" element={<StudentBatchNameFormPage />} />
+        <Route path="student-batch-name/:id" element={<StudentBatchNameProfilePage />} />
+
+        {/* ─── Academic Year ───────────────────────────────── */}
+        <Route path="academic-year" element={<AcademicYearsPage />} />
+        <Route path="academic-year/new" element={<AcademicYearFormPage />} />
+        <Route path="academic-year/:id/edit" element={<AcademicYearFormPage />} />
+        <Route path="academic-year/:id" element={<AcademicYearProfilePage />} />
 
 
         {/* ─── Placeholder routes ─────────────────────────────── */}
         <Route path="student-log" element={<PH title="Student Log" />} />
         <Route path="education-settings" element={<PH title="Education Settings" />} />
-        <Route path="student-category" element={<PH title="Student Category" />} />
-        <Route path="student-batch-name" element={<PH title="Student Batch Name" />} />
         <Route path="grading-scale" element={<PH title="Grading Scale" />} />
-  
-        <Route path="academic-year" element={<PH title="Academic Year" />} />
+
         <Route path="school-settings" element={<PH title="School Settings" />} />
         <Route path="class-enrollment" element={<PH title="Class Enrollment" />} />
         <Route path="subject-enrollment" element={<PH title="Subject Enrollment" />} />

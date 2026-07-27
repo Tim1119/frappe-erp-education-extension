@@ -10,7 +10,9 @@ def get_student_applicants(
     search=None,
     program=None,
     academic_year=None,
+    academic_term=None,
     application_status=None,
+    student_admission=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -22,8 +24,12 @@ def get_student_applicants(
         filters["program"] = program
     if academic_year:
         filters["academic_year"] = academic_year
+    if academic_term:
+        filters["academic_term"] = academic_term
     if application_status:
         filters["application_status"] = application_status
+    if student_admission:
+        filters["student_admission"] = student_admission
 
     if search:
         or_filters = [

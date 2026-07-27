@@ -8,10 +8,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import {
-  getAcademicTerm,
-  deleteAcademicTerm,
+  getAcademicYear,
+  deleteAcademicYear,
   getConnections,
-} from "@/services/academicTermService";
+} from "@/services/academicYearService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 
@@ -38,19 +38,19 @@ function ConnectionLink({ label, count, onClick }) {
   );
 }
 
-export default function AcademicTermProfilePage() {
+export default function AcademicYearProfilePage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const name = decodeURIComponent(id);
 
-  const [term, setTerm] = useState(null);
+  const [year, setYear] = useState(null);
   const [connections, setConnections] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   useEffect(() => {
-    getAcademicTerm(name)
-      .then(setTerm)
+    getAcademicYear(name)
+      .then(setYear)
       .catch((err) => toast.error(getErrorMessage(err)))
       .finally(() => setLoading(false));
   }, [name]);
@@ -64,10 +64,10 @@ export default function AcademicTermProfilePage() {
 
   async function handleDelete() {
     try {
-      await deleteAcademicTerm(name);
-      toast.success("Academic term deleted successfully");
+      await deleteAcademicYear(name);
+      toast.success("Academic year deleted successfully");
       setDeleteModalOpen(false);
-      navigate("/dashboard/academic-term");
+      navigate("/dashboard/academic-year");
     } catch (err) {
       toast.error(getErrorMessage(err));
     }
@@ -82,20 +82,20 @@ export default function AcademicTermProfilePage() {
     );
   }
 
-  if (!term) {
-    return <p className="text-muted-foreground">Academic term not found.</p>;
+  if (!year) {
+    return <p className="text-muted-foreground">Academic year not found.</p>;
   }
 
   return (
     <>
       <PageHeader
         eyebrow="Settings"
-        title={term.title || term.name}
+        title={year.academic_year_name || year.name}
         button={
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
-              onClick={() => navigate(`/dashboard/academic-term/${encodeURIComponent(name)}/edit`)}
+              onClick={() => navigate(`/dashboard/academic-year/${encodeURIComponent(name)}/edit`)}
             >
               <Pencil className="mr-2 h-4 w-4" /> Edit
             </Button>
@@ -116,10 +116,9 @@ export default function AcademicTermProfilePage() {
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <Field label="Academic Year" value={term.academic_year} />
-              <Field label="Term Name" value={term.term_name} />
-              <Field label="Term Start Date" value={fmtDate(term.term_start_date)} />
-              <Field label="Term End Date" value={fmtDate(term.term_end_date)} />
+              <Field label="Academic Year Name" value={year.academic_year_name} />
+              <Field label="Year Start Date" value={fmtDate(year.year_start_date)} />
+              <Field label="Year End Date" value={fmtDate(year.year_end_date)} />
             </div>
           </CardContent>
         </Card>
@@ -139,50 +138,42 @@ export default function AcademicTermProfilePage() {
                 </p>
                 <div className="space-y-2">
                   <ConnectionLink
+                    label="Student Admission"
+                    count={connections?.student_admissions}
+                    onClick={() => navigate(`/dashboard/student-admissions?academic_year=${encodeURIComponent(name)}`)}
+                  />
+                  <ConnectionLink
                     label="Student Applicant"
                     count={connections?.student_applicants}
-                    onClick={() => navigate(`/dashboard/student-applicants?academic_term=${encodeURIComponent(name)}`)}
+                    onClick={() => navigate(`/dashboard/student-applicants?academic_year=${encodeURIComponent(name)}`)}
                   />
                   <ConnectionLink
                     label="Class Arm"
                     count={connections?.class_arms}
-                    onClick={() => navigate(`/dashboard/class-arms?academic_term=${encodeURIComponent(name)}`)}
+                    onClick={() => navigate(`/dashboard/class-arms?academic_year=${encodeURIComponent(name)}`)}
                   />
                   <ConnectionLink
                     label="Student Log"
                     count={connections?.student_logs}
-                    onClick={() => navigate(`/dashboard/student-log?academic_term=${encodeURIComponent(name)}`)}
+                    onClick={() => navigate(`/dashboard/student-log?academic_year=${encodeURIComponent(name)}`)}
                   />
                 </div>
               </div>
 
               <div>
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Fee
+                  Academic Term and Class
                 </p>
                 <div className="space-y-2">
                   <ConnectionLink
-                    label="Fee Structure"
-                    count={connections?.fee_structures}
-                    onClick={() => navigate(`/dashboard/fee-structure?academic_term=${encodeURIComponent(name)}`)}
+                    label="Academic Term"
+                    count={connections?.academic_terms}
+                    onClick={() => navigate(`/dashboard/academic-term?academic_year=${encodeURIComponent(name)}`)}
                   />
-                  <ConnectionLink
-                    label="Fee Schedule"
-                    count={connections?.fee_schedules}
-                    onClick={() => navigate(`/dashboard/fee-schedule?academic_term=${encodeURIComponent(name)}`)}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Class
-                </p>
-                <div className="space-y-2">
                   <ConnectionLink
                     label="Class Enrollment"
                     count={connections?.class_enrollments}
-                    onClick={() => navigate(`/dashboard/class-enrollment?academic_term=${encodeURIComponent(name)}`)}
+                    onClick={() => navigate(`/dashboard/class-enrollment?academic_year=${encodeURIComponent(name)}`)}
                   />
                 </div>
               </div>
@@ -195,12 +186,30 @@ export default function AcademicTermProfilePage() {
                   <ConnectionLink
                     label="Assessment Plan"
                     count={connections?.assessment_plans}
-                    onClick={() => navigate(`/dashboard/assessment-plan?academic_term=${encodeURIComponent(name)}`)}
+                    onClick={() => navigate(`/dashboard/assessment-plan?academic_year=${encodeURIComponent(name)}`)}
                   />
                   <ConnectionLink
                     label="Assessment Result"
                     count={connections?.assessment_results}
-                    onClick={() => navigate(`/dashboard/assessment-result?academic_term=${encodeURIComponent(name)}`)}
+                    onClick={() => navigate(`/dashboard/assessment-result?academic_year=${encodeURIComponent(name)}`)}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Fee
+                </p>
+                <div className="space-y-2">
+                  <ConnectionLink
+                    label="Fee Schedule"
+                    count={connections?.fee_schedules}
+                    onClick={() => navigate(`/dashboard/fee-schedule?academic_year=${encodeURIComponent(name)}`)}
+                  />
+                  <ConnectionLink
+                    label="Fee Structure"
+                    count={connections?.fee_structures}
+                    onClick={() => navigate(`/dashboard/fee-structure?academic_year=${encodeURIComponent(name)}`)}
                   />
                 </div>
               </div>
@@ -213,7 +222,7 @@ export default function AcademicTermProfilePage() {
         open={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={handleDelete}
-        title={`Delete ${term.title || term.name}?`}
+        title={`Delete ${year.academic_year_name || year.name}?`}
         description="This action cannot be undone. Review any linked records before deleting."
       />
     </>

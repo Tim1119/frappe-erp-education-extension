@@ -8,6 +8,8 @@ export function getFeeStructures({
   search = "",
   program = "",
   academic_year = "",
+  academic_term = "",
+  student_category = "",
   pageSize = 20,
 } = {}) {
   return api(`${METHOD}.get_fee_structures`, {
@@ -16,6 +18,8 @@ export function getFeeStructures({
     search: search || undefined,
     program: program || undefined,
     academic_year: academic_year || undefined,
+    academic_term: academic_term || undefined,
+    student_category: student_category || undefined,
   });
 }
 

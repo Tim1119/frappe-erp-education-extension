@@ -9,6 +9,7 @@ import Toolbar from "@/components/shared/Toolbar";
 import Pager from "@/components/shared/Pager";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import ActiveFilterChip from "@/components/shared/ActiveFilterChip";
 
 import { useDebounce, usePagination } from "@/hooks";
 
@@ -21,8 +22,17 @@ import {
 
 export default function ClassArmsPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const program = searchParams.get("program") || undefined;
+  const academicYear = searchParams.get("academic_year") || undefined;
+  const academicTerm = searchParams.get("academic_term") || undefined;
+  const course = searchParams.get("course") || undefined;
+
+  function clearParam(key) {
+    const next = new URLSearchParams(searchParams);
+    next.delete(key);
+    setSearchParams(next);
+  }
 
   const { page, setPage, reset } = usePagination(1);
 
@@ -50,6 +60,9 @@ export default function ClassArmsPage() {
         search: debouncedSearch,
 
         program,
+        academic_year: academicYear,
+        academic_term: academicTerm,
+        course,
       });
 
       setRows(result.rows || []);
@@ -64,12 +77,12 @@ export default function ClassArmsPage() {
 
   useEffect(() => {
     load();
-  }, [page, debouncedSearch, program]);
+  }, [page, debouncedSearch, program, academicYear, academicTerm, course]);
 
-  // Reset to page 1 whenever the program filter changes
+  // Reset to page 1 whenever a URL-driven filter changes
   useEffect(() => {
     reset();
-  }, [program]);
+  }, [program, academicYear, academicTerm, course]);
 
   async function removeClassArm() {
     if (!deleteTarget) return;
@@ -116,6 +129,11 @@ export default function ClassArmsPage() {
           reset();
         }}
       />
+
+      <ActiveFilterChip label="Class" value={program} onClear={() => clearParam("program")} />
+      <ActiveFilterChip label="Academic Year" value={academicYear} onClear={() => clearParam("academic_year")} />
+      <ActiveFilterChip label="Academic Term" value={academicTerm} onClear={() => clearParam("academic_term")} />
+      <ActiveFilterChip label="Subject" value={course} onClear={() => clearParam("course")} />
 
       <div className="panel">
         <div
