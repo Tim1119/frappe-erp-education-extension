@@ -89,6 +89,10 @@ import AcademicYearsPage from "@/pages/admin/academic-year/AcademicYearsPage";
 import AcademicYearProfilePage from "@/pages/admin/academic-year/AcademicYearProfilePage";
 import AcademicYearFormPage from "@/pages/admin/academic-year/AcademicYearFormPage";
 
+import GradingScalesPage from "@/pages/admin/grading-scale/GradingScalesPage";
+import GradingScaleProfilePage from "@/pages/admin/grading-scale/GradingScaleProfilePage";
+import GradingScaleFormPage from "@/pages/admin/grading-scale/GradingScaleFormPage";
+
 // ─── Loading screen ────────────────────────────────────────────────────
 
 function LoadingScreen() {
@@ -255,11 +259,16 @@ export default function App() {
         <Route path="academic-year/:id/edit" element={<AcademicYearFormPage />} />
         <Route path="academic-year/:id" element={<AcademicYearProfilePage />} />
 
+        {/* ─── Grading Scale ───────────────────────────────── */}
+        <Route path="grading-scale" element={<GradingScalesPage />} />
+        <Route path="grading-scale/new" element={<GradingScaleFormPage />} />
+        <Route path="grading-scale/:id/edit" element={<GradingScaleFormPage />} />
+        <Route path="grading-scale/:id" element={<GradingScaleProfilePage />} />
+
 
         {/* ─── Placeholder routes ─────────────────────────────── */}
         <Route path="student-log" element={<PH title="Student Log" />} />
         <Route path="education-settings" element={<PH title="Education Settings" />} />
-        <Route path="grading-scale" element={<PH title="Grading Scale" />} />
 
         <Route path="school-settings" element={<PH title="School Settings" />} />
         <Route path="class-enrollment" element={<PH title="Class Enrollment" />} />

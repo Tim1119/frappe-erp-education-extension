@@ -10,6 +10,7 @@ def get_subjects(
     search=None,
     department=None,
     topic=None,
+    default_grading_scale=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -19,6 +20,9 @@ def get_subjects(
 
     if department:
         filters["department"] = department
+
+    if default_grading_scale:
+        filters["default_grading_scale"] = default_grading_scale
 
     if topic:
         # Topic -> Course Topic rows referencing it -> parent Courses (Subjects)

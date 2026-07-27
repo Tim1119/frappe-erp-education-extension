@@ -26,6 +26,7 @@ export default function SubjectsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const departmentFromUrl = searchParams.get("department") || undefined;
   const topicFilter = searchParams.get("topic") || "";
+  const gradingScaleFilter = searchParams.get("default_grading_scale") || "";
 
   function clearParam(key) {
     const next = new URLSearchParams(searchParams);
@@ -70,6 +71,7 @@ export default function SubjectsPage() {
         search: debouncedSearch,
         department: departmentFilter || undefined,
         topic: topicFilter || undefined,
+        default_grading_scale: gradingScaleFilter || undefined,
       });
 
       setRows(result.rows || []);
@@ -83,12 +85,12 @@ export default function SubjectsPage() {
 
   useEffect(() => {
     load();
-  }, [page, debouncedSearch, departmentFilter, topicFilter]);
+  }, [page, debouncedSearch, departmentFilter, topicFilter, gradingScaleFilter]);
 
   // Reset to page 1 whenever a filter changes
   useEffect(() => {
     reset();
-  }, [departmentFilter, topicFilter]);
+  }, [departmentFilter, topicFilter, gradingScaleFilter]);
 
   async function removeSubject() {
     if (!deleteTarget) return;
@@ -137,6 +139,7 @@ export default function SubjectsPage() {
       />
 
       <ActiveFilterChip label="Topic" value={topicFilter} onClear={() => clearParam("topic")} />
+      <ActiveFilterChip label="Grading Scale" value={gradingScaleFilter} onClear={() => clearParam("default_grading_scale")} />
 
       <div className="panel">
         <div style={{ overflowX: "auto" }}>
