@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import PageHeader from "@/components/shared/PageHeader";
+import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import {
   getStudentCategory,
@@ -87,17 +87,23 @@ export default function StudentCategoryProfilePage() {
 
   return (
     <>
-      <PageHeader title={category.category || category.name}>
-        <Button
-          variant="outline"
-          onClick={() => navigate(`/dashboard/student-category/${encodeURIComponent(name)}/edit`)}
-        >
-          <Pencil className="mr-2 h-4 w-4" /> Edit
-        </Button>
-        <Button variant="destructive" onClick={() => setDeleteModalOpen(true)}>
-          <Trash2 className="mr-2 h-4 w-4" /> Delete
-        </Button>
-      </PageHeader>
+      <PageHeader
+        eyebrow="Settings"
+        title={category.category || category.name}
+        button={
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              onClick={() => navigate(`/dashboard/student-category/${encodeURIComponent(name)}/edit`)}
+            >
+              <Pencil className="mr-2 h-4 w-4" /> Edit
+            </Button>
+            <Button variant="destructive" onClick={() => setDeleteModalOpen(true)}>
+              <Trash2 className="mr-2 h-4 w-4" /> Delete
+            </Button>
+          </div>
+        }
+      />
 
       <div className="space-y-4">
         <Card>
