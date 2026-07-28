@@ -355,6 +355,51 @@ profile page, grouped the same way the JSON groups them, each item a
 clickable count-badge linking to the filtered list. See
 `AcademicTermProfilePage.jsx` for the reference implementation.
 
+**A `links: []` array does NOT necessarily mean a doctype has zero real
+Connections -- Frappe has a second, code-based way to declare them that
+lives outside the JSON entirely.** Any doctype can ship a
+`<doctype_slug>_dashboard.py` file alongside its own `.py`/`.json`
+(e.g. `course_schedule/course_schedule_dashboard.py` next to
+`course_schedule.py`), exposing a `get_data()` function shaped like:
+
+```python
+def get_data():
+    return {
+        "fieldname": "course_schedule",
+        "transactions": [{"label": _("Attendance"), "items": ["Student Attendance"]}],
+    }
+```
+
+`"fieldname"` is the link field on the *target* doctype(s) that points
+back at this record; each `items` entry under a `transactions` group is
+a target doctype whose count is `frappe.db.count(<item>, {<fieldname>:
+<this record's name>})`. This is exactly how Course Schedule's real
+"Attendance" Connections group (linking to Student Attendance) is
+declared -- its own `course_schedule.json` has `"links": []`, and the
+Attendance group would have been silently missed by checking the JSON
+alone, which is exactly what happened building the Subject Schedule
+module: the JSON was checked and correctly found empty, but a
+`_dashboard.py` file's existence was never independently considered
+because nothing had documented that mechanism yet.
+
+**Going forward, checking for Connections on any new module means
+checking BOTH of these, not just the JSON:**
+
+```bash
+# 1. The JSON links array (existing check)
+grep -n '"links"' -A 30 <doctype.json>
+
+# 2. Whether a dashboard file exists alongside the doctype's own files
+find apps/education/education/education/doctype/<doctype_slug>/ -name "*_dashboard.py"
+```
+
+If a `_dashboard.py` file exists, read its `get_data()` return value the
+same way you'd read the JSON `links` array -- build the Connections
+`Card` from its `fieldname`/`transactions` shape, verify the named
+target doctype(s) really have that link field (don't assume), and wire
+a `get_connections()` backend function computing counts via
+`frappe.db.count()` exactly as shown above.
+
 ---
 
 ## 5. Terminology translation -- Program->Class, Course->Subject, etc.

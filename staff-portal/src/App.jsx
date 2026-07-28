@@ -114,6 +114,10 @@ import FeesProfilePage from "@/pages/admin/fees/FeesProfilePage";
 import StudentFeeCollectionReportPage from "@/pages/admin/reports/StudentFeeCollectionReportPage";
 import ClassFeeCollectionReportPage from "@/pages/admin/reports/ClassFeeCollectionReportPage";
 
+import SubjectSchedulesPage from "@/pages/admin/subject-schedule/SubjectSchedulesPage";
+import SubjectScheduleProfilePage from "@/pages/admin/subject-schedule/SubjectScheduleProfilePage";
+import SubjectScheduleFormPage from "@/pages/admin/subject-schedule/SubjectScheduleFormPage";
+
 // ─── Loading screen ────────────────────────────────────────────────────
 
 function LoadingScreen() {
@@ -307,7 +311,10 @@ export default function App() {
         <Route path="fees/:id" element={<FeesProfilePage />} />
         <Route path="student-fee-collection-report" element={<StudentFeeCollectionReportPage />} />
         <Route path="class-fee-collection-report" element={<ClassFeeCollectionReportPage />} />
-        <Route path="subject-schedule" element={<PH title="Subject Schedule" />} />
+        <Route path="subject-schedule" element={<SubjectSchedulesPage />} />
+        <Route path="subject-schedule/new" element={<SubjectScheduleFormPage />} />
+        <Route path="subject-schedule/:id/edit" element={<SubjectScheduleFormPage />} />
+        <Route path="subject-schedule/:id" element={<SubjectScheduleProfilePage />} />
         <Route path="subject-scheduling-tool" element={<PH title="Subject Scheduling Tool" />} />
         <Route path="student-attendance" element={<PH title="Student Attendance" />} />
         <Route path="student-leave-application" element={<PH title="Student Leave Application" />} />
