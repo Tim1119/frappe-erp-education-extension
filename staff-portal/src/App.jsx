@@ -126,6 +126,8 @@ import AssessmentPlanStatusPage from "@/pages/admin/reports/AssessmentPlanStatus
 
 import StudentReportGenerationToolPage from "@/pages/admin/student-report-generation-tool/StudentReportGenerationToolPage";
 
+import StudentGuardianContactsPage from "@/pages/admin/reports/StudentGuardianContactsPage";
+
 // ─── Loading screen ────────────────────────────────────────────────────
 
 function LoadingScreen() {
@@ -347,7 +349,7 @@ export default function App() {
         <Route path="subject-scheduling-tool-page" element={<SubjectSchedulingToolPage />} />
         <Route path="school-term-result-generator" element={<PH title="School Term Result Generator" />} />
         <Route path="bulk-term-result-generator" element={<PH title="Bulk School Term Result Generator" />} />
-        <Route path="student-guardian-contacts" element={<PH title="Student and Guardian Contact Details" />} />
+        <Route path="student-guardian-contacts" element={<StudentGuardianContactsPage />} />
       </Route>
 
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
