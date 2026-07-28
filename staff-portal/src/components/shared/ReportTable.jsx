@@ -33,6 +33,9 @@ function formatDisplay(value, fieldtype) {
  *   rows currently on screen, so a sibling export/print toolbar can act on
  *   exactly what the user sees rather than the full unfiltered dataset.
  * @param {string}   [emptyMessage]
+ * @param {boolean}  [showTotals] — mirrors the real report's own
+ *   add_total_row flag; default true to match the reports already built
+ *   against this component (both had add_total_row: 1).
  */
 export default function ReportTable({
   columns,
@@ -40,6 +43,7 @@ export default function ReportTable({
   onRowClick,
   onVisibleRowsChange,
   emptyMessage = "No data found",
+  showTotals = true,
 }) {
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState({ field: null, dir: null });
@@ -162,7 +166,7 @@ export default function ReportTable({
             </tr>
           )}
         </tbody>
-        {sortedRows.length > 0 && (
+        {showTotals && sortedRows.length > 0 && (
           <tfoot>
             <tr className="border-t-2 bg-muted/50 font-semibold">
               {columns.map((col) => (

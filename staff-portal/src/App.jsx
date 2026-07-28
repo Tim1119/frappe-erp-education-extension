@@ -120,6 +120,12 @@ import SubjectScheduleFormPage from "@/pages/admin/subject-schedule/SubjectSched
 
 import SubjectSchedulingToolPage from "@/pages/admin/subject-scheduling-tool/SubjectSchedulingToolPage";
 
+import SubjectAssessmentReportPage from "@/pages/admin/reports/SubjectAssessmentReportPage";
+import FinalAssessmentGradesPage from "@/pages/admin/reports/FinalAssessmentGradesPage";
+import AssessmentPlanStatusPage from "@/pages/admin/reports/AssessmentPlanStatusPage";
+
+import StudentReportGenerationToolPage from "@/pages/admin/student-report-generation-tool/StudentReportGenerationToolPage";
+
 // ─── Loading screen ────────────────────────────────────────────────────
 
 function LoadingScreen() {
@@ -330,10 +336,10 @@ export default function App() {
         <Route path="assessment-plan" element={<PH title="Assessment Plan" />} />
         <Route path="assessment-result" element={<PH title="Assessment Result" />} />
         <Route path="assessment-criteria" element={<PH title="Assessment Criteria" />} />
-        <Route path="subject-assessment-report" element={<PH title="Subject wise Assessment Report" />} />
-        <Route path="final-assessment-grades" element={<PH title="Final Assessment Grades" />} />
-        <Route path="assessment-plan-status" element={<PH title="Assessment Plan Status" />} />
-        <Route path="student-report-generation" element={<PH title="Student Report Generation Tool" />} />
+        <Route path="subject-assessment-report" element={<SubjectAssessmentReportPage />} />
+        <Route path="final-assessment-grades" element={<FinalAssessmentGradesPage />} />
+        <Route path="assessment-plan-status" element={<AssessmentPlanStatusPage />} />
+        <Route path="student-report-generation" element={<StudentReportGenerationToolPage />} />
         <Route path="student-attendance-tool" element={<PH title="Student Attendance Tool" />} />
         <Route path="assessment-result-tool" element={<PH title="Assessment Result Tool" />} />
         <Route path="student-group-creation" element={<PH title="Student Group Creation Tool" />} />
