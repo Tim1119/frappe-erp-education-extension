@@ -118,6 +118,8 @@ import SubjectSchedulesPage from "@/pages/admin/subject-schedule/SubjectSchedule
 import SubjectScheduleProfilePage from "@/pages/admin/subject-schedule/SubjectScheduleProfilePage";
 import SubjectScheduleFormPage from "@/pages/admin/subject-schedule/SubjectScheduleFormPage";
 
+import SubjectSchedulingToolPage from "@/pages/admin/subject-scheduling-tool/SubjectSchedulingToolPage";
+
 // ─── Loading screen ────────────────────────────────────────────────────
 
 function LoadingScreen() {
@@ -315,7 +317,7 @@ export default function App() {
         <Route path="subject-schedule/new" element={<SubjectScheduleFormPage />} />
         <Route path="subject-schedule/:id/edit" element={<SubjectScheduleFormPage />} />
         <Route path="subject-schedule/:id" element={<SubjectScheduleProfilePage />} />
-        <Route path="subject-scheduling-tool" element={<PH title="Subject Scheduling Tool" />} />
+        <Route path="subject-scheduling-tool" element={<SubjectSchedulingToolPage />} />
         <Route path="student-attendance" element={<PH title="Student Attendance" />} />
         <Route path="student-leave-application" element={<PH title="Student Leave Application" />} />
         <Route path="student-monthly-attendance" element={<PH title="Student Monthly Attendance Sheet" />} />
@@ -336,7 +338,7 @@ export default function App() {
         <Route path="assessment-result-tool" element={<PH title="Assessment Result Tool" />} />
         <Route path="student-group-creation" element={<PH title="Student Group Creation Tool" />} />
         <Route path="class-enrollment-tool" element={<PH title="Class Enrollment Tool" />} />
-        <Route path="subject-scheduling-tool-page" element={<PH title="Subject Scheduling Tool" />} />
+        <Route path="subject-scheduling-tool-page" element={<SubjectSchedulingToolPage />} />
         <Route path="school-term-result-generator" element={<PH title="School Term Result Generator" />} />
         <Route path="bulk-term-result-generator" element={<PH title="Bulk School Term Result Generator" />} />
         <Route path="student-guardian-contacts" element={<PH title="Student and Guardian Contact Details" />} />
