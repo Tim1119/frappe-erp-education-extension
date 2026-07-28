@@ -108,6 +108,9 @@ import SubjectEnrollmentsPage from "@/pages/admin/subject-enrollment/SubjectEnro
 import SubjectEnrollmentProfilePage from "@/pages/admin/subject-enrollment/SubjectEnrollmentProfilePage";
 import SubjectEnrollmentFormPage from "@/pages/admin/subject-enrollment/SubjectEnrollmentFormPage";
 
+import FeesPage from "@/pages/admin/fees/FeesPage";
+import FeesProfilePage from "@/pages/admin/fees/FeesProfilePage";
+
 // ─── Loading screen ────────────────────────────────────────────────────
 
 function LoadingScreen() {
@@ -297,7 +300,8 @@ export default function App() {
         <Route path="subject-enrollment/new" element={<SubjectEnrollmentFormPage />} />
         <Route path="subject-enrollment/:id/edit" element={<SubjectEnrollmentFormPage />} />
         <Route path="subject-enrollment/:id" element={<SubjectEnrollmentProfilePage />} />
-        <Route path="fees" element={<PH title="Fees" />} />
+        <Route path="fees" element={<FeesPage />} />
+        <Route path="fees/:id" element={<FeesProfilePage />} />
         <Route path="student-fee-collection-report" element={<PH title="Student Fee Collection Report" />} />
         <Route path="class-fee-collection-report" element={<PH title="Class wise Fee Collection Report" />} />
         <Route path="subject-schedule" element={<PH title="Subject Schedule" />} />
