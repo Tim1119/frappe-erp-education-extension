@@ -22,7 +22,20 @@ import {
 import { getErrorMessage } from "@/utils/errors";
 
 function DocStatusBadge({ docstatus }) {
-  if (docstatus === 1) return <Badge variant="success">Submitted</Badge>;
+  if (docstatus === 1) {
+    // Not Badge variant="success" -- shadcn's Badge no longer supports it
+    // (see CLAUDE.md section 7: it collided with the legacy --success
+    // token). This inline pattern is the correct, safe way to show a
+    // green status badge, matching FeeSchedulePage.jsx's StatusBadge.
+    return (
+      <span
+        className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold"
+        style={{ backgroundColor: "var(--success-soft)", color: "var(--success-ink)" }}
+      >
+        Submitted
+      </span>
+    );
+  }
   if (docstatus === 2) return <Badge variant="destructive">Cancelled</Badge>;
   return <Badge variant="secondary">Draft</Badge>;
 }

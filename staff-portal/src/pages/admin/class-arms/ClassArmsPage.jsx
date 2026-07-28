@@ -179,7 +179,7 @@ export default function ClassArmsPage() {
 
                   <td>{group.academic_term || "-"}</td>
 
-                  <td>{group.course_name || "-"}</td>
+                  <td>{group.course || "-"}</td>
 
                   <td>{group.students_count || 0}</td>
 

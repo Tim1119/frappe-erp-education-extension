@@ -96,6 +96,14 @@ import GradingScaleFormPage from "@/pages/admin/grading-scale/GradingScaleFormPa
 import EducationSettingsPage from "@/pages/admin/education-settings/EducationSettingsPage";
 import SchoolSettingsPage from "@/pages/admin/school-settings/SchoolSettingsPage";
 
+import StudentLogsPage from "@/pages/admin/student-log/StudentLogsPage";
+import StudentLogProfilePage from "@/pages/admin/student-log/StudentLogProfilePage";
+import StudentLogFormPage from "@/pages/admin/student-log/StudentLogFormPage";
+
+import ClassEnrollmentsPage from "@/pages/admin/class-enrollment/ClassEnrollmentsPage";
+import ClassEnrollmentProfilePage from "@/pages/admin/class-enrollment/ClassEnrollmentProfilePage";
+import ClassEnrollmentFormPage from "@/pages/admin/class-enrollment/ClassEnrollmentFormPage";
+
 // ─── Loading screen ────────────────────────────────────────────────────
 
 function LoadingScreen() {
@@ -270,11 +278,17 @@ export default function App() {
 
 
         {/* ─── Placeholder routes ─────────────────────────────── */}
-        <Route path="student-log" element={<PH title="Student Log" />} />
+        <Route path="student-log" element={<StudentLogsPage />} />
+        <Route path="student-log/new" element={<StudentLogFormPage />} />
+        <Route path="student-log/:id/edit" element={<StudentLogFormPage />} />
+        <Route path="student-log/:id" element={<StudentLogProfilePage />} />
         <Route path="education-settings" element={<EducationSettingsPage />} />
 
         <Route path="school-settings" element={<SchoolSettingsPage />} />
-        <Route path="class-enrollment" element={<PH title="Class Enrollment" />} />
+        <Route path="class-enrollment" element={<ClassEnrollmentsPage />} />
+        <Route path="class-enrollment/new" element={<ClassEnrollmentFormPage />} />
+        <Route path="class-enrollment/:id/edit" element={<ClassEnrollmentFormPage />} />
+        <Route path="class-enrollment/:id" element={<ClassEnrollmentProfilePage />} />
         <Route path="subject-enrollment" element={<PH title="Subject Enrollment" />} />
         <Route path="fees" element={<PH title="Fees" />} />
         <Route path="student-fee-collection-report" element={<PH title="Student Fee Collection Report" />} />

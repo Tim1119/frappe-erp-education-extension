@@ -76,9 +76,9 @@ export default function StudentsPage() {
 
   async function loadClassArms() {
     try {
-      const result = await getClassArms();
+      const result = await getClassArms({ page_size: 500 });
 
-      setClassArmOptions(result.map((item) => item.name));
+      setClassArmOptions((result.rows || []).map((item) => item.name));
     } catch (err) {
       toast.error(getErrorMessage(err));
     }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Pencil, Trash2, CheckCircle2, Ban, BarChart3, Link2 } from "lucide-react";
+import { Pencil, Trash2, CheckCircle2, Ban, UserPlus, Link2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,16 +9,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { PageHeader } from "@/components/shared/OriginalPrimitives";
+import { PageHeader, Avatar } from "@/components/shared/OriginalPrimitives";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import {
-  getGradingScale,
-  deleteGradingScale,
-  submitGradingScale,
-  cancelGradingScale,
+  getClassEnrollment,
+  deleteClassEnrollment,
+  submitClassEnrollment,
+  cancelClassEnrollment,
   getConnections,
-} from "@/services/gradingScaleService";
+} from "@/services/classEnrollmentService";
 import { getErrorMessage } from "@/utils/errors";
+import { fmtDate } from "@/utils/format";
 
 function Field({ label, value }) {
   return (
@@ -45,9 +46,10 @@ function ConnectionLink({ label, count, onClick }) {
 
 function DocStatusBadge({ docstatus }) {
   if (docstatus === 1) {
-    // Not Badge variant="success" -- shadcn's Badge no longer supports it
-    // (see CLAUDE.md section 7). This inline pattern is the safe way to
-    // show a green status badge, matching FeeSchedulePage.jsx's StatusBadge.
+    // See ClassEnrollmentsPage.jsx's DocStatusBadge for why this can't be
+    // shadcn's Badge variant="success" -- themes.js's applyPreset()
+    // overwrites --success with a pre-wrapped hsl(...) string, breaking
+    // Tailwind's bg-success utility (double-wraps into invalid CSS).
     return (
       <span
         className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold"
@@ -61,12 +63,12 @@ function DocStatusBadge({ docstatus }) {
   return <Badge variant="secondary">Draft</Badge>;
 }
 
-export default function GradingScaleProfilePage() {
+export default function ClassEnrollmentProfilePage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const name = decodeURIComponent(id);
 
-  const [scale, setScale] = useState(null);
+  const [enrollment, setEnrollment] = useState(null);
   const [connections, setConnections] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -74,8 +76,8 @@ export default function GradingScaleProfilePage() {
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
 
   function load() {
-    getGradingScale(name)
-      .then(setScale)
+    getClassEnrollment(name)
+      .then(setEnrollment)
       .catch((err) => toast.error(getErrorMessage(err)))
       .finally(() => setLoading(false));
   }
@@ -94,10 +96,10 @@ export default function GradingScaleProfilePage() {
 
   async function handleDelete() {
     try {
-      await deleteGradingScale(name);
-      toast.success("Grading scale deleted successfully");
+      await deleteClassEnrollment(name);
+      toast.success("Class enrollment deleted successfully");
       setDeleteModalOpen(false);
-      navigate("/dashboard/grading-scale");
+      navigate("/dashboard/class-enrollment");
     } catch (err) {
       toast.error(getErrorMessage(err));
     }
@@ -105,8 +107,8 @@ export default function GradingScaleProfilePage() {
 
   async function handleSubmit() {
     try {
-      await submitGradingScale(name);
-      toast.success("Grading scale submitted");
+      await submitClassEnrollment(name);
+      toast.success("Class enrollment submitted");
       setSubmitModalOpen(false);
       setLoading(true);
       load();
@@ -117,8 +119,8 @@ export default function GradingScaleProfilePage() {
 
   async function handleCancel() {
     try {
-      await cancelGradingScale(name);
-      toast.success("Grading scale cancelled");
+      await cancelClassEnrollment(name);
+      toast.success("Class enrollment cancelled");
       setCancelModalOpen(false);
       setLoading(true);
       load();
@@ -136,25 +138,30 @@ export default function GradingScaleProfilePage() {
     );
   }
 
-  if (!scale) {
-    return <p className="text-muted-foreground">Grading scale not found.</p>;
+  if (!enrollment) {
+    return <p className="text-muted-foreground">Class enrollment not found.</p>;
   }
 
-  const isDraft = scale.docstatus === 0;
-  const isSubmitted = scale.docstatus === 1;
-  const isCancelled = scale.docstatus === 2;
+  const isDraft = enrollment.docstatus === 0;
+  const isSubmitted = enrollment.docstatus === 1;
+  const isCancelled = enrollment.docstatus === 2;
 
   return (
     <>
       <PageHeader
-        eyebrow="Settings"
-        title={scale.grading_scale_name || scale.name}
+        eyebrow="Admissions"
+        title={
+          <span className="inline-flex items-center gap-3">
+            <Avatar name={enrollment.student_name} src={enrollment.image} size={40} />
+            {enrollment.student_name || enrollment.name}
+          </span>
+        }
         button={
           <div className="flex items-center gap-2">
             {isDraft && (
               <Button
                 variant="outline"
-                onClick={() => navigate(`/dashboard/grading-scale/${encodeURIComponent(name)}/edit`)}
+                onClick={() => navigate(`/dashboard/class-enrollment/${encodeURIComponent(name)}/edit`)}
               >
                 <Pencil className="mr-2 h-4 w-4" /> Edit
               </Button>
@@ -182,19 +189,24 @@ export default function GradingScaleProfilePage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center gap-2 text-base">
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
+              <UserPlus className="h-4 w-4 text-muted-foreground" />
               Basic Information
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <Field label="Grading Scale Name" value={scale.grading_scale_name} />
-              <Field label="Description" value={scale.description} />
+              <Field label="Student" value={enrollment.student_name || enrollment.student} />
+              <Field label="Class" value={enrollment.program} />
+              <Field label="Academic Year" value={enrollment.academic_year} />
+              <Field label="Academic Term" value={enrollment.academic_term} />
+              <Field label="Enrollment Date" value={fmtDate(enrollment.enrollment_date)} />
+              <Field label="Student Category" value={enrollment.student_category} />
+              <Field label="Student Batch" value={enrollment.student_batch_name} />
+              <Field label="School House" value={enrollment.school_house} />
+              <Field label="Boarding Student" value={enrollment.boarding_student ? "Yes" : "No"} />
               <div>
                 <p className="text-xs text-muted-foreground">Status</p>
-                <div className="mt-1">
-                  <DocStatusBadge docstatus={scale.docstatus} />
-                </div>
+                <div className="mt-1"><DocStatusBadge docstatus={enrollment.docstatus} /></div>
               </div>
             </div>
           </CardContent>
@@ -202,34 +214,64 @@ export default function GradingScaleProfilePage() {
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">Intervals</CardTitle>
+            <CardTitle className="text-base">Subjects</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Grade Code</TableHead>
-                  <TableHead>Threshold (%)</TableHead>
-                  <TableHead>Grade Description</TableHead>
+                  <TableHead>Subject</TableHead>
+                  <TableHead>Subject Name</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {(scale.intervals || [])
-                  .slice()
-                  .sort((a, b) => (b.threshold ?? 0) - (a.threshold ?? 0))
-                  .map((row, index) => (
-                    <TableRow key={index}>
-                      <TableCell className="font-medium">{row.grade_code}</TableCell>
-                      <TableCell>{row.threshold}%</TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {row.grade_description || "—"}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                {(!scale.intervals || scale.intervals.length === 0) && (
+                {(enrollment.courses || []).map((row, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="font-medium">{row.course}</TableCell>
+                    <TableCell className="text-muted-foreground">{row.course_name || "—"}</TableCell>
+                  </TableRow>
+                ))}
+                {(!enrollment.courses || enrollment.courses.length === 0) && (
                   <TableRow>
-                    <TableCell colSpan={3} className="text-center text-muted-foreground">
-                      No intervals defined.
+                    <TableCell colSpan={2} className="text-center text-muted-foreground">
+                      No subjects recorded.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Fees</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Fee Schedule</TableHead>
+                  <TableHead>Academic Term</TableHead>
+                  <TableHead>Student Category</TableHead>
+                  <TableHead>Due Date</TableHead>
+                  <TableHead>Amount</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {(enrollment.fees || []).map((row, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="font-medium">{row.fee_schedule}</TableCell>
+                    <TableCell className="text-muted-foreground">{row.academic_term || "—"}</TableCell>
+                    <TableCell className="text-muted-foreground">{row.student_category || "—"}</TableCell>
+                    <TableCell className="text-muted-foreground">{fmtDate(row.due_date)}</TableCell>
+                    <TableCell className="text-muted-foreground">{row.amount ?? "—"}</TableCell>
+                  </TableRow>
+                ))}
+                {(!enrollment.fees || enrollment.fees.length === 0) && (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center text-muted-foreground">
+                      No fee records.
                     </TableCell>
                   </TableRow>
                 )}
@@ -249,31 +291,13 @@ export default function GradingScaleProfilePage() {
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               <div>
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Subject
+                  Enrollment
                 </p>
                 <div className="space-y-2">
                   <ConnectionLink
-                    label="Subject"
-                    count={connections?.subjects}
-                    onClick={() => navigate(`/dashboard/subjects?default_grading_scale=${encodeURIComponent(name)}`)}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Assessment
-                </p>
-                <div className="space-y-2">
-                  <ConnectionLink
-                    label="Assessment Plan"
-                    count={connections?.assessment_plans}
-                    onClick={() => navigate(`/dashboard/assessment-plan?grading_scale=${encodeURIComponent(name)}`)}
-                  />
-                  <ConnectionLink
-                    label="Assessment Result"
-                    count={connections?.assessment_results}
-                    onClick={() => navigate(`/dashboard/assessment-result?grading_scale=${encodeURIComponent(name)}`)}
+                    label="Subject Enrollment"
+                    count={connections?.course_enrollments}
+                    onClick={() => navigate(`/dashboard/subject-enrollment?program_enrollment=${encodeURIComponent(name)}`)}
                   />
                 </div>
               </div>
@@ -286,7 +310,7 @@ export default function GradingScaleProfilePage() {
         open={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={handleDelete}
-        title={`Delete ${scale.grading_scale_name || scale.name}?`}
+        title={`Delete enrollment for ${enrollment.student_name || enrollment.name}?`}
         description="This action cannot be undone."
       />
 
@@ -294,8 +318,8 @@ export default function GradingScaleProfilePage() {
         open={submitModalOpen}
         onClose={() => setSubmitModalOpen(false)}
         onConfirm={handleSubmit}
-        title={`Submit ${scale.grading_scale_name || scale.name}?`}
-        description="Once submitted, intervals can no longer be edited directly."
+        title={`Submit enrollment for ${enrollment.student_name || enrollment.name}?`}
+        description="This creates the linked fee records and Subject Enrollments. Most fields can no longer be edited afterward."
         confirmLabel="Submit"
         variant="default"
       />
@@ -304,8 +328,8 @@ export default function GradingScaleProfilePage() {
         open={cancelModalOpen}
         onClose={() => setCancelModalOpen(false)}
         onConfirm={handleCancel}
-        title={`Cancel ${scale.grading_scale_name || scale.name}?`}
-        description="This marks the grading scale as cancelled."
+        title={`Cancel enrollment for ${enrollment.student_name || enrollment.name}?`}
+        description="This removes the linked Subject Enrollments created on submit."
         confirmLabel="Cancel Document"
         variant="destructive"
       />

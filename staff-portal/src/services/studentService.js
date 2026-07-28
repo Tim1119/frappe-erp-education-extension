@@ -12,8 +12,8 @@ export function getGuardians(search = "") {
 	});
 }
 
-export function getClassArms() {
-	return api(`${METHOD}.get_class_arms`);
+export function getClassArms(params) {
+	return api(`${METHOD}.get_class_arms`, params);
 }
 
 export function getStudent(name) {

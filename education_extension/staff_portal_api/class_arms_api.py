@@ -43,6 +43,7 @@ def get_class_arms(
             "program",
             "academic_year",
             "academic_term",
+            "course",
             "disabled",
         ],
         filters=filters,
@@ -51,6 +52,22 @@ def get_class_arms(
         start=(page - 1) * page_size,
         page_length=page_size,
     )
+
+    if rows:
+        group_names = [r.name for r in rows]
+        student_counts = frappe.db.sql(
+            """
+            SELECT parent, COUNT(*) AS count
+            FROM `tabStudent Group Student`
+            WHERE parent IN %(names)s
+            GROUP BY parent
+            """,
+            {"names": tuple(group_names)},
+            as_dict=True,
+        )
+        count_map = {c.parent: c.count for c in student_counts}
+        for row in rows:
+            row["students_count"] = count_map.get(row.name, 0)
 
     total = frappe.db.count(
         "Student Group",

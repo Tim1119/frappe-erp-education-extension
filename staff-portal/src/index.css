@@ -222,7 +222,19 @@
   @apply border border-input bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground;
 }
 .btn-success {
-  @apply bg-success text-success-foreground shadow hover:bg-success/90;
+  /* Not @apply bg-success text-success-foreground -- those Tailwind
+     utilities no longer exist (see CLAUDE.md section 7: success/warning
+     were removed from tailwind.config.js after colliding with the Layer 2
+     --success token applyPreset() sets). --success here is Layer 2's
+     already-resolved hsl(...) string, used raw on purpose. Layer 2 never
+     defined a --success-foreground equivalent, so a fixed white matches
+     what Layer 1's --success-foreground (0 0% 100%) always was anyway. */
+  @apply shadow;
+  background-color: var(--success);
+  color: #fff;
+}
+.btn-success:hover {
+  opacity: 0.9;
 }
 .btn-sm {
   @apply h-8 px-3 text-xs rounded-md;

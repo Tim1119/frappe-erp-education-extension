@@ -458,6 +458,55 @@ always blue -- only `--brand`/`--surface`/`--ink` follow the user's chosen
 accent+hue. This is intentional: an "Approved" badge must stay
 recognizably green even if the user picked a red accent theme.
 
+**Never give a Layer 1 (shadcn/Tailwind) color the same name as a Layer 2
+(legacy bridge) token.** `--success` and `--warning` were once defined in
+*both* layers simultaneously: `tailwind.config.js` extended
+`theme.colors.success`/`.warning` as `hsl(var(--success))` (expecting
+Layer 1's raw-triple format), while `applyPreset()` in `themes.js` *also*
+set `--success`/`--warning` directly, but as **already-wrapped**
+`hsl(...)` strings (Layer 2's format, correct for the legacy inline-style
+consumers). Whichever set last wins at runtime -- `applyPreset()` always
+runs, so shadcn's `Badge variant="success"`/`"warning"` ended up compiling
+to `background-color: hsl(hsl(160, 84%, 32%))`, which is invalid CSS and
+is silently dropped by the browser. The badge rendered with no background
+at all -- white text on a white page, looking completely blank, while
+Draft/Cancelled badges (`--secondary`/`--destructive`, names Layer 2 never
+touches) rendered fine. This shipped in Class Enrollment and Grading
+Scale's Submitted-status badges before being caught.
+
+**The fix:** `success`/`warning` were removed from
+`tailwind.config.js`'s color extension entirely, and from
+`components/ui/badge.jsx`'s variant list -- shadcn's `Badge` component no
+longer supports `variant="success"` or `variant="warning"` at all. Any
+place that needs a green/amber status pill uses the Layer 2 inline-style
+pattern directly instead (matching `FeeSchedulePage.jsx`'s `StatusBadge`):
+
+```jsx
+<span
+  className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold"
+  style={{ backgroundColor: "var(--success-soft)", color: "var(--success-ink)" }}
+>
+  Submitted
+</span>
+```
+
+**Before adding any new semantic color name** (to either layer, for any
+reason -- a new badge variant, a new status pill color, anything), grep
+for it in the other layer first:
+
+```bash
+grep -n '"<name>"\|<name>:' tailwind.config.js
+grep -n '"--<name>"' src/config/themes.js src/index.css
+```
+
+If it already exists in the *other* layer, pick a different name (or a
+name-space prefix, e.g. `<name>-legacy`) -- do not let a Tailwind config
+color and an `applyPreset()`-set custom property share the same
+`--<name>` string, even if one is nested under `theme.extend.colors` and
+the other is set directly. This is the exact mistake that caused this
+bug, and it will silently recur for any future color that makes the same
+choice.
+
 If a new module's page uses any CSS variable not in either layer above,
 add it properly to `applyPreset()` in `themes.js` (both light and dark
 branches) rather than defining it ad-hoc in a component -- that's how the
