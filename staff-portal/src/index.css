@@ -318,3 +318,16 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-muted-foreground/30;
 }
+
+/* ─── Print ─────────────────────────────────────────────────────────── */
+/* Generic escape hatch: any element marked .no-print (sidebar, navbar,
+   breadcrumbs, report filter rows, export/print toolbars) disappears when
+   printing or saving to PDF via the browser's print dialog. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .report-printable {
+    overflow: visible !important;
+  }
+}

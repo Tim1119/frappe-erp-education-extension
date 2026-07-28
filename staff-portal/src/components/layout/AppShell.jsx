@@ -12,24 +12,28 @@ export default function AppShell() {
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Desktop sidebar — hidden below lg */}
-      <div className="hidden lg:block">
+      <div className="no-print hidden lg:block">
         <Sidebar />
       </div>
 
       {/* Mobile sidebar sheet */}
       <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetContent side="left" className="w-[260px] p-0">
+        <SheetContent side="left" className="no-print w-[260px] p-0">
           <Sidebar />
         </SheetContent>
       </Sheet>
 
       {/* Main area */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        <Navbar onMobileMenuToggle={() => setMobileOpen(true)} />
+        <div className="no-print">
+          <Navbar onMobileMenuToggle={() => setMobileOpen(true)} />
+        </div>
 
         <ScrollArea className="flex-1">
           <main className="mx-auto w-full max-w-7xl p-4 sm:p-6">
-            <PageBreadcrumbs />
+            <div className="no-print">
+              <PageBreadcrumbs />
+            </div>
             <Outlet />
           </main>
         </ScrollArea>
