@@ -141,7 +141,6 @@ export const ADMIN_NAV = [
           { key: "student-monthly-attendance", label: "Student Monthly Attendance Sheet", icon: CalendarCheck, path: "/dashboard/student-monthly-attendance" },
           { key: "absent-student-report", label: "Absent Student Report", icon: BarChart3, path: "/dashboard/absent-student-report" },
           { key: "student-batch-attendance", label: "Student Batch-Wise Attendance", icon: CalendarCheck, path: "/dashboard/student-batch-attendance" },
-          { key: "subject-enrollment-att", label: "Subject Enrollment", icon: BookOpen, path: "/dashboard/subject-enrollment-attendance" },
           { key: "subject-activity", label: "Subject Activity", icon: BookOpen, path: "/dashboard/subject-activity" },
           { key: "quiz-activity", label: "Quiz Activity", icon: ClipboardList, path: "/dashboard/quiz-activity" },
         ],
@@ -252,7 +251,6 @@ export const TEACHER_NAV = [
         icon: CalendarCheck,
         children: [
           { key: "student-leave-application", label: "Student Leave Application", icon: FileText, path: "/dashboard/student-leave-application" },
-          { key: "subject-enrollment-att", label: "Subject Enrollment", icon: BookOpen, path: "/dashboard/subject-enrollment-attendance" },
           { key: "subject-activity", label: "Subject Activity", icon: BookOpen, path: "/dashboard/subject-activity" },
           { key: "quiz-activity", label: "Quiz Activity", icon: ClipboardList, path: "/dashboard/quiz-activity" },
         ],

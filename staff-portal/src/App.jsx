@@ -155,6 +155,11 @@ import StudentGuardianContactsPage from "@/pages/admin/reports/StudentGuardianCo
 import StudentMonthlyAttendanceSheetPage from "@/pages/admin/reports/StudentMonthlyAttendanceSheetPage";
 import AbsentStudentReportPage from "@/pages/admin/reports/AbsentStudentReportPage";
 import StudentBatchWiseAttendancePage from "@/pages/admin/reports/StudentBatchWiseAttendancePage";
+import SubjectActivitiesPage from "@/pages/admin/subject-activity/SubjectActivitiesPage";
+import SubjectActivityProfilePage from "@/pages/admin/subject-activity/SubjectActivityProfilePage";
+import QuizActivitiesPage from "@/pages/admin/quiz-activity/QuizActivitiesPage";
+import QuizActivityProfilePage from "@/pages/admin/quiz-activity/QuizActivityProfilePage";
+import StudentAttendanceToolPage from "@/pages/admin/student-attendance-tool/StudentAttendanceToolPage";
 
 // ─── Loading screen ────────────────────────────────────────────────────
 
@@ -365,9 +370,10 @@ export default function App() {
         <Route path="student-monthly-attendance" element={<StudentMonthlyAttendanceSheetPage />} />
         <Route path="absent-student-report" element={<AbsentStudentReportPage />} />
         <Route path="student-batch-attendance" element={<StudentBatchWiseAttendancePage />} />
-        <Route path="subject-enrollment-attendance" element={<PH title="Subject Enrollment" />} />
-        <Route path="subject-activity" element={<PH title="Subject Activity" />} />
-        <Route path="quiz-activity" element={<PH title="Quiz Activity" />} />
+        <Route path="subject-activity" element={<SubjectActivitiesPage />} />
+        <Route path="subject-activity/:id" element={<SubjectActivityProfilePage />} />
+        <Route path="quiz-activity" element={<QuizActivitiesPage />} />
+        <Route path="quiz-activity/:id" element={<QuizActivityProfilePage />} />
         <Route path="assessment-group" element={<AssessmentGroupsPage />} />
         <Route path="assessment-group/new" element={<AssessmentGroupFormPage />} />
         <Route path="assessment-group/:id/edit" element={<AssessmentGroupFormPage />} />
@@ -388,7 +394,7 @@ export default function App() {
         <Route path="final-assessment-grades" element={<FinalAssessmentGradesPage />} />
         <Route path="assessment-plan-status" element={<AssessmentPlanStatusPage />} />
         <Route path="student-report-generation" element={<StudentReportGenerationToolPage />} />
-        <Route path="student-attendance-tool" element={<PH title="Student Attendance Tool" />} />
+        <Route path="student-attendance-tool" element={<StudentAttendanceToolPage />} />
         <Route path="assessment-result-tool" element={<PH title="Assessment Result Tool" />} />
         <Route path="student-group-creation" element={<PH title="Student Group Creation Tool" />} />
         <Route path="class-enrollment-tool" element={<PH title="Class Enrollment Tool" />} />

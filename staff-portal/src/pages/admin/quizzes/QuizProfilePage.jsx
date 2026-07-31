@@ -224,7 +224,7 @@ export default function QuizProfilePage() {
         { 
           label: "Quiz Activity", 
           icon: Users, 
-          path: `/dashboard/quiz-activity?quiz=${quiz.name}`
+          path: `/dashboard/quiz-activity?quiz=${encodeURIComponent(quiz.name)}`
         },
       ]
     },
