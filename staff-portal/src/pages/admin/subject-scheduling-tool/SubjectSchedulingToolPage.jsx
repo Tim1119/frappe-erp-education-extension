@@ -258,6 +258,7 @@ export default function SubjectSchedulingToolPage() {
                   displayField="instructor_name"
                   placeholder="Search teacher..."
                   label="teacher"
+                  showId
                 />
               </div>
 
@@ -272,6 +273,7 @@ export default function SubjectSchedulingToolPage() {
                   displayField="room_name"
                   placeholder="Search classroom..."
                   label="classroom"
+                  showId
                 />
               </div>
             </div>

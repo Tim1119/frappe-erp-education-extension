@@ -250,6 +250,7 @@ export default function SubjectScheduleForm({ schedule, onSave }) {
                 displayField="instructor_name"
                 placeholder="Search teacher..."
                 label="teacher"
+                showId
               />
               {form.student_group && assignedInstructorOptions.length > 0 && (
                 <p className="text-xs text-muted-foreground">
@@ -295,6 +296,7 @@ export default function SubjectScheduleForm({ schedule, onSave }) {
                 displayField="room_name"
                 placeholder="Search classroom..."
                 label="classroom"
+                showId
               />
             </div>
 

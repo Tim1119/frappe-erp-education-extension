@@ -77,6 +77,26 @@ import AcademicTermsPage from "@/pages/admin/academic-term/AcademicTermsPage";
 import AcademicTermProfilePage from "@/pages/admin/academic-term/AcademicTermProfilePage";
 import AcademicTermFormPage from "@/pages/admin/academic-term/AcademicTermFormPage";
 
+import AssessmentGroupsPage from "@/pages/admin/assessment-group/AssessmentGroupsPage";
+import AssessmentGroupProfilePage from "@/pages/admin/assessment-group/AssessmentGroupProfilePage";
+import AssessmentGroupFormPage from "@/pages/admin/assessment-group/AssessmentGroupFormPage";
+
+import AssessmentPlansPage from "@/pages/admin/assessment-plan/AssessmentPlansPage";
+import AssessmentPlanProfilePage from "@/pages/admin/assessment-plan/AssessmentPlanProfilePage";
+import AssessmentPlanFormPage from "@/pages/admin/assessment-plan/AssessmentPlanFormPage";
+
+import AssessmentResultsPage from "@/pages/admin/assessment-result/AssessmentResultsPage";
+import AssessmentResultProfilePage from "@/pages/admin/assessment-result/AssessmentResultProfilePage";
+import AssessmentResultFormPage from "@/pages/admin/assessment-result/AssessmentResultFormPage";
+
+import AssessmentCriteriaPage from "@/pages/admin/assessment-criteria/AssessmentCriteriaPage";
+import AssessmentCriteriaProfilePage from "@/pages/admin/assessment-criteria/AssessmentCriteriaProfilePage";
+import AssessmentCriteriaFormPage from "@/pages/admin/assessment-criteria/AssessmentCriteriaFormPage";
+
+import StudentAttendancesPage from "@/pages/admin/student-attendance/StudentAttendancesPage";
+import StudentAttendanceProfilePage from "@/pages/admin/student-attendance/StudentAttendanceProfilePage";
+import StudentAttendanceFormPage from "@/pages/admin/student-attendance/StudentAttendanceFormPage";
+
 import StudentCategoriesPage from "@/pages/admin/student-category/StudentCategoriesPage";
 import StudentCategoryProfilePage from "@/pages/admin/student-category/StudentCategoryProfilePage";
 import StudentCategoryFormPage from "@/pages/admin/student-category/StudentCategoryFormPage";
@@ -326,7 +346,10 @@ export default function App() {
         <Route path="subject-schedule/:id/edit" element={<SubjectScheduleFormPage />} />
         <Route path="subject-schedule/:id" element={<SubjectScheduleProfilePage />} />
         <Route path="subject-scheduling-tool" element={<SubjectSchedulingToolPage />} />
-        <Route path="student-attendance" element={<PH title="Student Attendance" />} />
+        <Route path="student-attendance" element={<StudentAttendancesPage />} />
+        <Route path="student-attendance/new" element={<StudentAttendanceFormPage />} />
+        <Route path="student-attendance/:id/edit" element={<StudentAttendanceFormPage />} />
+        <Route path="student-attendance/:id" element={<StudentAttendanceProfilePage />} />
         <Route path="student-leave-application" element={<PH title="Student Leave Application" />} />
         <Route path="student-monthly-attendance" element={<PH title="Student Monthly Attendance Sheet" />} />
         <Route path="absent-student-report" element={<PH title="Absent Student Report" />} />
@@ -334,10 +357,22 @@ export default function App() {
         <Route path="subject-enrollment-attendance" element={<PH title="Subject Enrollment" />} />
         <Route path="subject-activity" element={<PH title="Subject Activity" />} />
         <Route path="quiz-activity" element={<PH title="Quiz Activity" />} />
-        <Route path="assessment-group" element={<PH title="Assessment Group" />} />
-        <Route path="assessment-plan" element={<PH title="Assessment Plan" />} />
-        <Route path="assessment-result" element={<PH title="Assessment Result" />} />
-        <Route path="assessment-criteria" element={<PH title="Assessment Criteria" />} />
+        <Route path="assessment-group" element={<AssessmentGroupsPage />} />
+        <Route path="assessment-group/new" element={<AssessmentGroupFormPage />} />
+        <Route path="assessment-group/:id/edit" element={<AssessmentGroupFormPage />} />
+        <Route path="assessment-group/:id" element={<AssessmentGroupProfilePage />} />
+        <Route path="assessment-plan" element={<AssessmentPlansPage />} />
+        <Route path="assessment-plan/new" element={<AssessmentPlanFormPage />} />
+        <Route path="assessment-plan/:id/edit" element={<AssessmentPlanFormPage />} />
+        <Route path="assessment-plan/:id" element={<AssessmentPlanProfilePage />} />
+        <Route path="assessment-result" element={<AssessmentResultsPage />} />
+        <Route path="assessment-result/new" element={<AssessmentResultFormPage />} />
+        <Route path="assessment-result/:id/edit" element={<AssessmentResultFormPage />} />
+        <Route path="assessment-result/:id" element={<AssessmentResultProfilePage />} />
+        <Route path="assessment-criteria" element={<AssessmentCriteriaPage />} />
+        <Route path="assessment-criteria/new" element={<AssessmentCriteriaFormPage />} />
+        <Route path="assessment-criteria/:id/edit" element={<AssessmentCriteriaFormPage />} />
+        <Route path="assessment-criteria/:id" element={<AssessmentCriteriaProfilePage />} />
         <Route path="subject-assessment-report" element={<SubjectAssessmentReportPage />} />
         <Route path="final-assessment-grades" element={<FinalAssessmentGradesPage />} />
         <Route path="assessment-plan-status" element={<AssessmentPlanStatusPage />} />

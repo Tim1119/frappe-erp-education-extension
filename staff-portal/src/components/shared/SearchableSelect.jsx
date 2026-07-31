@@ -13,6 +13,15 @@ import { cn } from "@/lib/utils";
  * @param {string}   [placeholder]
  * @param {string}   [label]     — label shown in the search placeholder
  * @param {boolean}  [disabled]
+ * @param {boolean}  [showId]    — when the doctype's docname is an
+ *   independent naming series (not derived from the displayed field, e.g.
+ *   Course Schedule's "title" or Assessment Plan's "assessment_name"),
+ *   different real records can show identical text. Set this to also
+ *   render the real docname (opt.name) -- stacked above the label in the
+ *   open dropdown, "ID — Label" in the closed button -- so they stay
+ *   distinguishable. Leave false for doctypes whose docname IS the
+ *   displayed field (e.g. field:student_group_name), where this would
+ *   just be redundant.
  */
 export default function SearchableSelect({
   value,
@@ -22,10 +31,11 @@ export default function SearchableSelect({
   placeholder = "Select...",
   label = "item",
   disabled = false,
+  showId = false,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [position, setPosition] = useState({ top: 0, left: 0, width: 0 });
+  const [position, setPosition] = useState({ top: 0, left: 0, width: 0, maxHeight: 260, openUpward: false });
   const wrapperRef = useRef(null);
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -69,10 +79,24 @@ export default function SearchableSelect({
   useEffect(() => {
     if (isOpen && wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect();
+      const DESIRED = 260;
+      const GAP = 4;
+      const spaceBelow = window.innerHeight - rect.bottom - GAP;
+      const spaceAbove = rect.top - GAP;
+      // Anchor below by default; only flip above when there isn't enough
+      // room below AND there's more usable room above -- otherwise a
+      // fixed-height dropdown anchored at rect.bottom can render mostly
+      // past the bottom of the viewport (not clipped by any ancestor,
+      // just off-screen), which is what happened for rows added near the
+      // bottom of a long form.
+      const openUpward = spaceBelow < DESIRED && spaceAbove > spaceBelow;
+      const maxHeight = Math.max(120, Math.min(DESIRED, openUpward ? spaceAbove : spaceBelow));
       setPosition({
-        top: rect.bottom + 4,
+        top: openUpward ? rect.top - GAP : rect.bottom + GAP,
         left: rect.left,
         width: rect.width,
+        maxHeight,
+        openUpward,
       });
     }
   }, [isOpen]);
@@ -85,11 +109,13 @@ export default function SearchableSelect({
             className="overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-lg"
             style={{
               position: "fixed",
-              top: position.top,
+              ...(position.openUpward
+                ? { bottom: window.innerHeight - position.top }
+                : { top: position.top }),
               left: position.left,
               width: position.width,
               zIndex: 999999,
-              maxHeight: 260,
+              maxHeight: position.maxHeight,
               display: "flex",
               flexDirection: "column",
             }}
@@ -132,7 +158,16 @@ export default function SearchableSelect({
                           : "hover:bg-accent",
                       )}
                     >
-                      {getDisplay(opt)}
+                      {showId ? (
+                        <div className="flex flex-col gap-0.5">
+                          <span className="font-mono text-xs font-semibold">{opt.name}</span>
+                          <span className={isSelected ? "" : "text-muted-foreground"}>
+                            {getDisplay(opt)}
+                          </span>
+                        </div>
+                      ) : (
+                        getDisplay(opt)
+                      )}
                     </div>
                   );
                 })
@@ -159,8 +194,10 @@ export default function SearchableSelect({
           disabled && "cursor-not-allowed opacity-50",
         )}
       >
-        <span className={value ? "text-foreground" : "text-muted-foreground"}>
-          {selected ? getDisplay(selected) : placeholder}
+        <span className={cn("truncate", value ? "text-foreground" : "text-muted-foreground")}>
+          {selected
+            ? (showId ? `${selected.name} — ${getDisplay(selected)}` : getDisplay(selected))
+            : placeholder}
         </span>
         <div className="flex items-center gap-1">
           {value && (
