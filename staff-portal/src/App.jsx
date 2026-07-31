@@ -160,6 +160,7 @@ import SubjectActivityProfilePage from "@/pages/admin/subject-activity/SubjectAc
 import QuizActivitiesPage from "@/pages/admin/quiz-activity/QuizActivitiesPage";
 import QuizActivityProfilePage from "@/pages/admin/quiz-activity/QuizActivityProfilePage";
 import StudentAttendanceToolPage from "@/pages/admin/student-attendance-tool/StudentAttendanceToolPage";
+import AssessmentResultToolPage from "@/pages/admin/assessment-result-tool/AssessmentResultToolPage";
 
 // ─── Loading screen ────────────────────────────────────────────────────
 
@@ -395,7 +396,7 @@ export default function App() {
         <Route path="assessment-plan-status" element={<AssessmentPlanStatusPage />} />
         <Route path="student-report-generation" element={<StudentReportGenerationToolPage />} />
         <Route path="student-attendance-tool" element={<StudentAttendanceToolPage />} />
-        <Route path="assessment-result-tool" element={<PH title="Assessment Result Tool" />} />
+        <Route path="assessment-result-tool" element={<AssessmentResultToolPage />} />
         <Route path="student-group-creation" element={<PH title="Student Group Creation Tool" />} />
         <Route path="class-enrollment-tool" element={<PH title="Class Enrollment Tool" />} />
         <Route path="subject-scheduling-tool-page" element={<SubjectSchedulingToolPage />} />

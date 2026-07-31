@@ -17,6 +17,7 @@ import {
   getGradingScaleIntervals,
 } from "@/services/assessmentResultService";
 import { getErrorMessage } from "@/utils/errors";
+import { computeGrade } from "@/utils/grading";
 
 const EMPTY_DERIVED = {
   program: "", course: "", academic_year: "", academic_term: "",
@@ -43,16 +44,6 @@ function buildForm(result) {
       score: d.score ?? "",
     })),
   };
-}
-
-// Mirrors education.education.api.get_grade(): highest threshold <= the
-// given percentage, "" if none match.
-function computeGrade(intervals, percentage) {
-  const sorted = [...intervals].sort((a, b) => (b.threshold ?? 0) - (a.threshold ?? 0));
-  for (const iv of sorted) {
-    if (percentage >= (iv.threshold ?? 0)) return iv.grade_code;
-  }
-  return "";
 }
 
 export default function AssessmentResultForm({ result, onSave }) {
