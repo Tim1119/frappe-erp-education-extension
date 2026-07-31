@@ -10,6 +10,7 @@ import {
 import PageHeader from "@/components/shared/PageHeader";
 import ReportTable from "@/components/shared/ReportTable";
 import ReportToolbar from "@/components/shared/ReportToolbar";
+import ReportPrintHeader from "@/components/shared/ReportPrintHeader";
 import { getReportData } from "@/services/reportService";
 import {
   getAcademicYears,
@@ -158,6 +159,14 @@ export default function FinalAssessmentGradesPage() {
 
       {hasRun && (
         <div className="report-printable rounded-md border">
+          <ReportPrintHeader
+            title="Final Assessment Grades"
+            filters={[
+              { label: "Academic Year", value: academicYear },
+              { label: "Class Arm", value: studentGroupOptions.find((g) => g.name === studentGroup)?.student_group_name || studentGroup },
+              { label: "Assessment Group", value: assessmentGroupOptions.find((g) => g.name === assessmentGroup)?.assessment_group_name || assessmentGroup },
+            ]}
+          />
           <ReportTable
             columns={columns}
             rows={rows}

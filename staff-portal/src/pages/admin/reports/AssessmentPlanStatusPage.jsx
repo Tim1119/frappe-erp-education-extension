@@ -12,6 +12,7 @@ import {
 import PageHeader from "@/components/shared/PageHeader";
 import ReportTable from "@/components/shared/ReportTable";
 import ReportToolbar from "@/components/shared/ReportToolbar";
+import ReportPrintHeader from "@/components/shared/ReportPrintHeader";
 import { AssessmentStatusBar } from "@/components/charts/AssessmentStatusBar";
 import { getReportData } from "@/services/reportService";
 import { getLeafAssessmentGroups } from "@/services/assessmentReportsService";
@@ -118,6 +119,13 @@ export default function AssessmentPlanStatusPage() {
       )}
 
       <div className="report-printable rounded-md border">
+        <ReportPrintHeader
+          title="Assessment Plan Status"
+          filters={[
+            { label: "Assessment Group", value: assessmentGroupOptions.find((g) => g.name === assessmentGroup)?.assessment_group_name || assessmentGroup },
+            { label: "Scheduled Upto", value: scheduleDate },
+          ]}
+        />
         <ReportTable
           columns={columns}
           rows={rows}

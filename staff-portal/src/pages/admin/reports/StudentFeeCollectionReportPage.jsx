@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import PageHeader from "@/components/shared/PageHeader";
 import ReportTable from "@/components/shared/ReportTable";
 import ReportToolbar from "@/components/shared/ReportToolbar";
+import ReportPrintHeader from "@/components/shared/ReportPrintHeader";
 import { getReportData } from "@/services/reportService";
 import { getErrorMessage } from "@/utils/errors";
 import { t } from "@/config/translations";
@@ -62,6 +63,7 @@ export default function StudentFeeCollectionReportPage() {
       </PageHeader>
 
       <div className="report-printable rounded-md border">
+        <ReportPrintHeader title="Student Fee Collection Report" />
         <ReportTable
           columns={columns}
           rows={rows}

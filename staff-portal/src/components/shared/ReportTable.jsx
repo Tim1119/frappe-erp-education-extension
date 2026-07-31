@@ -13,7 +13,7 @@ function cellText(row, col) {
   return v === null || v === undefined ? "" : String(v);
 }
 
-function formatDisplay(value, fieldtype) {
+export function formatDisplay(value, fieldtype) {
   if (value === null || value === undefined || value === "") return "—";
   if (fieldtype === "Currency") return `₦${Number(value).toLocaleString()}`;
   if (isNumeric(fieldtype)) return Number(value).toLocaleString();
@@ -36,6 +36,10 @@ function formatDisplay(value, fieldtype) {
  * @param {boolean}  [showTotals] — mirrors the real report's own
  *   add_total_row flag; default true to match the reports already built
  *   against this component (both had add_total_row: 1).
+ * @param {boolean}  [showColumnFilters] — per-column filter input row;
+ *   default true. Set false for reports with many single-character/
+ *   low-cardinality columns (e.g. one column per day of the month) where
+ *   a filter box per column adds clutter without real filtering value.
  */
 export default function ReportTable({
   columns,
@@ -44,6 +48,7 @@ export default function ReportTable({
   onVisibleRowsChange,
   emptyMessage = "No data found",
   showTotals = true,
+  showColumnFilters = true,
 }) {
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState({ field: null, dir: null });
@@ -101,7 +106,7 @@ export default function ReportTable({
   }
 
   return (
-    <div className="w-full overflow-auto">
+    <div className="w-full overflow-auto report-table-scroll">
       <table className="w-full border-collapse text-xs">
         <thead>
           <tr>
@@ -127,19 +132,21 @@ export default function ReportTable({
               </th>
             ))}
           </tr>
-          <tr className="no-print">
-            {columns.map((col) => (
-              <th key={col.fieldname} className="border-b border-r px-1 py-1 last:border-r-0">
-                <input
-                  value={filters[col.fieldname] || ""}
-                  onChange={(e) => setFilters((p) => ({ ...p, [col.fieldname]: e.target.value }))}
-                  placeholder="Filter…"
-                  className="h-6 w-full rounded border border-input bg-transparent px-1.5 text-xs font-normal outline-none focus:border-primary"
-                  onClick={(e) => e.stopPropagation()}
-                />
-              </th>
-            ))}
-          </tr>
+          {showColumnFilters && (
+            <tr className="no-print">
+              {columns.map((col) => (
+                <th key={col.fieldname} className="border-b border-r px-1 py-1 last:border-r-0">
+                  <input
+                    value={filters[col.fieldname] || ""}
+                    onChange={(e) => setFilters((p) => ({ ...p, [col.fieldname]: e.target.value }))}
+                    placeholder="Filter…"
+                    className="h-6 w-full rounded border border-input bg-transparent px-1.5 text-xs font-normal outline-none focus:border-primary"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </th>
+              ))}
+            </tr>
+          )}
         </thead>
         <tbody>
           {sortedRows.map((row, rIndex) => (

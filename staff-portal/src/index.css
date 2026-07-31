@@ -330,4 +330,33 @@
   .report-printable {
     overflow: visible !important;
   }
+  /* .report-printable above only clears the WRAPPER each report page
+     renders -- the actual horizontal scroll clipping comes from
+     ReportTable's own inner container (.report-table-scroll,
+     "w-full overflow-auto"), a separate nested element that overflow
+     rules don't inherit into. Without this, a wide table (e.g. Student
+     Monthly Attendance Sheet's 31 day-columns) only ever prints whatever
+     fit inside its on-screen scrollable viewport -- the rest is silently
+     dropped, not just illegibly shrunk. Letting it overflow visibly here
+     hands the full-width table to the browser's print engine, which
+     tiles/paginates it across as many physical pages as needed, same as
+     any normal wide print job. */
+  .report-table-scroll {
+    overflow: visible !important;
+    width: auto !important;
+  }
+}
+
+/* Inverse of .no-print -- ReportPrintHeader's title/applied-filters
+   summary only exists to make a printed/exported report self-describing;
+   it would be redundant clutter on screen where the real filter bar is
+   already visible, so it's hidden by default and only shown in the
+   print media context. */
+.print-only {
+  display: none;
+}
+@media print {
+  .print-only {
+    display: block;
+  }
 }

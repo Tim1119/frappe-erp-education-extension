@@ -7,6 +7,7 @@ import Login from "@/pages/auth/Login";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import NotFound from "@/pages/NotFound";
 import PlaceholderPage from "@/pages/placeholder/PlaceholderPage";
+import ReportPrintPage from "@/pages/print/ReportPrintPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/students/StudentsPage";
@@ -97,6 +98,10 @@ import StudentAttendancesPage from "@/pages/admin/student-attendance/StudentAtte
 import StudentAttendanceProfilePage from "@/pages/admin/student-attendance/StudentAttendanceProfilePage";
 import StudentAttendanceFormPage from "@/pages/admin/student-attendance/StudentAttendanceFormPage";
 
+import StudentLeaveApplicationsPage from "@/pages/admin/student-leave-application/StudentLeaveApplicationsPage";
+import StudentLeaveApplicationProfilePage from "@/pages/admin/student-leave-application/StudentLeaveApplicationProfilePage";
+import StudentLeaveApplicationFormPage from "@/pages/admin/student-leave-application/StudentLeaveApplicationFormPage";
+
 import StudentCategoriesPage from "@/pages/admin/student-category/StudentCategoriesPage";
 import StudentCategoryProfilePage from "@/pages/admin/student-category/StudentCategoryProfilePage";
 import StudentCategoryFormPage from "@/pages/admin/student-category/StudentCategoryFormPage";
@@ -147,6 +152,9 @@ import AssessmentPlanStatusPage from "@/pages/admin/reports/AssessmentPlanStatus
 import StudentReportGenerationToolPage from "@/pages/admin/student-report-generation-tool/StudentReportGenerationToolPage";
 
 import StudentGuardianContactsPage from "@/pages/admin/reports/StudentGuardianContactsPage";
+import StudentMonthlyAttendanceSheetPage from "@/pages/admin/reports/StudentMonthlyAttendanceSheetPage";
+import AbsentStudentReportPage from "@/pages/admin/reports/AbsentStudentReportPage";
+import StudentBatchWiseAttendancePage from "@/pages/admin/reports/StudentBatchWiseAttendancePage";
 
 // ─── Loading screen ────────────────────────────────────────────────────
 
@@ -350,10 +358,13 @@ export default function App() {
         <Route path="student-attendance/new" element={<StudentAttendanceFormPage />} />
         <Route path="student-attendance/:id/edit" element={<StudentAttendanceFormPage />} />
         <Route path="student-attendance/:id" element={<StudentAttendanceProfilePage />} />
-        <Route path="student-leave-application" element={<PH title="Student Leave Application" />} />
-        <Route path="student-monthly-attendance" element={<PH title="Student Monthly Attendance Sheet" />} />
-        <Route path="absent-student-report" element={<PH title="Absent Student Report" />} />
-        <Route path="student-batch-attendance" element={<PH title="Student Batch-Wise Attendance" />} />
+        <Route path="student-leave-application" element={<StudentLeaveApplicationsPage />} />
+        <Route path="student-leave-application/new" element={<StudentLeaveApplicationFormPage />} />
+        <Route path="student-leave-application/:id/edit" element={<StudentLeaveApplicationFormPage />} />
+        <Route path="student-leave-application/:id" element={<StudentLeaveApplicationProfilePage />} />
+        <Route path="student-monthly-attendance" element={<StudentMonthlyAttendanceSheetPage />} />
+        <Route path="absent-student-report" element={<AbsentStudentReportPage />} />
+        <Route path="student-batch-attendance" element={<StudentBatchWiseAttendancePage />} />
         <Route path="subject-enrollment-attendance" element={<PH title="Subject Enrollment" />} />
         <Route path="subject-activity" element={<PH title="Subject Activity" />} />
         <Route path="quiz-activity" element={<PH title="Quiz Activity" />} />
@@ -386,6 +397,19 @@ export default function App() {
         <Route path="bulk-term-result-generator" element={<PH title="Bulk School Term Result Generator" />} />
         <Route path="student-guardian-contacts" element={<StudentGuardianContactsPage />} />
       </Route>
+
+      {/* Standalone report print view -- deliberately OUTSIDE the
+          /dashboard AppShell tree, so it renders with no Sidebar/Navbar/
+          PageBreadcrumbs/app chrome at all, matching Frappe Desk's own
+          separate print document. Still auth-gated via Protected. */}
+      <Route
+        path="/print/report"
+        element={
+          <Protected>
+            <ReportPrintPage />
+          </Protected>
+        }
+      />
 
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="*" element={<NotFound />} />

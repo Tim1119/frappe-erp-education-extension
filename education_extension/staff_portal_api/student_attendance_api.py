@@ -16,6 +16,7 @@ def get_student_attendance_list(
     student_group=None,
     course_schedule=None,
     status=None,
+    leave_application=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -29,6 +30,8 @@ def get_student_attendance_list(
         filters["course_schedule"] = course_schedule
     if status:
         filters["status"] = status
+    if leave_application:
+        filters["leave_application"] = leave_application
 
     or_filters = []
     if search:

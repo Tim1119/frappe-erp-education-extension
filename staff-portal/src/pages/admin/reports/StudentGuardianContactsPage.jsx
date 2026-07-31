@@ -11,6 +11,7 @@ import {
 import PageHeader from "@/components/shared/PageHeader";
 import ReportTable from "@/components/shared/ReportTable";
 import ReportToolbar from "@/components/shared/ReportToolbar";
+import ReportPrintHeader from "@/components/shared/ReportPrintHeader";
 import { getReportData } from "@/services/reportService";
 import {
   getAcademicYears,
@@ -145,6 +146,14 @@ export default function StudentGuardianContactsPage() {
 
       {hasRun && (
         <div className="report-printable rounded-md border">
+          <ReportPrintHeader
+            title="Student and Guardian Contact Details"
+            filters={[
+              { label: "Academic Year", value: academicYear },
+              { label: "Class", value: program },
+              { label: "Batch", value: studentBatchName },
+            ]}
+          />
           <ReportTable
             columns={columns}
             rows={rows}

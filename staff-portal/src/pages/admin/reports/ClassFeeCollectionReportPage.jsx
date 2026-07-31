@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import PageHeader from "@/components/shared/PageHeader";
 import ReportTable from "@/components/shared/ReportTable";
 import ReportToolbar from "@/components/shared/ReportToolbar";
+import ReportPrintHeader from "@/components/shared/ReportPrintHeader";
 import { FeeCollectionBarChart } from "@/components/charts/FeeCollectionBarChart";
 import { getReportData } from "@/services/reportService";
 import { getErrorMessage } from "@/utils/errors";
@@ -100,6 +101,13 @@ export default function ClassFeeCollectionReportPage() {
       </div>
 
       <div className="report-printable rounded-md border">
+        <ReportPrintHeader
+          title="Class wise Fee Collection Report"
+          filters={[
+            { label: "From Date", value: fromDate },
+            { label: "To Date", value: toDate },
+          ]}
+        />
         <ReportTable
           columns={columns}
           rows={rows}
