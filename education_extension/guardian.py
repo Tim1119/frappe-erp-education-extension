@@ -1012,26 +1012,6 @@ def get_bulk_certificate_filters():
 		return {"years": [], "categories": [], "student_groups": []}
 
 
-# Add these updated functions to your education/education/api.py file
-
-
-@frappe.whitelist()
-def get_school_print_format():
-	"""
-	Get the configured print format from School Settings based on program type
-	Returns both primary and secondary print formats
-	"""
-	try:
-		settings = frappe.get_doc("School Settings", "School Settings")
-		return {
-			"primary_print_format": settings.primary_school_print_format,
-			"secondary_print_format": settings.secondary_school_print_format,
-		}
-	except Exception as e:
-		frappe.log_error(f"Error getting school print format: {str(e)}")
-		return {"primary_print_format": "Standard", "secondary_print_format": "Standard"}
-
-
 def is_secondary_program(program):
 	"""
 	Check if a program is a secondary/high school program
@@ -1604,13 +1584,19 @@ def get_ward_grades_table(student_id):
 
 
 @frappe.whitelist()
-def get_ward_print_format():
-	try:
-		settings = frappe.get_doc("School Settings", "School Settings")
-		return {
-			"primary_print_format": settings.primary_school_print_format or "Standard",
-			"secondary_print_format": settings.secondary_school_print_format or "Standard",
-		}
-	except Exception as e:
-		frappe.log_error(f"Error getting print format: {str(e)}")
-		return {"primary_print_format": "Standard", "secondary_print_format": "Standard"}
+def get_school_print_format():
+	"""Real call site: frontend/src/pages/ward/WardReport.vue's
+	getPrintFormatForProgram() POSTs here with NO body/params at all, then
+	reads result.message.primary_print_format /
+	result.message.secondary_print_format and picks between them itself
+	via its own client-side isSecondaryProgram(report.program) keyword
+	check -- this function only needs to report the school's two
+	configured formats, not decide between them.
+
+	Reads School Settings' primary_school_print_format /
+	secondary_school_print_format (Link to Print Format), falling back to
+	"Standard" only when the relevant field is genuinely unset."""
+	settings = frappe.get_single("School Settings")
+	primary = settings.primary_school_print_format or "Standard"
+	secondary = settings.secondary_school_print_format or "Standard"
+	return {"primary_print_format": primary, "secondary_print_format": secondary}

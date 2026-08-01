@@ -427,7 +427,7 @@ const printingReports = reactive({})
 
 const getPrintFormatForProgram = async (program) => {
 	try {
-		const res = await fetch('/api/method/education.education.api.get_school_print_format', {
+		const res = await fetch('/api/method/education_extension.guardian.get_school_print_format', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 		})
