@@ -100,6 +100,33 @@ def populate_student_result(doc):
 	else:
 		frappe.msgprint(f"No Student Group found for {doc.student}")
 
+	# 4.5 Attendance -- this local copy never used to compute attendance at
+	# all (whatever generate_class_results() set here got fully overwritten
+	# by School Term Result's own before_insert() immediately after
+	# .insert() anyway, since that hook always re-runs the fuller
+	# school_term_result_utils.populate_student_result()). Kept in sync
+	# with the fixed logic there rather than left duplicated-and-stale:
+	# Opened = this student's own Present+Absent+Leave, not an unscoped
+	# whole-school count.
+	doc.number_of_times_present = frappe.db.count(
+		"Student Attendance",
+		filters={"student": doc.student, "status": "Present", "date": ["between", [doc.term_start_date, doc.term_end_date]]},
+	)
+	doc.number_of_times_absent = frappe.db.count(
+		"Student Attendance",
+		filters={"student": doc.student, "status": "Absent", "date": ["between", [doc.term_start_date, doc.term_end_date]]},
+	)
+	doc.number_of_times_on_leave = frappe.db.count(
+		"Student Attendance",
+		filters={"student": doc.student, "status": "Leave", "date": ["between", [doc.term_start_date, doc.term_end_date]]},
+	)
+	doc.number_of_times_school_opened = (
+		(doc.number_of_times_present or 0) + (doc.number_of_times_absent or 0) + (doc.number_of_times_on_leave or 0)
+	)
+	doc.attendance_percentage = 0
+	if doc.number_of_times_school_opened:
+		doc.attendance_percentage = round((doc.number_of_times_present / doc.number_of_times_school_opened) * 100, 2)
+
 	# 5. Get Assessment Results
 	detailed_results = frappe.db.sql(
 		"""

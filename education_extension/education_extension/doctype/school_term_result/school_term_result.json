@@ -28,6 +28,7 @@
     "number_of_times_present",
     "column_break_lqmp",
     "number_of_times_absent",
+    "number_of_times_on_leave",
     "attendance_percentage",
     "section_break_hfoj",
     "subjects",
@@ -426,6 +427,11 @@
       "fieldname": "number_of_times_absent",
       "fieldtype": "Data",
       "label": "Number of Times Absent"
+    },
+    {
+      "fieldname": "number_of_times_on_leave",
+      "fieldtype": "Data",
+      "label": "Number of Times on Leave"
     },
     {
       "fieldname": "number_of_times_present",

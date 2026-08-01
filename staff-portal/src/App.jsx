@@ -162,6 +162,11 @@ import QuizActivityProfilePage from "@/pages/admin/quiz-activity/QuizActivityPro
 import StudentAttendanceToolPage from "@/pages/admin/student-attendance-tool/StudentAttendanceToolPage";
 import AssessmentResultToolPage from "@/pages/admin/assessment-result-tool/AssessmentResultToolPage";
 import StudentGroupCreationToolPage from "@/pages/admin/student-group-creation-tool/StudentGroupCreationToolPage";
+import ClassEnrollmentToolPage from "@/pages/admin/class-enrollment-tool/ClassEnrollmentToolPage";
+import SchoolTermResultsPage from "@/pages/admin/school-term-result-generator/SchoolTermResultsPage";
+import SchoolTermResultFormPage from "@/pages/admin/school-term-result-generator/SchoolTermResultFormPage";
+import SchoolTermResultProfilePage from "@/pages/admin/school-term-result-generator/SchoolTermResultProfilePage";
+import BulkTermResultGeneratorPage from "@/pages/admin/bulk-term-result-generator/BulkTermResultGeneratorPage";
 
 // ─── Loading screen ────────────────────────────────────────────────────
 
@@ -399,10 +404,13 @@ export default function App() {
         <Route path="student-attendance-tool" element={<StudentAttendanceToolPage />} />
         <Route path="assessment-result-tool" element={<AssessmentResultToolPage />} />
         <Route path="student-group-creation" element={<StudentGroupCreationToolPage />} />
-        <Route path="class-enrollment-tool" element={<PH title="Class Enrollment Tool" />} />
+        <Route path="class-enrollment-tool" element={<ClassEnrollmentToolPage />} />
         <Route path="subject-scheduling-tool-page" element={<SubjectSchedulingToolPage />} />
-        <Route path="school-term-result-generator" element={<PH title="School Term Result Generator" />} />
-        <Route path="bulk-term-result-generator" element={<PH title="Bulk School Term Result Generator" />} />
+        <Route path="school-term-result-generator" element={<SchoolTermResultsPage />} />
+        <Route path="school-term-result-generator/new" element={<SchoolTermResultFormPage />} />
+        <Route path="school-term-result-generator/:id/edit" element={<SchoolTermResultFormPage />} />
+        <Route path="school-term-result-generator/:id" element={<SchoolTermResultProfilePage />} />
+        <Route path="bulk-term-result-generator" element={<BulkTermResultGeneratorPage />} />
         <Route path="student-guardian-contacts" element={<StudentGuardianContactsPage />} />
       </Route>
 

@@ -36,6 +36,11 @@ export default defineConfig({
         changeOrigin: true,
         headers: { "X-Frappe-Site-Name": SITE_NAME },
       },
+      "/printview": {
+        target: FRAPPE_URL,
+        changeOrigin: true,
+        headers: { "X-Frappe-Site-Name": SITE_NAME },
+      },
     },
   },
   build: {

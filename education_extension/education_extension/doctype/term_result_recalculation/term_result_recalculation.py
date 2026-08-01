@@ -58,22 +58,24 @@ def recalculate_single_result(self):
         self.student_group = None
 
     # --- ATTENDANCE CALCULATIONS ---
+    # Opened = this student's own Present+Absent+Leave, not an unscoped
+    # whole-school distinct-date count -- same fix applied to
+    # school_term_result_utils.py (the doctype's own before_insert() path)
+    # and education_extension/api.py's local populate_student_result(), so
+    # recalculating a result produces the same numbers a fresh generation
+    # would.
     start_date = self.term_start_date
     end_date = self.term_end_date
 
-    school_opened_days_sql = frappe.db.sql("""
-        SELECT COUNT(DISTINCT DATE(sa.`date`)) as count
-        FROM `tabStudent Attendance` sa
-        WHERE sa.`date` BETWEEN %s AND %s
-    """, (start_date, end_date))
-    self.number_of_times_school_opened = school_opened_days_sql[0][0] if school_opened_days_sql else 0
-    
     attendance_filters = {"student": self.student, "date": ["between", [start_date, end_date]]}
 
     self.number_of_times_present = frappe.db.count("Student Attendance", filters={**attendance_filters, "status": "Present"})
     self.number_of_times_absent = frappe.db.count("Student Attendance", filters={**attendance_filters, "status": "Absent"})
-    number_of_times_on_leave = frappe.db.count("Student Attendance", filters={**attendance_filters, "status": "Leave"})
-    
+    self.number_of_times_on_leave = frappe.db.count("Student Attendance", filters={**attendance_filters, "status": "Leave"})
+    self.number_of_times_school_opened = (
+        (self.number_of_times_present or 0) + (self.number_of_times_absent or 0) + (self.number_of_times_on_leave or 0)
+    )
+
     self.attendance_percentage = 0
     if self.number_of_times_school_opened > 0:
         self.attendance_percentage = round((self.number_of_times_present / self.number_of_times_school_opened) * 100, 2)

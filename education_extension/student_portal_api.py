@@ -25,8 +25,9 @@ def get_student_reports_with_program():
 
 @frappe.whitelist()
 def get_school_print_format():
-	primary = frappe.db.get_single_value("Education Settings", "primary_print_format") or "Standard"
-	secondary = frappe.db.get_single_value("Education Settings", "secondary_print_format") or "Standard"
+	settings = frappe.get_single("School Settings")
+	primary = settings.primary_school_print_format or "Standard"
+	secondary = settings.secondary_school_print_format or "Standard"
 	return {"primary_print_format": primary, "secondary_print_format": secondary}
 
 

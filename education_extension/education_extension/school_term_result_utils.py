@@ -122,21 +122,22 @@ def populate_student_result(doc):
 
 
 def _calculate_attendance(doc):
-    """Calculate attendance metrics based on term dates"""
-    try:
-        # Count distinct days school was open (based on attendance records within term dates)
-        school_opened_days_sql = frappe.db.sql("""
-            SELECT COUNT(DISTINCT DATE(sa.`date`)) as count
-            FROM `tabStudent Attendance` sa
-            WHERE sa.`date` BETWEEN %s AND %s
-        """, (doc.term_start_date, doc.term_end_date))
-        
-        doc.number_of_times_school_opened = school_opened_days_sql[0][0] if school_opened_days_sql else 0
-    except Exception as e:
-        frappe.log_error(f"Error calculating school opened days: {str(e)}")
-        doc.number_of_times_school_opened = 0
+    """Calculate attendance metrics based on term dates.
 
-    # Count present days
+    "Opened" used to be an UNSCOPED count of distinct dates ANY student
+    anywhere had an attendance record for -- unrelated to this specific
+    student, which is why it could show a number bigger (or smaller) than
+    this student's own Present+Absent. Real evidence (bench console
+    query against student EDU-STU-2025-00004): Present=1, Absent=2,
+    Leave=3 -- 6 real attendance rows for this student, while the old
+    "Opened" showed 7 (a stale whole-school snapshot that had already
+    drifted to 8 by the time it was re-queried live).
+
+    Fixed definition: Opened is now this student's OWN total marked days
+    (Present + Absent + Leave), so it's always internally consistent by
+    construction -- no more silent gap between the three counts and the
+    total. Leave was already being queried and then discarded; it's now
+    a real, persisted, visible field."""
     try:
         doc.number_of_times_present = frappe.db.count(
             "Student Attendance",
@@ -150,7 +151,6 @@ def _calculate_attendance(doc):
         frappe.log_error(f"Error counting present days: {str(e)}")
         doc.number_of_times_present = 0
 
-    # Count absent days
     try:
         doc.number_of_times_absent = frappe.db.count(
             "Student Attendance",
@@ -164,9 +164,8 @@ def _calculate_attendance(doc):
         frappe.log_error(f"Error counting absent days: {str(e)}")
         doc.number_of_times_absent = 0
 
-    # Count leave days
     try:
-        number_of_times_on_leave = frappe.db.count(
+        doc.number_of_times_on_leave = frappe.db.count(
             "Student Attendance",
             filters={
                 "student": doc.student,
@@ -176,13 +175,18 @@ def _calculate_attendance(doc):
         )
     except Exception as e:
         frappe.log_error(f"Error counting leave days: {str(e)}")
-        number_of_times_on_leave = 0
+        doc.number_of_times_on_leave = 0
 
-    # Calculate attendance percentage
+    doc.number_of_times_school_opened = (
+        (doc.number_of_times_present or 0)
+        + (doc.number_of_times_absent or 0)
+        + (doc.number_of_times_on_leave or 0)
+    )
+
     doc.attendance_percentage = 0
     if doc.number_of_times_school_opened and doc.number_of_times_school_opened > 0:
         doc.attendance_percentage = round(
-            (doc.number_of_times_present / doc.number_of_times_school_opened) * 100, 
+            (doc.number_of_times_present / doc.number_of_times_school_opened) * 100,
             2
         )
 
