@@ -2,6 +2,7 @@ import frappe
 from frappe.utils import nowdate, get_datetime
 
 from frappe.model.document import Document
+from education_extension.education_extension.attendance_helpers import calculate_attendance_with_holidays
 
 
 
@@ -57,28 +58,8 @@ def recalculate_single_result(self):
     else:
         self.student_group = None
 
-    # --- ATTENDANCE CALCULATIONS ---
-    # Opened = this student's own Present+Absent+Leave, not an unscoped
-    # whole-school distinct-date count -- same fix applied to
-    # school_term_result_utils.py (the doctype's own before_insert() path)
-    # and education_extension/api.py's local populate_student_result(), so
-    # recalculating a result produces the same numbers a fresh generation
-    # would.
-    start_date = self.term_start_date
-    end_date = self.term_end_date
-
-    attendance_filters = {"student": self.student, "date": ["between", [start_date, end_date]]}
-
-    self.number_of_times_present = frappe.db.count("Student Attendance", filters={**attendance_filters, "status": "Present"})
-    self.number_of_times_absent = frappe.db.count("Student Attendance", filters={**attendance_filters, "status": "Absent"})
-    self.number_of_times_on_leave = frappe.db.count("Student Attendance", filters={**attendance_filters, "status": "Leave"})
-    self.number_of_times_school_opened = (
-        (self.number_of_times_present or 0) + (self.number_of_times_absent or 0) + (self.number_of_times_on_leave or 0)
-    )
-
-    self.attendance_percentage = 0
-    if self.number_of_times_school_opened > 0:
-        self.attendance_percentage = round((self.number_of_times_present / self.number_of_times_school_opened) * 100, 2)
+    # --- ATTENDANCE CALCULATIONS (holiday-aware) ---
+    calculate_attendance_with_holidays(self)
 
 
     # --- ASSESSMENT RESULTS ---

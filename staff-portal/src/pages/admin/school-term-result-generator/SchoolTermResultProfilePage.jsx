@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Pencil, Trash2, Printer, Loader2, AlertTriangle } from "lucide-react";
+import { Pencil, Trash2, Printer, Loader2, AlertTriangle, Info, Calendar } from "lucide-react";
 import toast from "react-hot-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,34 +26,6 @@ function Field({ label, value }) {
   );
 }
 
-// Rough, deliberately imprecise sanity check -- weekday count between the
-// term's own start/end dates, no Holiday List consulted (this app has no
-// school-calendar doctype to consult anyway). Not meant to be an exact
-// "expected attendance days" figure, just enough to catch the case where
-// attendance was marked for a real stretch of the term and then simply
-// stopped being logged for the rest of it -- which the Present+Absent+
-// Leave total alone can't reveal, since it only ever counts days that
-// were ACTUALLY marked, and would look "complete" at whatever percentage
-// happens to fall out of that shrunken denominator.
-function weekdaysBetween(start, end) {
-  if (!start || !end) return 0;
-  const s = new Date(start);
-  const e = new Date(end);
-  if (Number.isNaN(s.getTime()) || Number.isNaN(e.getTime())) return 0;
-  let count = 0;
-  const d = new Date(s);
-  while (d <= e) {
-    const day = d.getDay();
-    if (day !== 0 && day !== 6) count++;
-    d.setDate(d.getDate() + 1);
-  }
-  return count;
-}
-
-// No Connections card here -- confirmed both directions: School Term
-// Result's own real JSON has "links": [] and no other doctype anywhere
-// in either app ships a _dashboard.py referencing "School Term Result"
-// as a target (see school_term_result_api.py's module docstring).
 export default function SchoolTermResultProfilePage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -106,19 +78,7 @@ export default function SchoolTermResultProfilePage() {
     return <p className="text-muted-foreground">School Term Result not found.</p>;
   }
 
-  // Pivot "assessment_components" (Assessment Score -- naturally one row
-  // per Subject x Criteria pair) into one row per Subject with one column
-  // per criteria actually present in THIS result's data. Same
-  // dynamic-column approach the real Course wise Assessment Report script
-  // report already uses (course_wise_assessment_report.py's get_data()/
-  // get_column(): walk every detail row, collect each not-yet-seen
-  // criteria into an ordered list as the column set) -- reused here
-  // rather than reinvented. Criteria are collected in first-seen order,
-  // not alphabetized or assumed fixed, and a subject missing a given
-  // criteria just leaves that cell blank instead of assuming every
-  // subject shares the same set (two subjects in the same result CAN
-  // have different criteria, e.g. one CA1/CA2/Exam, another
-  // CA1/CA2/CA3/Exam).
+  // Pivot assessment_components into one row per Subject with one column per criteria
   const criteriaColumns = [];
   const seenCriteria = new Set();
   for (const c of result.assessment_components || []) {
@@ -134,9 +94,17 @@ export default function SchoolTermResultProfilePage() {
     componentsBySubject[c.subject][c.criteria] = c;
   }
 
-  const termWeekdays = weekdaysBetween(result.term_start_date, result.term_end_date);
-  const markedDays = result.number_of_times_school_opened || 0;
-  const coveragePct = termWeekdays ? Math.round((markedDays / termWeekdays) * 100) : null;
+  // Holiday-aware attendance data
+  const hasHolidayList = Boolean(result.holiday_list_used);
+  const totalWorkdays = result.total_workdays || 0;
+  const weekdayHolidaysCount = result.weekday_holidays_count || 0;
+  const schoolDaysOpened = result.number_of_times_school_opened || 0;
+  const holidayDetails = result.weekday_holiday_details || "";
+  const holidayLines = holidayDetails ? holidayDetails.split("\n").filter(Boolean) : [];
+
+  // Attendance coverage check
+  const markedDays = (result.number_of_times_present || 0) + (result.number_of_times_absent || 0) + (result.number_of_times_on_leave || 0);
+  const coveragePct = schoolDaysOpened ? Math.round((markedDays / schoolDaysOpened) * 100) : null;
   const coverageLow = coveragePct !== null && coveragePct < 80;
 
   return (
@@ -192,25 +160,92 @@ export default function SchoolTermResultProfilePage() {
           </CardContent>
         </Card>
 
+        {/* ── Attendance Information ── */}
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-base">Attendance Information</CardTitle>
           </CardHeader>
-          <CardContent>
-            {termWeekdays > 0 && (
-              <div
-                className={`mb-4 flex items-center gap-2 rounded-md px-3 py-2 text-sm ${coverageLow ? "" : "bg-muted text-muted-foreground"}`}
-                style={coverageLow ? { backgroundColor: "var(--warning-soft)", color: "var(--warning-ink)" } : undefined}
-              >
-                {coverageLow && <AlertTriangle className="h-4 w-4 shrink-0" />}
+          <CardContent className="space-y-4">
+
+            {/* Warning: no holiday list configured */}
+            {!hasHolidayList && (
+              <div className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-200">
+                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
                 <span>
-                  Attendance recorded for {markedDays} of ~{termWeekdays} weekdays this term ({coveragePct}%)
-                  {coverageLow && " — this term's attendance record may be incomplete, not just low-attendance."}
+                  No Holiday List was found for this term period. "Times School Opened" is using
+                  the fallback method (Present + Absent + Leave). To get accurate school-day counts,
+                  create a Holiday List in Desk that covers {fmtDate(result.term_start_date)} – {fmtDate(result.term_end_date)}.
                 </span>
               </div>
             )}
+
+            {/* Term Calendar Summary */}
+            {hasHolidayList && (
+              <div className="rounded-md border bg-muted/40 p-4 space-y-3">
+                <div className="flex items-center gap-2 text-sm font-medium">
+                  <Calendar className="h-4 w-4" />
+                  Term Calendar — Holiday List: {result.holiday_list_used}
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div>
+                    <p className="text-xs text-muted-foreground">Total Weekdays (Mon-Fri)</p>
+                    <p className="text-lg font-semibold">{totalWorkdays}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Holidays on Workdays</p>
+                    <p className="text-lg font-semibold">{weekdayHolidaysCount}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">School Days Opened</p>
+                    <p className="text-lg font-semibold">
+                      {schoolDaysOpened}
+                      <span className="ml-1 text-xs font-normal text-muted-foreground">
+                        ({totalWorkdays} − {weekdayHolidaysCount})
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Holiday list */}
+                {holidayLines.length > 0 && (
+                  <div>
+                    <p className="mb-1 text-xs font-medium text-muted-foreground">Holidays during this term</p>
+                    <div className="flex flex-wrap gap-2">
+                      {holidayLines.map((line, i) => (
+                        <span
+                          key={i}
+                          className="inline-flex items-center rounded-full border bg-background px-2.5 py-0.5 text-xs"
+                        >
+                          {line}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {holidayLines.length === 0 && weekdayHolidaysCount === 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    No public holidays fell on weekdays during this term.
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Coverage warning */}
+            {coverageLow && (
+              <div className="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-200">
+                <Info className="h-4 w-4 shrink-0" />
+                <span>
+                  Attendance recorded for {markedDays} of {schoolDaysOpened} school days ({coveragePct}%)
+                  — this term's attendance record may be incomplete.
+                </span>
+              </div>
+            )}
+
+            {/* Student attendance numbers */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-              <Field label="Times School Opened" value={result.number_of_times_school_opened} />
+              <Field label="Times School Opened" value={schoolDaysOpened} />
               <Field label="Times Present" value={result.number_of_times_present} />
               <Field label="Times Absent" value={result.number_of_times_absent} />
               <Field label="Times on Leave" value={result.number_of_times_on_leave} />
@@ -380,11 +415,6 @@ export default function SchoolTermResultProfilePage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* amended_from is a real field on this doctype but is vestigial --
-          School Term Result is NOT is_submittable, so the amend workflow
-          it would normally support never applies here; print_hide:1 in
-          the real JSON too, so Desk itself never shows it either. */}
 
       <ConfirmDialog
         open={deleteModalOpen}

@@ -167,6 +167,7 @@ import SchoolTermResultsPage from "@/pages/admin/school-term-result-generator/Sc
 import SchoolTermResultFormPage from "@/pages/admin/school-term-result-generator/SchoolTermResultFormPage";
 import SchoolTermResultProfilePage from "@/pages/admin/school-term-result-generator/SchoolTermResultProfilePage";
 import BulkTermResultGeneratorPage from "@/pages/admin/bulk-term-result-generator/BulkTermResultGeneratorPage";
+import TermResultRecalculationPage from "@/pages/admin/term-result-recalculation/TermResultRecalculationPage";
 
 // ─── Loading screen ────────────────────────────────────────────────────
 
@@ -411,6 +412,7 @@ export default function App() {
         <Route path="school-term-result-generator/:id/edit" element={<SchoolTermResultFormPage />} />
         <Route path="school-term-result-generator/:id" element={<SchoolTermResultProfilePage />} />
         <Route path="bulk-term-result-generator" element={<BulkTermResultGeneratorPage />} />
+        <Route path="term-result-recalculation" element={<TermResultRecalculationPage />} />
         <Route path="student-guardian-contacts" element={<StudentGuardianContactsPage />} />
       </Route>
 

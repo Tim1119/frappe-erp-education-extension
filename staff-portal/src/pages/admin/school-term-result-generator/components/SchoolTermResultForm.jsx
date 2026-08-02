@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Loader2, Plus, Trash2 } from "lucide-react";
+import { Loader2, Plus, Trash2, Calendar, AlertTriangle } from "lucide-react";
 import toast from "react-hot-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -60,6 +60,12 @@ function buildForm(result) {
     comments__notes: result.comments__notes || "",
     class_teacher_comment: result.class_teacher_comment || "",
     head_teacher_comment: result.head_teacher_comment || "",
+    // Holiday-aware attendance fields (read-only display)
+    holiday_list_used: result.holiday_list_used || "",
+    total_workdays: result.total_workdays ?? "",
+    weekday_holidays_count: result.weekday_holidays_count ?? "",
+    weekday_holiday_details: result.weekday_holiday_details || "",
+    // Editable attendance fields
     number_of_times_school_opened: result.number_of_times_school_opened ?? "",
     number_of_times_present: result.number_of_times_present ?? "",
     number_of_times_absent: result.number_of_times_absent ?? "",
@@ -180,10 +186,7 @@ export default function SchoolTermResultForm({ result, onSave }) {
     }
   }
 
-  // CREATE: only the doctype's real reqd fields, matching a normal Desk
-  // "New School Term Result" form -- before_insert() computes everything
-  // else the instant this saves, so showing the full ~40-field layout
-  // here (all blank) would be both wrong and confusing.
+  // CREATE mode
   if (!isEdit) {
     return (
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -272,9 +275,12 @@ export default function SchoolTermResultForm({ result, onSave }) {
     );
   }
 
-  // EDIT: the doctype's own before_insert() never re-runs on save (only
-  // on insert) and validate() is a real no-op, so every field below can
-  // genuinely be hand-adjusted afterward -- not an invented capability.
+  // EDIT mode
+  const hasHolidayList = Boolean(form.holiday_list_used);
+  const holidayLines = form.weekday_holiday_details
+    ? form.weekday_holiday_details.split("\n").filter(Boolean)
+    : [];
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <Card>
@@ -305,16 +311,86 @@ export default function SchoolTermResultForm({ result, onSave }) {
         </CardContent>
       </Card>
 
+      {/* ── Attendance Information ── */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base">Attendance Information</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+
+          {/* No holiday list warning */}
+          {!hasHolidayList && (
+            <div className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-200">
+              <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+              <span>
+                No Holiday List configured for this term period. "Times School Opened" is using
+                the fallback (Present + Absent + Leave). Create a Holiday List in Desk for accurate counts.
+              </span>
+            </div>
+          )}
+
+          {/* Term Calendar Summary (read-only) */}
+          {hasHolidayList && (
+            <div className="rounded-md border bg-muted/40 p-4 space-y-3">
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <Calendar className="h-4 w-4" />
+                Term Calendar — Holiday List: {form.holiday_list_used}
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div>
+                  <p className="text-xs text-muted-foreground">Total Weekdays (Mon-Fri)</p>
+                  <p className="text-lg font-semibold">{form.total_workdays}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Holidays on Workdays</p>
+                  <p className="text-lg font-semibold">{form.weekday_holidays_count}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">School Days Opened</p>
+                  <p className="text-lg font-semibold">
+                    {form.number_of_times_school_opened}
+                    <span className="ml-1 text-xs font-normal text-muted-foreground">
+                      ({form.total_workdays} − {form.weekday_holidays_count})
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+              {holidayLines.length > 0 && (
+                <div>
+                  <p className="mb-1 text-xs font-medium text-muted-foreground">Holidays during this term</p>
+                  <div className="flex flex-wrap gap-2">
+                    {holidayLines.map((line, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center rounded-full border bg-background px-2.5 py-0.5 text-xs"
+                      >
+                        {line}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {holidayLines.length === 0 && (
+                <p className="text-xs text-muted-foreground">
+                  No public holidays fell on weekdays during this term.
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Editable attendance fields */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             <div className="space-y-2">
               <Label>Times School Opened</Label>
               <Input value={form.number_of_times_school_opened} onChange={(e) => upd("number_of_times_school_opened", e.target.value)} />
-              <p className="text-xs text-muted-foreground">Present + Absent + Leave</p>
+              {hasHolidayList ? (
+                <p className="text-xs text-muted-foreground">Weekdays − holidays</p>
+              ) : (
+                <p className="text-xs text-muted-foreground">Present + Absent + Leave</p>
+              )}
             </div>
             <div className="space-y-2">
               <Label>Times Present</Label>

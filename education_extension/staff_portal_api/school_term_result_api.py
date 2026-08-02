@@ -177,10 +177,12 @@ def update_school_term_result(name, data):
         "comments__notes": data.get("comments__notes"),
         "class_teacher_comment": data.get("class_teacher_comment"),
         "head_teacher_comment": data.get("head_teacher_comment"),
-        # Pre-existing gap fixed alongside the new Leave field: these were
-        # rendered as editable inputs on the edit form but never actually
-        # included in this update payload, so editing them silently never
-        # saved.
+        # Holiday-aware attendance fields
+        "holiday_list_used": data.get("holiday_list_used"),
+        "total_workdays": data.get("total_workdays"),
+        "weekday_holidays_count": data.get("weekday_holidays_count"),
+        "weekday_holiday_details": data.get("weekday_holiday_details"),
+        # Student attendance fields
         "number_of_times_school_opened": data.get("number_of_times_school_opened"),
         "number_of_times_present": data.get("number_of_times_present"),
         "number_of_times_absent": data.get("number_of_times_absent"),
