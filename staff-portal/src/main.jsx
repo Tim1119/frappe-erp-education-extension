@@ -7,9 +7,11 @@ import { AuthProvider } from "@/context/AuthContext";
 import App from "./App";
 import "./index.css";
 
+const basename = window.location.port === "5173" ? "/" : "/staff-dashboard";
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter basename="/staff-dashboard">
+    <BrowserRouter basename={basename}>
       <ThemeProvider>
         <AuthProvider>
           <App />

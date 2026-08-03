@@ -29,7 +29,15 @@ function hasActiveChild(item, pathname) {
  *              depth 2 = leaf links inside those groups (Student, Teacher…)
  * Each depth adds 12px left padding for clear visual nesting.
  */
-const depthPadding = (depth) => ({ paddingLeft: `${8 + depth * 12}px` });
+// const depthPadding = (depth) => ({ paddingLeft: `${4 + depth * 12}px` });
+
+const linkPadding = (depth) => ({
+  paddingLeft: `${2 + depth * 8}px`,
+});
+
+const groupPadding = (depth) => ({
+  paddingLeft: `${4 + depth * 12}px`,
+});
 
 function SidebarLink({ item, depth = 0 }) {
   const Icon = item.icon;
@@ -45,7 +53,7 @@ function SidebarLink({ item, depth = 0 }) {
             : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
         )
       }
-      style={depthPadding(depth)}
+      style={linkPadding(depth)}
     >
       {Icon && <Icon className="h-4 w-4 shrink-0" />}
       <span className="truncate">{item.label}</span>
@@ -76,7 +84,7 @@ function SidebarGroup({ item, depth = 0 }) {
             ? "text-sidebar-primary"
             : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
         )}
-        style={depthPadding(depth)}
+        style={groupPadding(depth)}
       >
         {Icon && <Icon className="h-4 w-4 shrink-0" />}
         <span className="flex-1 truncate text-left">{item.label}</span>
@@ -91,7 +99,7 @@ function SidebarGroup({ item, depth = 0 }) {
         {/* Left border line to visually connect children */}
         <div
           className="mt-0.5 space-y-0.5 border-l border-sidebar-border"
-          style={{ marginLeft: `${14 + depth * 12}px` }}
+          style={{ marginLeft: `${0 + depth * 12}px` }}
         >
           {item.children.map((child) => (
             <SidebarItem key={child.key} item={child} depth={depth + 1} />

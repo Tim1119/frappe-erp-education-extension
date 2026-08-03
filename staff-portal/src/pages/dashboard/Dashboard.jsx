@@ -104,36 +104,105 @@ export default function Dashboard() {
     hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   const firstName = user?.full_name?.split(" ")[0] || "there";
 
-  useEffect(() => {
-    const today = todayISO();
+  // useEffect(() => {
+  //   const today = todayISO();
 
-    Promise.all([
-      frappe.getCount("Student"),
-      frappe.getCount("Instructor"),
-      frappe.getCount("Student Group"),
-      frappe.getCount("Student Attendance", [["attendance_date", "=", today]]),
-      frappe.getCount("Student Attendance", [
-        ["attendance_date", "=", today],
-        ["status", "=", "Present"],
-      ]),
-      frappe.getCount("Assessment Plan"),
-      frappe.getCount("Assessment Result"),
-    ])
-      .then(
-        ([students, teachers, groups, attToday, presentToday, assessments, results]) => {
-          setKpis({
-            students,
-            teachers,
-            groups,
-            attendanceRate: attToday
-              ? ((presentToday / attToday) * 100).toFixed(1)
-              : null,
-            assessments,
-            results,
-          });
-        },
+  //   Promise.all([
+  //     frappe.getCount("Student"),
+  //     frappe.getCount("Instructor"),
+  //     frappe.getCount("Student Group"),
+  //     frappe.getCount("Student Attendance", [["attendance_date", "=", today]]),
+  //     frappe.getCount("Student Attendance", [
+  //       ["attendance_date", "=", today],
+  //       ["status", "=", "Present"],
+  //     ]),
+  //     frappe.getCount("Assessment Plan"),
+  //     frappe.getCount("Assessment Result"),
+  //   ])
+  //     .then(
+  //       ([students, teachers, groups, attToday, presentToday, assessments, results]) => {
+  //         setKpis({
+  //           students,
+  //           teachers,
+  //           groups,
+  //           attendanceRate: attToday
+  //             ? ((presentToday / attToday) * 100).toFixed(1)
+  //             : null,
+  //           assessments,
+  //           results,
+  //         });
+  //       },
+  //     )
+  //     .catch(() =>
+  //       setKpis({
+  //         students: 0,
+  //         teachers: 0,
+  //         groups: 0,
+  //         attendanceRate: null,
+  //         assessments: 0,
+  //         results: 0,
+  //       }),
+  //     )
+  //     .finally(() => setLoading(false));
+
+  //   // 7-day attendance trend
+  //   Promise.all(
+  //     Array.from({ length: 7 }).map((_, i) => {
+  //       const d = daysAgoISO(6 - i);
+  //       return Promise.all([
+  //         frappe.getCount("Student Attendance", [["attendance_date", "=", d]]),
+  //         frappe.getCount("Student Attendance", [
+  //           ["attendance_date", "=", d],
+  //           ["status", "=", "Present"],
+  //         ]),
+  //       ]).then(([total, present]) => ({
+  //         label: dayLabel(d),
+  //         value: total ? Math.round((present / total) * 100) : 0,
+  //       }));
+  //     }),
+  //   )
+  //     .then(setTrend)
+  //     .catch(() => setTrend([]));
+
+  //   // Recently added students
+  //   frappe
+  //     .getList("Student", {
+  //       fields: ["name", "student_name", "image", "enabled", "creation"],
+  //       order_by: "creation desc",
+  //       limit_page_length: 5,
+  //     })
+  //     .then(setRecentStudents)
+  //     .catch(() => setRecentStudents([]));
+  // }, []);
+
+
+  useEffect(() => {
+    frappe
+      .callMethod(
+        "education_extension.staff_portal_api.dashboard_api.get_dashboard_stats"
       )
-      .catch(() =>
+      .then((data) => {
+        setKpis({
+          students: data.students,
+          teachers: data.teachers,
+          groups: data.groups,
+          attendanceRate: data.att_today
+            ? ((data.present_today / data.att_today) * 100).toFixed(1)
+            : null,
+          assessments: data.assessments,
+          results: data.results,
+        });
+
+        setTrend(
+          data.trend.map((d) => ({
+            label: dayLabel(d.date),
+            value: d.total ? Math.round((d.present / d.total) * 100) : 0,
+          }))
+        );
+
+        setRecentStudents(data.recent_students);
+      })
+      .catch(() => {
         setKpis({
           students: 0,
           teachers: 0,
@@ -141,39 +210,13 @@ export default function Dashboard() {
           attendanceRate: null,
           assessments: 0,
           results: 0,
-        }),
-      )
-      .finally(() => setLoading(false));
-
-    // 7-day attendance trend
-    Promise.all(
-      Array.from({ length: 7 }).map((_, i) => {
-        const d = daysAgoISO(6 - i);
-        return Promise.all([
-          frappe.getCount("Student Attendance", [["attendance_date", "=", d]]),
-          frappe.getCount("Student Attendance", [
-            ["attendance_date", "=", d],
-            ["status", "=", "Present"],
-          ]),
-        ]).then(([total, present]) => ({
-          label: dayLabel(d),
-          value: total ? Math.round((present / total) * 100) : 0,
-        }));
-      }),
-    )
-      .then(setTrend)
-      .catch(() => setTrend([]));
-
-    // Recently added students
-    frappe
-      .getList("Student", {
-        fields: ["name", "student_name", "image", "enabled", "creation"],
-        order_by: "creation desc",
-        limit_page_length: 5,
+        });
+        setTrend([]);
+        setRecentStudents([]);
       })
-      .then(setRecentStudents)
-      .catch(() => setRecentStudents([]));
+      .finally(() => setLoading(false));
   }, []);
+
 
   return (
     <>
@@ -330,13 +373,13 @@ export default function Dashboard() {
                   <ClipboardList className="h-4 w-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-lg font-semibold tnum">
-                    {loading ? (
-                      <Skeleton className="h-5 w-10" />
-                    ) : (
-                      kpis?.assessments?.toLocaleString()
-                    )}
-                  </p>
+                 <div className="text-lg font-semibold tnum">
+                  {loading ? (
+                    <Skeleton className="h-5 w-10" />
+                  ) : (
+                    kpis?.assessments?.toLocaleString()
+                  )}
+                </div>
                   <p className="text-xs text-muted-foreground">
                     Assessment plans
                   </p>
@@ -347,13 +390,13 @@ export default function Dashboard() {
                   <Award className="h-4 w-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-lg font-semibold tnum">
+                  <div className="text-lg font-semibold tnum">
                     {loading ? (
                       <Skeleton className="h-5 w-10" />
                     ) : (
                       kpis?.results?.toLocaleString()
                     )}
-                  </p>
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     Results recorded
                   </p>
