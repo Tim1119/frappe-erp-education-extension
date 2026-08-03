@@ -281,6 +281,10 @@ website_route_rules = [
     {"from_route": "/guardian-dashboard/<path:app_path>", "to_route": "guardian-portal"},
     {"from_route": "/student-portal", "to_route": "student-portal"},
     {"from_route": "/student-portal/<path:app_path>", "to_route": "student-portal"},
+    
+    # Staff portal
+    {"from_route": "/staff-dashboard", "to_route": "staff-dashboard"},
+    {"from_route": "/staff-dashboard/<path:app_path>", "to_route": "staff-dashboard"},
 ]
 
 app_include_js = "/assets/education_extension/js/guardian_portal.js"

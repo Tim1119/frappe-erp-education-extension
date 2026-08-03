@@ -1,6 +1,7 @@
 import api from "./api";
 
 const METHOD = "education_extension.staff_portal_api.portal_api";
+// const METHOD = "education_extension.education_extension.staff_portal_api.portal_api";
 
 /**
  * Returns the logged-in user's portal context:

@@ -44,10 +44,15 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "dist",
+    outDir: "../education_extension/public/staff_portal",
+    emptyOutDir: true,
     sourcemap: false,
     rollupOptions: {
       output: {
+        // Stable filenames so the www page can reference them directly
+        entryFileNames: "index.js",
+        assetFileNames: "[name][extname]",
+        chunkFileNames: "[name].js",
         manualChunks: {
           vendor: ["react", "react-dom", "react-router-dom"],
           charts: ["recharts"],

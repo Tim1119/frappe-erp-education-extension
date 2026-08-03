@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+
+    <link rel="icon" href="/favicon.png">
+
+    <script>
+        window.csrf_token = "{{ frappe.session.csrf_token }}";
+    </script>
+
+    <link rel="stylesheet" href="/assets/education_extension/staff_portal/index.css">
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="module"
+        src="/assets/education_extension/staff_portal/index.js">
+    </script>
+</body>
+</html>
