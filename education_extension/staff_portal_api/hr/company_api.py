@@ -33,6 +33,8 @@ def get_companies(page=1, page_size=20, search=None, country=None):
         start=(page - 1) * page_size,
         page_length=page_size,
     )
+    for row in rows:
+        row["can_edit"] = frappe.has_permission("Company", "write", doc=row.name)
     total = frappe.db.count("Company", filters=filters)
     return {
         "rows": rows,
@@ -47,7 +49,10 @@ def get_companies(page=1, page_size=20, search=None, country=None):
 def get_company(name):
     if not name:
         frappe.throw(_("Company name is required"))
-    return frappe.get_doc("Company", name).as_dict()
+    doc = frappe.get_doc("Company", name)
+    data = doc.as_dict()
+    data["can_edit"] = doc.has_permission("write")
+    return data
 
 
 LAYOUT_FIELD_TYPES = {"Section Break", "Column Break", "Tab Break", "HTML", "Button"}
@@ -380,10 +385,18 @@ def get_connections(company):
             "departments": frappe.db.count("Department", {"company": company}),
             "branches": frappe.db.count("Branch"),
             "designations": frappe.db.count("Designation"),
+            "quotations": frappe.db.count("Quotation", {"company": company}),
+            "sales_orders": frappe.db.count("Sales Order", {"company": company}),
+            "delivery_notes": frappe.db.count("Delivery Note", {"company": company}),
+            "sales_invoices": frappe.db.count("Sales Invoice", {"company": company}),
+            "issues": frappe.db.count("Issue", {"company": company}),
+            "projects": frappe.db.count("Project", {"company": company}),
         }
     except Exception as e:
         frappe.log_error(f"Error fetching connections for {company}: {str(e)}", "Company API")
-        return {"employees": 0, "departments": 0, "branches": 0, "designations": 0}
+        return {"employees": 0, "departments": 0, "branches": 0, "designations": 0,
+                "quotations": 0, "sales_orders": 0, "delivery_notes": 0,
+                "sales_invoices": 0, "issues": 0, "projects": 0}
 
 
 @frappe.whitelist()

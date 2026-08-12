@@ -12,5 +12,6 @@ export default function CompanyFormPage() {
   useEffect(() => { if (!editing) return; getCompany(name).then(setCompany).catch((err) => toast.error(getErrorMessage(err))).finally(() => setLoading(false)); }, [editing, name]);
   async function save(values) { try { const result = editing ? await updateCompany(name, values) : await createCompany(values); toast.success(editing ? "Company updated" : "Company created"); navigate(`/dashboard/company/${encodeURIComponent(result?.name || name)}`); } catch (err) { toast.error(getErrorMessage(err)); } }
   if (loading) return <div className="muted">Loading company…</div>;
+  if (editing && company && !company.can_edit) return <><PageHeader eyebrow="HR" title="Company" /><div className="panel" style={{ padding: 20 }}><div className="rounded-md bg-muted px-4 py-3 text-sm text-muted-foreground">You do not have permission to edit this company.</div></div></>;
   return <><PageHeader eyebrow="HR" title={editing ? "Edit Company" : "Create Company"} /><div className="panel"><CompanyForm company={company} onSave={save} /></div></>;
 }

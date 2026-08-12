@@ -12,6 +12,15 @@ import ReportPrintPage from "@/pages/print/ReportPrintPage";
 import CompaniesPage from "@/pages/admin/hr/company/CompaniesPage";
 import CompanyProfilePage from "@/pages/admin/hr/company/CompanyProfilePage";
 import CompanyFormPage from "@/pages/admin/hr/company/CompanyFormPage";
+import BranchesPage from "@/pages/admin/hr/branch/BranchesPage";
+import BranchProfilePage from "@/pages/admin/hr/branch/BranchProfilePage";
+import BranchFormPage from "@/pages/admin/hr/branch/BranchFormPage";
+import DepartmentsPage from "@/pages/admin/hr/department/DepartmentsPage";
+import DepartmentProfilePage from "@/pages/admin/hr/department/DepartmentProfilePage";
+import DepartmentFormPage from "@/pages/admin/hr/department/DepartmentFormPage";
+import DesignationsPage from "@/pages/admin/hr/designation/DesignationsPage";
+import DesignationProfilePage from "@/pages/admin/hr/designation/DesignationProfilePage";
+import DesignationFormPage from "@/pages/admin/hr/designation/DesignationFormPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/education/students/StudentsPage";
@@ -251,6 +260,17 @@ export default function App() {
         <Route path="company/new" element={<CompanyFormPage />} />
         <Route path="company/:id/edit" element={<CompanyFormPage />} />
         <Route path="company/:id" element={<CompanyProfilePage />} />
+        <Route path="branches" element={<BranchesPage />} />
+        <Route path="branches/new" element={<BranchFormPage />} />
+        <Route path="branches/:id" element={<BranchProfilePage />} />
+        <Route path="departments" element={<DepartmentsPage />} />
+        <Route path="departments/new" element={<DepartmentFormPage />} />
+        <Route path="departments/:id/edit" element={<DepartmentFormPage />} />
+        <Route path="departments/:id" element={<DepartmentProfilePage />} />
+        <Route path="designations" element={<DesignationsPage />} />
+        <Route path="designations/new" element={<DesignationFormPage />} />
+        <Route path="designations/:id/edit" element={<DesignationFormPage />} />
+        <Route path="designations/:id" element={<DesignationProfilePage />} />
 
         {/* ─── Class Arms ────────────────────────────────────── */}
         <Route path="class-arms" element={<ClassArmsPage />} />

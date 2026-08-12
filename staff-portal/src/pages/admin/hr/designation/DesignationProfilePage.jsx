@@ -1,0 +1,19 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { BadgeCheck, BriefcaseBusiness, ClipboardList, Users } from "lucide-react";
+import toast from "react-hot-toast";
+import { PageHeader } from "@/components/shared/OriginalPrimitives";
+import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import ConnectionsPanel from "../components/ConnectionsPanel";
+import { deleteDesignation, getDesignation, getDesignationConnections } from "@/services/hr/designationService";
+import { getErrorMessage } from "@/utils/errors";
+
+function Field({ label, value }) { return <div><p className="text-xs text-muted-foreground">{label}</p><p className="text-sm font-medium">{value === undefined || value === null || value === "" ? "—" : value}</p></div>; }
+export default function DesignationProfilePage() {
+  const { id } = useParams(); const name = decodeURIComponent(id); const navigate = useNavigate(); const [designation, setDesignation] = useState(null); const [connections, setConnections] = useState({}); const [removeOpen, setRemoveOpen] = useState(false);
+  useEffect(() => { Promise.all([getDesignation(name), getDesignationConnections(name)]).then(([doc, counts]) => { setDesignation(doc); setConnections(counts || {}); }).catch((error) => toast.error(getErrorMessage(error))); }, [name]);
+  async function remove() { try { await deleteDesignation(name); toast.success("Designation deleted"); navigate("/dashboard/designations"); } catch (error) { toast.error(getErrorMessage(error)); } }
+  if (!designation) return <div className="muted">Loading designation…</div>;
+  const actions = <div style={{ display: "flex", gap: 10 }}>{designation.can_edit && <button className="btn btn-secondary" onClick={() => navigate(`/dashboard/designations/${encodeURIComponent(name)}/edit`)}>Edit</button>}<button className="btn btn-danger" onClick={() => setRemoveOpen(true)}>Delete</button></div>;
+  return <><PageHeader eyebrow="HR" title={designation.designation_name || designation.name} button={actions} /><div className="panel"><div className="panel-head"><div className="panel-title" style={{ display: "flex", alignItems: "center", gap: 8 }}><BadgeCheck size={15} style={{ color: "var(--ink-4)" }} /> Designation Information</div></div><div className="grid-form" style={{ padding: "10px 20px 26px" }}><Field label="Designation" value={designation.designation_name} /><Field label="Appraisal Template" value={designation.appraisal_template} /><div style={{ gridColumn: "1 / -1" }}><Field label="Description" value={designation.description} /></div></div><div className="panel-head" style={{ borderTop: "1px solid hsl(var(--border))" }}><div className="panel-title">Required Skills</div></div><div style={{ padding: "10px 20px 26px", overflowX: "auto" }}><table className="tbl"><thead><tr><th>Skill</th></tr></thead><tbody>{(designation.skills || []).map((row, index) => <tr key={`${row.skill}-${index}`}><td>{row.skill || "—"}</td></tr>)}{!(designation.skills || []).length && <tr><td className="text-sm text-muted-foreground">No skills added.</td></tr>}</tbody></table></div></div><ConnectionsPanel groups={[{ label: "HR", items: [{ icon: Users, label: "Employees", count: connections.employees, onClick: () => navigate(`/dashboard/employees?designation=${encodeURIComponent(name)}`) }, { icon: BriefcaseBusiness, label: "Job Openings", count: connections.job_openings, onClick: () => navigate(`/dashboard/job-openings?designation=${encodeURIComponent(name)}`) }, { icon: ClipboardList, label: "Job Requisitions", count: connections.job_requisitions, onClick: () => navigate(`/dashboard/job-requisitions?designation=${encodeURIComponent(name)}`) }] }]} /><ConfirmDialog open={removeOpen} onClose={() => setRemoveOpen(false)} onConfirm={remove} title={`Delete ${designation.designation_name}?`} description="This action cannot be undone." confirmLabel="Delete" /></>;
+}

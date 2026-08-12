@@ -1,0 +1,21 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { BadgeCheck, Plus } from "lucide-react";
+import toast from "react-hot-toast";
+import { EmptyState, PageHeader } from "@/components/shared/OriginalPrimitives";
+import Toolbar from "@/components/shared/Toolbar";
+import Pager from "@/components/shared/Pager";
+import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import { usePagination } from "@/hooks";
+import { deleteDesignation, getAppraisalTemplates, getDesignations, getSkills } from "@/services/hr/designationService";
+import { getErrorMessage } from "@/utils/errors";
+
+export default function DesignationsPage() {
+  const navigate = useNavigate(); const { page, setPage } = usePagination(1); const [rows, setRows] = useState([]); const [count, setCount] = useState(0); const [search, setSearch] = useState(""); const [appraisalTemplate, setAppraisalTemplate] = useState(""); const [skill, setSkill] = useState(""); const [templates, setTemplates] = useState([]); const [skills, setSkills] = useState([]); const [loading, setLoading] = useState(true); const [target, setTarget] = useState(null);
+  useEffect(() => { Promise.all([getAppraisalTemplates(), getSkills()]).then(([templateRows, skillRows]) => { setTemplates((templateRows || []).map((row) => row.name)); setSkills((skillRows || []).map((row) => row.name)); }).catch(() => { setTemplates([]); setSkills([]); }); }, []);
+  async function load() { try { setLoading(true); const result = await getDesignations({ page, search, appraisal_template: appraisalTemplate || undefined, skill: skill || undefined }); setRows(result.rows || []); setCount(result.count || 0); } catch (error) { toast.error(getErrorMessage(error)); } finally { setLoading(false); } }
+  useEffect(() => { load(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [page, search, appraisalTemplate, skill]);
+  async function remove() { try { await deleteDesignation(target.name); toast.success("Designation deleted"); setTarget(null); load(); } catch (error) { toast.error(getErrorMessage(error)); } }
+  return <><PageHeader eyebrow="HR" title="Designations" sub={loading ? "Loading..." : `${count} designations`} button={<button className="btn btn-primary" onClick={() => navigate("/dashboard/designations/new")}><Plus size={15} /> Add Designation</button>} /><Toolbar search={search} onSearch={(value) => { setSearch(value); setPage(1); }} filters={[{ key: "appraisal_template", label: "Appraisal Template", value: appraisalTemplate, onChange: (value) => { setAppraisalTemplate(value); setPage(1); }, options: templates }, { key: "skill", label: "Skill", value: skill, onChange: (value) => { setSkill(value); setPage(1); }, options: skills }]} /><div className="panel"><div style={{ overflowX: "auto" }}><table className="tbl"><thead><tr><th>Designation</th><th>Appraisal Template</th><th>Description</th><th /></tr></thead><tbody>{rows.map((row) => <tr key={row.name} className="cursor-pointer" onClick={() => navigate(`/dashboard/designations/${encodeURIComponent(row.name)}`)}><td><div style={{ display: "flex", alignItems: "center", gap: 9 }}><BadgeCheck size={17} style={{ color: "var(--ink-4)" }} />{row.designation_name || row.name}</div></td><td>{row.appraisal_template || "—"}</td><td className="text-muted-foreground">{row.description || "—"}</td><td onClick={(event) => event.stopPropagation()}><RowActionsMenu onView={() => navigate(`/dashboard/designations/${encodeURIComponent(row.name)}`)} onEdit={row.can_edit ? () => navigate(`/dashboard/designations/${encodeURIComponent(row.name)}/edit`) : undefined} onDelete={() => setTarget(row)} /></td></tr>)}{!loading && !rows.length && <tr><td colSpan={4}><EmptyState title="No designations found" sub="No designation records available." /></td></tr>}</tbody></table></div><Pager page={page} setPage={setPage} pageSize={20} count={count} /></div><ConfirmDialog open={Boolean(target)} onClose={() => setTarget(null)} onConfirm={remove} title={`Delete ${target?.designation_name || target?.name}?`} description="This action cannot be undone. Linked HR records may prevent deletion." confirmLabel="Delete" /></>;
+}

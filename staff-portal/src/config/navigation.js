@@ -21,6 +21,9 @@ import {
   BookOpenCheck,
   Layers,
   Briefcase,
+  GitBranch,
+  Network,
+  BadgeCheck,
 } from "lucide-react";
 
 /**
@@ -205,6 +208,9 @@ export const ADMIN_NAV = [
         icon: Settings,
         children: [
           { key: "company", label: "Company", icon: Building2, path: "/dashboard/company" },
+          { key: "branches", label: "Branch", icon: GitBranch, path: "/dashboard/branches" },
+          { key: "departments", label: "Department", icon: Network, path: "/dashboard/departments" },
+          { key: "designations", label: "Designation", icon: BadgeCheck, path: "/dashboard/designations" },
         ],
       },
     ],
