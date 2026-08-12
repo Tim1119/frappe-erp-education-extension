@@ -1,0 +1,10 @@
+import { callMethod } from "../frappeClient";
+const NS = "education_extension.staff_portal_api.hr.daily_work_summary_group_api";
+export const getDailyWorkSummaryGroups = (params = {}) => callMethod(`${NS}.get_daily_work_summary_groups`, params);
+export const getDailyWorkSummaryGroup = (name) => callMethod(`${NS}.get_daily_work_summary_group`, { name });
+export const createDailyWorkSummaryGroup = (data) => callMethod(`${NS}.create_daily_work_summary_group`, { data });
+export const updateDailyWorkSummaryGroup = (name, data) => callMethod(`${NS}.update_daily_work_summary_group`, { name, data });
+export const deleteDailyWorkSummaryGroup = (name) => callMethod(`${NS}.delete_daily_work_summary_group`, { name });
+export const getDailyWorkSummaryUsers = () => callMethod(`${NS}.get_users`);
+export const getDailyWorkSummaryHolidayLists = () => callMethod(`${NS}.get_holiday_lists`);
+export const getDailyWorkSummaryGroupConnections = (group) => callMethod(`${NS}.get_connections`, { group });

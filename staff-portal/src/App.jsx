@@ -36,6 +36,12 @@ import LeaveApplicationFormPage from "@/pages/admin/hr/leave-application/LeaveAp
 import CompensatoryLeaveRequestsPage from "@/pages/admin/hr/compensatory-leave-request/CompensatoryLeaveRequestsPage";
 import CompensatoryLeaveRequestProfilePage from "@/pages/admin/hr/compensatory-leave-request/CompensatoryLeaveRequestProfilePage";
 import CompensatoryLeaveRequestFormPage from "@/pages/admin/hr/compensatory-leave-request/CompensatoryLeaveRequestFormPage";
+import HRSettingsPage from "@/pages/admin/hr/hr-settings/HRSettingsPage";
+import HRSettingsFormPage from "@/pages/admin/hr/hr-settings/HRSettingsFormPage";
+import DailyWorkSummaryGroupsPage from "@/pages/admin/hr/daily-work-summary-group/DailyWorkSummaryGroupsPage";
+import DailyWorkSummaryGroupProfilePage from "@/pages/admin/hr/daily-work-summary-group/DailyWorkSummaryGroupProfilePage";
+import DailyWorkSummaryGroupFormPage from "@/pages/admin/hr/daily-work-summary-group/DailyWorkSummaryGroupFormPage";
+import TeamUpdatesPage from "@/pages/admin/hr/team-updates/TeamUpdatesPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/education/students/StudentsPage";
@@ -306,6 +312,13 @@ export default function App() {
         <Route path="compensatory-leave-requests/new" element={<CompensatoryLeaveRequestFormPage />} />
         <Route path="compensatory-leave-requests/:id/edit" element={<CompensatoryLeaveRequestFormPage />} />
         <Route path="compensatory-leave-requests/:id" element={<CompensatoryLeaveRequestProfilePage />} />
+        <Route path="hr-settings" element={<HRSettingsPage />} />
+        <Route path="hr-settings/edit" element={<HRSettingsFormPage />} />
+        <Route path="daily-work-summary-groups" element={<DailyWorkSummaryGroupsPage />} />
+        <Route path="daily-work-summary-groups/new" element={<DailyWorkSummaryGroupFormPage />} />
+        <Route path="daily-work-summary-groups/:id/edit" element={<DailyWorkSummaryGroupFormPage />} />
+        <Route path="daily-work-summary-groups/:id" element={<DailyWorkSummaryGroupProfilePage />} />
+        <Route path="team-updates" element={<TeamUpdatesPage />} />
 
         {/* ─── Class Arms ────────────────────────────────────── */}
         <Route path="class-arms" element={<ClassArmsPage />} />

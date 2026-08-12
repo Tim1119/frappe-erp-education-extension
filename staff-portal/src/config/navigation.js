@@ -25,6 +25,7 @@ import {
   Network,
   BadgeCheck,
   CalendarPlus,
+  MessageSquareText,
 } from "lucide-react";
 
 /**
@@ -231,6 +232,16 @@ export const ADMIN_NAV = [
         children: [
           { key: "leave-applications", label: "Leave Application", icon: CalendarCheck, path: "/dashboard/leave-applications" },
           { key: "compensatory-leave-requests", label: "Compensatory Leave Request", icon: CalendarPlus, path: "/dashboard/compensatory-leave-requests" },
+        ],
+      },
+      {
+        key: "hr-settings-group",
+        label: "Settings",
+        icon: Settings,
+        children: [
+          { key: "hr-settings", label: "HR Settings", icon: Settings, path: "/dashboard/hr-settings" },
+          { key: "daily-work-summary-groups", label: "Daily Work Summary Group", icon: ClipboardList, path: "/dashboard/daily-work-summary-groups" },
+          { key: "team-updates", label: "Team Updates", icon: MessageSquareText, path: "/dashboard/team-updates" },
         ],
       },
     ],
