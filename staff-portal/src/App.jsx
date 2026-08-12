@@ -24,6 +24,9 @@ import DesignationFormPage from "@/pages/admin/hr/designation/DesignationFormPag
 import EmployeesPage from "@/pages/admin/hr/employee/EmployeesPage";
 import EmployeeProfilePage from "@/pages/admin/hr/employee/EmployeeProfilePage";
 import EmployeeFormPage from "@/pages/admin/hr/employee/EmployeeFormPage";
+import EmployeeGroupsPage from "@/pages/admin/hr/employee-group/EmployeeGroupsPage";
+import EmployeeGroupProfilePage from "@/pages/admin/hr/employee-group/EmployeeGroupProfilePage";
+import EmployeeGroupFormPage from "@/pages/admin/hr/employee-group/EmployeeGroupFormPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/education/students/StudentsPage";
@@ -278,6 +281,10 @@ export default function App() {
         <Route path="employees/new" element={<EmployeeFormPage />} />
         <Route path="employees/:id/edit" element={<EmployeeFormPage />} />
         <Route path="employees/:id" element={<EmployeeProfilePage />} />
+        <Route path="employee-groups" element={<EmployeeGroupsPage />} />
+        <Route path="employee-groups/new" element={<EmployeeGroupFormPage />} />
+        <Route path="employee-groups/:id/edit" element={<EmployeeGroupFormPage />} />
+        <Route path="employee-groups/:id" element={<EmployeeGroupProfilePage />} />
 
         {/* ─── Class Arms ────────────────────────────────────── */}
         <Route path="class-arms" element={<ClassArmsPage />} />

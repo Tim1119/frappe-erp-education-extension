@@ -219,6 +219,7 @@ export const ADMIN_NAV = [
         icon: UsersRound,
         children: [
           { key: "employees", label: "Employee", icon: Contact, path: "/dashboard/employees" },
+          { key: "employee-groups", label: "Employee Group", icon: UsersRound, path: "/dashboard/employee-groups" },
         ],
       },
     ],

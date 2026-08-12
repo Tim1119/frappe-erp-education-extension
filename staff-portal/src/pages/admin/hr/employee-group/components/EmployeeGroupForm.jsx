@@ -1,0 +1,22 @@
+import { useEffect, useState } from "react";
+import { Plus, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
+import SearchableSelect from "@/components/shared/SearchableSelect";
+import { getEmployeeGroupEmployees } from "@/services/hr/employeeGroupService";
+
+export default function EmployeeGroupForm({ group, onSave }) {
+  const editing = Boolean(group); const [name, setName] = useState(""); const [members, setMembers] = useState([]); const [employees, setEmployees] = useState([]); const [saving, setSaving] = useState(false);
+  useEffect(() => {
+    getEmployeeGroupEmployees()
+      .then((rows) => setEmployees((rows || []).map((row) => ({
+        ...row,
+        display_name: row.employee_name || row.name,
+      }))))
+      .catch(() => setEmployees([]));
+  }, []);
+  useEffect(() => { if (group) { setName(group.employee_group_name || group.name || ""); setMembers(group.employee_list || []); } }, [group]);
+  const selected = new Set(members.map((row) => row.employee).filter(Boolean));
+  function setEmployee(index, employee) { const details = employees.find((row) => row.name === employee) || {}; setMembers((old) => old.map((row, rowIndex) => rowIndex === index ? { employee, employee_name: details.employee_name || details.display_name || "", user_id: details.user_id || "" } : row)); }
+  async function submit(event) { event.preventDefault(); if (!name.trim()) return toast.error("Employee Group Name is required"); if (members.some((row) => !row.employee)) return toast.error("Select an employee or remove the empty row"); setSaving(true); try { await onSave({ employee_group_name: name.trim(), employee_list: members }); } finally { setSaving(false); } }
+  return <form onSubmit={submit}><div className="panel-head"><div className="panel-title">Employee Group Information</div></div><div style={{ padding: "10px 20px 26px" }}><div className="field" style={{ maxWidth: 560 }}><label className="label">Employee Group Name <span style={{ color: "var(--danger)", marginLeft: 3 }}>*</span></label>{editing ? <div className="rounded-md bg-muted px-3 py-2 text-sm text-muted-foreground">{name}</div> : <input className="input" value={name} onChange={(event) => setName(event.target.value)} />}{editing && <p className="text-xs text-muted-foreground">The group name cannot be changed after creation.</p>}</div></div><div className="panel-head" style={{ borderTop: "1px solid hsl(var(--border))" }}><div className="panel-title">Employees</div></div><div style={{ padding: "10px 20px 26px", overflowX: "auto" }}><table className="tbl"><thead><tr><th>Employee</th><th>Employee Name</th><th>ERPNext User ID</th><th /></tr></thead><tbody>{members.map((row, index) => <tr key={index}><td style={{ minWidth: 240 }}><SearchableSelect value={row.employee || ""} onChange={(value) => setEmployee(index, value)} options={employees.filter((employee) => employee.name === row.employee || !selected.has(employee.name))} displayField="display_name" label="Employee" placeholder="Search employee..." showId /></td><td>{row.employee_name || "—"}</td><td>{row.user_id || "—"}</td><td><button type="button" className="btn btn-ghost" aria-label="Remove employee" onClick={() => setMembers((old) => old.filter((_, rowIndex) => rowIndex !== index))}><Trash2 size={15} /></button></td></tr>)}{!members.length && <tr><td colSpan={4} className="text-sm text-muted-foreground">No employees added.</td></tr>}</tbody></table><button type="button" className="btn btn-secondary" style={{ marginTop: 12 }} onClick={() => setMembers((old) => [...old, { employee: "", employee_name: "", user_id: "" }])}><Plus size={15} /> Add Row</button></div><div style={{ display: "flex", justifyContent: "flex-end", gap: 10, padding: "0 20px 20px" }}><button type="button" className="btn btn-secondary" onClick={() => window.history.back()}>Cancel</button><button className="btn btn-primary" disabled={saving}>{saving ? "Saving..." : editing ? "Update Employee Group" : "Create Employee Group"}</button></div></form>;
+}
