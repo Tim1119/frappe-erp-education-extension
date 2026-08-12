@@ -92,6 +92,7 @@ const LABEL_MAP = {
   branches: "Branches",
   departments: "Departments",
   designations: "Designations",
+  employees: "Employees",
   "fee-category": "Fee Category",
   "fee-structure": "Fee Structure",
   "fee-schedule": "Fee Schedule",

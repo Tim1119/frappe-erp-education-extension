@@ -213,6 +213,14 @@ export const ADMIN_NAV = [
           { key: "designations", label: "Designation", icon: BadgeCheck, path: "/dashboard/designations" },
         ],
       },
+      {
+        key: "hr-employee",
+        label: "Employee",
+        icon: UsersRound,
+        children: [
+          { key: "employees", label: "Employee", icon: Contact, path: "/dashboard/employees" },
+        ],
+      },
     ],
   },
 ];
