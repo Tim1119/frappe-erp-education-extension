@@ -27,6 +27,9 @@ import EmployeeFormPage from "@/pages/admin/hr/employee/EmployeeFormPage";
 import EmployeeGroupsPage from "@/pages/admin/hr/employee-group/EmployeeGroupsPage";
 import EmployeeGroupProfilePage from "@/pages/admin/hr/employee-group/EmployeeGroupProfilePage";
 import EmployeeGroupFormPage from "@/pages/admin/hr/employee-group/EmployeeGroupFormPage";
+import EmployeeGradesPage from "@/pages/admin/hr/employee-grade/EmployeeGradesPage";
+import EmployeeGradeProfilePage from "@/pages/admin/hr/employee-grade/EmployeeGradeProfilePage";
+import EmployeeGradeFormPage from "@/pages/admin/hr/employee-grade/EmployeeGradeFormPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/education/students/StudentsPage";
@@ -285,6 +288,10 @@ export default function App() {
         <Route path="employee-groups/new" element={<EmployeeGroupFormPage />} />
         <Route path="employee-groups/:id/edit" element={<EmployeeGroupFormPage />} />
         <Route path="employee-groups/:id" element={<EmployeeGroupProfilePage />} />
+        <Route path="employee-grades" element={<EmployeeGradesPage />} />
+        <Route path="employee-grades/new" element={<EmployeeGradeFormPage />} />
+        <Route path="employee-grades/:id/edit" element={<EmployeeGradeFormPage />} />
+        <Route path="employee-grades/:id" element={<EmployeeGradeProfilePage />} />
 
         {/* ─── Class Arms ────────────────────────────────────── */}
         <Route path="class-arms" element={<ClassArmsPage />} />

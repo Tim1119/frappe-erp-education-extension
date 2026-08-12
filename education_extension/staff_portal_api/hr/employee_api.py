@@ -45,13 +45,15 @@ def get_employee_meta():
 
 @frappe.whitelist()
 def get_employees(page=1, page_size=20, search=None, company=None, department=None,
-                  designation=None, branch=None, status=None):
+                  designation=None, branch=None, status=None, grade=None):
     page, page_size = cint(page), cint(page_size)
     filters = {}
     for field, value in (("company", company), ("department", department),
                          ("designation", designation), ("branch", branch), ("status", status)):
         if value:
             filters[field] = value
+    if grade:
+        filters["grade"] = grade
     or_filters = []
     if search:
         or_filters = [["name", "like", f"%{search}%"], ["employee_name", "like", f"%{search}%"],

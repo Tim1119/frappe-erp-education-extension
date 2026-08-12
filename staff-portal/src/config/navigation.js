@@ -220,6 +220,7 @@ export const ADMIN_NAV = [
         children: [
           { key: "employees", label: "Employee", icon: Contact, path: "/dashboard/employees" },
           { key: "employee-groups", label: "Employee Group", icon: UsersRound, path: "/dashboard/employee-groups" },
+          { key: "employee-grades", label: "Employee Grade", icon: Award, path: "/dashboard/employee-grades" },
         ],
       },
     ],
