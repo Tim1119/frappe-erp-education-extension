@@ -135,6 +135,9 @@ import SubjectEnrollmentFormPage from "@/pages/admin/education/subject-enrollmen
 
 import FeesPage from "@/pages/admin/education/fees/FeesPage";
 import FeesProfilePage from "@/pages/admin/education/fees/FeesProfilePage";
+import SalesInvoicesPage from "@/pages/admin/education/sales-invoice/SalesInvoicesPage";
+import SalesInvoiceProfilePage from "@/pages/admin/education/sales-invoice/SalesInvoiceProfilePage";
+import SalesInvoiceFormPage from "@/pages/admin/education/sales-invoice/SalesInvoiceFormPage";
 
 import StudentFeeCollectionReportPage from "@/pages/admin/education/reports/StudentFeeCollectionReportPage";
 import ClassFeeCollectionReportPage from "@/pages/admin/education/reports/ClassFeeCollectionReportPage";
@@ -360,6 +363,10 @@ export default function App() {
         <Route path="subject-enrollment/:id" element={<SubjectEnrollmentProfilePage />} />
         <Route path="fees" element={<FeesPage />} />
         <Route path="fees/:id" element={<FeesProfilePage />} />
+        <Route path="sales-invoices" element={<SalesInvoicesPage />} />
+        <Route path="sales-invoices/new" element={<SalesInvoiceFormPage />} />
+        <Route path="sales-invoices/:id/edit" element={<SalesInvoiceFormPage />} />
+        <Route path="sales-invoices/:id" element={<SalesInvoiceProfilePage />} />
         <Route path="student-fee-collection-report" element={<StudentFeeCollectionReportPage />} />
         <Route path="class-fee-collection-report" element={<ClassFeeCollectionReportPage />} />
         <Route path="subject-schedule" element={<SubjectSchedulesPage />} />

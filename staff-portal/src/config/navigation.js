@@ -118,6 +118,7 @@ export const ADMIN_NAV = [
           { key: "fee-category", label: "Fee Category", icon: Tag, path: "/dashboard/fee-category" },
           { key: "fee-schedule", label: "Fee Schedule", icon: FileText, path: "/dashboard/fee-schedule" },
           { key: "fees-list", label: "Fees", icon: Wallet, path: "/dashboard/fees" },
+          { key: "sales-invoices", label: "Sales Invoice", icon: FileText, path: "/dashboard/sales-invoices" },
           { key: "student-fee-collection-report", label: "Student Fee Collection Report", icon: BarChart3, path: "/dashboard/student-fee-collection-report" },
           { key: "class-fee-collection-report", label: "Class wise Fee Collection Report", icon: BarChart3, path: "/dashboard/class-fee-collection-report" },
         ],

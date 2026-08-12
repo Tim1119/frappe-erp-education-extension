@@ -92,6 +92,7 @@ const LABEL_MAP = {
   "fee-structure": "Fee Structure",
   "fee-schedule": "Fee Schedule",
   fees: "Fees",
+  "sales-invoices": "Sales Invoices",
   "student-applicants": "Student Applicants",
   "student-admissions": "Student Admissions",
   "student-log": "Student Log",
