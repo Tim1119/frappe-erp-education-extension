@@ -30,6 +30,12 @@ import EmployeeGroupFormPage from "@/pages/admin/hr/employee-group/EmployeeGroup
 import EmployeeGradesPage from "@/pages/admin/hr/employee-grade/EmployeeGradesPage";
 import EmployeeGradeProfilePage from "@/pages/admin/hr/employee-grade/EmployeeGradeProfilePage";
 import EmployeeGradeFormPage from "@/pages/admin/hr/employee-grade/EmployeeGradeFormPage";
+import LeaveApplicationsPage from "@/pages/admin/hr/leave-application/LeaveApplicationsPage";
+import LeaveApplicationProfilePage from "@/pages/admin/hr/leave-application/LeaveApplicationProfilePage";
+import LeaveApplicationFormPage from "@/pages/admin/hr/leave-application/LeaveApplicationFormPage";
+import CompensatoryLeaveRequestsPage from "@/pages/admin/hr/compensatory-leave-request/CompensatoryLeaveRequestsPage";
+import CompensatoryLeaveRequestProfilePage from "@/pages/admin/hr/compensatory-leave-request/CompensatoryLeaveRequestProfilePage";
+import CompensatoryLeaveRequestFormPage from "@/pages/admin/hr/compensatory-leave-request/CompensatoryLeaveRequestFormPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/education/students/StudentsPage";
@@ -292,6 +298,14 @@ export default function App() {
         <Route path="employee-grades/new" element={<EmployeeGradeFormPage />} />
         <Route path="employee-grades/:id/edit" element={<EmployeeGradeFormPage />} />
         <Route path="employee-grades/:id" element={<EmployeeGradeProfilePage />} />
+        <Route path="leave-applications" element={<LeaveApplicationsPage />} />
+        <Route path="leave-applications/new" element={<LeaveApplicationFormPage />} />
+        <Route path="leave-applications/:id/edit" element={<LeaveApplicationFormPage />} />
+        <Route path="leave-applications/:id" element={<LeaveApplicationProfilePage />} />
+        <Route path="compensatory-leave-requests" element={<CompensatoryLeaveRequestsPage />} />
+        <Route path="compensatory-leave-requests/new" element={<CompensatoryLeaveRequestFormPage />} />
+        <Route path="compensatory-leave-requests/:id/edit" element={<CompensatoryLeaveRequestFormPage />} />
+        <Route path="compensatory-leave-requests/:id" element={<CompensatoryLeaveRequestProfilePage />} />
 
         {/* ─── Class Arms ────────────────────────────────────── */}
         <Route path="class-arms" element={<ClassArmsPage />} />

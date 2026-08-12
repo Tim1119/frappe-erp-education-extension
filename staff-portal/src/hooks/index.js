@@ -95,6 +95,8 @@ const LABEL_MAP = {
   employees: "Employees",
   "employee-groups": "Employee Groups",
   "employee-grades": "Employee Grades",
+  "leave-applications": "Leave Applications",
+  "compensatory-leave-requests": "Compensatory Leave Requests",
   "fee-category": "Fee Category",
   "fee-structure": "Fee Structure",
   "fee-schedule": "Fee Schedule",

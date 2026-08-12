@@ -1,0 +1,17 @@
+import { callMethod } from "../frappeClient";
+const NS = "education_extension.staff_portal_api.hr.leave_application_api";
+export const getLeaveApplications = (params={}) => callMethod(`${NS}.get_leave_applications`, params);
+export const getLeaveApplication = (name) => callMethod(`${NS}.get_leave_application`, {name});
+export const createLeaveApplication = (data) => callMethod(`${NS}.create_leave_application`, {data});
+export const updateLeaveApplication = (name,data) => callMethod(`${NS}.update_leave_application`, {name,data});
+export const deleteLeaveApplication = (name) => callMethod(`${NS}.delete_leave_application`, {name});
+export const submitLeaveApplication = (name) => callMethod(`${NS}.submit_leave_application`, {name});
+export const cancelLeaveApplication = (name) => callMethod(`${NS}.cancel_leave_application`, {name});
+export const getLeaveEmployees = () => callMethod(`${NS}.get_employees`);
+export const getLeaveTypes = (employee,date) => callMethod(`${NS}.get_leave_types`, {employee,date});
+export const getLeaveApprovers = (employee) => callMethod(`${NS}.get_leave_approvers`, {employee});
+export const getLeaveCompanies = () => callMethod(`${NS}.get_companies`);
+export const getLeaveDepartments = () => callMethod(`${NS}.get_departments`);
+export const getLeaveSalarySlips = (employee) => callMethod(`${NS}.get_salary_slips`, {employee});
+export const getLeaveLetterHeads = () => callMethod(`${NS}.get_letter_heads`);
+export const getLeaveApplicationConnections = (leave_application) => callMethod(`${NS}.get_connections`, {leave_application});

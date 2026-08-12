@@ -24,6 +24,7 @@ import {
   GitBranch,
   Network,
   BadgeCheck,
+  CalendarPlus,
 } from "lucide-react";
 
 /**
@@ -221,6 +222,15 @@ export const ADMIN_NAV = [
           { key: "employees", label: "Employee", icon: Contact, path: "/dashboard/employees" },
           { key: "employee-groups", label: "Employee Group", icon: UsersRound, path: "/dashboard/employee-groups" },
           { key: "employee-grades", label: "Employee Grade", icon: Award, path: "/dashboard/employee-grades" },
+        ],
+      },
+      {
+        key: "hr-leaves",
+        label: "Leaves",
+        icon: CalendarCheck,
+        children: [
+          { key: "leave-applications", label: "Leave Application", icon: CalendarCheck, path: "/dashboard/leave-applications" },
+          { key: "compensatory-leave-requests", label: "Compensatory Leave Request", icon: CalendarPlus, path: "/dashboard/compensatory-leave-requests" },
         ],
       },
     ],
