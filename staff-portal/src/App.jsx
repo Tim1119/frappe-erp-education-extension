@@ -42,6 +42,15 @@ import DailyWorkSummaryGroupsPage from "@/pages/admin/hr/daily-work-summary-grou
 import DailyWorkSummaryGroupProfilePage from "@/pages/admin/hr/daily-work-summary-group/DailyWorkSummaryGroupProfilePage";
 import DailyWorkSummaryGroupFormPage from "@/pages/admin/hr/daily-work-summary-group/DailyWorkSummaryGroupFormPage";
 import TeamUpdatesPage from "@/pages/admin/hr/team-updates/TeamUpdatesPage";
+import AttendancesPage from "@/pages/admin/hr/attendance/AttendancesPage";
+import AttendanceProfilePage from "@/pages/admin/hr/attendance/AttendanceProfilePage";
+import AttendanceFormPage from "@/pages/admin/hr/attendance/AttendanceFormPage";
+import AttendanceRequestsPage from "@/pages/admin/hr/attendance-request/AttendanceRequestsPage";
+import AttendanceRequestProfilePage from "@/pages/admin/hr/attendance-request/AttendanceRequestProfilePage";
+import AttendanceRequestFormPage from "@/pages/admin/hr/attendance-request/AttendanceRequestFormPage";
+import EmployeeCheckinsPage from "@/pages/admin/hr/employee-checkin/EmployeeCheckinsPage";
+import EmployeeCheckinProfilePage from "@/pages/admin/hr/employee-checkin/EmployeeCheckinProfilePage";
+import EmployeeCheckinFormPage from "@/pages/admin/hr/employee-checkin/EmployeeCheckinFormPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/education/students/StudentsPage";
@@ -319,6 +328,18 @@ export default function App() {
         <Route path="daily-work-summary-groups/:id/edit" element={<DailyWorkSummaryGroupFormPage />} />
         <Route path="daily-work-summary-groups/:id" element={<DailyWorkSummaryGroupProfilePage />} />
         <Route path="team-updates" element={<TeamUpdatesPage />} />
+        <Route path="attendance" element={<AttendancesPage />} />
+        <Route path="attendance/new" element={<AttendanceFormPage />} />
+        <Route path="attendance/:id/edit" element={<AttendanceFormPage />} />
+        <Route path="attendance/:id" element={<AttendanceProfilePage />} />
+        <Route path="attendance-requests" element={<AttendanceRequestsPage />} />
+        <Route path="attendance-requests/new" element={<AttendanceRequestFormPage />} />
+        <Route path="attendance-requests/:id/edit" element={<AttendanceRequestFormPage />} />
+        <Route path="attendance-requests/:id" element={<AttendanceRequestProfilePage />} />
+        <Route path="employee-checkins" element={<EmployeeCheckinsPage />} />
+        <Route path="employee-checkins/new" element={<EmployeeCheckinFormPage />} />
+        <Route path="employee-checkins/:id/edit" element={<EmployeeCheckinFormPage />} />
+        <Route path="employee-checkins/:id" element={<EmployeeCheckinProfilePage />} />
 
         {/* ─── Class Arms ────────────────────────────────────── */}
         <Route path="class-arms" element={<ClassArmsPage />} />

@@ -26,6 +26,7 @@ import {
   BadgeCheck,
   CalendarPlus,
   MessageSquareText,
+  LogIn,
 } from "lucide-react";
 
 /**
@@ -242,6 +243,16 @@ export const ADMIN_NAV = [
           { key: "hr-settings", label: "HR Settings", icon: Settings, path: "/dashboard/hr-settings" },
           { key: "daily-work-summary-groups", label: "Daily Work Summary Group", icon: ClipboardList, path: "/dashboard/daily-work-summary-groups" },
           { key: "team-updates", label: "Team Updates", icon: MessageSquareText, path: "/dashboard/team-updates" },
+        ],
+      },
+      {
+        key: "hr-attendance",
+        label: "Attendance",
+        icon: CalendarCheck,
+        children: [
+          { key: "attendance", label: "Attendance", icon: CalendarCheck, path: "/dashboard/attendance" },
+          { key: "attendance-requests", label: "Attendance Request", icon: CalendarClock, path: "/dashboard/attendance-requests" },
+          { key: "employee-checkins", label: "Employee Checkin", icon: LogIn, path: "/dashboard/employee-checkins" },
         ],
       },
     ],
