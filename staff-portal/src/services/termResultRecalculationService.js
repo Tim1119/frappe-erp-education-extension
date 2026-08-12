@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.term_result_recalculation_api";
+const METHOD = "education_extension.staff_portal_api.education.term_result_recalculation_api";
 
 export function getRecalculationPreview(academic_year, academic_term, assessment_group, student_group) {
   return api(`${METHOD}.get_recalculation_preview`, {

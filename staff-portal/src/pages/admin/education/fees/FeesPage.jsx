@@ -65,6 +65,7 @@ export default function FeesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const studentFilter = searchParams.get("student") || "";
+  const guardianFilter = searchParams.get("guardian") || "";
 
   function clearParam(key) {
     const next = new URLSearchParams(searchParams);
@@ -113,6 +114,7 @@ export default function FeesPage() {
         fee_structure: feeStructureFilter || undefined,
         academic_year: academicYearFilter || undefined,
         academic_term: academicTermFilter || undefined,
+        guardian: guardianFilter || undefined,
       });
       setRows(r.rows || []);
       setTotal(r.count || 0);
@@ -125,11 +127,11 @@ export default function FeesPage() {
 
   useEffect(() => {
     load();
-  }, [page, search, studentFilter, feeStructureFilter, academicYearFilter, academicTermFilter]);
+  }, [page, search, studentFilter, feeStructureFilter, academicYearFilter, academicTermFilter, guardianFilter]);
 
   useEffect(() => {
     reset();
-  }, [studentFilter, feeStructureFilter, academicYearFilter, academicTermFilter]);
+  }, [studentFilter, feeStructureFilter, academicYearFilter, academicTermFilter, guardianFilter]);
 
   async function confirmDelete() {
     try {
@@ -178,6 +180,7 @@ export default function FeesPage() {
       />
 
       <ActiveFilterChip label="Student" value={studentFilter} onClear={() => clearParam("student")} />
+      <ActiveFilterChip label="Guardian" value={guardianFilter} onClear={() => clearParam("guardian")} />
 
       <Card>
         <Table>

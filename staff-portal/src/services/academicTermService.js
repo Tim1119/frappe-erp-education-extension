@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.academic_term_api";
+const METHOD = "education_extension.staff_portal_api.education.academic_term_api";
 
 export function getAcademicTerms(params) {
   return api(`${METHOD}.get_academic_terms`, params);

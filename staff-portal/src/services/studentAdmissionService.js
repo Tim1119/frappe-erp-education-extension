@@ -1,7 +1,7 @@
 // services/studentAdmissionService.js
 import { callMethod } from "./frappeClient";
 
-const NS = "education_extension.staff_portal_api";
+const NS = "education_extension.staff_portal_api.education";
 
 export function getStudentAdmissions(params = {}) {
   return callMethod(`${NS}.student_admission_api.get_student_admissions`, params);

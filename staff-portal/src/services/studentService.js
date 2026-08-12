@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.student_api";
+const METHOD = "education_extension.staff_portal_api.education.student_api";
 
 export function getStudents(params) {
 	return api(`${METHOD}.get_students`, params);
@@ -19,6 +19,12 @@ export function getClassArms(params) {
 export function getStudent(name) {
 	return api(`${METHOD}.get_student`, {
 		name,
+	});
+}
+
+export function getStudentConnections(student) {
+	return api(`${METHOD}.get_student_connections`, {
+		student,
 	});
 }
 

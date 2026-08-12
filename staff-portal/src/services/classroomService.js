@@ -1,7 +1,7 @@
 // services/classroomService.js
 import { callMethod } from "./frappeClient";
 
-const NS = "education_extension.staff_portal_api";
+const NS = "education_extension.staff_portal_api.education";
 
 export function getClassrooms(params = {}) {
   return callMethod(`${NS}.classroom_api.get_classrooms`, params);

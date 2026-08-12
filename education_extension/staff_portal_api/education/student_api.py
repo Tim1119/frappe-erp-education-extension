@@ -14,6 +14,7 @@ def get_students(
     class_arm=None,
     course=None,
     student_admission=None,
+    guardian=None,
 ):
     """
     Returns paginated students for the staff portal.
@@ -37,9 +38,19 @@ def get_students(
         ]
 
     # Students filtered down by one or more chained lookups (class_arm,
-    # course, student_admission) get intersected -- a student must satisfy
-    # every chained filter that was supplied, not just the last one applied.
+    # course, student_admission, guardian) get intersected -- a student
+    # must satisfy every chained filter that was supplied, not just the
+    # last one applied.
     name_filter_sets = []
+
+    if guardian:
+        students_of_guardian = frappe.get_all(
+            "Student Guardian",
+            filters={"guardian": guardian},
+            fields=["parent"],
+            pluck="parent",
+        )
+        name_filter_sets.append(set(students_of_guardian))
 
     if class_arm:
         student_names = frappe.get_all(
@@ -249,7 +260,28 @@ def get_student(name):
     ]
 
     return data
-    
+
+
+@frappe.whitelist()
+def get_student_connections(student):
+    """Connection counts for the Student profile page."""
+    if not student:
+        frappe.throw(_("Student name is required"))
+    try:
+        return {
+            "class_enrollments": frappe.db.count("Program Enrollment", {"student": student}),
+            "subject_enrollments": frappe.db.count("Course Enrollment", {"student": student}),
+            "fees": frappe.db.count("Fees", {"student": student}),
+            "student_attendance": frappe.db.count("Student Attendance", {"student": student}),
+            "student_leave_applications": frappe.db.count("Student Leave Application", {"student": student}),
+            "assessment_results": frappe.db.count("Assessment Result", {"student": student}),
+            "student_logs": frappe.db.count("Student Log", {"student": student}),
+            "school_term_results": frappe.db.count("School Term Result", {"student": student}),
+        }
+    except Exception as e:
+        frappe.log_error(f"Error fetching connections for {student}: {str(e)}", "Student API")
+        return {}
+
 
 @frappe.whitelist()
 def update_student(student, data):

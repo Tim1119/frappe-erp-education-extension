@@ -56,7 +56,7 @@ export default function SubjectSchedulesPage() {
   // Seeded from the URL too -- Subject Scheduling Tool's own success
   // feedback links here with ?student_group= after generating schedules.
   const [studentGroupFilter, setStudentGroupFilter] = useState(searchParams.get("student_group") || "");
-  const [instructorFilter, setInstructorFilter] = useState("");
+  const [instructorFilter, setInstructorFilter] = useState(searchParams.get("instructor") || "");
 
   const [studentGroupOptions, setStudentGroupOptions] = useState([]);
   const [instructorOptions, setInstructorOptions] = useState([]);

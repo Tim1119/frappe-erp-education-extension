@@ -1,7 +1,7 @@
 // services/feeScheduleService.js
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.fee_schedule_api";
+const METHOD = "education_extension.staff_portal_api.education.fee_schedule_api";
 
 export function getFeeSchedules({
   page = 1,

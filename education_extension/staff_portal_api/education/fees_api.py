@@ -14,6 +14,7 @@ def get_fees(
     fee_structure=None,
     academic_year=None,
     academic_term=None,
+    guardian=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -27,6 +28,17 @@ def get_fees(
         filters["academic_year"] = academic_year
     if academic_term:
         filters["academic_term"] = academic_term
+    if guardian:
+        students_of_guardian = frappe.get_all(
+            "Student Guardian",
+            filters={"guardian": guardian},
+            fields=["parent"],
+            pluck="parent",
+        )
+        if students_of_guardian:
+            filters["student"] = ("in", students_of_guardian)
+        else:
+            return {"rows": [], "count": 0, "page": page, "page_size": page_size, "total_pages": 0}
 
     or_filters = []
     if search:

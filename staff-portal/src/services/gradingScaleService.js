@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.grading_scale_api";
+const METHOD = "education_extension.staff_portal_api.education.grading_scale_api";
 
 export function getGradingScales(params) {
   return api(`${METHOD}.get_grading_scales`, params);

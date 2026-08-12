@@ -1,7 +1,7 @@
 // services/subjectService.js
 import { callMethod } from "./frappeClient";
 
-const NS = "education_extension.staff_portal_api";
+const NS = "education_extension.staff_portal_api.education";
 
 export function getSubjects(params = {}) {
   return callMethod(`${NS}.subject_api.get_subjects`, params);

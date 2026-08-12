@@ -1,7 +1,7 @@
 // services/quizService.js
 import { callMethod } from "./frappeClient";
 
-const NS = "education_extension.staff_portal_api";
+const NS = "education_extension.staff_portal_api.education";
 
 // Quiz endpoints
 export function getQuizzes(params = {}) {

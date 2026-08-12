@@ -12,6 +12,7 @@ def get_class_arms(
     academic_year=None,
     academic_term=None,
     course=None,
+    instructor=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -27,6 +28,19 @@ def get_class_arms(
         filters["academic_term"] = academic_term
     if course:
         filters["course"] = course
+    if instructor:
+        # Get Student Groups where this instructor is assigned
+        groups_with_instructor = frappe.get_all(
+            "Student Group Instructor",
+            filters={"instructor": instructor},
+            fields=["parent"],
+            pluck="parent",
+        )
+        if groups_with_instructor:
+            filters["name"] = ("in", groups_with_instructor)
+        else:
+            # No groups found -- return empty result
+            return {"rows": [], "count": 0, "page": page, "page_size": page_size, "total_pages": 0}
 
     if search:
         or_filters = [
@@ -113,6 +127,24 @@ def get_class_arm(name):
         result['instructors'] = []
     
     return result
+
+@frappe.whitelist()
+def get_class_arm_connections(student_group):
+    """Connection counts for the Class Arm profile page."""
+    if not student_group:
+        frappe.throw(_("Student Group name is required"))
+    try:
+        return {
+            "assessment_plans": frappe.db.count("Assessment Plan", {"student_group": student_group}),
+            "assessment_results": frappe.db.count("Assessment Result", {"student_group": student_group}),
+            "student_attendance": frappe.db.count("Student Attendance", {"student_group": student_group}),
+            "subject_schedules": frappe.db.count("Course Schedule", {"student_group": student_group}),
+            "student_leave_applications": frappe.db.count("Student Leave Application", {"student_group": student_group}),
+            "school_term_results": frappe.db.count("School Term Result", {"student_group": student_group}),
+        }
+    except Exception as e:
+        frappe.log_error(f"Error fetching connections for {student_group}: {str(e)}", "Class Arms API")
+        return {}
 
 @frappe.whitelist()
 def create_class_arm(data):

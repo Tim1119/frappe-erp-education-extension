@@ -17,6 +17,8 @@ def get_assessment_results(
     academic_term=None,
     assessment_group=None,
     grading_scale=None,
+    student=None,
+    student_group=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -36,6 +38,10 @@ def get_assessment_results(
         filters["assessment_group"] = assessment_group
     if grading_scale:
         filters["grading_scale"] = grading_scale
+    if student:
+        filters["student"] = student
+    if student_group:
+        filters["student_group"] = student_group
 
     or_filters = []
     if search:

@@ -85,6 +85,21 @@ def get_teacher(name):
     return result
 
 @frappe.whitelist()
+def get_teacher_connections(instructor):
+    """Connection counts for the Teacher profile page."""
+    if not instructor:
+        frappe.throw(_("Instructor name is required"))
+    try:
+        return {
+            "subject_schedules": frappe.db.count("Course Schedule", {"instructor": instructor}),
+            "class_arms": frappe.db.count("Student Group Instructor", {"instructor": instructor}),
+            "assessment_plans": frappe.db.count("Assessment Plan", {"supervisor": instructor}),
+        }
+    except Exception as e:
+        frappe.log_error(f"Error fetching connections for {instructor}: {str(e)}", "Teacher API")
+        return {}
+
+@frappe.whitelist()
 def create_teacher(data):
     if isinstance(data, str):
         data = json.loads(data)

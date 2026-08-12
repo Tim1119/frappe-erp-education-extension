@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.quiz_activity_api";
+const METHOD = "education_extension.staff_portal_api.education.quiz_activity_api";
 
 export function getQuizActivities(params) {
   return api(`${METHOD}.get_quiz_activities`, params);

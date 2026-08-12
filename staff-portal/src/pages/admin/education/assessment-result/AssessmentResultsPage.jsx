@@ -14,6 +14,7 @@ import Pager from "@/components/shared/Pager";
 import EmptyState from "@/components/shared/EmptyState";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import ActiveFilterChip from "@/components/shared/ActiveFilterChip";
 import { usePagination } from "@/hooks";
 import {
   getAssessmentResults,
@@ -49,8 +50,17 @@ function DocStatusBadge({ docstatus }) {
 // both as a searchParams-seeded filter and a real backend filter.
 export default function AssessmentResultsPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { page, setPage } = usePagination(1);
+
+  const studentFilter = searchParams.get("student") || "";
+  const studentGroupFilter = searchParams.get("student_group") || "";
+
+  function clearParam(key) {
+    const next = new URLSearchParams(searchParams);
+    next.delete(key);
+    setSearchParams(next);
+  }
 
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
@@ -86,6 +96,8 @@ export default function AssessmentResultsPage() {
         academic_term: academicTermFilter,
         assessment_group: assessmentGroupFilter,
         grading_scale: gradingScaleFilter,
+        student: studentFilter,
+        student_group: studentGroupFilter,
       });
       setRows(r.rows || []);
       setTotal(r.count || 0);
@@ -109,7 +121,7 @@ export default function AssessmentResultsPage() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, search, assessmentPlanFilter, programFilter, courseFilter, academicYearFilter, academicTermFilter, assessmentGroupFilter, gradingScaleFilter]);
+  }, [page, search, assessmentPlanFilter, programFilter, courseFilter, academicYearFilter, academicTermFilter, assessmentGroupFilter, gradingScaleFilter, studentFilter, studentGroupFilter]);
 
   async function confirmDelete() {
     try {
@@ -167,6 +179,9 @@ export default function AssessmentResultsPage() {
           },
         ]}
       />
+
+      <ActiveFilterChip label="Student" value={studentFilter} onClear={() => clearParam("student")} />
+      <ActiveFilterChip label="Class Arm" value={studentGroupFilter} onClear={() => clearParam("student_group")} />
 
       <Card>
         <Table>

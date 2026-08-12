@@ -31,6 +31,7 @@ export default function StudentsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const courseFilter = searchParams.get("course") || "";
   const studentAdmissionFilter = searchParams.get("student_admission") || "";
+  const guardianFilter = searchParams.get("guardian") || "";
 
   function clearParam(key) {
     const next = new URLSearchParams(searchParams);
@@ -63,6 +64,7 @@ export default function StudentsPage() {
         class_arm: classArmFilter,
         course: courseFilter || undefined,
         student_admission: studentAdmissionFilter || undefined,
+        guardian: guardianFilter || undefined,
       });
 
       setStudents(result.rows || []);
@@ -90,12 +92,12 @@ export default function StudentsPage() {
 
   useEffect(() => {
     loadStudents();
-  }, [page, search, statusFilter, classArmFilter, courseFilter, studentAdmissionFilter]);
+  }, [page, search, statusFilter, classArmFilter, courseFilter, studentAdmissionFilter, guardianFilter]);
 
   // Reset to page 1 whenever a URL-driven filter changes
   useEffect(() => {
     reset();
-  }, [courseFilter, studentAdmissionFilter]);
+  }, [courseFilter, studentAdmissionFilter, guardianFilter]);
 
   async function confirmDelete() {
     try {
@@ -166,6 +168,7 @@ export default function StudentsPage() {
 
       <ActiveFilterChip label="Subject" value={courseFilter} onClear={() => clearParam("course")} />
       <ActiveFilterChip label="Student Admission" value={studentAdmissionFilter} onClear={() => clearParam("student_admission")} />
+      <ActiveFilterChip label="Guardian" value={guardianFilter} onClear={() => clearParam("guardian")} />
 
       <div className="panel">
         <div

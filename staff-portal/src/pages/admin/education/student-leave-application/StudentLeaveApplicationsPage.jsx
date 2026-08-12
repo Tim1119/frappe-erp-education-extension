@@ -14,6 +14,7 @@ import Pager from "@/components/shared/Pager";
 import EmptyState from "@/components/shared/EmptyState";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import ActiveFilterChip from "@/components/shared/ActiveFilterChip";
 import { usePagination } from "@/hooks";
 import {
   getStudentLeaveApplications,
@@ -44,8 +45,16 @@ function DocStatusBadge({ docstatus }) {
 // modules' Toolbar filters this session.
 export default function StudentLeaveApplicationsPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { page, setPage } = usePagination(1);
+
+  const studentFilter = searchParams.get("student") || "";
+
+  function clearParam(key) {
+    const next = new URLSearchParams(searchParams);
+    next.delete(key);
+    setSearchParams(next);
+  }
 
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
@@ -62,6 +71,7 @@ export default function StudentLeaveApplicationsPage() {
       const r = await getStudentLeaveApplications({
         page,
         search,
+        student: studentFilter,
         student_group: studentGroupFilter,
       });
       setRows(r.rows || []);
@@ -80,7 +90,7 @@ export default function StudentLeaveApplicationsPage() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, search, studentGroupFilter]);
+  }, [page, search, studentFilter, studentGroupFilter]);
 
   async function confirmDelete() {
     try {
@@ -114,6 +124,8 @@ export default function StudentLeaveApplicationsPage() {
           },
         ]}
       />
+
+      <ActiveFilterChip label="Student" value={studentFilter} onClear={() => clearParam("student")} />
 
       <Card>
         <Table>

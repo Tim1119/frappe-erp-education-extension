@@ -1,7 +1,7 @@
 // services/feeStructureService.js
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.fee_structure_api";
+const METHOD = "education_extension.staff_portal_api.education.fee_structure_api";
 
 export function getFeeStructures({
   page = 1,

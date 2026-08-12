@@ -1,7 +1,7 @@
 // services/guardianService.js
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.guardian_api";
+const METHOD = "education_extension.staff_portal_api.education.guardian_api";
 
 export function getGuardians({
   page = 1,
@@ -18,6 +18,12 @@ export function getGuardians({
 export function getGuardian(name) {
   return api(`${METHOD}.get_guardian`, {
     name,
+  });
+}
+
+export function getGuardianConnections(guardian) {
+  return api(`${METHOD}.get_guardian_connections`, {
+    guardian,
   });
 }
 

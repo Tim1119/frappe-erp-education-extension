@@ -1,7 +1,7 @@
 // services/feeCategoryService.js
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.fee_category_api";
+const METHOD = "education_extension.staff_portal_api.education.fee_category_api";
 
 export function getFeeCategories({
   page = 1,

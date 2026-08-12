@@ -1,7 +1,7 @@
 // services/topicService.js
 import { callMethod } from "./frappeClient";
 
-const NS = "education_extension.staff_portal_api";
+const NS = "education_extension.staff_portal_api.education";
 
 export function getTopics(params = {}) {
   return callMethod(`${NS}.topic_api.get_topics`, params);

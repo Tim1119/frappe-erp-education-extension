@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.assessment_criteria_api";
+const METHOD = "education_extension.staff_portal_api.education.assessment_criteria_api";
 
 export function getAssessmentCriteriaList(params) {
   return api(`${METHOD}.get_assessment_criteria_list`, params);

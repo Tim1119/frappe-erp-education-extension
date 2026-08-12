@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.student_report_generation_tool_api";
+const METHOD = "education_extension.staff_portal_api.education.student_report_generation_tool_api";
 
 export function getStudents() {
   return api(`${METHOD}.get_students`);

@@ -1,7 +1,7 @@
 // services/articleService.js
 import { callMethod } from "./frappeClient";
 
-const NS = "education_extension.staff_portal_api";
+const NS = "education_extension.staff_portal_api.education";
 
 export function getArticles(params = {}) {
   return callMethod(`${NS}.article_api.get_articles`, params);

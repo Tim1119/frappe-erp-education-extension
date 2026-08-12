@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.subject_enrollment_api";
+const METHOD = "education_extension.staff_portal_api.education.subject_enrollment_api";
 
 export function getSubjectEnrollments(params) {
   return api(`${METHOD}.get_subject_enrollments`, params);

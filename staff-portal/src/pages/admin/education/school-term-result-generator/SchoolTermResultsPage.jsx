@@ -13,6 +13,7 @@ import Pager from "@/components/shared/Pager";
 import EmptyState from "@/components/shared/EmptyState";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import ActiveFilterChip from "@/components/shared/ActiveFilterChip";
 import { usePagination } from "@/hooks";
 import {
   getSchoolTermResults,
@@ -31,8 +32,17 @@ import { getErrorMessage } from "@/utils/errors";
 // the full traced computation.
 export default function SchoolTermResultsPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { page, setPage } = usePagination(1);
+
+  const studentFilter = searchParams.get("student") || "";
+  const studentGroupFilter = searchParams.get("student_group") || "";
+
+  function clearParam(key) {
+    const next = new URLSearchParams(searchParams);
+    next.delete(key);
+    setSearchParams(next);
+  }
 
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
@@ -49,6 +59,8 @@ export default function SchoolTermResultsPage() {
       setLoading(true);
       const r = await getSchoolTermResults({
         page, search,
+        student: studentFilter,
+        student_group: studentGroupFilter,
         academic_year: academicYearFilter,
         assessment_group: assessmentGroupFilter,
       });
@@ -69,7 +81,7 @@ export default function SchoolTermResultsPage() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, search, academicYearFilter, assessmentGroupFilter]);
+  }, [page, search, studentFilter, studentGroupFilter, academicYearFilter, assessmentGroupFilter]);
 
   async function confirmDelete() {
     try {
@@ -113,6 +125,9 @@ export default function SchoolTermResultsPage() {
           },
         ]}
       />
+
+      <ActiveFilterChip label="Student" value={studentFilter} onClear={() => clearParam("student")} />
+      <ActiveFilterChip label="Class Arm" value={studentGroupFilter} onClear={() => clearParam("student_group")} />
 
       <Card>
         <Table>

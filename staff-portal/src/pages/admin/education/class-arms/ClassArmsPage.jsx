@@ -27,6 +27,7 @@ export default function ClassArmsPage() {
   const academicYear = searchParams.get("academic_year") || undefined;
   const academicTerm = searchParams.get("academic_term") || undefined;
   const course = searchParams.get("course") || undefined;
+  const instructor = searchParams.get("instructor") || undefined;
 
   function clearParam(key) {
     const next = new URLSearchParams(searchParams);
@@ -63,6 +64,7 @@ export default function ClassArmsPage() {
         academic_year: academicYear,
         academic_term: academicTerm,
         course,
+        instructor,
       });
 
       setRows(result.rows || []);
@@ -77,12 +79,12 @@ export default function ClassArmsPage() {
 
   useEffect(() => {
     load();
-  }, [page, debouncedSearch, program, academicYear, academicTerm, course]);
+  }, [page, debouncedSearch, program, academicYear, academicTerm, course, instructor]);
 
   // Reset to page 1 whenever a URL-driven filter changes
   useEffect(() => {
     reset();
-  }, [program, academicYear, academicTerm, course]);
+  }, [program, academicYear, academicTerm, course, instructor]);
 
   async function removeClassArm() {
     if (!deleteTarget) return;
@@ -134,6 +136,7 @@ export default function ClassArmsPage() {
       <ActiveFilterChip label="Academic Year" value={academicYear} onClear={() => clearParam("academic_year")} />
       <ActiveFilterChip label="Academic Term" value={academicTerm} onClear={() => clearParam("academic_term")} />
       <ActiveFilterChip label="Subject" value={course} onClear={() => clearParam("course")} />
+      <ActiveFilterChip label="Teacher" value={instructor} onClear={() => clearParam("instructor")} />
 
       <div className="panel">
         <div

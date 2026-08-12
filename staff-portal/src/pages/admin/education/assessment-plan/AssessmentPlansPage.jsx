@@ -14,6 +14,7 @@ import Pager from "@/components/shared/Pager";
 import EmptyState from "@/components/shared/EmptyState";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import ActiveFilterChip from "@/components/shared/ActiveFilterChip";
 import { usePagination } from "@/hooks";
 import {
   getAssessmentPlans,
@@ -48,8 +49,16 @@ function DocStatusBadge({ docstatus }) {
 // own Connections cards all link into this list with those query params.
 export default function AssessmentPlansPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { page, setPage } = usePagination(1);
+
+  const supervisorFilter = searchParams.get("supervisor") || "";
+
+  function clearParam(key) {
+    const next = new URLSearchParams(searchParams);
+    next.delete(key);
+    setSearchParams(next);
+  }
 
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
@@ -79,6 +88,7 @@ export default function AssessmentPlansPage() {
         academic_term: academicTermFilter,
         grading_scale: gradingScaleFilter,
         room: roomFilter,
+        supervisor: supervisorFilter,
       });
       setRows(r.rows || []);
       setTotal(r.count || 0);
@@ -100,7 +110,7 @@ export default function AssessmentPlansPage() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, search, studentGroupFilter, assessmentGroupFilter, academicTermFilter, gradingScaleFilter, roomFilter]);
+  }, [page, search, studentGroupFilter, assessmentGroupFilter, academicTermFilter, gradingScaleFilter, roomFilter, supervisorFilter]);
 
   async function confirmDelete() {
     try {
@@ -150,6 +160,8 @@ export default function AssessmentPlansPage() {
           },
         ]}
       />
+
+      <ActiveFilterChip label="Teacher" value={supervisorFilter} onClear={() => clearParam("supervisor")} />
 
       <Card>
         <Table>

@@ -16,6 +16,7 @@ def get_assessment_plans(
     grading_scale=None,
     room=None,
     course=None,
+    supervisor=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -33,6 +34,8 @@ def get_assessment_plans(
         filters["room"] = room
     if course:
         filters["course"] = course
+    if supervisor:
+        filters["supervisor"] = supervisor
 
     or_filters = []
     if search:

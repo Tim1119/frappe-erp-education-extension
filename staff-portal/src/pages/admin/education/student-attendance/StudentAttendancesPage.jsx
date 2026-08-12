@@ -14,6 +14,7 @@ import Pager from "@/components/shared/Pager";
 import EmptyState from "@/components/shared/EmptyState";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
+import ActiveFilterChip from "@/components/shared/ActiveFilterChip";
 import { usePagination } from "@/hooks";
 import {
   getStudentAttendanceList,
@@ -65,8 +66,16 @@ function DocStatusBadge({ docstatus }) {
 // here too, both as a seeded filter and a real backend filter.
 export default function StudentAttendancesPage() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { page, setPage } = usePagination(1);
+
+  const studentFilter = searchParams.get("student") || "";
+
+  function clearParam(key) {
+    const next = new URLSearchParams(searchParams);
+    next.delete(key);
+    setSearchParams(next);
+  }
 
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
@@ -87,6 +96,7 @@ export default function StudentAttendancesPage() {
       const r = await getStudentAttendanceList({
         page,
         search,
+        student: studentFilter,
         student_group: studentGroupFilter,
         course_schedule: courseScheduleFilter,
         status: statusFilter,
@@ -109,7 +119,7 @@ export default function StudentAttendancesPage() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, search, studentGroupFilter, courseScheduleFilter, statusFilter]);
+  }, [page, search, studentFilter, studentGroupFilter, courseScheduleFilter, statusFilter]);
 
   async function confirmDelete() {
     try {
@@ -157,6 +167,8 @@ export default function StudentAttendancesPage() {
           },
         ]}
       />
+
+      <ActiveFilterChip label="Student" value={studentFilter} onClear={() => clearParam("student")} />
 
       <Card>
         <Table>

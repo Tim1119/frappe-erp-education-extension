@@ -91,6 +91,34 @@ def get_guardian(name):
     return result
 
 @frappe.whitelist()
+def get_guardian_connections(guardian):
+    """Connection counts for the Guardian profile page."""
+    if not guardian:
+        frappe.throw(_("Guardian name is required"))
+    try:
+        # Get students linked to this guardian
+        students = frappe.get_all(
+            "Student Guardian",
+            filters={"guardian": guardian},
+            fields=["parent"],
+            pluck="parent",
+        )
+        student_count = len(students)
+
+        # Count fees for all linked students
+        fees_count = 0
+        if students:
+            fees_count = frappe.db.count("Fees", {"student": ("in", students)})
+
+        return {
+            "students": student_count,
+            "fees": fees_count,
+        }
+    except Exception as e:
+        frappe.log_error(f"Error fetching connections for {guardian}: {str(e)}", "Guardian API")
+        return {}
+
+@frappe.whitelist()
 def create_guardian(data):
     if isinstance(data, str):
         data = json.loads(data)

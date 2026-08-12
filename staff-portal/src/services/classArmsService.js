@@ -1,6 +1,6 @@
 import { callMethod } from "./frappeClient";
 
-const NS = "education_extension.staff_portal_api";
+const NS = "education_extension.staff_portal_api.education";
 
 export function getClassArms(params = {}) {
 	return callMethod(`${NS}.class_arms_api.get_class_arms`, params);
@@ -8,6 +8,10 @@ export function getClassArms(params = {}) {
 
 export function getClassArm(name) {
 	return callMethod(`${NS}.class_arms_api.get_class_arm`, { name });
+}
+
+export function getClassArmConnections(student_group) {
+	return callMethod(`${NS}.class_arms_api.get_class_arm_connections`, { student_group });
 }
 
 export function createClassArm(data) {

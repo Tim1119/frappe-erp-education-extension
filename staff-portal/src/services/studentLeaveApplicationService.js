@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.student_leave_application_api";
+const METHOD = "education_extension.staff_portal_api.education.student_leave_application_api";
 
 export function getStudentLeaveApplications(params) {
   return api(`${METHOD}.get_student_leave_applications`, params);

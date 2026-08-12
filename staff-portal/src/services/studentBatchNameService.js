@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.student_batch_name_api";
+const METHOD = "education_extension.staff_portal_api.education.student_batch_name_api";
 
 export function getStudentBatchNames(params) {
   return api(`${METHOD}.get_student_batch_names`, params);

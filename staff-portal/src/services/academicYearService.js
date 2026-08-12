@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.academic_year_api";
+const METHOD = "education_extension.staff_portal_api.education.academic_year_api";
 
 export function getAcademicYears(params) {
   return api(`${METHOD}.get_academic_years`, params);

@@ -10,164 +10,164 @@ import PlaceholderPage from "@/pages/placeholder/PlaceholderPage";
 import ReportPrintPage from "@/pages/print/ReportPrintPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
-import StudentsPage from "@/pages/admin/students/StudentsPage";
-import StudentProfilePage from "@/pages/admin/students/StudentProfilePage";
-import StudentFormPage from "@/pages/admin/students/StudentFormPage";
+import StudentsPage from "@/pages/admin/education/students/StudentsPage";
+import StudentProfilePage from "@/pages/admin/education/students/StudentProfilePage";
+import StudentFormPage from "@/pages/admin/education/students/StudentFormPage";
 
-import TeachersPage from "@/pages/admin/teachers/TeachersPage";
-import TeacherProfilePage from "@/pages/admin/teachers/TeacherProfilePage";
-import TeacherFormPage from "@/pages/admin/teachers/TeacherFormPage";
+import TeachersPage from "@/pages/admin/education/teachers/TeachersPage";
+import TeacherProfilePage from "@/pages/admin/education/teachers/TeacherProfilePage";
+import TeacherFormPage from "@/pages/admin/education/teachers/TeacherFormPage";
 
-import GuardiansPage from "@/pages/admin/guardians/GuardiansPage";
-import GuardianProfilePage from "@/pages/admin/guardians/GuardianProfilePage";
-import GuardianFormPage from "@/pages/admin/guardians/GuardianFormPage";
+import GuardiansPage from "@/pages/admin/education/guardians/GuardiansPage";
+import GuardianProfilePage from "@/pages/admin/education/guardians/GuardianProfilePage";
+import GuardianFormPage from "@/pages/admin/education/guardians/GuardianFormPage";
 
-import ClassesPage from "@/pages/admin/classes/ClassesPage";
-import ClassProfilePage from "@/pages/admin/classes/ClassProfilePage";
-import ClassFormPage from "@/pages/admin/classes/ClassFormPage";
+import ClassesPage from "@/pages/admin/education/classes/ClassesPage";
+import ClassProfilePage from "@/pages/admin/education/classes/ClassProfilePage";
+import ClassFormPage from "@/pages/admin/education/classes/ClassFormPage";
 
-import ClassArmsPage from "@/pages/admin/class-arms/ClassArmsPage";
-import ClassArmProfilePage from "@/pages/admin/class-arms/ClassArmProfilePage";
-import ClassArmFormPage from "@/pages/admin/class-arms/ClassArmFormPage";
+import ClassArmsPage from "@/pages/admin/education/class-arms/ClassArmsPage";
+import ClassArmProfilePage from "@/pages/admin/education/class-arms/ClassArmProfilePage";
+import ClassArmFormPage from "@/pages/admin/education/class-arms/ClassArmFormPage";
 
-import SubjectsPage from "@/pages/admin/subjects/SubjectsPage";
-import SubjectProfilePage from "@/pages/admin/subjects/SubjectProfilePage";
-import SubjectFormPage from "@/pages/admin/subjects/SubjectFormPage";
+import SubjectsPage from "@/pages/admin/education/subjects/SubjectsPage";
+import SubjectProfilePage from "@/pages/admin/education/subjects/SubjectProfilePage";
+import SubjectFormPage from "@/pages/admin/education/subjects/SubjectFormPage";
 
-import TopicsPage from "@/pages/admin/topics/TopicsPage";
-import TopicProfilePage from "@/pages/admin/topics/TopicProfilePage";
-import TopicFormPage from "@/pages/admin/topics/TopicFormPage";
+import TopicsPage from "@/pages/admin/education/topics/TopicsPage";
+import TopicProfilePage from "@/pages/admin/education/topics/TopicProfilePage";
+import TopicFormPage from "@/pages/admin/education/topics/TopicFormPage";
 
-import ArticlesPage from "@/pages/admin/articles/ArticlesPage";
-import ArticleProfilePage from "@/pages/admin/articles/ArticleProfilePage";
-import ArticleFormPage from "@/pages/admin/articles/ArticleFormPage";
+import ArticlesPage from "@/pages/admin/education/articles/ArticlesPage";
+import ArticleProfilePage from "@/pages/admin/education/articles/ArticleProfilePage";
+import ArticleFormPage from "@/pages/admin/education/articles/ArticleFormPage";
 
-import VideosPage from "@/pages/admin/videos/VideosPage";
-import VideoProfilePage from "@/pages/admin/videos/VideoProfilePage";
-import VideoFormPage from "@/pages/admin/videos/VideoFormPage";
+import VideosPage from "@/pages/admin/education/videos/VideosPage";
+import VideoProfilePage from "@/pages/admin/education/videos/VideoProfilePage";
+import VideoFormPage from "@/pages/admin/education/videos/VideoFormPage";
 
-import QuizzesPage from "@/pages/admin/quizzes/QuizzesPage";
-import QuizProfilePage from "@/pages/admin/quizzes/QuizProfilePage";
-import QuizFormPage from "@/pages/admin/quizzes/QuizFormPage";
+import QuizzesPage from "@/pages/admin/education/quizzes/QuizzesPage";
+import QuizProfilePage from "@/pages/admin/education/quizzes/QuizProfilePage";
+import QuizFormPage from "@/pages/admin/education/quizzes/QuizFormPage";
 
-import ClassroomsPage from "@/pages/admin/classrooms/ClassroomsPage";
-import ClassroomProfilePage from "@/pages/admin/classrooms/ClassroomProfilePage";
-import ClassroomFormPage from "@/pages/admin/classrooms/ClassroomFormPage";
+import ClassroomsPage from "@/pages/admin/education/classrooms/ClassroomsPage";
+import ClassroomProfilePage from "@/pages/admin/education/classrooms/ClassroomProfilePage";
+import ClassroomFormPage from "@/pages/admin/education/classrooms/ClassroomFormPage";
 
-import FeeCategoryPage from "@/pages/admin/fee-category/FeeCategoryPage";
-import FeeCategoryProfilePage from "@/pages/admin/fee-category/FeeCategoryProfilePage";
-import FeeCategoryFormPage from "@/pages/admin/fee-category/FeeCategoryFormPage";
+import FeeCategoryPage from "@/pages/admin/education/fee-category/FeeCategoryPage";
+import FeeCategoryProfilePage from "@/pages/admin/education/fee-category/FeeCategoryProfilePage";
+import FeeCategoryFormPage from "@/pages/admin/education/fee-category/FeeCategoryFormPage";
 
-import FeeStructurePage from "@/pages/admin/fee-structure/FeeStructurePage";
-import FeeStructureProfilePage from "@/pages/admin/fee-structure/FeeStructureProfilePage";
-import FeeStructureFormPage from "@/pages/admin/fee-structure/FeeStructureFormPage";
+import FeeStructurePage from "@/pages/admin/education/fee-structure/FeeStructurePage";
+import FeeStructureProfilePage from "@/pages/admin/education/fee-structure/FeeStructureProfilePage";
+import FeeStructureFormPage from "@/pages/admin/education/fee-structure/FeeStructureFormPage";
 
-import FeeSchedulePage from "@/pages/admin/fee-schedule/FeeSchedulePage";
-import FeeScheduleProfilePage from "@/pages/admin/fee-schedule/FeeScheduleProfilePage";
-import FeeScheduleFormPage from "@/pages/admin/fee-schedule/FeeScheduleFormPage";
+import FeeSchedulePage from "@/pages/admin/education/fee-schedule/FeeSchedulePage";
+import FeeScheduleProfilePage from "@/pages/admin/education/fee-schedule/FeeScheduleProfilePage";
+import FeeScheduleFormPage from "@/pages/admin/education/fee-schedule/FeeScheduleFormPage";
 
-import StudentApplicantsPage from "@/pages/admin/student-applicant/StudentApplicantsPage";
-import StudentApplicantProfilePage from "@/pages/admin/student-applicant/StudentApplicantProfilePage";
-import StudentApplicantFormPage from "@/pages/admin/student-applicant/StudentApplicantFormPage";
+import StudentApplicantsPage from "@/pages/admin/education/student-applicant/StudentApplicantsPage";
+import StudentApplicantProfilePage from "@/pages/admin/education/student-applicant/StudentApplicantProfilePage";
+import StudentApplicantFormPage from "@/pages/admin/education/student-applicant/StudentApplicantFormPage";
 
-import StudentAdmissionsPage from "@/pages/admin/student-admission/StudentAdmissionsPage";
-import StudentAdmissionProfilePage from "@/pages/admin/student-admission/StudentAdmissionProfilePage";
-import StudentAdmissionFormPage from "@/pages/admin/student-admission/StudentAdmissionFormPage";
+import StudentAdmissionsPage from "@/pages/admin/education/student-admission/StudentAdmissionsPage";
+import StudentAdmissionProfilePage from "@/pages/admin/education/student-admission/StudentAdmissionProfilePage";
+import StudentAdmissionFormPage from "@/pages/admin/education/student-admission/StudentAdmissionFormPage";
 
-import AcademicTermsPage from "@/pages/admin/academic-term/AcademicTermsPage";
-import AcademicTermProfilePage from "@/pages/admin/academic-term/AcademicTermProfilePage";
-import AcademicTermFormPage from "@/pages/admin/academic-term/AcademicTermFormPage";
+import AcademicTermsPage from "@/pages/admin/education/academic-term/AcademicTermsPage";
+import AcademicTermProfilePage from "@/pages/admin/education/academic-term/AcademicTermProfilePage";
+import AcademicTermFormPage from "@/pages/admin/education/academic-term/AcademicTermFormPage";
 
-import AssessmentGroupsPage from "@/pages/admin/assessment-group/AssessmentGroupsPage";
-import AssessmentGroupProfilePage from "@/pages/admin/assessment-group/AssessmentGroupProfilePage";
-import AssessmentGroupFormPage from "@/pages/admin/assessment-group/AssessmentGroupFormPage";
+import AssessmentGroupsPage from "@/pages/admin/education/assessment-group/AssessmentGroupsPage";
+import AssessmentGroupProfilePage from "@/pages/admin/education/assessment-group/AssessmentGroupProfilePage";
+import AssessmentGroupFormPage from "@/pages/admin/education/assessment-group/AssessmentGroupFormPage";
 
-import AssessmentPlansPage from "@/pages/admin/assessment-plan/AssessmentPlansPage";
-import AssessmentPlanProfilePage from "@/pages/admin/assessment-plan/AssessmentPlanProfilePage";
-import AssessmentPlanFormPage from "@/pages/admin/assessment-plan/AssessmentPlanFormPage";
+import AssessmentPlansPage from "@/pages/admin/education/assessment-plan/AssessmentPlansPage";
+import AssessmentPlanProfilePage from "@/pages/admin/education/assessment-plan/AssessmentPlanProfilePage";
+import AssessmentPlanFormPage from "@/pages/admin/education/assessment-plan/AssessmentPlanFormPage";
 
-import AssessmentResultsPage from "@/pages/admin/assessment-result/AssessmentResultsPage";
-import AssessmentResultProfilePage from "@/pages/admin/assessment-result/AssessmentResultProfilePage";
-import AssessmentResultFormPage from "@/pages/admin/assessment-result/AssessmentResultFormPage";
+import AssessmentResultsPage from "@/pages/admin/education/assessment-result/AssessmentResultsPage";
+import AssessmentResultProfilePage from "@/pages/admin/education/assessment-result/AssessmentResultProfilePage";
+import AssessmentResultFormPage from "@/pages/admin/education/assessment-result/AssessmentResultFormPage";
 
-import AssessmentCriteriaPage from "@/pages/admin/assessment-criteria/AssessmentCriteriaPage";
-import AssessmentCriteriaProfilePage from "@/pages/admin/assessment-criteria/AssessmentCriteriaProfilePage";
-import AssessmentCriteriaFormPage from "@/pages/admin/assessment-criteria/AssessmentCriteriaFormPage";
+import AssessmentCriteriaPage from "@/pages/admin/education/assessment-criteria/AssessmentCriteriaPage";
+import AssessmentCriteriaProfilePage from "@/pages/admin/education/assessment-criteria/AssessmentCriteriaProfilePage";
+import AssessmentCriteriaFormPage from "@/pages/admin/education/assessment-criteria/AssessmentCriteriaFormPage";
 
-import StudentAttendancesPage from "@/pages/admin/student-attendance/StudentAttendancesPage";
-import StudentAttendanceProfilePage from "@/pages/admin/student-attendance/StudentAttendanceProfilePage";
-import StudentAttendanceFormPage from "@/pages/admin/student-attendance/StudentAttendanceFormPage";
+import StudentAttendancesPage from "@/pages/admin/education/student-attendance/StudentAttendancesPage";
+import StudentAttendanceProfilePage from "@/pages/admin/education/student-attendance/StudentAttendanceProfilePage";
+import StudentAttendanceFormPage from "@/pages/admin/education/student-attendance/StudentAttendanceFormPage";
 
-import StudentLeaveApplicationsPage from "@/pages/admin/student-leave-application/StudentLeaveApplicationsPage";
-import StudentLeaveApplicationProfilePage from "@/pages/admin/student-leave-application/StudentLeaveApplicationProfilePage";
-import StudentLeaveApplicationFormPage from "@/pages/admin/student-leave-application/StudentLeaveApplicationFormPage";
+import StudentLeaveApplicationsPage from "@/pages/admin/education/student-leave-application/StudentLeaveApplicationsPage";
+import StudentLeaveApplicationProfilePage from "@/pages/admin/education/student-leave-application/StudentLeaveApplicationProfilePage";
+import StudentLeaveApplicationFormPage from "@/pages/admin/education/student-leave-application/StudentLeaveApplicationFormPage";
 
-import StudentCategoriesPage from "@/pages/admin/student-category/StudentCategoriesPage";
-import StudentCategoryProfilePage from "@/pages/admin/student-category/StudentCategoryProfilePage";
-import StudentCategoryFormPage from "@/pages/admin/student-category/StudentCategoryFormPage";
+import StudentCategoriesPage from "@/pages/admin/education/student-category/StudentCategoriesPage";
+import StudentCategoryProfilePage from "@/pages/admin/education/student-category/StudentCategoryProfilePage";
+import StudentCategoryFormPage from "@/pages/admin/education/student-category/StudentCategoryFormPage";
 
-import StudentBatchNamesPage from "@/pages/admin/student-batch-name/StudentBatchNamesPage";
-import StudentBatchNameProfilePage from "@/pages/admin/student-batch-name/StudentBatchNameProfilePage";
-import StudentBatchNameFormPage from "@/pages/admin/student-batch-name/StudentBatchNameFormPage";
+import StudentBatchNamesPage from "@/pages/admin/education/student-batch-name/StudentBatchNamesPage";
+import StudentBatchNameProfilePage from "@/pages/admin/education/student-batch-name/StudentBatchNameProfilePage";
+import StudentBatchNameFormPage from "@/pages/admin/education/student-batch-name/StudentBatchNameFormPage";
 
-import AcademicYearsPage from "@/pages/admin/academic-year/AcademicYearsPage";
-import AcademicYearProfilePage from "@/pages/admin/academic-year/AcademicYearProfilePage";
-import AcademicYearFormPage from "@/pages/admin/academic-year/AcademicYearFormPage";
+import AcademicYearsPage from "@/pages/admin/education/academic-year/AcademicYearsPage";
+import AcademicYearProfilePage from "@/pages/admin/education/academic-year/AcademicYearProfilePage";
+import AcademicYearFormPage from "@/pages/admin/education/academic-year/AcademicYearFormPage";
 
-import GradingScalesPage from "@/pages/admin/grading-scale/GradingScalesPage";
-import GradingScaleProfilePage from "@/pages/admin/grading-scale/GradingScaleProfilePage";
-import GradingScaleFormPage from "@/pages/admin/grading-scale/GradingScaleFormPage";
+import GradingScalesPage from "@/pages/admin/education/grading-scale/GradingScalesPage";
+import GradingScaleProfilePage from "@/pages/admin/education/grading-scale/GradingScaleProfilePage";
+import GradingScaleFormPage from "@/pages/admin/education/grading-scale/GradingScaleFormPage";
 
-import EducationSettingsPage from "@/pages/admin/education-settings/EducationSettingsPage";
-import SchoolSettingsPage from "@/pages/admin/school-settings/SchoolSettingsPage";
+import EducationSettingsPage from "@/pages/admin/education/education-settings/EducationSettingsPage";
+import SchoolSettingsPage from "@/pages/admin/education/school-settings/SchoolSettingsPage";
 
-import StudentLogsPage from "@/pages/admin/student-log/StudentLogsPage";
-import StudentLogProfilePage from "@/pages/admin/student-log/StudentLogProfilePage";
-import StudentLogFormPage from "@/pages/admin/student-log/StudentLogFormPage";
+import StudentLogsPage from "@/pages/admin/education/student-log/StudentLogsPage";
+import StudentLogProfilePage from "@/pages/admin/education/student-log/StudentLogProfilePage";
+import StudentLogFormPage from "@/pages/admin/education/student-log/StudentLogFormPage";
 
-import ClassEnrollmentsPage from "@/pages/admin/class-enrollment/ClassEnrollmentsPage";
-import ClassEnrollmentProfilePage from "@/pages/admin/class-enrollment/ClassEnrollmentProfilePage";
-import ClassEnrollmentFormPage from "@/pages/admin/class-enrollment/ClassEnrollmentFormPage";
+import ClassEnrollmentsPage from "@/pages/admin/education/class-enrollment/ClassEnrollmentsPage";
+import ClassEnrollmentProfilePage from "@/pages/admin/education/class-enrollment/ClassEnrollmentProfilePage";
+import ClassEnrollmentFormPage from "@/pages/admin/education/class-enrollment/ClassEnrollmentFormPage";
 
-import SubjectEnrollmentsPage from "@/pages/admin/subject-enrollment/SubjectEnrollmentsPage";
-import SubjectEnrollmentProfilePage from "@/pages/admin/subject-enrollment/SubjectEnrollmentProfilePage";
-import SubjectEnrollmentFormPage from "@/pages/admin/subject-enrollment/SubjectEnrollmentFormPage";
+import SubjectEnrollmentsPage from "@/pages/admin/education/subject-enrollment/SubjectEnrollmentsPage";
+import SubjectEnrollmentProfilePage from "@/pages/admin/education/subject-enrollment/SubjectEnrollmentProfilePage";
+import SubjectEnrollmentFormPage from "@/pages/admin/education/subject-enrollment/SubjectEnrollmentFormPage";
 
-import FeesPage from "@/pages/admin/fees/FeesPage";
-import FeesProfilePage from "@/pages/admin/fees/FeesProfilePage";
+import FeesPage from "@/pages/admin/education/fees/FeesPage";
+import FeesProfilePage from "@/pages/admin/education/fees/FeesProfilePage";
 
-import StudentFeeCollectionReportPage from "@/pages/admin/reports/StudentFeeCollectionReportPage";
-import ClassFeeCollectionReportPage from "@/pages/admin/reports/ClassFeeCollectionReportPage";
+import StudentFeeCollectionReportPage from "@/pages/admin/education/reports/StudentFeeCollectionReportPage";
+import ClassFeeCollectionReportPage from "@/pages/admin/education/reports/ClassFeeCollectionReportPage";
 
-import SubjectSchedulesPage from "@/pages/admin/subject-schedule/SubjectSchedulesPage";
-import SubjectScheduleProfilePage from "@/pages/admin/subject-schedule/SubjectScheduleProfilePage";
-import SubjectScheduleFormPage from "@/pages/admin/subject-schedule/SubjectScheduleFormPage";
+import SubjectSchedulesPage from "@/pages/admin/education/subject-schedule/SubjectSchedulesPage";
+import SubjectScheduleProfilePage from "@/pages/admin/education/subject-schedule/SubjectScheduleProfilePage";
+import SubjectScheduleFormPage from "@/pages/admin/education/subject-schedule/SubjectScheduleFormPage";
 
-import SubjectSchedulingToolPage from "@/pages/admin/subject-scheduling-tool/SubjectSchedulingToolPage";
+import SubjectSchedulingToolPage from "@/pages/admin/education/subject-scheduling-tool/SubjectSchedulingToolPage";
 
-import SubjectAssessmentReportPage from "@/pages/admin/reports/SubjectAssessmentReportPage";
-import FinalAssessmentGradesPage from "@/pages/admin/reports/FinalAssessmentGradesPage";
-import AssessmentPlanStatusPage from "@/pages/admin/reports/AssessmentPlanStatusPage";
+import SubjectAssessmentReportPage from "@/pages/admin/education/reports/SubjectAssessmentReportPage";
+import FinalAssessmentGradesPage from "@/pages/admin/education/reports/FinalAssessmentGradesPage";
+import AssessmentPlanStatusPage from "@/pages/admin/education/reports/AssessmentPlanStatusPage";
 
-import StudentReportGenerationToolPage from "@/pages/admin/student-report-generation-tool/StudentReportGenerationToolPage";
+import StudentReportGenerationToolPage from "@/pages/admin/education/student-report-generation-tool/StudentReportGenerationToolPage";
 
-import StudentGuardianContactsPage from "@/pages/admin/reports/StudentGuardianContactsPage";
-import StudentMonthlyAttendanceSheetPage from "@/pages/admin/reports/StudentMonthlyAttendanceSheetPage";
-import AbsentStudentReportPage from "@/pages/admin/reports/AbsentStudentReportPage";
-import StudentBatchWiseAttendancePage from "@/pages/admin/reports/StudentBatchWiseAttendancePage";
-import SubjectActivitiesPage from "@/pages/admin/subject-activity/SubjectActivitiesPage";
-import SubjectActivityProfilePage from "@/pages/admin/subject-activity/SubjectActivityProfilePage";
-import QuizActivitiesPage from "@/pages/admin/quiz-activity/QuizActivitiesPage";
-import QuizActivityProfilePage from "@/pages/admin/quiz-activity/QuizActivityProfilePage";
-import StudentAttendanceToolPage from "@/pages/admin/student-attendance-tool/StudentAttendanceToolPage";
-import AssessmentResultToolPage from "@/pages/admin/assessment-result-tool/AssessmentResultToolPage";
-import StudentGroupCreationToolPage from "@/pages/admin/student-group-creation-tool/StudentGroupCreationToolPage";
-import ClassEnrollmentToolPage from "@/pages/admin/class-enrollment-tool/ClassEnrollmentToolPage";
-import SchoolTermResultsPage from "@/pages/admin/school-term-result-generator/SchoolTermResultsPage";
-import SchoolTermResultFormPage from "@/pages/admin/school-term-result-generator/SchoolTermResultFormPage";
-import SchoolTermResultProfilePage from "@/pages/admin/school-term-result-generator/SchoolTermResultProfilePage";
-import BulkTermResultGeneratorPage from "@/pages/admin/bulk-term-result-generator/BulkTermResultGeneratorPage";
-import TermResultRecalculationPage from "@/pages/admin/term-result-recalculation/TermResultRecalculationPage";
+import StudentGuardianContactsPage from "@/pages/admin/education/reports/StudentGuardianContactsPage";
+import StudentMonthlyAttendanceSheetPage from "@/pages/admin/education/reports/StudentMonthlyAttendanceSheetPage";
+import AbsentStudentReportPage from "@/pages/admin/education/reports/AbsentStudentReportPage";
+import StudentBatchWiseAttendancePage from "@/pages/admin/education/reports/StudentBatchWiseAttendancePage";
+import SubjectActivitiesPage from "@/pages/admin/education/subject-activity/SubjectActivitiesPage";
+import SubjectActivityProfilePage from "@/pages/admin/education/subject-activity/SubjectActivityProfilePage";
+import QuizActivitiesPage from "@/pages/admin/education/quiz-activity/QuizActivitiesPage";
+import QuizActivityProfilePage from "@/pages/admin/education/quiz-activity/QuizActivityProfilePage";
+import StudentAttendanceToolPage from "@/pages/admin/education/student-attendance-tool/StudentAttendanceToolPage";
+import AssessmentResultToolPage from "@/pages/admin/education/assessment-result-tool/AssessmentResultToolPage";
+import StudentGroupCreationToolPage from "@/pages/admin/education/student-group-creation-tool/StudentGroupCreationToolPage";
+import ClassEnrollmentToolPage from "@/pages/admin/education/class-enrollment-tool/ClassEnrollmentToolPage";
+import SchoolTermResultsPage from "@/pages/admin/education/school-term-result-generator/SchoolTermResultsPage";
+import SchoolTermResultFormPage from "@/pages/admin/education/school-term-result-generator/SchoolTermResultFormPage";
+import SchoolTermResultProfilePage from "@/pages/admin/education/school-term-result-generator/SchoolTermResultProfilePage";
+import BulkTermResultGeneratorPage from "@/pages/admin/education/bulk-term-result-generator/BulkTermResultGeneratorPage";
+import TermResultRecalculationPage from "@/pages/admin/education/term-result-recalculation/TermResultRecalculationPage";
 
 // ─── Loading screen ────────────────────────────────────────────────────
 

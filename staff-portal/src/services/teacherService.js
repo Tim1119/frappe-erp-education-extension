@@ -1,7 +1,7 @@
 // services/teacherService.js
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.teacher_api";
+const METHOD = "education_extension.staff_portal_api.education.teacher_api";
 
 export function getTeachers({
   page = 1,
@@ -22,6 +22,12 @@ export function getTeachers({
 export function getTeacher(name) {
   return api(`${METHOD}.get_teacher`, {
     name,
+  });
+}
+
+export function getTeacherConnections(instructor) {
+  return api(`${METHOD}.get_teacher_connections`, {
+    instructor,
   });
 }
 

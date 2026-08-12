@@ -1,7 +1,7 @@
 import frappe
 from frappe import _
 
-from education_extension.staff_portal_api.bulk_school_term_class_result_generator_api import (
+from education_extension.staff_portal_api.education.bulk_school_term_class_result_generator_api import (
     get_assessment_groups,
     get_academic_years,
     get_academic_terms,

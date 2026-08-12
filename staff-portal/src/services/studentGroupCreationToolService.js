@@ -1,6 +1,6 @@
 import api from "./api";
 
-const METHOD = "education_extension.staff_portal_api.student_group_creation_tool_api";
+const METHOD = "education_extension.staff_portal_api.education.student_group_creation_tool_api";
 
 export function getCandidateGroups(program, academic_year, academic_term, separate_groups) {
   return api(`${METHOD}.get_courses`, {
