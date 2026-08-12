@@ -24,7 +24,7 @@ import {
   getStudentGroupDetails,
   getCourseDefaultGradingScale,
   getCriteriaTemplate,
-} from "@/services/assessmentPlanService";
+} from "@/services/education/assessmentPlanService";
 import { getErrorMessage } from "@/utils/errors";
 
 function todayStr() {

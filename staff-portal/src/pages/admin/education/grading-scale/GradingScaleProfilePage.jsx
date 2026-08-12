@@ -17,7 +17,7 @@ import {
   submitGradingScale,
   cancelGradingScale,
   getConnections,
-} from "@/services/gradingScaleService";
+} from "@/services/education/gradingScaleService";
 import { getErrorMessage } from "@/utils/errors";
 
 function Field({ label, value }) {

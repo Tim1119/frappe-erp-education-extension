@@ -18,7 +18,7 @@ import { usePagination } from "@/hooks";
 import {
   getGradingScales,
   deleteGradingScale,
-} from "@/services/gradingScaleService";
+} from "@/services/education/gradingScaleService";
 import { getErrorMessage } from "@/utils/errors";
 
 function DocStatusBadge({ docstatus }) {

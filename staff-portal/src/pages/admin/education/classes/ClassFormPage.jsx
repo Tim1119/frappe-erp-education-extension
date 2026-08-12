@@ -9,7 +9,7 @@ import {
   getClass,
   createClass,
   updateClass,
-} from "@/services/classService.js";
+} from "@/services/education/classService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

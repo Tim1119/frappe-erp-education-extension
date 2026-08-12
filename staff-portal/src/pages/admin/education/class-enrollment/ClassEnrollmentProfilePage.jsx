@@ -17,7 +17,7 @@ import {
   submitClassEnrollment,
   cancelClassEnrollment,
   getConnections,
-} from "@/services/classEnrollmentService";
+} from "@/services/education/classEnrollmentService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

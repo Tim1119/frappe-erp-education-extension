@@ -15,7 +15,7 @@ import {
   getAssessmentGroups,
   createAssessmentGroup,
   updateAssessmentGroup,
-} from "@/services/assessmentGroupService";
+} from "@/services/education/assessmentGroupService";
 import { getErrorMessage } from "@/utils/errors";
 
 const EMPTY = {

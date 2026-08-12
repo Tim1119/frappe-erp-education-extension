@@ -10,7 +10,7 @@ import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import {
   getSubjectEnrollment,
   deleteSubjectEnrollment,
-} from "@/services/subjectEnrollmentService";
+} from "@/services/education/subjectEnrollmentService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

@@ -13,7 +13,7 @@ import {
   getAssessmentGroups,
   deleteAssessmentGroup,
   getConnections,
-} from "@/services/assessmentGroupService";
+} from "@/services/education/assessmentGroupService";
 import { getErrorMessage } from "@/utils/errors";
 
 function Field({ label, value }) {

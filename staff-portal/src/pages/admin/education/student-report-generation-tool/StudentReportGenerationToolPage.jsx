@@ -22,7 +22,7 @@ import {
   getTermsContent,
   getCurrentEnrollment,
   printReportCard,
-} from "@/services/studentReportGenerationToolService";
+} from "@/services/education/studentReportGenerationToolService";
 import { getErrorMessage } from "@/utils/errors";
 
 const EMPTY = {

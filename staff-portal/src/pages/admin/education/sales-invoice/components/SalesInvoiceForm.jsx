@@ -7,7 +7,7 @@ import {
   getCompanies, getCostCenters, getCustomerName, getCustomers, getDebitAccounts, getFeeSchedules,
   getIncomeAccounts, getItems, getLetterHeads, getNamingSeries, getPrintHeadings,
   getStudents, getSubmittedSalesInvoices, getTaxAccounts, getTaxCategories, getTaxTemplates,
-} from "@/services/salesInvoiceService";
+} from "@/services/education/salesInvoiceService";
 
 const today = () => new Date().toLocaleDateString("en-CA");
 const EMPTY_ITEM = { item_code: "", item_name: "", qty: 1, rate: 0, amount: 0 };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getGuardians } from "@/services/studentService";
+import { getGuardians } from "@/services/education/studentService";
 
 export default function GuardianTable({ value = [], onChange }) {
   const [options, setOptions] = useState([]);

@@ -1,5 +1,5 @@
 // services/topicService.js
-import { callMethod } from "./frappeClient";
+import { callMethod } from "../frappeClient";
 
 const NS = "education_extension.staff_portal_api.education";
 

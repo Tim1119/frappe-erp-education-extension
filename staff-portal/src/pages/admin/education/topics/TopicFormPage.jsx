@@ -9,7 +9,7 @@ import {
   getTopic,
   createTopic,
   updateTopic,
-} from "@/services/topicService.js";
+} from "@/services/education/topicService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

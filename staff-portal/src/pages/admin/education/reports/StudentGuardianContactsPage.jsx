@@ -17,7 +17,7 @@ import {
   getAcademicYears,
   getPrograms,
   getStudentBatches,
-} from "@/services/studentGuardianContactsService";
+} from "@/services/education/studentGuardianContactsService";
 import { getErrorMessage } from "@/utils/errors";
 import { t } from "@/config/translations";
 

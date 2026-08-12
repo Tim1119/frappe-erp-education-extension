@@ -15,7 +15,7 @@ import {
   getAssessmentPlanDetails,
   getAssessmentCriteriaForPlan,
   getGradingScaleIntervals,
-} from "@/services/assessmentResultService";
+} from "@/services/education/assessmentResultService";
 import { getErrorMessage } from "@/utils/errors";
 import { computeGrade } from "@/utils/grading";
 

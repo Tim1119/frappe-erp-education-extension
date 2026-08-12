@@ -19,7 +19,7 @@ import { getErrorMessage } from "@/utils/errors.js";
 import {
   getQuizzes,
   deleteQuiz,
-} from "@/services/quizService.js";
+} from "@/services/education/quizService.js";
 
 export default function QuizzesPage() {
   const navigate = useNavigate();

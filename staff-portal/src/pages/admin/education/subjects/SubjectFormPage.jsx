@@ -9,7 +9,7 @@ import {
   getSubject,
   createSubject,
   updateSubject,
-} from "@/services/subjectService.js";
+} from "@/services/education/subjectService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

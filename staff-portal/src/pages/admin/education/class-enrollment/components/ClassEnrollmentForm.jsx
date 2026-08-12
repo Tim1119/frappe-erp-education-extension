@@ -22,7 +22,7 @@ import {
   getSchoolHouses,
   getFeeSchedules,
   getCoursesForProgram,
-} from "@/services/classEnrollmentService";
+} from "@/services/education/classEnrollmentService";
 
 function todayStr() {
   return new Date().toISOString().slice(0, 10);

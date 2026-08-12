@@ -8,7 +8,7 @@ import {
   getSubjectSchedule,
   createSubjectSchedule,
   updateSubjectSchedule,
-} from "@/services/subjectScheduleService";
+} from "@/services/education/subjectScheduleService";
 import { getErrorMessage } from "@/utils/errors";
 
 export default function SubjectScheduleFormPage() {

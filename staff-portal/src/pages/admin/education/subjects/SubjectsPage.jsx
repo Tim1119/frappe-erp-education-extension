@@ -19,7 +19,7 @@ import {
   getSubjects,
   deleteSubject,
   getDepartments,
-} from "@/services/subjectService.js";
+} from "@/services/education/subjectService.js";
 
 export default function SubjectsPage() {
   const navigate = useNavigate();

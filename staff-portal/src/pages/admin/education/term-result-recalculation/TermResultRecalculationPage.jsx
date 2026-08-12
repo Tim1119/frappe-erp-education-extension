@@ -17,7 +17,7 @@ import {
   getAcademicYears,
   getAcademicTerms,
   getStudentGroups,
-} from "@/services/termResultRecalculationService";
+} from "@/services/education/termResultRecalculationService";
 import { getErrorMessage } from "@/utils/errors";
 
 // Real doctype: "Term Result Recalculation" (education_extension app) --

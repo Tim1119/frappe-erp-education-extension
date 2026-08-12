@@ -21,7 +21,7 @@ import {
   deleteStudentAttendance,
   getStudentGroups,
   getCourseSchedules,
-} from "@/services/studentAttendanceService";
+} from "@/services/education/studentAttendanceService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

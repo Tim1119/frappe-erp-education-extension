@@ -8,7 +8,7 @@ import {
   getAssessmentResult,
   createAssessmentResult,
   updateAssessmentResult,
-} from "@/services/assessmentResultService";
+} from "@/services/education/assessmentResultService";
 import { getErrorMessage } from "@/utils/errors";
 
 export default function AssessmentResultFormPage() {

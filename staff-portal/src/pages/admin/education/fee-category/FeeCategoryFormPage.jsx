@@ -9,7 +9,7 @@ import {
   getFeeCategory,
   createFeeCategory,
   updateFeeCategory,
-} from "@/services/feeCategoryService.js";
+} from "@/services/education/feeCategoryService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

@@ -17,7 +17,7 @@ import {
   getCompanies,
   getAccounts,
   getCostCenters,
-} from "@/services/feeCategoryService.js";
+} from "@/services/education/feeCategoryService.js";
 
 const EMPTY_FORM = {
   category_name: "",

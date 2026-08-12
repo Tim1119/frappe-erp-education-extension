@@ -12,7 +12,7 @@ import PageHeader from "@/components/shared/PageHeader";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import {
   getSchoolTermResult, deleteSchoolTermResult, printSchoolTermResult,
-} from "@/services/schoolTermResultService";
+} from "@/services/education/schoolTermResultService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

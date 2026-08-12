@@ -10,7 +10,7 @@ import {
   createClassArm,
   updateClassArm,
   getStudentGroupOptions,
-} from "@/services/classArmsService.js";
+} from "@/services/education/classArmsService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

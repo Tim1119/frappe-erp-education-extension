@@ -14,7 +14,7 @@ import {
   updateEducationSettings,
   getAcademicYears,
   getAcademicTerms,
-} from "@/services/educationSettingsService";
+} from "@/services/education/educationSettingsService";
 import { getErrorMessage } from "@/utils/errors";
 
 const INSTRUCTOR_NAMING_OPTIONS = ["Full Name", "Naming Series", "Employee Number"];

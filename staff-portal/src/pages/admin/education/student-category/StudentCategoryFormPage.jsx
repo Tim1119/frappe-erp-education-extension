@@ -11,7 +11,7 @@ import {
   getStudentCategory,
   createStudentCategory,
   updateStudentCategory,
-} from "@/services/studentCategoryService";
+} from "@/services/education/studentCategoryService";
 import { getErrorMessage } from "@/utils/errors";
 
 const EMPTY = {

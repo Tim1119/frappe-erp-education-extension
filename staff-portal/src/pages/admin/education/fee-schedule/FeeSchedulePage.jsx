@@ -22,7 +22,7 @@ import {
   deleteFeeSchedule,
   getAcademicYears,
   getAcademicTerms,
-} from "@/services/feeScheduleService.js";
+} from "@/services/education/feeScheduleService.js";
 
 // Status badge component
 function StatusBadge({ status }) {

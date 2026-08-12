@@ -12,7 +12,7 @@ import {
   submitFeeSchedule,
   cancelFeeSchedule,
   generateFees,
-} from "@/services/feeScheduleService.js";
+} from "@/services/education/feeScheduleService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

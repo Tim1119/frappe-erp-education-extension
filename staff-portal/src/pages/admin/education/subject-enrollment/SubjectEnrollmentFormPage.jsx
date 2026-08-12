@@ -15,7 +15,7 @@ import {
   getStudents,
   getCourses,
   getProgramEnrollments,
-} from "@/services/subjectEnrollmentService";
+} from "@/services/education/subjectEnrollmentService";
 import { getErrorMessage } from "@/utils/errors";
 
 function todayStr() {

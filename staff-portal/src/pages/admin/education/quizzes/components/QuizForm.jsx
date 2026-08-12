@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
-import { getQuestions, createQuestion } from "@/services/quizService.js";
+import { getQuestions, createQuestion } from "@/services/education/quizService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 import Modal from "@/components/shared/Modal";
 

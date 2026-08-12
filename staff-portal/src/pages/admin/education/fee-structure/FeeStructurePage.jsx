@@ -23,7 +23,7 @@ import {
   getAcademicYears,
   getAcademicTerms,
   getStudentCategories,
-} from "@/services/feeStructureService.js";
+} from "@/services/education/feeStructureService.js";
 
 // Status badge component
 function StatusBadge({ status }) {

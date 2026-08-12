@@ -7,7 +7,7 @@ import {
   getPrograms,
   getAcademicYears,
   createAcademicYear,
-} from "@/services/studentAdmissionService.js";
+} from "@/services/education/studentAdmissionService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

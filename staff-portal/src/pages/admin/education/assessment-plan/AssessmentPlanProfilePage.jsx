@@ -19,7 +19,7 @@ import {
   submitAssessmentPlan,
   cancelAssessmentPlan,
   getConnections,
-} from "@/services/assessmentPlanService";
+} from "@/services/education/assessmentPlanService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

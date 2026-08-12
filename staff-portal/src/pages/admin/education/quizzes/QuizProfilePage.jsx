@@ -18,7 +18,7 @@ import { PageHeader, EmptyState } from "@/components/shared/OriginalPrimitives";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 import Modal from "@/components/shared/Modal";
 
-import { getQuiz, deleteQuiz } from "@/services/quizService.js";
+import { getQuiz, deleteQuiz } from "@/services/education/quizService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 import { callMethod } from "@/services/frappeClient.js";
 

@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import GuardianDetails from "./components/GuardianDetails.jsx";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 
-import { getGuardian, deleteGuardian } from "@/services/guardianService.js";
+import { getGuardian, deleteGuardian } from "@/services/education/guardianService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
 export default function GuardianProfilePage() {

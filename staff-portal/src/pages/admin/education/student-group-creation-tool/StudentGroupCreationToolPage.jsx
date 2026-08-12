@@ -22,7 +22,7 @@ import {
   getAcademicTerms,
   getStudentBatchNames,
   getProgramCourses,
-} from "@/services/studentGroupCreationToolService";
+} from "@/services/education/studentGroupCreationToolService";
 import { getErrorMessage } from "@/utils/errors";
 
 // Real Frappe "Tool" doctype (issingle: 1, hide_toolbar: 1, confirmed

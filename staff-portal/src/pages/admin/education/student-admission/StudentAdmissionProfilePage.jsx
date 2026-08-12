@@ -6,7 +6,7 @@ import { Calendar, BookOpen, CheckCircle, XCircle, Link2, ExternalLink } from "l
 import { PageHeader, EmptyState } from "@/components/shared/OriginalPrimitives";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 
-import { getStudentAdmission, deleteStudentAdmission } from "@/services/studentAdmissionService.js";
+import { getStudentAdmission, deleteStudentAdmission } from "@/services/education/studentAdmissionService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 import { fmtDate } from "@/utils/format.js";
 

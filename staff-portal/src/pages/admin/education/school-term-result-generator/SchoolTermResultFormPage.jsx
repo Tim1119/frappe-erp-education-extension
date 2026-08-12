@@ -6,7 +6,7 @@ import PageHeader from "@/components/shared/PageHeader";
 import SchoolTermResultForm from "./components/SchoolTermResultForm";
 import {
   getSchoolTermResult, createSchoolTermResult, updateSchoolTermResult,
-} from "@/services/schoolTermResultService";
+} from "@/services/education/schoolTermResultService";
 import { getErrorMessage } from "@/utils/errors";
 
 export default function SchoolTermResultFormPage() {

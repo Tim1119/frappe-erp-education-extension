@@ -6,7 +6,7 @@
 // import FeeStructureDetails from "./components/FeeStructureDetails.jsx";
 // import ConfirmModal from "@/components/shared/ConfirmDialog";
 
-// import { getFeeStructure, deleteFeeStructure } from "@/services/feeStructureService.js";
+// import { getFeeStructure, deleteFeeStructure } from "@/services/education/feeStructureService.js";
 // import { getErrorMessage } from "@/utils/errors.js";
 
 // export default function FeeStructureProfilePage() {
@@ -117,7 +117,7 @@ import {
   deleteFeeStructure,
   submitFeeStructure,
   cancelFeeStructure,
-} from "@/services/feeStructureService.js";
+} from "@/services/education/feeStructureService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
 export default function FeeStructureProfilePage() {

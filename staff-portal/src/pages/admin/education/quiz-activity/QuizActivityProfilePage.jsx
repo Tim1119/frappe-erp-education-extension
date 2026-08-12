@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
-import { getQuizActivity, deleteQuizActivity } from "@/services/quizActivityService";
+import { getQuizActivity, deleteQuizActivity } from "@/services/education/quizActivityService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDateTime } from "@/utils/format";
 

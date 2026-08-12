@@ -9,7 +9,7 @@ import {
   getArticle,
   createArticle,
   updateArticle,
-} from "@/services/articleService.js";
+} from "@/services/education/articleService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

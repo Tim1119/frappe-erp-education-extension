@@ -11,7 +11,7 @@ import {
   getStudentBatchName,
   createStudentBatchName,
   updateStudentBatchName,
-} from "@/services/studentBatchNameService";
+} from "@/services/education/studentBatchNameService";
 import { getErrorMessage } from "@/utils/errors";
 
 const EMPTY = {

@@ -18,7 +18,7 @@ import {
   getAssessmentCriteriaList,
   deleteAssessmentCriteria,
   getAssessmentCriteriaGroups,
-} from "@/services/assessmentCriteriaService";
+} from "@/services/education/assessmentCriteriaService";
 import { getErrorMessage } from "@/utils/errors";
 
 export default function AssessmentCriteriaPage() {

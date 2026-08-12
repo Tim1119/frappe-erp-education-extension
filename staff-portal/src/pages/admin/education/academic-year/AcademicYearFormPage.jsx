@@ -11,7 +11,7 @@ import {
   getAcademicYear,
   createAcademicYear,
   updateAcademicYear,
-} from "@/services/academicYearService";
+} from "@/services/education/academicYearService";
 import { getErrorMessage } from "@/utils/errors";
 
 const EMPTY = {

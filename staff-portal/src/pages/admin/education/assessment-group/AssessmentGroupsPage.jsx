@@ -12,7 +12,7 @@ import PageHeader from "@/components/shared/PageHeader";
 import EmptyState from "@/components/shared/EmptyState";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import RowActionsMenu from "@/components/shared/RowActionsMenu";
-import { getAssessmentGroups, deleteAssessmentGroup } from "@/services/assessmentGroupService";
+import { getAssessmentGroups, deleteAssessmentGroup } from "@/services/education/assessmentGroupService";
 import { getErrorMessage } from "@/utils/errors";
 
 // Assessment Group is a real Frappe tree doctype (is_tree: 1). lft/rgt/

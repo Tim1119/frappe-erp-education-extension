@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
-import { getSubjectActivity, deleteSubjectActivity } from "@/services/subjectActivityService";
+import { getSubjectActivity, deleteSubjectActivity } from "@/services/education/subjectActivityService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDateTime } from "@/utils/format";
 

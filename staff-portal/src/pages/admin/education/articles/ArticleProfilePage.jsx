@@ -6,7 +6,7 @@ import { BookOpen, User, Calendar, FileText, Link2 } from "lucide-react";
 import { PageHeader, Avatar, EmptyState } from "@/components/shared/OriginalPrimitives";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 
-import { getArticle, deleteArticle } from "@/services/articleService.js";
+import { getArticle, deleteArticle } from "@/services/education/articleService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 import { formatDate } from "@/utils/format.js";
 

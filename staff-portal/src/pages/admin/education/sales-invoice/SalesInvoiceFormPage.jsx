@@ -7,7 +7,7 @@ import {
   createSalesInvoice,
   getSalesInvoice,
   updateSalesInvoice,
-} from "@/services/salesInvoiceService.js";
+} from "@/services/education/salesInvoiceService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
 export default function SalesInvoiceFormPage() {

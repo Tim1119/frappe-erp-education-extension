@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { Banknote, ChevronDown, ChevronRight, FileText, Info, MapPin, Plus, ReceiptText, Trash2 } from "lucide-react";
 import SearchableSelect from "@/components/shared/SearchableSelect";
-import { searchLinkOptions } from "@/services/salesInvoiceService";
+import { searchLinkOptions } from "@/services/education/salesInvoiceService";
 import { fmtDate } from "@/utils/format";
 
 const LAYOUT_TYPES = new Set(["Section Break", "Column Break", "Tab Break"]);

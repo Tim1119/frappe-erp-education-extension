@@ -17,7 +17,7 @@ import { usePagination } from "@/hooks";
 import {
   getStudentCategories,
   deleteStudentCategory,
-} from "@/services/studentCategoryService";
+} from "@/services/education/studentCategoryService";
 import { getErrorMessage } from "@/utils/errors";
 
 export default function StudentCategoriesPage() {

@@ -26,7 +26,7 @@ import {
   getAcademicTerms,
   getLeafAssessmentGroups,
   getSubmittedGradingScales,
-} from "@/services/assessmentResultService";
+} from "@/services/education/assessmentResultService";
 import { getErrorMessage } from "@/utils/errors";
 
 function DocStatusBadge({ docstatus }) {

@@ -8,7 +8,7 @@ import {
   getStudentLeaveApplication,
   createStudentLeaveApplication,
   updateStudentLeaveApplication,
-} from "@/services/studentLeaveApplicationService";
+} from "@/services/education/studentLeaveApplicationService";
 import { getErrorMessage } from "@/utils/errors";
 
 export default function StudentLeaveApplicationFormPage() {

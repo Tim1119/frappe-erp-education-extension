@@ -17,7 +17,7 @@ import {
   getCoursesForProgram,
   getAcademicTermBounds,
   getAcademicYearBounds,
-} from "@/services/subjectScheduleService";
+} from "@/services/education/subjectScheduleService";
 
 // Real options + hex values from course_schedule.py's set_hex_color() --
 // "color" itself is never user-editable (see the field-mapping note

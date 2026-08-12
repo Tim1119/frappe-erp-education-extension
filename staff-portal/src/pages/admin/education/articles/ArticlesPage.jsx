@@ -21,7 +21,7 @@ import {
   getArticles,
   deleteArticle,
   getTopics,
-} from "@/services/articleService.js";
+} from "@/services/education/articleService.js";
 
 import { formatDate } from "@/utils/format.js";
 

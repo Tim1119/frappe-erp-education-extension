@@ -22,7 +22,7 @@ import {
   getStudents,
   deleteStudent,
   getClassArms,
-} from "@/services/studentService.js";
+} from "@/services/education/studentService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

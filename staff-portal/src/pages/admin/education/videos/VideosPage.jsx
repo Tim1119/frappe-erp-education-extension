@@ -22,7 +22,7 @@ import {
   getVideos,
   deleteVideo,
   getVideoProviders,
-} from "@/services/videoService.js";
+} from "@/services/education/videoService.js";
 
 function VideoThumbnail({ url, title }) {
   // Extract video ID from URL for thumbnail

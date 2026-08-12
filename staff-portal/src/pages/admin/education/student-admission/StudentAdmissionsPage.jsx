@@ -18,7 +18,7 @@ import {
   deleteStudentAdmission,
   getPrograms,
   getAcademicYears,
-} from "@/services/studentAdmissionService.js";
+} from "@/services/education/studentAdmissionService.js";
 
 function StatusBadge({ published }) {
   return (

@@ -9,7 +9,7 @@ import {
   getQuiz,
   createQuiz,
   updateQuiz,
-} from "@/services/quizService.js";
+} from "@/services/education/quizService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

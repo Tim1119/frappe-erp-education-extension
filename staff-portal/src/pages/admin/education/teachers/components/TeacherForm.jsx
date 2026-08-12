@@ -8,7 +8,7 @@ import {
   getAcademicTerms,
   getPrograms,
   getProgramCourses,
-} from "@/services/teacherService.js";
+} from "@/services/education/teacherService.js";
 
 const STATUS_OPTIONS = ["Active", "Left"];
 

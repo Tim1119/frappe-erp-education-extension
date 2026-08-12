@@ -20,7 +20,7 @@ import {
   markAttendance,
   getStudentGroups,
   getCourseSchedules,
-} from "@/services/studentAttendanceToolService";
+} from "@/services/education/studentAttendanceToolService";
 import { getErrorMessage } from "@/utils/errors";
 
 const BASED_ON_OPTIONS = ["Student Group", "Course Schedule"];

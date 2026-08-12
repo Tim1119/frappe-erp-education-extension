@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import TeacherDetails from "./components/TeacherDetails.jsx";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 
-import { getTeacher, deleteTeacher } from "@/services/teacherService.js";
+import { getTeacher, deleteTeacher } from "@/services/education/teacherService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
 export default function TeacherProfilePage() {

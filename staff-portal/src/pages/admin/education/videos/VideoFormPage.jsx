@@ -9,7 +9,7 @@ import {
   getVideo,
   createVideo,
   updateVideo,
-} from "@/services/videoService.js";
+} from "@/services/education/videoService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

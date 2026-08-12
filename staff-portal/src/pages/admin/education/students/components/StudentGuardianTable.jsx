@@ -8,7 +8,7 @@ import {
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import { getGuardians } from "@/services/studentService";
+import { getGuardians } from "@/services/education/studentService";
 
 const RELATIONS = ["Father", "Mother", "Guardian", "Other"];
 

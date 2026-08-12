@@ -8,7 +8,7 @@ import {
   getGradingScale,
   createGradingScale,
   updateGradingScale,
-} from "@/services/gradingScaleService";
+} from "@/services/education/gradingScaleService";
 import { getErrorMessage } from "@/utils/errors";
 
 export default function GradingScaleFormPage() {

@@ -18,7 +18,7 @@ import { getErrorMessage } from "@/utils/errors.js";
 import {
   getClassArms,
   deleteClassArm,
-} from "@/services/classArmsService.js";
+} from "@/services/education/classArmsService.js";
 
 export default function ClassArmsPage() {
   const navigate = useNavigate();

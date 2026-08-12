@@ -15,7 +15,7 @@ import {
   getStudentGroups,
   getProgramForStudentGroup,
   getStudentsForClassArm,
-} from "@/services/studentAttendanceService";
+} from "@/services/education/studentAttendanceService";
 import { getErrorMessage } from "@/utils/errors";
 
 const STATUS_OPTIONS = ["Present", "Absent", "Leave"];

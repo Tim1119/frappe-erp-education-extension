@@ -18,7 +18,7 @@ import {
   deleteSubjectActivity,
   getStudents,
   getCourses,
-} from "@/services/subjectActivityService";
+} from "@/services/education/subjectActivityService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDateTime } from "@/utils/format";
 

@@ -11,7 +11,7 @@ import {
   getAcademicYear,
   deleteAcademicYear,
   getConnections,
-} from "@/services/academicYearService";
+} from "@/services/education/academicYearService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

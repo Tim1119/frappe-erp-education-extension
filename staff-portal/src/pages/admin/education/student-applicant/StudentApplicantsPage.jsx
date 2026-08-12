@@ -19,7 +19,7 @@ import {
   getPrograms,
   getAcademicYears,
   getAcademicTerms,
-} from "@/services/studentApplicantService.js";
+} from "@/services/education/studentApplicantService.js";
 
 function StatusBadgeComponent({ status }) {
   const statusMap = {

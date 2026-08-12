@@ -21,7 +21,7 @@ import { getErrorMessage } from "@/utils/errors.js";
 import {
   getTopics,
   deleteTopic,
-} from "@/services/topicService.js";
+} from "@/services/education/topicService.js";
 
 export default function TopicsPage() {
   const navigate = useNavigate();

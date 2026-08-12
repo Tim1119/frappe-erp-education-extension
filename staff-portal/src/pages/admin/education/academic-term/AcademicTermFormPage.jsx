@@ -15,7 +15,7 @@ import {
   createAcademicTerm,
   updateAcademicTerm,
   getAcademicYears,
-} from "@/services/academicTermService";
+} from "@/services/education/academicTermService";
 import { getErrorMessage } from "@/utils/errors";
 
 const EMPTY = {

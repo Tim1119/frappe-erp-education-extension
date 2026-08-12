@@ -10,7 +10,7 @@ import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import {
   getStudentBatchName,
   deleteStudentBatchName,
-} from "@/services/studentBatchNameService";
+} from "@/services/education/studentBatchNameService";
 import { getErrorMessage } from "@/utils/errors";
 
 function Field({ label, value }) {

@@ -20,7 +20,7 @@ import {
   getStudentLeaveApplications,
   deleteStudentLeaveApplication,
   getClassArms,
-} from "@/services/studentLeaveApplicationService";
+} from "@/services/education/studentLeaveApplicationService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

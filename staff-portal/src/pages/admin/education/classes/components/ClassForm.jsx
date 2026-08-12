@@ -16,7 +16,7 @@ import {
 import {
   getDepartments,
   getCourses,
-} from "@/services/classService.js";
+} from "@/services/education/classService.js";
 import api from "@/services/api.js";
 import { getErrorMessage } from "@/utils/errors.js";
 

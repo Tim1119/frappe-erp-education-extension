@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { User, Mail, Phone, Briefcase, GraduationCap, Calendar, MapPin, Users, Heart, Link2, Wallet } from "lucide-react";
 import { Avatar, StatusBadge, EmptyState } from "@/components/shared/OriginalPrimitives";
-import { getGuardianConnections } from "@/services/guardianService.js";
+import { getGuardianConnections } from "@/services/education/guardianService.js";
 
 function Item({ label, value }) {
   return (

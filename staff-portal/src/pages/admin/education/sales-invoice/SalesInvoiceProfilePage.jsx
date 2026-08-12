@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
-import { cancelSalesInvoice, deleteSalesInvoice, getSalesInvoice, submitSalesInvoice } from "@/services/salesInvoiceService";
+import { cancelSalesInvoice, deleteSalesInvoice, getSalesInvoice, submitSalesInvoice } from "@/services/education/salesInvoiceService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

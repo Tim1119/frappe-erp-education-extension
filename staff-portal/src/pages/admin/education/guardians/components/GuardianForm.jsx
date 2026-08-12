@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { User, Mail, Phone, Briefcase, GraduationCap, Calendar, MapPin, Users, Plus, Trash2, Upload, Search, X } from "lucide-react";
-import { getStudents } from "@/services/guardianService.js";
+import { getStudents } from "@/services/education/guardianService.js";
 
 const EMPTY_FORM = {
   guardian_name: "",

@@ -8,7 +8,7 @@ import {
   getStudentAttendance,
   createStudentAttendance,
   updateStudentAttendance,
-} from "@/services/studentAttendanceService";
+} from "@/services/education/studentAttendanceService";
 import { getErrorMessage } from "@/utils/errors";
 
 export default function StudentAttendanceFormPage() {

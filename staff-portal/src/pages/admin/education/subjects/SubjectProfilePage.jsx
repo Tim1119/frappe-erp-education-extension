@@ -18,7 +18,7 @@ import {
 import { PageHeader, Avatar, EmptyState } from "@/components/shared/OriginalPrimitives";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 
-import { getSubject, getSubjectConnections, deleteSubject } from "@/services/subjectService.js";
+import { getSubject, getSubjectConnections, deleteSubject } from "@/services/education/subjectService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
 function Item({ label, value }) {

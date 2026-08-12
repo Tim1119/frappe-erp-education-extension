@@ -21,7 +21,7 @@ import {
   getTeachers,
   deleteTeacher,
   getDepartments,
-} from "@/services/teacherService.js";
+} from "@/services/education/teacherService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

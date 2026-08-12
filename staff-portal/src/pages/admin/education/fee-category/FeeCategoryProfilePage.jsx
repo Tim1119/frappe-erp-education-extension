@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import FeeCategoryDetails from "./components/FeeCategoryDetails.jsx";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 
-import { getFeeCategory, deleteFeeCategory } from "@/services/feeCategoryService.js";
+import { getFeeCategory, deleteFeeCategory } from "@/services/education/feeCategoryService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
 export default function FeeCategoryProfilePage() {

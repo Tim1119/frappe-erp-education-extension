@@ -11,7 +11,7 @@ import {
   getAcademicTerm,
   deleteAcademicTerm,
   getConnections,
-} from "@/services/academicTermService";
+} from "@/services/education/academicTermService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

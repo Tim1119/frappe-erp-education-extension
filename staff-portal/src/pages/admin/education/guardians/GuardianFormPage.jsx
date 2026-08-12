@@ -9,7 +9,7 @@ import {
   getGuardian,
   createGuardian,
   updateGuardian,
-} from "@/services/guardianService.js";
+} from "@/services/education/guardianService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

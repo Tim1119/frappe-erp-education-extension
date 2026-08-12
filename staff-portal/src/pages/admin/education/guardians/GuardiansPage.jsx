@@ -20,7 +20,7 @@ import { usePagination } from "@/hooks";
 import {
   getGuardians,
   deleteGuardian,
-} from "@/services/guardianService.js";
+} from "@/services/education/guardianService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

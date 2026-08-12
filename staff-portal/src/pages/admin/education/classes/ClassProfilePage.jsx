@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import ClassDetails from "./components/ClassDetails.jsx";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 
-import { getClass, deleteClass } from "@/services/classService.js";
+import { getClass, deleteClass } from "@/services/education/classService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
 export default function ClassProfilePage() {

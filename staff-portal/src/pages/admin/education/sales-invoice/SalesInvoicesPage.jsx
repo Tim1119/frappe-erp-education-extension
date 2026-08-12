@@ -22,7 +22,7 @@ import {
   getAcademicYears,
   getFeeSchedules,
   getSalesInvoices,
-} from "@/services/salesInvoiceService";
+} from "@/services/education/salesInvoiceService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

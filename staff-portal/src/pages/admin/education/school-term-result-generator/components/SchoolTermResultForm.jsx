@@ -15,7 +15,7 @@ import SearchableSelect from "@/components/shared/SearchableSelect";
 import {
   getStudents, getAssessmentGroups, getAcademicYears, getAcademicTerms,
   getCourses, getAssessmentCriteria,
-} from "@/services/schoolTermResultService";
+} from "@/services/education/schoolTermResultService";
 import { getErrorMessage } from "@/utils/errors";
 
 const RATING_OPTIONS = ["1", "2", "3", "4", "5"];

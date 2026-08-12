@@ -17,7 +17,7 @@ import { usePagination } from "@/hooks";
 import {
   getAcademicYears,
   deleteAcademicYear,
-} from "@/services/academicYearService";
+} from "@/services/education/academicYearService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

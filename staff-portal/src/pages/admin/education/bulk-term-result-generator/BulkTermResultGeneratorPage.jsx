@@ -18,7 +18,7 @@ import {
   getAcademicYears,
   getAcademicTerms,
   getStudentGroups,
-} from "@/services/bulkTermResultGeneratorService";
+} from "@/services/education/bulkTermResultGeneratorService";
 import { getErrorMessage } from "@/utils/errors";
 
 // Real doctype: "Bulk School Term Class Result Generator"

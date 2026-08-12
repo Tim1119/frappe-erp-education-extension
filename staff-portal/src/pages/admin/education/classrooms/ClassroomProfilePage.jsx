@@ -6,7 +6,7 @@ import { Building2, Users, Hash, Link2, ExternalLink, Calendar, ClipboardList, B
 import { PageHeader, Avatar, EmptyState } from "@/components/shared/OriginalPrimitives";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 
-import { getClassroom, deleteClassroom } from "@/services/classroomService.js";
+import { getClassroom, deleteClassroom } from "@/services/education/classroomService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
 function Item({ label, value }) {

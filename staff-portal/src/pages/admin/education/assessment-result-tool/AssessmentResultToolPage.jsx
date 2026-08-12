@@ -20,7 +20,7 @@ import {
   getGradingScaleIntervals,
   markAssessmentResult,
   submitAssessmentResults,
-} from "@/services/assessmentResultToolService";
+} from "@/services/education/assessmentResultToolService";
 import { getErrorMessage } from "@/utils/errors";
 import { computeGrade } from "@/utils/grading";
 

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
-import { getAssessmentCriteria, deleteAssessmentCriteria } from "@/services/assessmentCriteriaService";
+import { getAssessmentCriteria, deleteAssessmentCriteria } from "@/services/education/assessmentCriteriaService";
 import { getErrorMessage } from "@/utils/errors";
 
 function Field({ label, value }) {

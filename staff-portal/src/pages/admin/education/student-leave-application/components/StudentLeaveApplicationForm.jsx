@@ -13,7 +13,7 @@ import {
   getStudents,
   getStudentGroupsForStudent,
   getCourseSchedulesForStudent,
-} from "@/services/studentLeaveApplicationService";
+} from "@/services/education/studentLeaveApplicationService";
 import { getErrorMessage } from "@/utils/errors";
 
 // Real backend values -- do not rename (breaks save/load); the school's

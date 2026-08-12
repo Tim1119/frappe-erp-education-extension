@@ -9,6 +9,10 @@ import NotFound from "@/pages/NotFound";
 import PlaceholderPage from "@/pages/placeholder/PlaceholderPage";
 import ReportPrintPage from "@/pages/print/ReportPrintPage";
 
+import CompaniesPage from "@/pages/admin/hr/company/CompaniesPage";
+import CompanyProfilePage from "@/pages/admin/hr/company/CompanyProfilePage";
+import CompanyFormPage from "@/pages/admin/hr/company/CompanyFormPage";
+
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/education/students/StudentsPage";
 import StudentProfilePage from "@/pages/admin/education/students/StudentProfilePage";
@@ -241,6 +245,12 @@ export default function App() {
         <Route path="classes/new" element={<ClassFormPage />} />
         <Route path="classes/:id/edit" element={<ClassFormPage />} />
         <Route path="classes/:id" element={<ClassProfilePage />} />
+
+        {/* ─── HR: Company ──────────────────────────────────── */}
+        <Route path="company" element={<CompaniesPage />} />
+        <Route path="company/new" element={<CompanyFormPage />} />
+        <Route path="company/:id/edit" element={<CompanyFormPage />} />
+        <Route path="company/:id" element={<CompanyProfilePage />} />
 
         {/* ─── Class Arms ────────────────────────────────────── */}
         <Route path="class-arms" element={<ClassArmsPage />} />

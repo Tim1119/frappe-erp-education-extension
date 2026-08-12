@@ -19,7 +19,7 @@ import { usePagination } from "@/hooks";
 import {
   getFeeCategories,
   deleteFeeCategory,
-} from "@/services/feeCategoryService.js";
+} from "@/services/education/feeCategoryService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

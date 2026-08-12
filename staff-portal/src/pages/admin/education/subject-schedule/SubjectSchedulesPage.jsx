@@ -20,7 +20,7 @@ import {
   deleteSubjectSchedule,
   getStudentGroups,
   getInstructors,
-} from "@/services/subjectScheduleService";
+} from "@/services/education/subjectScheduleService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

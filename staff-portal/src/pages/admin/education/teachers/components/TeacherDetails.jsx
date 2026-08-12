@@ -17,7 +17,7 @@ import {
   StatusBadge,
   EmptyState,
 } from "@/components/shared/OriginalPrimitives";
-import { getTeacherConnections } from "@/services/teacherService.js";
+import { getTeacherConnections } from "@/services/education/teacherService.js";
 
 function Item({ label, value }) {
   return (

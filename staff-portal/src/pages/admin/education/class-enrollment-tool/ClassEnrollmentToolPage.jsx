@@ -20,7 +20,7 @@ import {
   getAcademicYears,
   getAcademicTerms,
   getStudentBatchNames,
-} from "@/services/classEnrollmentToolService";
+} from "@/services/education/classEnrollmentToolService";
 import { getErrorMessage } from "@/utils/errors";
 
 // Real Frappe "Tool" doctype (issingle: 1, hide_toolbar: 1) -- real name

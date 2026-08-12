@@ -22,7 +22,7 @@ import {
   getAcademicYears,
   getAcademicTerms,
   getPrograms,
-} from "@/services/studentLogService";
+} from "@/services/education/studentLogService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

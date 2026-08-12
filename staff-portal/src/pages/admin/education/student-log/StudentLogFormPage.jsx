@@ -20,7 +20,7 @@ import {
   getAcademicTerms,
   getPrograms,
   getStudentBatches,
-} from "@/services/studentLogService";
+} from "@/services/education/studentLogService";
 import { getErrorMessage } from "@/utils/errors";
 
 const TYPE_OPTIONS = ["General", "Academic", "Medical", "Achievement"];

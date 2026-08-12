@@ -15,7 +15,7 @@ import ReportToolbar from "@/components/shared/ReportToolbar";
 import ReportPrintHeader from "@/components/shared/ReportPrintHeader";
 import { AssessmentStatusBar } from "@/components/charts/AssessmentStatusBar";
 import { getReportData } from "@/services/reportService";
-import { getLeafAssessmentGroups } from "@/services/assessmentReportsService";
+import { getLeafAssessmentGroups } from "@/services/education/assessmentReportsService";
 import { getErrorMessage } from "@/utils/errors";
 import { t } from "@/config/translations";
 

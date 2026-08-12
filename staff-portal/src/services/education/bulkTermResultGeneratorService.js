@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "../api";
 
 const METHOD = "education_extension.staff_portal_api.education.bulk_school_term_class_result_generator_api";
 

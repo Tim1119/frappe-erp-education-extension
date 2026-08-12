@@ -27,7 +27,7 @@ import {
   getCompanies,
   getReceivableAccounts,
   getCostCenters,
-} from "@/services/feeStructureService.js";
+} from "@/services/education/feeStructureService.js";
 
 const EMPTY_FORM = {
   program: "",

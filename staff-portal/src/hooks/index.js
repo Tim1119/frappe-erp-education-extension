@@ -88,6 +88,7 @@ const LABEL_MAP = {
   videos: "Videos",
   quizzes: "Quizzes",
   classrooms: "Classrooms",
+  company: "Companies",
   "fee-category": "Fee Category",
   "fee-structure": "Fee Structure",
   "fee-schedule": "Fee Schedule",

@@ -9,7 +9,7 @@ import {
   getFeeStructure,
   createFeeStructure,
   updateFeeStructure,
-} from "@/services/feeStructureService.js";
+} from "@/services/education/feeStructureService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 

@@ -20,7 +20,7 @@ import {
   EmptyState,
 } from "@/components/shared/OriginalPrimitives";
 import { fmtDate } from "@/utils/format";
-import { getStudentConnections } from "@/services/studentService.js";
+import { getStudentConnections } from "@/services/education/studentService.js";
 
 function Item({ label, value }) {
   return (

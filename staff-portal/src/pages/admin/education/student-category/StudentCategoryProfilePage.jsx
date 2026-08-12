@@ -11,7 +11,7 @@ import {
   getStudentCategory,
   deleteStudentCategory,
   getConnections,
-} from "@/services/studentCategoryService";
+} from "@/services/education/studentCategoryService";
 import { getErrorMessage } from "@/utils/errors";
 
 function Field({ label, value }) {

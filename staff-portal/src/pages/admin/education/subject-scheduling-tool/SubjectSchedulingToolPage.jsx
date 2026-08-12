@@ -16,8 +16,8 @@ import {
   getInstructors,
   getCourses,
   getRooms,
-} from "@/services/subjectScheduleService";
-import { scheduleSubjectCourse } from "@/services/subjectSchedulingToolService";
+} from "@/services/education/subjectScheduleService";
+import { scheduleSubjectCourse } from "@/services/education/subjectSchedulingToolService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

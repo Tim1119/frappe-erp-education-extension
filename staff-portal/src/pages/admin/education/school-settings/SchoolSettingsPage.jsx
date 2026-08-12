@@ -17,7 +17,7 @@ import {
   updateSchoolSettings,
   getCompanies,
   getPrintFormats,
-} from "@/services/schoolSettingsService";
+} from "@/services/education/schoolSettingsService";
 import { getErrorMessage } from "@/utils/errors";
 
 const EMPTY_CRITERIA_ROW = { criteria_name: "", is_active: 0 };

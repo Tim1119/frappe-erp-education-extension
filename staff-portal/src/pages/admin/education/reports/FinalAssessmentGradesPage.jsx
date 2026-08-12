@@ -16,7 +16,7 @@ import {
   getAcademicYears,
   getBatchStudentGroups,
   getAssessmentGroups,
-} from "@/services/assessmentReportsService";
+} from "@/services/education/assessmentReportsService";
 import { getErrorMessage } from "@/utils/errors";
 import { t } from "@/config/translations";
 

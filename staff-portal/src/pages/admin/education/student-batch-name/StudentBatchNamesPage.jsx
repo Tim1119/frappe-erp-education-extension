@@ -17,7 +17,7 @@ import { usePagination } from "@/hooks";
 import {
   getStudentBatchNames,
   deleteStudentBatchName,
-} from "@/services/studentBatchNameService";
+} from "@/services/education/studentBatchNameService";
 import { getErrorMessage } from "@/utils/errors";
 
 export default function StudentBatchNamesPage() {

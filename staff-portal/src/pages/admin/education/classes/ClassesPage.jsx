@@ -21,7 +21,7 @@ import {
   getClasses,
   deleteClass,
   getDepartments,
-} from "@/services/classService.js";
+} from "@/services/education/classService.js";
 
 export default function ClassPage() {
   const navigate = useNavigate();

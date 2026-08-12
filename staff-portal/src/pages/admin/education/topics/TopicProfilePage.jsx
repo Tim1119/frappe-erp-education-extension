@@ -16,7 +16,7 @@ import { PageHeader, Avatar, EmptyState } from "@/components/shared/OriginalPrim
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 import Modal from "@/components/shared/Modal";
 
-import { getTopic, deleteTopic, getSubjectsWithoutTopic, addTopicToSubjects } from "@/services/topicService.js";
+import { getTopic, deleteTopic, getSubjectsWithoutTopic, addTopicToSubjects } from "@/services/education/topicService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
 function Item({ label, value }) {

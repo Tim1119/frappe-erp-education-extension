@@ -13,7 +13,7 @@ import {
   getStudentApplicant,
   deleteStudentApplicant,
   updateStudentApplicant,
-} from "@/services/studentApplicantService.js";
+} from "@/services/education/studentApplicantService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 import { fmtDate } from "@/utils/format.js";
 

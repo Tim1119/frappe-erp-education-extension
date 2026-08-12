@@ -24,7 +24,7 @@ import {
 } from "@/components/shared/OriginalPrimitives";
 import { Button } from "@/components/ui/button";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
-import { getClassArm, deleteClassArm, getClassArmConnections } from "@/services/classArmsService.js";
+import { getClassArm, deleteClassArm, getClassArmConnections } from "@/services/education/classArmsService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
 function Info({ label, value }) {

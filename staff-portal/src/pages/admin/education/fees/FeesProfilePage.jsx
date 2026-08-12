@@ -16,7 +16,7 @@ import {
   deleteFee,
   submitFee,
   cancelFee,
-} from "@/services/feesService";
+} from "@/services/education/feesService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 

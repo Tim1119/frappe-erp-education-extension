@@ -20,6 +20,7 @@ import {
   Users2,
   BookOpenCheck,
   Layers,
+  Briefcase,
 } from "lucide-react";
 
 /**
@@ -189,6 +190,21 @@ export const ADMIN_NAV = [
         icon: BarChart3,
         children: [
           { key: "student-guardian-contacts", label: "Student and Guardian Contact Details", icon: BarChart3, path: "/dashboard/student-guardian-contacts" },
+        ],
+      },
+    ],
+  },
+  {
+    key: "hr",
+    label: "HR",
+    icon: Briefcase,
+    children: [
+      {
+        key: "hr-setup",
+        label: "Setup",
+        icon: Settings,
+        children: [
+          { key: "company", label: "Company", icon: Building2, path: "/dashboard/company" },
         ],
       },
     ],

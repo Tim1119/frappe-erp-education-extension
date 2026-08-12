@@ -8,7 +8,7 @@ import {
   getAssessmentPlan,
   createAssessmentPlan,
   updateAssessmentPlan,
-} from "@/services/assessmentPlanService";
+} from "@/services/education/assessmentPlanService";
 import { getErrorMessage } from "@/utils/errors";
 
 export default function AssessmentPlanFormPage() {

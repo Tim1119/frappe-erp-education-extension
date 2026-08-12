@@ -13,7 +13,7 @@ import ReportTable from "@/components/shared/ReportTable";
 import ReportToolbar from "@/components/shared/ReportToolbar";
 import ReportPrintHeader from "@/components/shared/ReportPrintHeader";
 import { getReportData } from "@/services/reportService";
-import { getYears, getStudentGroups } from "@/services/studentMonthlyAttendanceSheetService";
+import { getYears, getStudentGroups } from "@/services/education/studentMonthlyAttendanceSheetService";
 import { getErrorMessage } from "@/utils/errors";
 import { t } from "@/config/translations";
 import { openReportPrintView } from "@/utils/reportPrintView";

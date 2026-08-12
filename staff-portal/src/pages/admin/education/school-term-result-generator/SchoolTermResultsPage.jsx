@@ -20,7 +20,7 @@ import {
   deleteSchoolTermResult,
   getAcademicYears,
   getAssessmentGroups,
-} from "@/services/schoolTermResultService";
+} from "@/services/education/schoolTermResultService";
 import { getErrorMessage } from "@/utils/errors";
 
 // Real doctype: "School Term Result" (education_extension app) -- a

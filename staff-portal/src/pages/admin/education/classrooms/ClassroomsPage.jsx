@@ -20,7 +20,7 @@ import { getErrorMessage } from "@/utils/errors.js";
 import {
   getClassrooms,
   deleteClassroom,
-} from "@/services/classroomService.js";
+} from "@/services/education/classroomService.js";
 
 export default function ClassroomsPage() {
   const navigate = useNavigate();

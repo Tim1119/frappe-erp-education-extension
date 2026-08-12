@@ -19,7 +19,7 @@ import {
   getStudents,
   getCourses,
   getQuizzes,
-} from "@/services/quizActivityService";
+} from "@/services/education/quizActivityService";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDateTime } from "@/utils/format";
 

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import StudentDetails from "./components/StudentDetails.jsx";
 
-import { getStudent, deleteStudent } from "@/services/studentService.js";
+import { getStudent, deleteStudent } from "@/services/education/studentService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
 export default function StudentProfilePage() {

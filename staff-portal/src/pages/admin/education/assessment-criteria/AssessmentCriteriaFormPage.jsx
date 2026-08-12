@@ -15,7 +15,7 @@ import {
   createAssessmentCriteria,
   updateAssessmentCriteria,
   getAssessmentCriteriaGroups,
-} from "@/services/assessmentCriteriaService";
+} from "@/services/education/assessmentCriteriaService";
 import { getErrorMessage } from "@/utils/errors";
 
 const EMPTY = {

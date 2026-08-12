@@ -17,7 +17,7 @@ import {
 import { PageHeader, Avatar, EmptyState } from "@/components/shared/OriginalPrimitives";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
 
-import { getVideo, deleteVideo } from "@/services/videoService.js";
+import { getVideo, deleteVideo } from "@/services/education/videoService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 import { fmtDate } from "@/utils/format.js";
 

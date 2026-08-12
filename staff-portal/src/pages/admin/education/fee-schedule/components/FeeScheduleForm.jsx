@@ -30,8 +30,8 @@ import {
   getCompanies,
   getReceivableAccounts,
   getCostCenters,
-} from "@/services/feeScheduleService.js";
-import { getFeeCategories } from "@/services/feeStructureService.js";
+} from "@/services/education/feeScheduleService.js";
+import { getFeeCategories } from "@/services/education/feeStructureService.js";
 import api from "@/services/api.js";
 import { getErrorMessage } from "@/utils/errors.js";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
