@@ -51,6 +51,43 @@ import AttendanceRequestFormPage from "@/pages/admin/hr/attendance-request/Atten
 import EmployeeCheckinsPage from "@/pages/admin/hr/employee-checkin/EmployeeCheckinsPage";
 import EmployeeCheckinProfilePage from "@/pages/admin/hr/employee-checkin/EmployeeCheckinProfilePage";
 import EmployeeCheckinFormPage from "@/pages/admin/hr/employee-checkin/EmployeeCheckinFormPage";
+import ExpenseClaimsPage from "@/pages/admin/hr/expense-claim/ExpenseClaimsPage";
+import ExpenseClaimProfilePage from "@/pages/admin/hr/expense-claim/ExpenseClaimProfilePage";
+import ExpenseClaimFormPage from "@/pages/admin/hr/expense-claim/ExpenseClaimFormPage";
+import EmployeeAdvancesPage from "@/pages/admin/hr/employee-advance/EmployeeAdvancesPage";
+import EmployeeAdvanceProfilePage from "@/pages/admin/hr/employee-advance/EmployeeAdvanceProfilePage";
+import EmployeeAdvanceFormPage from "@/pages/admin/hr/employee-advance/EmployeeAdvanceFormPage";
+import TravelRequestsPage from "@/pages/admin/hr/travel-request/TravelRequestsPage";
+import TravelRequestProfilePage from "@/pages/admin/hr/travel-request/TravelRequestProfilePage";
+import TravelRequestFormPage from "@/pages/admin/hr/travel-request/TravelRequestFormPage";
+
+// HR Key Reports
+import MonthlyAttendanceSheetPage from "@/pages/admin/hr/reports/MonthlyAttendanceSheetPage";
+import RecruitmentAnalyticsPage from "@/pages/admin/hr/reports/RecruitmentAnalyticsPage";
+import EmployeeAnalyticsPage from "@/pages/admin/hr/reports/EmployeeAnalyticsPage";
+import EmployeeLeaveBalancePage from "@/pages/admin/hr/reports/EmployeeLeaveBalancePage";
+import EmployeeLeaveBalanceSummaryPage from "@/pages/admin/hr/reports/EmployeeLeaveBalanceSummaryPage";
+import EmployeeAdvanceSummaryPage from "@/pages/admin/hr/reports/EmployeeAdvanceSummaryPage";
+import EmployeeExitsPage from "@/pages/admin/hr/reports/EmployeeExitsPage";
+
+// HR Other Reports
+import EmployeeInformationPage from "@/pages/admin/hr/reports/EmployeeInformationPage";
+import EmployeeBirthdayPage from "@/pages/admin/hr/reports/EmployeeBirthdayPage";
+import EmployeesWorkingOnHolidayPage from "@/pages/admin/hr/reports/EmployeesWorkingOnHolidayPage";
+import DailyWorkSummaryRepliesPage from "@/pages/admin/hr/reports/DailyWorkSummaryRepliesPage";
+import PurchaseInvoicesPage from "@/pages/admin/accounting/purchase-invoice/PurchaseInvoicesPage";
+import PurchaseInvoiceProfilePage from "@/pages/admin/accounting/purchase-invoice/PurchaseInvoiceProfilePage";
+import PurchaseInvoiceFormPage from "@/pages/admin/accounting/purchase-invoice/PurchaseInvoiceFormPage";
+import SuppliersPage from "@/pages/admin/accounting/supplier/SuppliersPage";
+import SupplierProfilePage from "@/pages/admin/accounting/supplier/SupplierProfilePage";
+import SupplierFormPage from "@/pages/admin/accounting/supplier/SupplierFormPage";
+import PaymentEntriesPage from "@/pages/admin/accounting/payment-entry/PaymentEntriesPage";
+import PaymentEntryProfilePage from "@/pages/admin/accounting/payment-entry/PaymentEntryProfilePage";
+import PaymentEntryFormPage from "@/pages/admin/accounting/payment-entry/PaymentEntryFormPage";
+import JournalEntriesPage from "@/pages/admin/accounting/journal-entry/JournalEntriesPage";
+import JournalEntryProfilePage from "@/pages/admin/accounting/journal-entry/JournalEntryProfilePage";
+import JournalEntryFormPage from "@/pages/admin/accounting/journal-entry/JournalEntryFormPage";
+import PaymentReconciliationPage from "@/pages/admin/accounting/payment-reconciliation/PaymentReconciliationPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/education/students/StudentsPage";
@@ -340,6 +377,51 @@ export default function App() {
         <Route path="employee-checkins/new" element={<EmployeeCheckinFormPage />} />
         <Route path="employee-checkins/:id/edit" element={<EmployeeCheckinFormPage />} />
         <Route path="employee-checkins/:id" element={<EmployeeCheckinProfilePage />} />
+        <Route path="expense-claims" element={<ExpenseClaimsPage />} />
+        <Route path="expense-claims/new" element={<ExpenseClaimFormPage />} />
+        <Route path="expense-claims/:id/edit" element={<ExpenseClaimFormPage />} />
+        <Route path="expense-claims/:id" element={<ExpenseClaimProfilePage />} />
+        <Route path="employee-advances" element={<EmployeeAdvancesPage />} />
+        <Route path="employee-advances/new" element={<EmployeeAdvanceFormPage />} />
+        <Route path="employee-advances/:id/edit" element={<EmployeeAdvanceFormPage />} />
+        <Route path="employee-advances/:id" element={<EmployeeAdvanceProfilePage />} />
+        <Route path="travel-requests" element={<TravelRequestsPage />} />
+        <Route path="travel-requests/new" element={<TravelRequestFormPage />} />
+        <Route path="travel-requests/:id/edit" element={<TravelRequestFormPage />} />
+        <Route path="travel-requests/:id" element={<TravelRequestProfilePage />} />
+
+        {/* HR Key Reports */}
+        <Route path="monthly-attendance-sheet" element={<MonthlyAttendanceSheetPage />} />
+        <Route path="recruitment-analytics" element={<RecruitmentAnalyticsPage />} />
+        <Route path="employee-analytics" element={<EmployeeAnalyticsPage />} />
+        <Route path="employee-leave-balance" element={<EmployeeLeaveBalancePage />} />
+        <Route path="employee-leave-balance-summary" element={<EmployeeLeaveBalanceSummaryPage />} />
+        <Route path="employee-advance-summary" element={<EmployeeAdvanceSummaryPage />} />
+        <Route path="employee-exits" element={<EmployeeExitsPage />} />
+
+        {/* HR Other Reports */}
+        <Route path="employee-information" element={<EmployeeInformationPage />} />
+        <Route path="employee-birthday" element={<EmployeeBirthdayPage />} />
+        <Route path="employees-working-on-holiday" element={<EmployeesWorkingOnHolidayPage />} />
+        <Route path="daily-work-summary-replies" element={<DailyWorkSummaryRepliesPage />} />
+
+        <Route path="purchase-invoices" element={<PurchaseInvoicesPage />} />
+        <Route path="purchase-invoices/new" element={<PurchaseInvoiceFormPage />} />
+        <Route path="purchase-invoices/:id/edit" element={<PurchaseInvoiceFormPage />} />
+        <Route path="purchase-invoices/:id" element={<PurchaseInvoiceProfilePage />} />
+        <Route path="suppliers" element={<SuppliersPage />} />
+        <Route path="suppliers/new" element={<SupplierFormPage />} />
+        <Route path="suppliers/:id/edit" element={<SupplierFormPage />} />
+        <Route path="suppliers/:id" element={<SupplierProfilePage />} />
+        <Route path="payment-entries" element={<PaymentEntriesPage />} />
+        <Route path="payment-entries/new" element={<PaymentEntryFormPage />} />
+        <Route path="payment-entries/:id/edit" element={<PaymentEntryFormPage />} />
+        <Route path="payment-entries/:id" element={<PaymentEntryProfilePage />} />
+        <Route path="journal-entries" element={<JournalEntriesPage />} />
+        <Route path="journal-entries/new" element={<JournalEntryFormPage />} />
+        <Route path="journal-entries/:id/edit" element={<JournalEntryFormPage />} />
+        <Route path="journal-entries/:id" element={<JournalEntryProfilePage />} />
+        <Route path="payment-reconciliation" element={<PaymentReconciliationPage />} />
 
         {/* ─── Class Arms ────────────────────────────────────── */}
         <Route path="class-arms" element={<ClassArmsPage />} />

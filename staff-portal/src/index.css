@@ -245,6 +245,25 @@
   background: hsl(var(--muted));
   color: hsl(var(--muted-foreground));
 }
+/* Color modifiers referenced by several HR list pages' local docstatus
+   badges (e.g. LeaveApplicationsPage's `Doc` component) -- these classes
+   didn't exist anywhere in the stylesheet, so every "Submitted"/
+   "Cancelled"/"Draft" badge silently rendered as the same plain gray
+   `.badge` above regardless of docstatus. Uses the Layer 2 legacy-bridge
+   tokens (see CLAUDE.md section 7) already resolved to real hsl(...)
+   strings by applyPreset(), same as every other status pill in the app. */
+.badge-green {
+  background: var(--success-soft);
+  color: var(--success-ink);
+}
+.badge-red {
+  background: var(--danger-soft);
+  color: var(--danger-ink);
+}
+.badge-gray {
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+}
 
 .chip {
   @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium;

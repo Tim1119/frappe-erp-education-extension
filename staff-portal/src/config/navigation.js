@@ -27,6 +27,7 @@ import {
   CalendarPlus,
   MessageSquareText,
   LogIn,
+  ReceiptText,
 } from "lucide-react";
 
 /**
@@ -253,6 +254,74 @@ export const ADMIN_NAV = [
           { key: "attendance", label: "Attendance", icon: CalendarCheck, path: "/dashboard/attendance" },
           { key: "attendance-requests", label: "Attendance Request", icon: CalendarClock, path: "/dashboard/attendance-requests" },
           { key: "employee-checkins", label: "Employee Checkin", icon: LogIn, path: "/dashboard/employee-checkins" },
+        ],
+      },
+      {
+        key: "hr-expense-claim",
+        label: "Expense Claim",
+        icon: Wallet,
+        children: [
+          { key: "expense-claims", label: "Expense Claim", icon: Wallet, path: "/dashboard/expense-claims" },
+          { key: "employee-advances", label: "Employee Advance", icon: FileText, path: "/dashboard/employee-advances" },
+          { key: "travel-requests", label: "Travel Request", icon: CalendarClock, path: "/dashboard/travel-requests" },
+        ],
+      },
+      {
+        key: "hr-key-reports",
+        label: "Key Reports",
+        icon: BarChart3,
+        children: [
+          { key: "monthly-attendance-sheet", label: "Monthly Attendance Sheet", icon: BarChart3, path: "/dashboard/monthly-attendance-sheet" },
+          { key: "recruitment-analytics", label: "Recruitment Analytics", icon: BarChart3, path: "/dashboard/recruitment-analytics" },
+          { key: "employee-analytics", label: "Employee Analytics", icon: BarChart3, path: "/dashboard/employee-analytics" },
+          { key: "employee-leave-balance", label: "Employee Leave Balance", icon: BarChart3, path: "/dashboard/employee-leave-balance" },
+          { key: "employee-leave-balance-summary", label: "Employee Leave Balance Summary", icon: BarChart3, path: "/dashboard/employee-leave-balance-summary" },
+          { key: "employee-advance-summary", label: "Employee Advance Summary", icon: BarChart3, path: "/dashboard/employee-advance-summary" },
+          { key: "employee-exits", label: "Employee Exits", icon: BarChart3, path: "/dashboard/employee-exits" },
+        ],
+      },
+      {
+        key: "hr-other-reports",
+        label: "Other Reports",
+        icon: BarChart3,
+        children: [
+          { key: "employee-information", label: "Employee Information", icon: BarChart3, path: "/dashboard/employee-information" },
+          { key: "employee-birthday", label: "Employee Birthday", icon: BarChart3, path: "/dashboard/employee-birthday" },
+          { key: "employees-working-on-holiday", label: "Employees Working on a Holiday", icon: BarChart3, path: "/dashboard/employees-working-on-holiday" },
+          { key: "daily-work-summary-replies", label: "Daily Work Summary Replies", icon: BarChart3, path: "/dashboard/daily-work-summary-replies" },
+        ],
+      },
+    ],
+  },
+  {
+    key: "accounting",
+    label: "Accounting",
+    icon: Wallet,
+    children: [
+      {
+        key: "accounting-payables",
+        label: "Payables",
+        icon: FileText,
+        children: [
+          {
+            key: "accounting-invoicing",
+            label: "Invoicing",
+            icon: ReceiptText,
+            children: [
+              { key: "purchase-invoices", label: "Purchase Invoice", icon: ReceiptText, path: "/dashboard/purchase-invoices" },
+              { key: "suppliers", label: "Supplier", icon: Building2, path: "/dashboard/suppliers" },
+            ],
+          },
+          {
+            key: "accounting-payments",
+            label: "Payments",
+            icon: Wallet,
+            children: [
+              { key: "payment-entries", label: "Payment Entry", icon: Wallet, path: "/dashboard/payment-entries" },
+              { key: "journal-entries", label: "Journal Entry", icon: FileText, path: "/dashboard/journal-entries" },
+              { key: "payment-reconciliation", label: "Payment Reconciliation", icon: ReceiptText, path: "/dashboard/payment-reconciliation" },
+            ],
+          },
         ],
       },
     ],
