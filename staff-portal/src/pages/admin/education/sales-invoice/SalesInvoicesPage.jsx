@@ -78,6 +78,7 @@ export default function SalesInvoicesPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const studentFilter = searchParams.get("student") || "";
+  const companyFilter = searchParams.get("company") || "";
   const { page, setPage, reset } = usePagination(1);
 
   const [rows, setRows] = useState([]);
@@ -119,6 +120,7 @@ export default function SalesInvoicesPage() {
         fee_schedule: feeScheduleFilter || undefined,
         academic_year: academicYearFilter || undefined,
         academic_term: academicTermFilter || undefined,
+        company: companyFilter || undefined,
       });
       setRows(result.rows || []);
       setTotal(result.count || 0);
@@ -132,15 +134,21 @@ export default function SalesInvoicesPage() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, search, studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter]);
+  }, [page, search, studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter, companyFilter]);
 
   useEffect(() => {
     reset();
-  }, [studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter, reset]);
+  }, [studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter, companyFilter, reset]);
 
   function clearStudentFilter() {
     const next = new URLSearchParams(searchParams);
     next.delete("student");
+    setSearchParams(next);
+  }
+
+  function clearCompanyFilter() {
+    const next = new URLSearchParams(searchParams);
+    next.delete("company");
     setSearchParams(next);
   }
 
@@ -191,6 +199,7 @@ export default function SalesInvoicesPage() {
       />
 
       <ActiveFilterChip label="Student" value={studentFilter} onClear={clearStudentFilter} />
+      <ActiveFilterChip label="Company" value={companyFilter} onClear={clearCompanyFilter} />
 
       <Card>
         <Table>

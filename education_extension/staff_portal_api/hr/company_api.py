@@ -383,20 +383,12 @@ def get_connections(company):
         return {
             "employees": frappe.db.count("Employee", {"company": company}),
             "departments": frappe.db.count("Department", {"company": company}),
-            "branches": frappe.db.count("Branch"),
-            "designations": frappe.db.count("Designation"),
-            "quotations": frappe.db.count("Quotation", {"company": company}),
-            "sales_orders": frappe.db.count("Sales Order", {"company": company}),
-            "delivery_notes": frappe.db.count("Delivery Note", {"company": company}),
+            "purchase_invoices": frappe.db.count("Purchase Invoice", {"company": company}),
             "sales_invoices": frappe.db.count("Sales Invoice", {"company": company}),
-            "issues": frappe.db.count("Issue", {"company": company}),
-            "projects": frappe.db.count("Project", {"company": company}),
         }
     except Exception as e:
         frappe.log_error(f"Error fetching connections for {company}: {str(e)}", "Company API")
-        return {"employees": 0, "departments": 0, "branches": 0, "designations": 0,
-                "quotations": 0, "sales_orders": 0, "delivery_notes": 0,
-                "sales_invoices": 0, "issues": 0, "projects": 0}
+        return {"employees": 0, "departments": 0, "purchase_invoices": 0, "sales_invoices": 0}
 
 
 @frappe.whitelist()

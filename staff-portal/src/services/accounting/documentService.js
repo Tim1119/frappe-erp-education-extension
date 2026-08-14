@@ -2,6 +2,7 @@ import { callMethod } from "../frappeClient";
 
 const N = "education_extension.staff_portal_api.accounting.document_api";
 export const getAccountingMeta = (doctype) => callMethod(`${N}.get_meta`, { doctype });
+export const getAccountingNewDocumentDefaults = (doctype) => callMethod(`${N}.get_new_document_defaults`, { doctype });
 export const getAccountingDocuments = (doctype, params = {}) => callMethod(`${N}.get_documents`, { doctype, ...params });
 export const getAccountingDocument = (doctype, name) => callMethod(`${N}.get_document`, { doctype, name });
 export const createAccountingDocument = (doctype, data) => callMethod(`${N}.create_document`, { doctype, data });

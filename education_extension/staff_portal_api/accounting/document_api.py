@@ -9,19 +9,69 @@ LAYOUT = {"Section Break", "Column Break", "Tab Break", "HTML", "Button", "Fold"
 def check(doctype):
     if doctype not in ALLOWED: frappe.throw(_("Unsupported document type"))
 
+# Fields hidden from the frontend because they belong to whole feature areas
+# this school doesn't use (POS, loyalty, subscriptions, TDS, multi-warehouse
+# subcontracting/logistics, discount/write-off automation, sales commission,
+# letterhead selection) -- confirmed 0% filled across every existing record
+# via a live DB field-usage query. The backend still accepts these fields on
+# create/update (apply() reads the real, unfiltered meta), so nothing is
+# actually lost -- they're just not cluttering the form/profile UI.
+EXCLUDE_FIELDS = {
+    "Supplier": {
+        "is_transporter", "default_price_list", "is_internal_supplier", "represents_company",
+        "supplier_details", "website", "tax_id", "tax_category", "tax_withholding_category",
+        "supplier_primary_address", "primary_address", "supplier_primary_contact", "mobile_no", "email_id",
+        "payment_terms", "allow_purchase_invoice_creation_without_purchase_order",
+        "allow_purchase_invoice_creation_without_purchase_receipt", "is_frozen", "on_hold", "hold_type",
+        "release_date",
+    },
+    "Payment Entry": {
+        "bank_account", "party_bank_account", "contact_person", "contact_email", "difference_amount",
+        "purchase_taxes_and_charges_template", "sales_taxes_and_charges_template",
+        "apply_tax_withholding_amount", "tax_withholding_category", "base_total_taxes_and_charges",
+        "total_taxes_and_charges", "clearance_date", "project", "custom_remarks", "letter_head",
+        "print_heading", "bank", "bank_account_no", "payment_order", "auto_repeat",
+    },
+    "Journal Entry": {
+        "is_system_generated", "finance_book", "process_deferred_accounting", "reversal_of",
+        "tax_withholding_category", "from_template", "apply_tds", "cheque_no", "cheque_date",
+        "multi_currency", "clearance_date", "inter_company_journal_entry_reference", "bill_no", "bill_date",
+        "due_date", "write_off_amount", "pay_to_recd_from", "letter_head", "select_print_heading",
+        "mode_of_payment", "payment_order", "stock_entry", "auto_repeat",
+    },
+}
+
+@frappe.whitelist()
+def get_new_document_defaults(doctype):
+    # Real Desk fills posting_date/company client-side on every new
+    # transaction (frappe.datetime.get_today() + Global Defaults) even
+    # though neither has a literal `default` in the DocType JSON -- this
+    # portal has no equivalent onload script, so new documents were
+    # silently starting with both required fields blank.
+    check(doctype)
+    out = {"posting_date": frappe.utils.today()}
+    if frappe.get_meta(doctype).has_field("company"):
+        out["company"] = frappe.defaults.get_global_default("company")
+    return out
+
 @frappe.whitelist()
 def get_meta(doctype):
-    check(doctype); meta=frappe.get_meta(doctype)
+    check(doctype); meta=frappe.get_meta(doctype); exclude=EXCLUDE_FIELDS.get(doctype) or set()
     def field_dict(f):
         out={"fieldname":f.fieldname,"fieldtype":f.fieldtype,"label":f.label,"options":f.options,"reqd":f.reqd,"read_only":f.read_only,"hidden":f.hidden,"depends_on":f.depends_on,"default":f.default,"collapsible":f.collapsible,"description":f.description}
         if f.fieldtype=="Table":
             out["child_fields"]=[field_dict(x) for x in frappe.get_meta(f.options).fields if not x.hidden and x.fieldtype not in ("Section Break","Column Break","Tab Break","HTML","Button","Fold")]
         return out
-    return {"issingle":meta.issingle,"is_submittable":meta.is_submittable,"fields":[field_dict(f) for f in meta.fields if not f.hidden and f.fieldtype not in ("HTML","Button","Fold")]}
+    return {"issingle":meta.issingle,"is_submittable":meta.is_submittable,"fields":[field_dict(f) for f in meta.fields if not f.hidden and f.fieldtype not in ("HTML","Button","Fold") and f.fieldname not in exclude]}
 
 @frappe.whitelist()
-def get_documents(doctype,page=1,page_size=20,search=None,status=None,supplier_group=None,supplier=None,company=None,party_type=None,party=None,voucher_type=None,payment_type=None):
-    check(doctype);page,page_size=cint(page),cint(page_size);meta=frappe.get_meta(doctype);filters={k:v for k,v in {"status":status,"supplier_group":supplier_group,"supplier":supplier,"company":company,"party_type":party_type,"party":party,"voucher_type":voucher_type,"payment_type":payment_type}.items() if v and meta.has_field(k)}
+def get_documents(doctype,page=1,page_size=20,search=None,status=None,supplier_group=None,supplier=None,company=None,party_type=None,party=None,voucher_type=None,payment_type=None,reference_name=None,return_against=None):
+    check(doctype);page,page_size=cint(page),cint(page_size);meta=frappe.get_meta(doctype);filters={k:v for k,v in {"status":status,"supplier_group":supplier_group,"supplier":supplier,"company":company,"party_type":party_type,"party":party,"voucher_type":voucher_type,"payment_type":payment_type,"return_against":return_against}.items() if v and meta.has_field(k)}
+    names=None
+    if reference_name and doctype=="Payment Entry":
+        names=frappe.get_all("Payment Entry Reference",filters={"reference_doctype":"Purchase Invoice","reference_name":reference_name},pluck="parent")
+        if not names:return {"rows":[],"count":0,"page":page,"page_size":page_size}
+        filters["name"]=["in",names]
     search_map={"Supplier":["name","supplier_name"],"Purchase Invoice":["name","supplier","bill_no"],"Payment Entry":["name","party","party_name","reference_no"],"Journal Entry":["name","title","cheque_no"]}
     search_fields=search_map.get(doctype,["name"]);ors=[[f,"like",f"%{search}%"] for f in search_fields] if search else []
     field_map={"Supplier":["supplier_name","supplier_group","supplier_type","country","disabled"],"Purchase Invoice":["supplier","supplier_name","posting_date","due_date","bill_no","grand_total","outstanding_amount","currency","status","docstatus"],"Payment Entry":["payment_type","party_type","party","party_name","posting_date","paid_amount","received_amount","status","docstatus"],"Journal Entry":["title","voucher_type","posting_date","company","total_debit","total_credit","difference","docstatus"]}
@@ -79,12 +129,16 @@ def get_link_options(link_doctype,company=None,supplier=None,fieldname=None,part
             filters.update({"account_type":"Receivable" if party_type=="Customer" else "Payable","root_type":"Asset" if party_type=="Customer" else "Liability"})
         if fieldname=="default_advance_account" and party_type:
             filters.update({"account_type":"Receivable" if party_type=="Customer" else "Payable","root_type":"Liability" if party_type=="Customer" else "Asset"})
-        if fieldname=="bank_cash_account":filters["account_type"]=["in",["Bank","Cash"]]
+        if fieldname in ("bank_cash_account","cash_bank_account"):filters["account_type"]=["in",["Bank","Cash"]]
+        if fieldname=="expense_account":filters["disabled"]=0
     if link_doctype=="Bank Account":
         if fieldname=="bank_account":filters.update({"is_company_account":1,"company":company})
         elif fieldname=="party_bank_account":filters.update({"is_company_account":0,"party_type":party_type,"party":party})
     if link_doctype in ("Sales Taxes and Charges Template","Purchase Taxes and Charges Template"):filters.update({"company":company,"disabled":0})
     if link_doctype=="DocType" and fieldname=="party_type":filters["name"]=["in",["Customer","Supplier","Employee","Shareholder"]]
+    if fieldname=="advance_reference":
+        filters["docstatus"]=1
+        if link_doctype=="Payment Entry" and party:filters.update({"party_type":"Supplier","party":party,"payment_type":"Pay"})
     if fieldname=="reference_name" and reference_type:
         filters["docstatus"]=1
         if frappe.get_meta(link_doctype).has_field("company"):filters["company"]=company
@@ -114,4 +168,10 @@ def reconcile_entries(data):
 def get_connections(doctype,name):
     check(doctype)
     if doctype=="Supplier":return {"purchase_invoices":frappe.db.count("Purchase Invoice",{"supplier":name}),"purchase_orders":frappe.db.count("Purchase Order",{"supplier":name}),"purchase_receipts":frappe.db.count("Purchase Receipt",{"supplier":name})}
-    return {"payments":frappe.db.count("Payment Entry Reference",{"reference_doctype":"Purchase Invoice","reference_name":name}),"purchase_orders":len(frappe.get_all("Purchase Invoice Item",filters={"parent":name,"purchase_order":["is","set"]},distinct=True,pluck="purchase_order")),"purchase_receipts":len(frappe.get_all("Purchase Invoice Item",filters={"parent":name,"purchase_receipt":["is","set"]},distinct=True,pluck="purchase_receipt"))}
+    if doctype=="Purchase Invoice":
+        return {
+            "payments": len(frappe.get_all("Payment Entry Reference",filters={"reference_doctype":"Purchase Invoice","reference_name":name},distinct=True,pluck="parent")),
+            "journal_entries": len(frappe.get_all("Journal Entry Account",filters={"reference_type":"Purchase Invoice","reference_name":name},distinct=True,pluck="parent")),
+            "purchase_returns": frappe.db.count("Purchase Invoice",{"return_against":name,"docstatus":1}),
+        }
+    return {}

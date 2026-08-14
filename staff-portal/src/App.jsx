@@ -88,6 +88,13 @@ import JournalEntriesPage from "@/pages/admin/accounting/journal-entry/JournalEn
 import JournalEntryProfilePage from "@/pages/admin/accounting/journal-entry/JournalEntryProfilePage";
 import JournalEntryFormPage from "@/pages/admin/accounting/journal-entry/JournalEntryFormPage";
 import PaymentReconciliationPage from "@/pages/admin/accounting/payment-reconciliation/PaymentReconciliationPage";
+import AccountsPayablePage from "@/pages/admin/accounting/reports/AccountsPayablePage";
+import AccountsPayableSummaryPage from "@/pages/admin/accounting/reports/AccountsPayableSummaryPage";
+import PurchaseRegisterPage from "@/pages/admin/accounting/reports/PurchaseRegisterPage";
+import ItemWisePurchaseRegisterPage from "@/pages/admin/accounting/reports/ItemWisePurchaseRegisterPage";
+import PurchaseOrderAnalysisPage from "@/pages/admin/accounting/reports/PurchaseOrderAnalysisPage";
+import ReceivedItemsToBeBilledPage from "@/pages/admin/accounting/reports/ReceivedItemsToBeBilledPage";
+import SupplierLedgerSummaryPage from "@/pages/admin/accounting/reports/SupplierLedgerSummaryPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/education/students/StudentsPage";
@@ -422,6 +429,13 @@ export default function App() {
         <Route path="journal-entries/:id/edit" element={<JournalEntryFormPage />} />
         <Route path="journal-entries/:id" element={<JournalEntryProfilePage />} />
         <Route path="payment-reconciliation" element={<PaymentReconciliationPage />} />
+        <Route path="accounts-payable" element={<AccountsPayablePage />} />
+        <Route path="accounts-payable-summary" element={<AccountsPayableSummaryPage />} />
+        <Route path="purchase-register" element={<PurchaseRegisterPage />} />
+        <Route path="item-wise-purchase-register" element={<ItemWisePurchaseRegisterPage />} />
+        <Route path="purchase-order-analysis" element={<PurchaseOrderAnalysisPage />} />
+        <Route path="received-items-to-be-billed" element={<ReceivedItemsToBeBilledPage />} />
+        <Route path="supplier-ledger-summary" element={<SupplierLedgerSummaryPage />} />
 
         {/* ─── Class Arms ────────────────────────────────────── */}
         <Route path="class-arms" element={<ClassArmsPage />} />

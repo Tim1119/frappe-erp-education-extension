@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import SalesInvoiceForm from "./components/SalesInvoiceForm.jsx";
@@ -12,10 +12,15 @@ import { getErrorMessage } from "@/utils/errors.js";
 
 export default function SalesInvoiceFormPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { id } = useParams();
   const editing = Boolean(id);
   const name = id ? decodeURIComponent(id) : null;
-  const [invoice, setInvoice] = useState(null);
+  // The profile page's "Return / Credit Note" action hands us a fully
+  // mapped draft (real make_sales_return()) via router state instead of a
+  // blank new record -- SalesInvoiceForm already treats a truthy `invoice`
+  // prop as data to load rather than a blank form, so this is a drop-in.
+  const [invoice, setInvoice] = useState(location.state?.prefill || null);
   const [loading, setLoading] = useState(editing);
 
   useEffect(() => {

@@ -15,6 +15,7 @@ def get_sales_invoices(
     fee_schedule=None,
     academic_year=None,
     academic_term=None,
+    company=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -30,6 +31,8 @@ def get_sales_invoices(
         filters["academic_year"] = academic_year
     if academic_term:
         filters["academic_term"] = academic_term
+    if company:
+        filters["company"] = company
 
     or_filters = []
     if search:

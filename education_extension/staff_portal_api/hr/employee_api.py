@@ -13,6 +13,12 @@ LABEL_OVERRIDES = {
     "date_of_retirement": "Date of Retirement",
     "reports_to": "Reports To",
 }
+# Structurally workflow-internal fields (recruitment pipeline linkage,
+# internal-transfer bookkeeping, newsletter opt-out) that don't belong on a
+# direct employee create/edit form regardless of how much data exists yet --
+# unlike most other 0%-filled fields on this doctype, these aren't "not used
+# yet by a small team," they're populated by other workflows entirely.
+EXCLUDE_FIELDS = {"job_applicant", "unsubscribed", "held_on", "new_workplace"}
 
 
 def _field_dict(field):
@@ -37,7 +43,7 @@ def get_employee_meta():
                     "doctype": field.options,
                     "fields": [_field_dict(child) for child in child_meta.fields if not child.hidden],
                 }
-        return {"name": meta.name, "fields": [_field_dict(field) for field in meta.fields], "child_tables": child_tables}
+        return {"name": meta.name, "fields": [_field_dict(field) for field in meta.fields if field.fieldname not in EXCLUDE_FIELDS], "child_tables": child_tables}
     except Exception as e:
         frappe.log_error(f"Error fetching Employee metadata: {str(e)}", "Employee API")
         return {"name": "Employee", "fields": [], "child_tables": {}}
@@ -206,8 +212,7 @@ def get_connections(employee):
     try:
         links = {
             "attendance": ("Attendance", "employee"), "leave_applications": ("Leave Application", "employee"),
-            "expense_claims": ("Expense Claim", "employee"), "salary_slips": ("Salary Slip", "employee"),
-            "employee_advances": ("Employee Advance", "employee"), "appraisals": ("Appraisal", "employee"),
+            "expense_claims": ("Expense Claim", "employee"), "employee_advances": ("Employee Advance", "employee"),
         }
         return {key: frappe.db.count(doctype, {field: employee}) for key, (doctype, field) in links.items()}
     except Exception as e:

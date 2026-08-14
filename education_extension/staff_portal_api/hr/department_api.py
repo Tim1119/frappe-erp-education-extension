@@ -44,12 +44,11 @@ def get_connections(department):
     try:
         return {
             "employees": frappe.db.count("Employee", {"department": department}),
-            "job_openings": frappe.db.count("Job Opening", {"department": department}),
             "child_departments": frappe.db.count("Department", {"parent_department": department}),
         }
     except Exception as e:
         frappe.log_error(f"Error fetching Department connections: {str(e)}", "Department API")
-        return {"employees": 0, "job_openings": 0, "child_departments": 0}
+        return {"employees": 0, "child_departments": 0}
 
 
 def _set_fields(doc, data):
