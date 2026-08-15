@@ -81,6 +81,9 @@ import PurchaseInvoiceFormPage from "@/pages/admin/accounting/purchase-invoice/P
 import SuppliersPage from "@/pages/admin/accounting/supplier/SuppliersPage";
 import SupplierProfilePage from "@/pages/admin/accounting/supplier/SupplierProfilePage";
 import SupplierFormPage from "@/pages/admin/accounting/supplier/SupplierFormPage";
+import CustomersPage from "@/pages/admin/accounting/customer/CustomersPage";
+import CustomerProfilePage from "@/pages/admin/accounting/customer/CustomerProfilePage";
+import CustomerFormPage from "@/pages/admin/accounting/customer/CustomerFormPage";
 import PaymentEntriesPage from "@/pages/admin/accounting/payment-entry/PaymentEntriesPage";
 import PaymentEntryProfilePage from "@/pages/admin/accounting/payment-entry/PaymentEntryProfilePage";
 import PaymentEntryFormPage from "@/pages/admin/accounting/payment-entry/PaymentEntryFormPage";
@@ -95,6 +98,11 @@ import ItemWisePurchaseRegisterPage from "@/pages/admin/accounting/reports/ItemW
 import PurchaseOrderAnalysisPage from "@/pages/admin/accounting/reports/PurchaseOrderAnalysisPage";
 import ReceivedItemsToBeBilledPage from "@/pages/admin/accounting/reports/ReceivedItemsToBeBilledPage";
 import SupplierLedgerSummaryPage from "@/pages/admin/accounting/reports/SupplierLedgerSummaryPage";
+import AccountsReceivablePage from "@/pages/admin/accounting/reports/AccountsReceivablePage";
+import AccountsReceivableSummaryPage from "@/pages/admin/accounting/reports/AccountsReceivableSummaryPage";
+import SalesRegisterPage from "@/pages/admin/accounting/reports/SalesRegisterPage";
+import ItemWiseSalesRegisterPage from "@/pages/admin/accounting/reports/ItemWiseSalesRegisterPage";
+import DeliveredItemsToBeBilledPage from "@/pages/admin/accounting/reports/DeliveredItemsToBeBilledPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/education/students/StudentsPage";
@@ -420,6 +428,10 @@ export default function App() {
         <Route path="suppliers/new" element={<SupplierFormPage />} />
         <Route path="suppliers/:id/edit" element={<SupplierFormPage />} />
         <Route path="suppliers/:id" element={<SupplierProfilePage />} />
+        <Route path="customers" element={<CustomersPage />} />
+        <Route path="customers/new" element={<CustomerFormPage />} />
+        <Route path="customers/:id/edit" element={<CustomerFormPage />} />
+        <Route path="customers/:id" element={<CustomerProfilePage />} />
         <Route path="payment-entries" element={<PaymentEntriesPage />} />
         <Route path="payment-entries/new" element={<PaymentEntryFormPage />} />
         <Route path="payment-entries/:id/edit" element={<PaymentEntryFormPage />} />
@@ -436,6 +448,11 @@ export default function App() {
         <Route path="purchase-order-analysis" element={<PurchaseOrderAnalysisPage />} />
         <Route path="received-items-to-be-billed" element={<ReceivedItemsToBeBilledPage />} />
         <Route path="supplier-ledger-summary" element={<SupplierLedgerSummaryPage />} />
+        <Route path="accounts-receivable" element={<AccountsReceivablePage />} />
+        <Route path="accounts-receivable-summary" element={<AccountsReceivableSummaryPage />} />
+        <Route path="sales-register" element={<SalesRegisterPage />} />
+        <Route path="item-wise-sales-register" element={<ItemWiseSalesRegisterPage />} />
+        <Route path="delivered-items-to-be-billed" element={<DeliveredItemsToBeBilledPage />} />
 
         {/* ─── Class Arms ────────────────────────────────────── */}
         <Route path="class-arms" element={<ClassArmsPage />} />

@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, ChevronRight, Plus, Trash2 } from "lucide-react";
 import SearchableSelect from "@/components/shared/SearchableSelect";
+import Modal from "@/components/shared/Modal";
+import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import { Button } from "@/components/ui/button";
 import { getAccountingLinkOptions } from "@/services/accounting/documentService";
+import { callMethod } from "@/services/frappeClient";
+import { fmtDate } from "@/utils/format";
 
 const BREAKS = new Set(["Section Break", "Column Break", "Tab Break"]);
 const LONG = new Set(["Small Text", "Long Text", "Text", "Text Editor", "Code"]);
@@ -14,6 +19,34 @@ function dependencyMet(expression, form) {
   const simple = source.match(/^doc\.([\w]+)\s*={2,3}\s*['\"]([^'\"]+)['\"]$/);
   if (simple) return String(form[simple[1]] ?? "") === simple[2];
   return true;
+}
+
+// Real Desk hooks that fetch related defaults when a key field changes on
+// these doctypes (party() -> get_party_details(), etc.) -- called directly
+// against the same whitelisted ERPNext methods Desk's own client scripts
+// call, rather than reimplementing their account/currency lookup logic here.
+const AUTO_FILL = {
+  "Payment Entry": {
+    async party(value, form) {
+      if (!value || !form.party_type || !form.company) return null;
+      try {
+        const details = await callMethod("erpnext.accounts.doctype.payment_entry.payment_entry.get_party_details", {
+          company: form.company, party_type: form.party_type, party: value, date: form.posting_date,
+        });
+        const accountField = form.payment_type === "Pay" ? "paid_to" : "paid_from";
+        return { party_name: details?.party_name || value, [accountField]: details?.party_account || form[accountField] };
+      } catch { return null; }
+    },
+    async party_type() { return { party: "", party_name: "" }; },
+  },
+};
+
+function formatChildValue(field, value) {
+  if (value === null || value === undefined || value === "") return "—";
+  if (field.fieldtype === "Date") return fmtDate(value);
+  if (["Currency", "Float", "Percent"].includes(field.fieldtype)) return Number(value).toLocaleString();
+  if (field.fieldtype === "Check") return Number(value) ? "Yes" : "No";
+  return String(value);
 }
 
 function FieldInput({ field, value, onChange, form, row = {} }) {
@@ -43,21 +76,101 @@ function FormField({ field, value, onChange, form, row }) {
   return <div className="field" style={LONG.has(field.fieldtype) ? { gridColumn: "1 / -1" } : undefined}><label className="label">{field.label || field.fieldname}{field.reqd ? <span style={{ color: "var(--danger)", marginLeft: 3 }}>*</span> : null}</label><FieldInput field={field} value={value} onChange={onChange} form={form} row={row} />{field.description ? <p className="text-xs text-muted-foreground">{field.description}</p> : null}</div>;
 }
 
+// Compact summary table (columns = the child doctype's own in_list_view
+// fields, same signal Desk's own grid view uses) + a modal for the full
+// row -- replaces dumping every child field into an always-expanded card,
+// which got unreadable once a row has a dozen+ fields (Journal Entry
+// Account, Payment Entry Reference).
 function ChildTable({ field, rows, form, onChange }) {
   const childFields = field.child_fields || [];
-  const update = (index, key, value) => onChange(rows.map((row, i) => i === index ? { ...row, [key]: value } : row));
-  return <div style={{ gridColumn: "1 / -1" }}><div className="mb-3 flex items-center justify-between"><label className="label">{field.label}</label><button type="button" className="btn btn-secondary" onClick={() => onChange([...rows, {}])}><Plus size={14} /> Add Row</button></div><div className="space-y-3">{rows.map((row, index) => <div className="rounded-lg border bg-card p-4" key={row.name || index}><div className="mb-3 flex items-center justify-between"><strong className="text-sm">Row {index + 1}</strong><button type="button" className="btn btn-ghost" onClick={() => onChange(rows.filter((_, i) => i !== index))}><Trash2 size={15} /></button></div><div className="grid-form">{childFields.map((child) => <FormField key={child.fieldname} field={child} value={row[child.fieldname]} onChange={(value) => update(index, child.fieldname, value)} form={form} row={row} />)}</div></div>)}</div>{!rows.length ? <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">No rows added.</div> : null}</div>;
+  const summaryFields = childFields.filter((f) => f.in_list_view).length ? childFields.filter((f) => f.in_list_view) : childFields.slice(0, 4);
+  const [modal, setModal] = useState(null); // { row, index } | null
+  const [deleteIndex, setDeleteIndex] = useState(null);
+  function saveModal() {
+    const rowsNext = [...rows];
+    if (modal.index === null) rowsNext.push(modal.row); else rowsNext[modal.index] = modal.row;
+    onChange(rowsNext);
+    setModal(null);
+  }
+  const setModalField = (key, value) => setModal((m) => ({ ...m, row: { ...m.row, [key]: value } }));
+  return (
+    <div style={{ gridColumn: "1 / -1" }}>
+      <div className="mb-3 flex items-center justify-between">
+        <label className="label">{field.label}</label>
+        <Button type="button" variant="outline" size="sm" onClick={() => setModal({ row: {}, index: null })}><Plus size={14} className="mr-1" /> Add Row</Button>
+      </div>
+      <div style={{ overflowX: "auto" }}>
+        <table className="tbl">
+          <thead><tr>{summaryFields.map((f) => <th key={f.fieldname}>{f.label || f.fieldname}</th>)}<th /></tr></thead>
+          <tbody>
+            {rows.map((row, index) => (
+              <tr key={row.name || index} className="cursor-pointer" onClick={() => setModal({ row, index })}>
+                {summaryFields.map((f) => <td key={f.fieldname}>{formatChildValue(f, row[f.fieldname])}</td>)}
+                <td onClick={(e) => e.stopPropagation()}><button type="button" className="btn btn-ghost" onClick={() => setDeleteIndex(index)}><Trash2 size={14} /></button></td>
+              </tr>
+            ))}
+            {!rows.length && <tr><td colSpan={summaryFields.length + 1} className="muted" style={{ textAlign: "center", padding: 16 }}>No rows added.</td></tr>}
+          </tbody>
+        </table>
+      </div>
+      <Modal
+        open={Boolean(modal)} onClose={() => setModal(null)} title={field.label}
+        footer={<><Button type="button" variant="outline" onClick={() => setModal(null)}>Cancel</Button><Button type="button" variant="default" onClick={saveModal}>Save Row</Button></>}
+      >
+        {modal ? <div className="grid-form">{childFields.map((f) => dependencyMet(f.depends_on, modal.row) && <FormField key={f.fieldname} field={f} value={modal.row[f.fieldname]} onChange={(v) => setModalField(f.fieldname, v)} form={form} row={modal.row} />)}</div> : null}
+      </Modal>
+      <ConfirmDialog
+        open={deleteIndex !== null} onClose={() => setDeleteIndex(null)}
+        onConfirm={() => { onChange(rows.filter((_, i) => i !== deleteIndex)); setDeleteIndex(null); }}
+        title="Remove this row?" description="This action cannot be undone." confirmLabel="Remove"
+      />
+    </div>
+  );
 }
 
-export default function AccountingDocumentForm({ meta, initial, onSave, submitLabel = "Save" }) {
+export default function AccountingDocumentForm({ doctype, meta, initial, onSave, submitLabel = "Save" }) {
   const defaults = useMemo(() => Object.fromEntries(meta.fields.filter((field) => field.default !== undefined && field.default !== null).map((field) => [field.fieldname, field.default])), [meta]);
   const [form, setForm] = useState({ ...defaults, ...(initial || {}) });
   useEffect(() => setForm({ ...defaults, ...(initial || {}) }), [defaults, initial]);
+
+  // Posting Date starts locked (matching real Desk's default posture on a
+  // submittable doc) -- an explicit "Edit" toggle is required to change it,
+  // so a draft can't silently drift off today's date from an accidental
+  // click. This is a client-only UI toggle, not a persisted field.
+  const hasPostingDate = meta.fields.some((f) => f.fieldname === "posting_date");
+  const [dateUnlocked, setDateUnlocked] = useState(false);
+
   const tabs = useMemo(() => { let tab = "Details", section = "Information"; const out = { Details: { Information: { fields: [], collapsible: false } } }; for (const field of meta.fields) { if (field.fieldtype === "Tab Break") { tab = field.label || "Details"; section = "Information"; out[tab] ||= {}; out[tab][section] ||= { fields: [], collapsible: false }; } else if (field.fieldtype === "Section Break") { section = field.label || "Details"; out[tab] ||= {}; out[tab][section] ||= { fields: [], collapsible: Boolean(field.collapsible) }; } else if (!BREAKS.has(field.fieldtype)) { out[tab] ||= {}; out[tab][section] ||= { fields: [], collapsible: false }; out[tab][section].fields.push(field); } } return out; }, [meta]);
-  const visibleTabs = Object.keys(tabs).filter((tab) => !["Connections", "Dashboard"].includes(tab));
+  // Excluding fields per-doctype (see EXCLUDE_FIELDS in document_api.py) can
+  // leave a Tab Break with every one of its fields trimmed away -- e.g.
+  // Customer's Sales Team / Portal Users tabs once loyalty/POS fields are
+  // hidden. Drop those instead of rendering a clickable tab with nothing in it.
+  const visibleTabs = Object.keys(tabs).filter((tab) => !["Connections", "Dashboard"].includes(tab) && Object.values(tabs[tab]).some((section) => section.fields.length));
   const [active, setActive] = useState(visibleTabs[0]);
   const [open, setOpen] = useState({});
   useEffect(() => setActive(visibleTabs[0]), [meta]);
-  const set = (key, value) => setForm((current) => ({ ...current, [key]: value }));
-  return <form onSubmit={(event) => { event.preventDefault(); onSave(form); }}><div className="mb-4 flex flex-wrap gap-2">{visibleTabs.length > 1 && visibleTabs.map((tab) => <button type="button" key={tab} className={`btn ${active === tab ? "btn-primary" : "btn-secondary"}`} onClick={() => setActive(tab)}>{tab}</button>)}</div><div className="space-y-4">{Object.entries(tabs[active] || {}).filter(([, config]) => config.fields.length).map(([section, config]) => { const expanded = !config.collapsible || open[`${active}-${section}`]; return <div className="panel" key={section}><button type="button" className={`panel-head w-full text-left ${config.collapsible ? "cursor-pointer" : ""}`} onClick={() => config.collapsible && setOpen((current) => ({ ...current, [`${active}-${section}`]: !expanded }))}><div className="panel-title flex items-center gap-2">{config.collapsible ? expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} /> : null}{section}</div></button>{expanded ? <div className="grid-form" style={{ padding: 20 }}>{config.fields.map((field) => field.fieldtype === "Table" ? <ChildTable key={field.fieldname} field={field} rows={form[field.fieldname] || []} form={form} onChange={(value) => set(field.fieldname, value)} /> : <FormField key={field.fieldname} field={field} value={form[field.fieldname]} onChange={(value) => set(field.fieldname, value)} form={form} />)}</div> : null}</div>; })}</div><div className="mt-4 flex justify-end"><button className="btn btn-primary">{submitLabel}</button></div></form>;
+
+  function set(key, value) {
+    setForm((current) => ({ ...current, [key]: value }));
+    const hook = AUTO_FILL[doctype]?.[key];
+    if (hook) {
+      hook(value, { ...form, [key]: value }).then((patch) => { if (patch) setForm((current) => ({ ...current, ...patch })); });
+    }
+  }
+
+  return <form onSubmit={(event) => { event.preventDefault(); onSave(form); }}><div className="mb-4 flex flex-wrap gap-2">{visibleTabs.length > 1 && visibleTabs.map((tab) => <button type="button" key={tab} className={`btn ${active === tab ? "btn-primary" : "btn-secondary"}`} onClick={() => setActive(tab)}>{tab}</button>)}</div><div className="space-y-4">{Object.entries(tabs[active] || {}).filter(([, config]) => config.fields.length).map(([section, config]) => { const expanded = !config.collapsible || open[`${active}-${section}`]; return <div className="panel" key={section}><button type="button" className={`panel-head w-full text-left ${config.collapsible ? "cursor-pointer" : ""}`} onClick={() => config.collapsible && setOpen((current) => ({ ...current, [`${active}-${section}`]: !expanded }))}><div className="panel-title flex items-center gap-2">{config.collapsible ? expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />: null}{section}</div></button>{expanded ? <div className="grid-form" style={{ padding: 20 }}>{config.fields.map((field) => {
+    if (field.fieldtype === "Table") return dependencyMet(field.depends_on, form) ? <ChildTable key={field.fieldname} field={field} rows={form[field.fieldname] || []} form={form} onChange={(value) => set(field.fieldname, value)} /> : null;
+    if (field.fieldname === "posting_date" && hasPostingDate && meta.is_submittable) {
+      return (
+        <div className="field" key={field.fieldname}>
+          <label className="label">{field.label}{field.reqd ? <span style={{ color: "var(--danger)", marginLeft: 3 }}>*</span> : null}</label>
+          <div className="flex items-center gap-2">
+            <input className="input" type="date" disabled={!dateUnlocked} value={form.posting_date || ""} onChange={(e) => set("posting_date", e.target.value)} />
+            <label className="flex min-h-10 items-center gap-1 whitespace-nowrap text-xs font-medium text-muted-foreground"><input type="checkbox" checked={dateUnlocked} onChange={(e) => setDateUnlocked(e.target.checked)} /> Edit</label>
+          </div>
+        </div>
+      );
+    }
+    return <FormField key={field.fieldname} field={field} value={form[field.fieldname]} onChange={(value) => set(field.fieldname, value)} form={form} />;
+  })}</div> : null}</div>; })}</div><div className="mt-4 flex justify-end"><button className="btn btn-primary">{submitLabel}</button></div></form>;
 }

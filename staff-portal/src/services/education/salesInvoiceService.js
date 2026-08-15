@@ -38,6 +38,10 @@ export function cancelSalesInvoice(name) {
   return api(`${METHOD}.cancel_sales_invoice`, { name });
 }
 
+export function getConnections(name) {
+  return api(`${METHOD}.get_connections`, { name });
+}
+
 export function getCustomers() {
   return api(`${METHOD}.get_customers`);
 }

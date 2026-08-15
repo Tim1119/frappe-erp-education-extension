@@ -1,4 +1,5 @@
 // services/api.js
+
 export default async function api(method, args = {}) {
   // Get CSRF token from meta tag
   let csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';

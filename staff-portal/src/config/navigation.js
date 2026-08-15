@@ -28,6 +28,7 @@ import {
   MessageSquareText,
   LogIn,
   ReceiptText,
+  HandCoins,
 } from "lucide-react";
 
 /**
@@ -334,6 +335,34 @@ export const ADMIN_NAV = [
               { key: "purchase-order-analysis", label: "Purchase Order Analysis", icon: BarChart3, path: "/dashboard/purchase-order-analysis" },
               { key: "received-items-to-be-billed", label: "Received Items To Be Billed", icon: BarChart3, path: "/dashboard/received-items-to-be-billed" },
               { key: "supplier-ledger-summary", label: "Supplier Ledger Summary", icon: BarChart3, path: "/dashboard/supplier-ledger-summary" },
+            ],
+          },
+        ],
+      },
+      {
+        key: "accounting-receivables",
+        label: "Receivables",
+        icon: HandCoins,
+        children: [
+          {
+            key: "receivables-invoicing",
+            label: "Invoicing",
+            icon: ReceiptText,
+            children: [
+              { key: "sales-invoices", label: "Sales Invoice", icon: ReceiptText, path: "/dashboard/sales-invoices" },
+              { key: "customers", label: "Customer", icon: UsersRound, path: "/dashboard/customers" },
+            ],
+          },
+          {
+            key: "receivables-reports",
+            label: "Reports",
+            icon: BarChart3,
+            children: [
+              { key: "accounts-receivable", label: "Accounts Receivable", icon: BarChart3, path: "/dashboard/accounts-receivable" },
+              { key: "accounts-receivable-summary", label: "Accounts Receivable Summary", icon: BarChart3, path: "/dashboard/accounts-receivable-summary" },
+              { key: "sales-register", label: "Sales Register", icon: BarChart3, path: "/dashboard/sales-register" },
+              { key: "item-wise-sales-register", label: "Item-wise Sales Register", icon: BarChart3, path: "/dashboard/item-wise-sales-register" },
+              { key: "delivered-items-to-be-billed", label: "Delivered Items To Be Billed", icon: BarChart3, path: "/dashboard/delivered-items-to-be-billed" },
             ],
           },
         ],

@@ -16,6 +16,8 @@ def get_sales_invoices(
     academic_year=None,
     academic_term=None,
     company=None,
+    customer=None,
+    return_against=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -33,6 +35,10 @@ def get_sales_invoices(
         filters["academic_term"] = academic_term
     if company:
         filters["company"] = company
+    if customer:
+        filters["customer"] = customer
+    if return_against:
+        filters["return_against"] = return_against
 
     or_filters = []
     if search:
@@ -178,7 +184,7 @@ def search_link_options(doctype, search=None):
 
 
 SALES_INVOICE_FIELDS = (
-    "naming_series", "posting_date", "due_date", "customer", "company",
+    "naming_series", "posting_date", "posting_time", "set_posting_time", "due_date", "customer", "company",
     "student", "fee_schedule", "currency", "debit_to", "cost_center",
     "apply_discount_on", "discount_amount", "additional_discount_percentage",
     "taxes_and_charges", "tax_category", "is_return", "return_against",
@@ -225,6 +231,8 @@ def create_sales_invoice(data):
         "doctype": "Sales Invoice",
         "naming_series": data.get("naming_series", "ACC-SINV-.YYYY.-"),
         "posting_date": data.get("posting_date"),
+        "posting_time": data.get("posting_time"),
+        "set_posting_time": data.get("set_posting_time", 0),
         "due_date": data.get("due_date"),
         "customer": data.get("customer"),
         "company": data.get("company"),
@@ -328,6 +336,26 @@ def _safe_get_all(label, doctype, **kwargs):
     except Exception as e:
         frappe.log_error(f"Error fetching {label}: {str(e)}", "Sales Invoice API")
         return []
+
+
+@frappe.whitelist()
+def get_connections(name):
+    if not name:
+        frappe.throw(_("Sales Invoice name is required"))
+
+    return {
+        "payments": len(frappe.get_all(
+            "Payment Entry Reference",
+            filters={"reference_doctype": "Sales Invoice", "reference_name": name, "docstatus": 1},
+            distinct=True, pluck="parent",
+        )),
+        "journal_entries": len(frappe.get_all(
+            "Journal Entry Account",
+            filters={"reference_type": "Sales Invoice", "reference_name": name, "docstatus": 1},
+            distinct=True, pluck="parent",
+        )),
+        "sales_returns": frappe.db.count("Sales Invoice", {"return_against": name, "docstatus": 1}),
+    }
 
 
 @frappe.whitelist()

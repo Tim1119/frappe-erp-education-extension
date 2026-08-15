@@ -26,31 +26,30 @@ import {
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 
+// Tones mirror sales_invoice_list.js's get_indicator() status_colors exactly
+// (red/orange/green/gray/yellow mapped onto this portal's danger/warning/
+// success/gray/warning tone set -- see documentStatus.jsx for the same
+// pattern on the Payables side).
+const STATUS_TONES = {
+  Draft: "danger",
+  Unpaid: "warning",
+  Paid: "success",
+  Return: "gray",
+  "Credit Note Issued": "gray",
+  "Unpaid and Discounted": "warning",
+  "Partly Paid and Discounted": "warning",
+  "Overdue and Discounted": "danger",
+  Overdue: "danger",
+  "Partly Paid": "warning",
+  "Internal Transfer": "gray",
+};
 function StatusBadge({ status }) {
-  if (status === "Paid") {
-    return (
-      <span
-        className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold"
-        style={{ backgroundColor: "var(--success-soft)", color: "var(--success-ink)" }}
-      >
-        Paid
-      </span>
-    );
-  }
-  if (status === "Unpaid" || status === "Overdue") {
-    return (
-      <span
-        className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold"
-        style={{ backgroundColor: "var(--warning-soft)", color: "var(--warning-ink)" }}
-      >
-        {status}
-      </span>
-    );
-  }
-  if (status === "Cancelled" || status === "Return") {
-    return <Badge variant="destructive">{status}</Badge>;
-  }
-  return <Badge variant="secondary">{status || "Draft"}</Badge>;
+  const label = status || "Draft";
+  const tone = STATUS_TONES[label] || "gray";
+  const style = tone === "gray"
+    ? { backgroundColor: "var(--surface-3)", color: "var(--ink-3)" }
+    : { backgroundColor: `var(--${tone}-soft)`, color: `var(--${tone}-ink)` };
+  return <span className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold" style={style}>{label}</span>;
 }
 
 function DocStatusBadge({ docstatus }) {
@@ -79,6 +78,8 @@ export default function SalesInvoicesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const studentFilter = searchParams.get("student") || "";
   const companyFilter = searchParams.get("company") || "";
+  const customerFilter = searchParams.get("customer") || "";
+  const returnAgainstFilter = searchParams.get("return_against") || "";
   const { page, setPage, reset } = usePagination(1);
 
   const [rows, setRows] = useState([]);
@@ -121,6 +122,8 @@ export default function SalesInvoicesPage() {
         academic_year: academicYearFilter || undefined,
         academic_term: academicTermFilter || undefined,
         company: companyFilter || undefined,
+        customer: customerFilter || undefined,
+        return_against: returnAgainstFilter || undefined,
       });
       setRows(result.rows || []);
       setTotal(result.count || 0);
@@ -134,11 +137,11 @@ export default function SalesInvoicesPage() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, search, studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter, companyFilter]);
+  }, [page, search, studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter, companyFilter, customerFilter, returnAgainstFilter]);
 
   useEffect(() => {
     reset();
-  }, [studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter, companyFilter, reset]);
+  }, [studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter, companyFilter, customerFilter, returnAgainstFilter, reset]);
 
   function clearStudentFilter() {
     const next = new URLSearchParams(searchParams);
@@ -149,6 +152,18 @@ export default function SalesInvoicesPage() {
   function clearCompanyFilter() {
     const next = new URLSearchParams(searchParams);
     next.delete("company");
+    setSearchParams(next);
+  }
+
+  function clearCustomerFilter() {
+    const next = new URLSearchParams(searchParams);
+    next.delete("customer");
+    setSearchParams(next);
+  }
+
+  function clearReturnAgainstFilter() {
+    const next = new URLSearchParams(searchParams);
+    next.delete("return_against");
     setSearchParams(next);
   }
 
@@ -200,6 +215,8 @@ export default function SalesInvoicesPage() {
 
       <ActiveFilterChip label="Student" value={studentFilter} onClear={clearStudentFilter} />
       <ActiveFilterChip label="Company" value={companyFilter} onClear={clearCompanyFilter} />
+      <ActiveFilterChip label="Customer" value={customerFilter} onClear={clearCustomerFilter} />
+      <ActiveFilterChip label="Return Against" value={returnAgainstFilter} onClear={clearReturnAgainstFilter} />
 
       <Card>
         <Table>

@@ -131,8 +131,8 @@ export default function PurchaseInvoiceProfilePage() {
   const showCreateMenu = canPay || canReturn || canBlock || canUnblock;
 
   const connectionItems = [
-    { key: "payments", label: "Payment Entry", icon: Wallet, path: `/dashboard/payment-entries?reference_name=${encodeURIComponent(name)}` },
-    { key: "journal_entries", label: "Journal Entry", icon: FileText, path: `/dashboard/journal-entries` },
+    { key: "payments", label: "Payment Entry", icon: Wallet, path: `/dashboard/payment-entries?reference_name=${encodeURIComponent(name)}&reference_doctype=${encodeURIComponent("Purchase Invoice")}` },
+    { key: "journal_entries", label: "Journal Entry", icon: FileText, path: `/dashboard/journal-entries?reference_name=${encodeURIComponent(name)}&reference_type=${encodeURIComponent("Purchase Invoice")}` },
     { key: "purchase_returns", label: "Return / Debit Note", icon: FileText, path: `/dashboard/purchase-invoices?return_against=${encodeURIComponent(name)}` },
   ];
 

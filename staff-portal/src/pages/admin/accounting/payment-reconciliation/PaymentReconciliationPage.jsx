@@ -18,5 +18,5 @@ export default function PaymentReconciliationPage() {
   }
   if (!meta) return <div className="muted">Loading…</div>;
   const label = stage === "fetch" ? "Get Unreconciled Entries" : stage === "allocate" ? "Allocate Entries" : "Reconcile Entries";
-  return <><PageHeader eyebrow="Accounting · Payables · Payments" title="Payment Reconciliation" sub="Match submitted payments against outstanding invoices" /><Form meta={meta} initial={document} onSave={run} submitLabel={label} /></>;
+  return <><PageHeader eyebrow="Accounting · Payables · Payments" title="Payment Reconciliation" sub="Match submitted payments against outstanding invoices" /><Form doctype="Payment Reconciliation" meta={meta} initial={document} onSave={run} submitLabel={label} /></>;
 }
