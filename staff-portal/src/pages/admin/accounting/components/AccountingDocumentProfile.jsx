@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import { cancelAccountingDocument, deleteAccountingDocument, getAccountingConnections, getAccountingDocument, getAccountingMeta, submitAccountingDocument } from "@/services/accounting/documentService";
+import { callMethod } from "@/services/frappeClient";
 import { getErrorMessage } from "@/utils/errors";
 import { fmtDate } from "@/utils/format";
 import { DocumentStatusBadge } from "./documentStatus";
@@ -81,12 +82,25 @@ const CONNECTION_CONFIG = {
   Customer: [
     { key: "sales_invoices", label: "Sales Invoice", icon: FileText, path: (name) => `/dashboard/sales-invoices?customer=${encodeURIComponent(name)}` },
     { key: "payments", label: "Payment Entry", icon: Wallet, path: (name) => `/dashboard/payment-entries?party_type=Customer&party=${encodeURIComponent(name)}` },
+    { key: "dunning", label: "Dunning", icon: FileText, path: (name) => `/dashboard/dunning?customer=${encodeURIComponent(name)}` },
+  ],
+  Dunning: [
+    {
+      key: "sales_invoice", label: "Sales Invoice", icon: FileText,
+      compute: (doc) => {
+        const names = [...new Set((doc.overdue_payments || []).filter((r) => r.sales_invoice).map((r) => r.sales_invoice))];
+        const count = names.length;
+        return { count, path: count === 1 ? `/dashboard/sales-invoices/${encodeURIComponent(names[0])}` : count ? `/dashboard/sales-invoices?customer=${encodeURIComponent(doc.customer || "")}` : null };
+      },
+    },
   ],
 };
 
-// Group each doctype belongs to under Accounting, for the page eyebrow --
-// everything not listed here defaults to "Payables" (see usage below).
-const GROUP = { Customer: "Receivables" };
+// Group each doctype belongs to under Accounting, and the second eyebrow
+// segment -- everything not listed defaults to Payables / Invoicing (see
+// usage below).
+const GROUP = { Customer: "Receivables", Dunning: "Receivables", "Dunning Type": "Receivables" };
+const SECTION = { "Payment Entry": "Payments", "Journal Entry": "Payments", Dunning: "Dunning", "Dunning Type": "Dunning" };
 
 // "Create" dropdown actions per doctype -- a config map instead of a
 // bespoke profile page per doctype. Each action decides its own visibility
@@ -106,6 +120,24 @@ const CREATE_ACTIONS = {
       label: "Sales Invoice",
       show: (doc) => !doc.disabled,
       run: (doc, navigate) => navigate("/dashboard/sales-invoices/new", { state: { prefill: { customer: doc.name, customer_name: doc.customer_name } } }),
+    },
+  ],
+  // Mirrors dunning.js refresh(): the "Payment" button appears once
+  // submitted and not yet resolved. Unlike Supplier/Customer's client-built
+  // prefills, this needs the real get_payment_entry() RPC first (same call
+  // Purchase/Sales Invoice's own profile pages already make) since a
+  // Dunning's payable total (dunning_amount + outstanding) isn't something
+  // to hand-roll here.
+  Dunning: [
+    {
+      label: "Payment",
+      show: (doc) => doc.docstatus === 1 && doc.status !== "Resolved",
+      run: async (doc, navigate) => {
+        try {
+          const draft = await callMethod("erpnext.accounts.doctype.payment_entry.payment_entry.get_payment_entry", { dt: "Dunning", dn: doc.name });
+          navigate("/dashboard/payment-entries/new", { state: { prefill: draft } });
+        } catch { /* no payment entry could be mapped for this dunning */ }
+      },
     },
   ],
 };
@@ -174,10 +206,10 @@ export default function AccountingDocumentProfile({ doctype, base }) {
   }
   if (!doc || !meta) return <div className="muted">Loading…</div>;
   const createActions = (CREATE_ACTIONS[doctype] || []).filter((item) => item.show(doc));
-  const showStatus = doctype in { Supplier: 1, "Purchase Invoice": 1, "Payment Entry": 1, "Journal Entry": 1, Customer: 1 };
+  const showStatus = doctype in { Supplier: 1, "Purchase Invoice": 1, "Payment Entry": 1, "Journal Entry": 1, Customer: 1, Dunning: 1 };
   return <>
     <PageHeader
-      eyebrow={`Accounting · ${GROUP[doctype] || "Payables"} · ${["Payment Entry", "Journal Entry"].includes(doctype) ? "Payments" : "Invoicing"}`}
+      eyebrow={`Accounting · ${GROUP[doctype] || "Payables"} · ${SECTION[doctype] || "Invoicing"}`}
       title={<span style={{ display: "inline-flex", gap: 10, alignItems: "center" }}>{doc.title || doc.party_name || doc.supplier_name || doc.customer_name || doc.name}{showStatus ? <DocumentStatusBadge doctype={doctype} row={doc} /> : null}</span>}
       sub={doc.name}
       button={

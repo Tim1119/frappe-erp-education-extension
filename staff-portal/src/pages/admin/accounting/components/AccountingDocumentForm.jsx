@@ -39,6 +39,36 @@ const AUTO_FILL = {
     },
     async party_type() { return { party: "", party_name: "" }; },
   },
+  // customer_name is fetch_from: "customer.customer_name" in the real
+  // DocType -- Frappe applies fetch_from server-side on save regardless, but
+  // without this the read-only field would stay blank until the user saves.
+  // dunning_type's own fetch_if_empty fields (dunning_fee, rate_of_interest,
+  // income_account, cost_center) are mirrored the same way, only filling
+  // whichever of them are still empty on this form.
+  Dunning: {
+    async customer(value) {
+      if (!value) return { customer_name: "" };
+      try {
+        const data = await callMethod("frappe.client.get_value", { doctype: "Customer", filters: { name: value }, fieldname: ["customer_name"] });
+        return { customer_name: data?.customer_name || value };
+      } catch { return { customer_name: value }; }
+    },
+    async dunning_type(value, form) {
+      if (!value) return null;
+      try {
+        const data = await callMethod("frappe.client.get_value", {
+          doctype: "Dunning Type", filters: { name: value },
+          fieldname: ["dunning_fee", "rate_of_interest", "income_account", "cost_center"],
+        });
+        return {
+          dunning_fee: form.dunning_fee || data?.dunning_fee || 0,
+          rate_of_interest: form.rate_of_interest || data?.rate_of_interest || 0,
+          income_account: form.income_account || data?.income_account || "",
+          cost_center: form.cost_center || data?.cost_center || "",
+        };
+      } catch { return null; }
+    },
+  },
 };
 
 function formatChildValue(field, value) {
@@ -52,7 +82,7 @@ function formatChildValue(field, value) {
 function FieldInput({ field, value, onChange, form, row = {} }) {
   const [options, setOptions] = useState([]);
   const dynamicDoctype = field.fieldtype === "Dynamic Link" ? row[field.options] : field.options;
-  const companyRequired = ["paid_from", "paid_to", "cost_center", "account", "bank_account", "receivable_payable_account", "default_advance_account", "bank_cash_account"].includes(field.fieldname);
+  const companyRequired = ["paid_from", "paid_to", "cost_center", "account", "bank_account", "receivable_payable_account", "default_advance_account", "bank_cash_account", "income_account"].includes(field.fieldname);
   const disabled = !dependencyMet(field.depends_on, form) || (companyRequired && !form.company);
   useEffect(() => {
     if (!["Link", "Dynamic Link"].includes(field.fieldtype) || !dynamicDoctype || disabled) { setOptions([]); return; }
@@ -60,9 +90,9 @@ function FieldInput({ field, value, onChange, form, row = {} }) {
       company: form.company, supplier: form.supplier, fieldname: field.fieldname,
       party_type: form.party_type || row.party_type, party: form.party || row.party,
       payment_type: form.payment_type, reference_type: row.reference_doctype || row.reference_type,
-      account: row.account,
+      account: row.account, customer: form.customer,
     }).then((data) => setOptions(data || [])).catch(() => setOptions([]));
-  }, [dynamicDoctype, disabled, field.fieldname, field.fieldtype, form.company, form.party, form.party_type, form.payment_type, form.supplier, row.account, row.party, row.party_type, row.reference_doctype, row.reference_type]);
+  }, [dynamicDoctype, disabled, field.fieldname, field.fieldtype, form.company, form.customer, form.party, form.party_type, form.payment_type, form.supplier, row.account, row.party, row.party_type, row.reference_doctype, row.reference_type]);
   if (field.read_only || field.fieldtype === "Read Only") return <Read value={value} />;
   if (["Link", "Dynamic Link"].includes(field.fieldtype)) return <SearchableSelect value={value || ""} onChange={onChange} options={options} disabled={disabled} placeholder={disabled ? (companyRequired && !form.company ? "Select a company first" : "Complete the dependent field first") : `Search ${field.label || dynamicDoctype}...`} />;
   if (field.fieldtype === "Select") return <select className="input" value={value || ""} onChange={(e) => onChange(e.target.value)}><option value="">Select...</option>{String(field.options || "").split("\n").filter(Boolean).map((option) => <option key={option}>{option}</option>)}</select>;

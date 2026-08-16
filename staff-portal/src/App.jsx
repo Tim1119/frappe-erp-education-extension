@@ -84,6 +84,12 @@ import SupplierFormPage from "@/pages/admin/accounting/supplier/SupplierFormPage
 import CustomersPage from "@/pages/admin/accounting/customer/CustomersPage";
 import CustomerProfilePage from "@/pages/admin/accounting/customer/CustomerProfilePage";
 import CustomerFormPage from "@/pages/admin/accounting/customer/CustomerFormPage";
+import DunningPage from "@/pages/admin/accounting/dunning/DunningPage";
+import DunningProfilePage from "@/pages/admin/accounting/dunning/DunningProfilePage";
+import DunningFormPage from "@/pages/admin/accounting/dunning/DunningFormPage";
+import DunningTypesPage from "@/pages/admin/accounting/dunning-type/DunningTypesPage";
+import DunningTypeProfilePage from "@/pages/admin/accounting/dunning-type/DunningTypeProfilePage";
+import DunningTypeFormPage from "@/pages/admin/accounting/dunning-type/DunningTypeFormPage";
 import PaymentEntriesPage from "@/pages/admin/accounting/payment-entry/PaymentEntriesPage";
 import PaymentEntryProfilePage from "@/pages/admin/accounting/payment-entry/PaymentEntryProfilePage";
 import PaymentEntryFormPage from "@/pages/admin/accounting/payment-entry/PaymentEntryFormPage";
@@ -432,6 +438,14 @@ export default function App() {
         <Route path="customers/new" element={<CustomerFormPage />} />
         <Route path="customers/:id/edit" element={<CustomerFormPage />} />
         <Route path="customers/:id" element={<CustomerProfilePage />} />
+        <Route path="dunning" element={<DunningPage />} />
+        <Route path="dunning/new" element={<DunningFormPage />} />
+        <Route path="dunning/:id/edit" element={<DunningFormPage />} />
+        <Route path="dunning/:id" element={<DunningProfilePage />} />
+        <Route path="dunning-types" element={<DunningTypesPage />} />
+        <Route path="dunning-types/new" element={<DunningTypeFormPage />} />
+        <Route path="dunning-types/:id/edit" element={<DunningTypeFormPage />} />
+        <Route path="dunning-types/:id" element={<DunningTypeProfilePage />} />
         <Route path="payment-entries" element={<PaymentEntriesPage />} />
         <Route path="payment-entries/new" element={<PaymentEntryFormPage />} />
         <Route path="payment-entries/:id/edit" element={<PaymentEntryFormPage />} />

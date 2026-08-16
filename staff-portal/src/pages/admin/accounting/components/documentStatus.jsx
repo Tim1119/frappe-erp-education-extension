@@ -27,6 +27,12 @@ export function getDocumentStatus(doctype, row) {
     if (row.docstatus === 1) return { label: row.voucher_type || "Submitted", tone: "info" };
     return { label: "Draft", tone: "gray" };
   }
+  if (doctype === "Dunning") {
+    // Mirrors dunning_list.js's get_indicator() literally -- it only ever
+    // distinguishes Resolved (green) from everything else, which it always
+    // labels "Unresolved" regardless of the row's actual status value.
+    return row.status === "Resolved" ? { label: "Resolved", tone: "success" } : { label: "Unresolved", tone: "danger" };
+  }
   return { label: row.status || "Draft", tone: "gray" };
 }
 

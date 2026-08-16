@@ -1,9 +1,9 @@
 import json
 import frappe
 from frappe import _
-from frappe.utils import cint
+from frappe.utils import cint, flt
 
-ALLOWED = {"Purchase Invoice", "Supplier", "Payment Entry", "Journal Entry", "Payment Reconciliation", "Customer"}
+ALLOWED = {"Purchase Invoice", "Supplier", "Payment Entry", "Journal Entry", "Payment Reconciliation", "Customer", "Dunning", "Dunning Type"}
 LAYOUT = {"Section Break", "Column Break", "Tab Break", "HTML", "Button", "Fold"}
 
 def check(doctype):
@@ -76,6 +76,14 @@ EXCLUDE_FIELDS = {
         "title", "total_amount_currency", "total_amount", "total_amount_in_words", "paid_loan",
         "write_off_based_on", "is_opening", "party_not_required",
     },
+    # Address & Contact tab (customer_address/company_address + their
+    # display/mobile/email mirrors) and Print Language/Letter Head -- same
+    # reasoning as Supplier/Customer's own trims: this portal has no
+    # address-book or per-letterhead print module.
+    "Dunning": {
+        "language", "letter_head", "customer_address", "address_display", "contact_person",
+        "contact_display", "contact_mobile", "contact_email", "company_address", "company_address_display",
+    },
 }
 
 # Fields that are real, editable DocType fields but are populated by an
@@ -107,6 +115,26 @@ CHILD_EXCLUDE_FIELDS = {
         "is_advance", "user_remark", "against_account", "bank_account", "reference_detail_no",
         "advance_voucher_type", "advance_voucher_no", "is_tax_withholding_account",
     },
+    # Payment-schedule-sync bookkeeping (payment_term/description/mode_of_payment/
+    # invoice_portion/payment_amount all mirror the source Sales Invoice's own
+    # payment schedule row, paid_amount/discounted_amount are post-payment
+    # tracking) -- not something a user picks when manually recording an
+    # overdue invoice, see CHILD_FORCE_EDITABLE_FIELDS below for why the
+    # fields that ARE kept need special handling.
+    "Overdue Payment": {
+        "payment_term", "description", "mode_of_payment", "invoice_portion",
+        "payment_amount", "paid_amount", "discounted_amount", "payment_schedule",
+    },
+}
+
+# Every meaningful field on Overdue Payment is read_only in its own JSON,
+# because real Desk populates this table exclusively via Dunning's "Fetch
+# Overdue Payments" button (a bulk map-current-doc dialog against Sales
+# Invoice) rather than direct entry. This portal's compact-table-plus-modal
+# UX adds rows by hand instead, so these need to stay editable here or a
+# manually-added row could never actually be filled in.
+CHILD_FORCE_EDITABLE_FIELDS = {
+    "Overdue Payment": {"sales_invoice", "due_date", "outstanding", "overdue_days", "interest", "dunning_level"},
 }
 
 @frappe.whitelist()
@@ -117,25 +145,47 @@ def get_new_document_defaults(doctype):
     # portal has no equivalent onload script, so new documents were
     # silently starting with both required fields blank.
     check(doctype)
+    meta = frappe.get_meta(doctype)
     out = {"posting_date": frappe.utils.today()}
-    if frappe.get_meta(doctype).has_field("company"):
+    if meta.has_field("company"):
         out["company"] = frappe.defaults.get_global_default("company")
+    # Same gap as posting_date/company above: real Desk always defaults
+    # conversion_rate to 1 (same-currency transaction) and currency to the
+    # company's own default on a brand new multi-currency doc via its own
+    # onload script -- neither has a literal `default` in Dunning's JSON
+    # (its currency/conversion_rate pair has no bespoke onload here the way
+    # Purchase Invoice's own form already handles it), so conversion_rate
+    # stayed None on a freshly created doc and Dunning.validate_totals()'s
+    # `self.dunning_amount * self.conversion_rate` crashed with
+    # "unsupported operand type(s) for *: 'float' and 'NoneType'".
+    if meta.has_field("conversion_rate"):
+        out["conversion_rate"] = 1
+    if meta.has_field("currency") and out.get("company"):
+        out["currency"] = frappe.get_cached_value("Company", out["company"], "default_currency")
     return out
 
 @frappe.whitelist()
 def get_meta(doctype):
     check(doctype); meta=frappe.get_meta(doctype); exclude=EXCLUDE_FIELDS.get(doctype) or set(); readonly_override=READONLY_OVERRIDE_FIELDS.get(doctype) or set()
-    def field_dict(f, force_readonly=False):
-        out={"fieldname":f.fieldname,"fieldtype":f.fieldtype,"label":f.label,"options":f.options,"reqd":f.reqd,"read_only":1 if force_readonly else f.read_only,"hidden":f.hidden,"depends_on":f.depends_on,"default":f.default,"collapsible":f.collapsible,"description":f.description,"in_list_view":f.in_list_view}
+    # read_only_override: None = use the field's own meta value, True/False =
+    # force it either way. True is how the pre-existing READONLY_OVERRIDE_FIELDS
+    # mechanism works (auto-fill/running-total fields the controller owns);
+    # False is CHILD_FORCE_EDITABLE_FIELDS' mechanism (child fields the source
+    # doctype marks read_only because Desk only ever fills them via a bulk
+    # "fetch" button this portal doesn't build).
+    def field_dict(f, read_only_override=None):
+        read_only = f.read_only if read_only_override is None else (1 if read_only_override else 0)
+        out={"fieldname":f.fieldname,"fieldtype":f.fieldtype,"label":f.label,"options":f.options,"reqd":f.reqd,"read_only":read_only,"hidden":f.hidden,"depends_on":f.depends_on,"default":f.default,"collapsible":f.collapsible,"description":f.description,"in_list_view":f.in_list_view}
         if f.fieldtype=="Table":
             child_exclude=CHILD_EXCLUDE_FIELDS.get(f.options) or set()
-            out["child_fields"]=[field_dict(x) for x in frappe.get_meta(f.options).fields if not x.hidden and x.fieldtype not in ("Section Break","Column Break","Tab Break","HTML","Button","Fold") and x.fieldname not in child_exclude]
+            child_editable=CHILD_FORCE_EDITABLE_FIELDS.get(f.options) or set()
+            out["child_fields"]=[field_dict(x, read_only_override=(False if x.fieldname in child_editable else None)) for x in frappe.get_meta(f.options).fields if not x.hidden and x.fieldtype not in ("Section Break","Column Break","Tab Break","HTML","Button","Fold") and x.fieldname not in child_exclude]
         return out
-    return {"issingle":meta.issingle,"is_submittable":meta.is_submittable,"fields":[field_dict(f,f.fieldname in readonly_override) for f in meta.fields if not f.hidden and f.fieldtype not in ("HTML","Button","Fold") and f.fieldname not in exclude]}
+    return {"issingle":meta.issingle,"is_submittable":meta.is_submittable,"fields":[field_dict(f,read_only_override=(True if f.fieldname in readonly_override else None)) for f in meta.fields if not f.hidden and f.fieldtype not in ("HTML","Button","Fold") and f.fieldname not in exclude]}
 
 @frappe.whitelist()
-def get_documents(doctype,page=1,page_size=20,search=None,status=None,supplier_group=None,supplier=None,company=None,party_type=None,party=None,voucher_type=None,payment_type=None,reference_name=None,reference_doctype=None,reference_type=None,return_against=None,customer_group=None,customer_type=None,territory=None):
-    check(doctype);page,page_size=cint(page),cint(page_size);meta=frappe.get_meta(doctype);filters={k:v for k,v in {"status":status,"supplier_group":supplier_group,"supplier":supplier,"company":company,"party_type":party_type,"party":party,"voucher_type":voucher_type,"payment_type":payment_type,"return_against":return_against,"customer_group":customer_group,"customer_type":customer_type,"territory":territory}.items() if v and meta.has_field(k)}
+def get_documents(doctype,page=1,page_size=20,search=None,status=None,supplier_group=None,supplier=None,company=None,party_type=None,party=None,voucher_type=None,payment_type=None,reference_name=None,reference_doctype=None,reference_type=None,return_against=None,customer_group=None,customer_type=None,territory=None,customer=None,dunning_type=None):
+    check(doctype);page,page_size=cint(page),cint(page_size);meta=frappe.get_meta(doctype);filters={k:v for k,v in {"status":status,"supplier_group":supplier_group,"supplier":supplier,"company":company,"party_type":party_type,"party":party,"voucher_type":voucher_type,"payment_type":payment_type,"return_against":return_against,"customer_group":customer_group,"customer_type":customer_type,"territory":territory,"customer":customer,"dunning_type":dunning_type}.items() if v and meta.has_field(k)}
     names=None
     # reference_name alone used to always mean "Purchase Invoice" here, which
     # silently broke every non-Purchase-Invoice caller (e.g. Sales Invoice's
@@ -154,9 +204,9 @@ def get_documents(doctype,page=1,page_size=20,search=None,status=None,supplier_g
         names=frappe.get_all("Journal Entry Account",filters={"reference_type":reference_type or "Purchase Invoice","reference_name":reference_name,"docstatus":1},pluck="parent")
         if not names:return {"rows":[],"count":0,"page":page,"page_size":page_size}
         filters["name"]=["in",names]
-    search_map={"Supplier":["name","supplier_name"],"Purchase Invoice":["name","supplier","bill_no"],"Payment Entry":["name","party","party_name","reference_no"],"Journal Entry":["name","title","cheque_no"],"Customer":["name","customer_name"]}
+    search_map={"Supplier":["name","supplier_name"],"Purchase Invoice":["name","supplier","bill_no"],"Payment Entry":["name","party","party_name","reference_no"],"Journal Entry":["name","title","cheque_no"],"Customer":["name","customer_name"],"Dunning":["name","customer_name"],"Dunning Type":["name","dunning_type"]}
     search_fields=search_map.get(doctype,["name"]);ors=[[f,"like",f"%{search}%"] for f in search_fields] if search else []
-    field_map={"Supplier":["supplier_name","supplier_group","supplier_type","country","disabled"],"Purchase Invoice":["supplier","supplier_name","posting_date","due_date","bill_no","grand_total","outstanding_amount","currency","status","docstatus"],"Payment Entry":["payment_type","party_type","party","party_name","posting_date","paid_amount","received_amount","status","docstatus"],"Journal Entry":["title","voucher_type","posting_date","company","total_debit","total_credit","difference","docstatus"],"Customer":["customer_name","customer_group","customer_type","territory","disabled"]}
+    field_map={"Supplier":["supplier_name","supplier_group","supplier_type","country","disabled"],"Purchase Invoice":["supplier","supplier_name","posting_date","due_date","bill_no","grand_total","outstanding_amount","currency","status","docstatus"],"Payment Entry":["payment_type","party_type","party","party_name","posting_date","paid_amount","received_amount","status","docstatus"],"Journal Entry":["title","voucher_type","posting_date","company","total_debit","total_credit","difference","docstatus"],"Customer":["customer_name","customer_group","customer_type","territory","disabled"],"Dunning":["customer","customer_name","dunning_type","posting_date","dunning_fee","grand_total","status","docstatus"],"Dunning Type":["dunning_type","dunning_fee","rate_of_interest","company","is_default"]}
     fields=["name","modified"]+field_map.get(doctype,[])
     rows=frappe.get_all(doctype,fields=fields,filters=filters,or_filters=ors,order_by="modified desc",start=(page-1)*page_size,page_length=page_size)
     for r in rows:r["can_edit"]=(not meta_submitted(doctype,r)) and frappe.has_permission(doctype,"write",doc=r.name);r["can_delete"]=frappe.has_permission(doctype,"delete",doc=r.name) and (doctype in ("Supplier","Customer") or r.docstatus!=1)
@@ -167,6 +217,23 @@ def meta_submitted(doctype,row):return frappe.get_meta(doctype).is_submittable a
 def get_document(doctype,name):
     check(doctype);d=frappe.get_doc(doctype,name);x=d.as_dict();x["can_edit"]=(not frappe.get_meta(doctype).is_submittable or d.docstatus==0) and d.has_permission("write");x["can_delete"]=(not frappe.get_meta(doctype).is_submittable or d.docstatus!=1) and d.has_permission("delete");return x
 
+NUMERIC_FIELDTYPES = {"Int", "Check"}
+FLOAT_FIELDTYPES = {"Float", "Currency", "Percent"}
+
+def _cast(fieldtype, value):
+    # Every numeric <input> in the generic form (see FieldInput/FormField in
+    # AccountingDocumentForm.jsx) sends e.target.value, which the DOM always
+    # gives back as a string even for type="number" -- so without this,
+    # Int/Float/Currency/Percent fields arrive here as Python str. Frappe
+    # only casts those to real numbers when writing to the DB, which happens
+    # AFTER the real DocType controller's validate() has already run -- e.g.
+    # Dunning.validate_overdue_payments() does `self.rate_of_interest / 100`
+    # directly, raising "unsupported operand type(s) for /: 'str' and 'int'"
+    # on a doc built from raw, uncast form data.
+    if fieldtype in NUMERIC_FIELDTYPES: return cint(value)
+    if fieldtype in FLOAT_FIELDTYPES: return flt(value)
+    return value
+
 def apply(d,data):
     meta=frappe.get_meta(d.doctype)
     for f in meta.fields:
@@ -174,9 +241,16 @@ def apply(d,data):
         if f.fieldtype=="Table":
             d.set(f.fieldname,[])
             child_meta=frappe.get_meta(f.options)
-            valid={x.fieldname for x in child_meta.fields if x.fieldtype not in LAYOUT and not x.read_only}
-            for row in data.get(f.fieldname) or []:d.append(f.fieldname,{k:v for k,v in row.items() if k in valid})
-        else:d.set(f.fieldname,data.get(f.fieldname))
+            # CHILD_FORCE_EDITABLE_FIELDS (see get_meta()) tells the frontend
+            # these child fields are editable even though the real DocType
+            # marks them read_only -- without the same override here, every
+            # value typed into one of them would silently get stripped from
+            # the row before insert (e.g. Overdue Payment.sales_invoice,
+            # which is `reqd`, making the whole row fail to save).
+            child_editable=CHILD_FORCE_EDITABLE_FIELDS.get(f.options) or set()
+            child_fields={x.fieldname:x for x in child_meta.fields if x.fieldtype not in LAYOUT and (not x.read_only or x.fieldname in child_editable)}
+            for row in data.get(f.fieldname) or []:d.append(f.fieldname,{k:_cast(child_fields[k].fieldtype,v) for k,v in row.items() if k in child_fields})
+        else:d.set(f.fieldname,_cast(f.fieldtype,data.get(f.fieldname)))
 
 @frappe.whitelist()
 def create_document(doctype,data):
@@ -194,16 +268,20 @@ def submit_document(doctype,name):check(doctype);d=frappe.get_doc(doctype,name);
 def cancel_document(doctype,name):check(doctype);d=frappe.get_doc(doctype,name);d.cancel();frappe.db.commit();return d.as_dict()
 
 @frappe.whitelist()
-def get_link_options(link_doctype,company=None,supplier=None,fieldname=None,party_type=None,party=None,payment_type=None,parent=None,reference_type=None,account=None):
+def get_link_options(link_doctype,company=None,supplier=None,fieldname=None,party_type=None,party=None,payment_type=None,parent=None,reference_type=None,account=None,customer=None):
     filters={}
     if company and frappe.get_meta(link_doctype).has_field("company"):filters["company"]=company
     if link_doctype=="Supplier":filters["disabled"]=0
     if link_doctype=="Customer":filters["disabled"]=0
     if link_doctype in ("Customer Group","Territory"):filters["is_group"]=0
     if link_doctype=="Price List":filters["selling" if fieldname=="default_price_list" else "buying"]=1
+    if link_doctype=="Sales Invoice" and fieldname=="sales_invoice":
+        filters["docstatus"]=1
+        if customer:filters["customer"]=customer
     if link_doctype in ("Account","Cost Center"):
         filters["is_group"]=0
         if fieldname=="credit_to":filters["account_type"]="Payable"
+        if fieldname=="income_account":filters["root_type"]="Income"
         if fieldname in ("expense_account","write_off_account"):filters["root_type"]="Expense"
         if fieldname in ("paid_from","paid_to"):
             bank_side=(fieldname=="paid_from" and payment_type in ("Pay","Internal Transfer")) or (fieldname=="paid_to" and payment_type in ("Receive","Internal Transfer"))
@@ -274,5 +352,6 @@ def get_connections(doctype,name):
         return {
             "sales_invoices": frappe.db.count("Sales Invoice",{"customer":name}),
             "payments": frappe.db.count("Payment Entry",{"party_type":"Customer","party":name}),
+            "dunning": frappe.db.count("Dunning",{"customer":name}),
         }
     return {}

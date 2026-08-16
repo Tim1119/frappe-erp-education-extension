@@ -29,6 +29,7 @@ import {
   LogIn,
   ReceiptText,
   HandCoins,
+  Bell,
 } from "lucide-react";
 
 /**
@@ -351,6 +352,25 @@ export const ADMIN_NAV = [
             children: [
               { key: "sales-invoices", label: "Sales Invoice", icon: ReceiptText, path: "/dashboard/sales-invoices" },
               { key: "customers", label: "Customer", icon: UsersRound, path: "/dashboard/customers" },
+            ],
+          },
+          {
+            key: "receivables-payments",
+            label: "Payments",
+            icon: Wallet,
+            children: [
+              { key: "receivables-payment-entry", label: "Payment Entry", icon: Wallet, path: "/dashboard/payment-entries" },
+              { key: "receivables-journal-entry", label: "Journal Entry", icon: FileText, path: "/dashboard/journal-entries" },
+              { key: "receivables-payment-reconciliation", label: "Payment Reconciliation", icon: ReceiptText, path: "/dashboard/payment-reconciliation" },
+            ],
+          },
+          {
+            key: "receivables-dunning",
+            label: "Dunning",
+            icon: Bell,
+            children: [
+              { key: "dunning", label: "Dunning", icon: Bell, path: "/dashboard/dunning" },
+              { key: "dunning-types", label: "Dunning Type", icon: Tag, path: "/dashboard/dunning-types" },
             ],
           },
           {

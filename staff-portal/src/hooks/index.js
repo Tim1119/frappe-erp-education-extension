@@ -119,6 +119,8 @@ const LABEL_MAP = {
   "received-items-to-be-billed": "Received Items To Be Billed",
   "supplier-ledger-summary": "Supplier Ledger Summary",
   customers: "Customers",
+  dunning: "Dunning",
+  "dunning-types": "Dunning Types",
   "accounts-receivable": "Accounts Receivable",
   "accounts-receivable-summary": "Accounts Receivable Summary",
   "sales-register": "Sales Register",
