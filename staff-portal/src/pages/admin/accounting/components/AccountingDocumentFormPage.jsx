@@ -7,6 +7,7 @@ import { createAccountingDocument, getAccountingDocument, getAccountingMeta, get
 
 const GROUP = { Customer: "Receivables", Dunning: "Receivables", "Dunning Type": "Receivables" };
 const SECTION = { "Payment Entry": "Payments", "Journal Entry": "Payments", Dunning: "Dunning", "Dunning Type": "Dunning" };
+const HR_DOCTYPES = new Set(["Expense Claim Type", "Purpose of Travel", "Additional Salary", "Vehicle", "Driver", "Vehicle Service Item", "Vehicle Log"]);
 
 export default function AccountingDocumentFormPage({ doctype, base }) {
   const { id } = useParams(); const edit = Boolean(id); const name = id ? decodeURIComponent(id) : ""; const navigate = useNavigate(); const location = useLocation(); const [meta, setMeta] = useState(null); const [doc, setDoc] = useState(null);
@@ -24,5 +25,6 @@ export default function AccountingDocumentFormPage({ doctype, base }) {
   }, [doctype, edit, name]);
   async function save(data) { try { const result = edit ? await updateAccountingDocument(doctype, name, data) : await createAccountingDocument(doctype, data); toast.success(`${doctype} ${edit ? "updated" : "created"}`); navigate(`/dashboard/${base}/${encodeURIComponent(result.name || name)}`); } catch (error) { toast.error(String(error)); } }
   if (!meta || !doc) return <div className="muted">Loading…</div>;
-  return <><PageHeader eyebrow={`Accounting · ${GROUP[doctype] || "Payables"} · ${SECTION[doctype] || "Invoicing"}`} title={`${edit ? "Edit" : "Create"} ${doctype}`} /><Form doctype={doctype} meta={meta} initial={doc} onSave={save} /></>;
+  const eyebrow = HR_DOCTYPES.has(doctype) ? "HR · Expense Claims" : `Accounting · ${GROUP[doctype] || "Payables"} · ${SECTION[doctype] || "Invoicing"}`;
+  return <><PageHeader eyebrow={eyebrow} title={`${edit ? "Edit" : "Create"} ${doctype}`} /><Form doctype={doctype} meta={meta} initial={doc} onSave={save} /></>;
 }

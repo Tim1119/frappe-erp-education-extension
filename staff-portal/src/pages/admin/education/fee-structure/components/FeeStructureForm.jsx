@@ -28,6 +28,7 @@ import {
   getReceivableAccounts,
   getCostCenters,
 } from "@/services/education/feeStructureService.js";
+import QuickCreateModal from "@/components/shared/QuickCreateModal";
 
 const EMPTY_FORM = {
   program: "",
@@ -117,6 +118,8 @@ function SearchableSelect({
   placeholder = "Search...",
   label = "Select",
   disabled = false,
+  onCreate,
+  createLabel = "Create new",
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -267,6 +270,14 @@ function SearchableSelect({
             })
           )}
         </div>
+        {onCreate && (
+          <div
+            onMouseDown={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(false); setSearch(""); onCreate(); }}
+            style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", cursor: "pointer", color: "var(--brand)", borderTop: "1px solid hsl(var(--border))", fontSize: 13 }}
+          >
+            <Plus size={14} /> {createLabel}
+          </div>
+        )}
       </div>,
       document.body
     )
@@ -339,6 +350,7 @@ export default function FeeStructureForm({ feeStructure, onSave, onSubmit, onCan
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [fieldErrors, setFieldErrors] = useState({});
   const [actionLoading, setActionLoading] = useState(false);
+  const [quickCreate, setQuickCreate] = useState(null);
   
   // Options state
   const [programOptions, setProgramOptions] = useState([]);
@@ -631,6 +643,8 @@ export default function FeeStructureForm({ feeStructure, onSave, onSubmit, onCan
               placeholder="Search class..."
               label="Class"
               disabled={!canEdit || loadingOptions}
+              onCreate={() => setQuickCreate({ doctype: "Program", apply: (name) => { setProgramOptions((rows) => [...rows, { name }]); updateField("program", name); } })}
+              createLabel="Create new Class"
             />
             {fieldErrors.program && (
               <div style={{ color: "var(--danger)", fontSize: "12px", marginTop: "4px", display: "flex", alignItems: "center", gap: "4px" }}>
@@ -649,6 +663,8 @@ export default function FeeStructureForm({ feeStructure, onSave, onSubmit, onCan
               placeholder="Search category..."
               label="Student Category"
               disabled={!canEdit || loadingOptions}
+              onCreate={() => setQuickCreate({ doctype: "Student Category", apply: (name) => { setStudentCategoryOptions((rows) => [...rows, { name }]); updateField("student_category", name); } })}
+              createLabel="Create new Student Category"
             />
           </div>
 
@@ -661,6 +677,8 @@ export default function FeeStructureForm({ feeStructure, onSave, onSubmit, onCan
               placeholder="Search year..."
               label="Academic Year"
               disabled={!canEdit || loadingOptions}
+              onCreate={() => setQuickCreate({ doctype: "Academic Year", apply: (name) => { setAcademicYearOptions((rows) => [...rows, { name }]); updateField("academic_year", name); } })}
+              createLabel="Create new Academic Year"
             />
             {fieldErrors.academic_year && (
               <div style={{ color: "var(--danger)", fontSize: "12px", marginTop: "4px", display: "flex", alignItems: "center", gap: "4px" }}>
@@ -679,6 +697,8 @@ export default function FeeStructureForm({ feeStructure, onSave, onSubmit, onCan
               placeholder="Search term..."
               label="Academic Term"
               disabled={!form.academic_year || !canEdit || loadingOptions}
+              onCreate={form.academic_year ? () => setQuickCreate({ doctype: "Academic Term", defaults: { academic_year: form.academic_year }, apply: (name) => { setAcademicTermOptions((rows) => [...rows, { name }]); updateField("academic_term", name); } }) : undefined}
+              createLabel="Create new Academic Term"
             />
           </div>
         </div>
@@ -742,6 +762,8 @@ export default function FeeStructureForm({ feeStructure, onSave, onSubmit, onCan
                         placeholder="Search fee category..."
                         label="Fee Category"
                         disabled={!canEdit || loadingOptions}
+                        onCreate={() => setQuickCreate({ doctype: "Fees Category", apply: (name) => { setFeeCategoryOptions((rows) => [...rows, { name }]); updateComponent(index, "fees_category", name); } })}
+                        createLabel="Create new Fee Category"
                       />
                       {fieldErrors[`component_${index}`] && (
                         <div style={{ color: "var(--danger)", fontSize: "11px", marginTop: "2px" }}>
@@ -815,6 +837,8 @@ export default function FeeStructureForm({ feeStructure, onSave, onSubmit, onCan
               placeholder="Search company..."
               label="Company"
               disabled={!canEdit || loadingOptions}
+              onCreate={() => setQuickCreate({ doctype: "Company", apply: (name) => { setCompanyOptions((rows) => [...rows, { name }]); updateField("company", name); } })}
+              createLabel="Create new Company"
             />
           </div>
 
@@ -839,6 +863,8 @@ export default function FeeStructureForm({ feeStructure, onSave, onSubmit, onCan
               placeholder="Search cost center..."
               label="Cost Center"
               disabled={!form.company || !canEdit || loadingOptions}
+              onCreate={form.company ? () => setQuickCreate({ doctype: "Cost Center", apply: (name) => updateField("cost_center", name) }) : undefined}
+              createLabel="Create new Cost Center"
             />
           </div>
         </div>
@@ -880,6 +906,7 @@ export default function FeeStructureForm({ feeStructure, onSave, onSubmit, onCan
           </button>
         )}
       </div>
+      <QuickCreateModal open={Boolean(quickCreate)} onClose={() => setQuickCreate(null)} doctype={quickCreate?.doctype} defaults={{ ...(form.company ? { company: form.company } : {}), ...(quickCreate?.defaults || {}) }} onCreated={(name) => { quickCreate?.apply(name); setQuickCreate(null); }} />
     </form>
   );
 }

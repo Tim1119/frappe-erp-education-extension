@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
 import SearchableSelect from "@/components/shared/SearchableSelect";
+import QuickCreateModal from "@/components/shared/QuickCreateModal";
 import { getAccountingLinkOptions } from "@/services/accounting/documentService";
 import { callMethod } from "@/services/frappeClient";
 
@@ -31,6 +32,7 @@ export default function PurchaseInvoiceItemModal({ open, onClose, onSave, row, c
   const [expenseAccounts, setExpenseAccounts] = useState([]);
   const [costCenters, setCostCenters] = useState([]);
   const [error, setError] = useState("");
+  const [quickCreate, setQuickCreate] = useState(null);
 
   useEffect(() => {
     if (open) {
@@ -76,22 +78,23 @@ export default function PurchaseInvoiceItemModal({ open, onClose, onSave, row, c
   return (
     <Modal open={open} onClose={onClose} title={row ? "Edit Item" : "Add Item"} size="lg" footer={<><Button variant="outline" onClick={onClose}>Cancel</Button><Button variant="default" onClick={handleSave}>Save</Button></>}>
       <div className="grid-form" style={{ gridTemplateColumns: "1fr 1fr" }}>
-        <Field label="Item *" full><SearchableSelect value={local.item_code || ""} onChange={onItemChange} options={items} placeholder="Search item..." /></Field>
+        <Field label="Item *" full><SearchableSelect value={local.item_code || ""} onChange={onItemChange} options={items} placeholder="Search item..." onCreate={() => setQuickCreate({ doctype: "Item", apply: onItemChange })} createLabel="Create new Item" /></Field>
         <Field label="Item Name"><input className="input" value={local.item_name || ""} onChange={(e) => set("item_name", e.target.value)} /></Field>
         <Field label="UOM *"><input className="input" value={local.uom || ""} onChange={(e) => set("uom", e.target.value)} /></Field>
         <Field label="Accepted Qty *"><input className="input" type="number" value={local.qty ?? ""} onChange={(e) => set("qty", e.target.value)} /></Field>
         <Field label="Rate *"><input className="input" type="number" step="any" value={local.rate ?? ""} onChange={(e) => set("rate", e.target.value)} /></Field>
         <Field label="Amount"><Read value={local.qty && local.rate ? (Number(local.qty) * Number(local.rate)).toLocaleString() : "—"} /></Field>
         <Field label="Expense Head">
-          <SearchableSelect value={local.expense_account || ""} onChange={(v) => set("expense_account", v)} options={expenseAccounts} disabled={!company} placeholder={company ? "Search account..." : "Select a company first"} />
+          <SearchableSelect value={local.expense_account || ""} onChange={(v) => set("expense_account", v)} options={expenseAccounts} disabled={!company} placeholder={company ? "Search account..." : "Select a company first"} linkedDoctype={null} />
         </Field>
         <Field label="Cost Center">
-          <SearchableSelect value={local.cost_center || ""} onChange={(v) => set("cost_center", v)} options={costCenters} disabled={!company} placeholder={company ? "Search cost center..." : "Select a company first"} />
+          <SearchableSelect value={local.cost_center || ""} onChange={(v) => set("cost_center", v)} options={costCenters} disabled={!company} placeholder={company ? "Search cost center..." : "Select a company first"} onCreate={company ? () => setQuickCreate({ doctype: "Cost Center", apply: (v) => set("cost_center", v) }) : undefined} createLabel="Create new Cost Center" />
         </Field>
         <Field label="Project" full><input className="input" value={local.project || ""} onChange={(e) => set("project", e.target.value)} /></Field>
         <Field label="Description" full><textarea className="input" rows={3} value={local.description || ""} onChange={(e) => set("description", e.target.value)} /></Field>
       </div>
       {error && <div className="text-sm text-destructive" style={{ marginTop: 10 }}>{error}</div>}
+      <QuickCreateModal open={Boolean(quickCreate)} onClose={() => setQuickCreate(null)} doctype={quickCreate?.doctype} defaults={company ? { company } : {}} onCreated={(name) => { quickCreate?.apply(name); setQuickCreate(null); }} />
     </Modal>
   );
 }

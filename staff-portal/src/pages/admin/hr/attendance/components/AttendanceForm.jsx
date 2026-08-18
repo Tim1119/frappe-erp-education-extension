@@ -67,11 +67,11 @@ export default function AttendanceForm({ attendance, onSave }) {
         <Field label="Employee" required><SearchableSelect value={form.employee} onChange={employeeChanged} options={employees} displayField="employee_name" placeholder="Search active employee..." showId /></Field>
         <Field label="Employee Name"><ReadOnlyValue value={form.employee_name} /></Field>
         <Field label="Status" required><select className="input" value={form.status || ""} onChange={(e) => { set("status", e.target.value); if (!["On Leave", "Half Day"].includes(e.target.value)) set("leave_type", ""); }}>{["Present", "Absent", "On Leave", "Half Day", "Work From Home"].map((value) => <option key={value}>{value}</option>)}</select></Field>
-        {requiresLeaveType && <Field label="Leave Type" required><SearchableSelect value={form.leave_type || ""} onChange={(value) => set("leave_type", value)} options={types} /></Field>}
+        {requiresLeaveType && <Field label="Leave Type" required><SearchableSelect value={form.leave_type || ""} onChange={(value) => set("leave_type", value)} options={types} linkedDoctype="Leave Type" /></Field>}
         {form.status === "Half Day" && <Field label="Status for Other Half"><select className="input" value={form.half_day_status || ""} onChange={(e) => set("half_day_status", e.target.value)}><option value="">Select...</option><option>Present</option><option>Absent</option></select></Field>}
         <Field label="Company"><ReadOnlyValue value={form.company} /></Field>
         <Field label="Department"><ReadOnlyValue value={form.department} /></Field>
-        <Field label="Shift"><SearchableSelect value={form.shift || ""} onChange={(value) => set("shift", value)} options={shifts} /></Field>
+        <Field label="Shift"><SearchableSelect value={form.shift || ""} onChange={(value) => set("shift", value)} options={shifts} linkedDoctype="Shift Type" /></Field>
         <Field label="Late Entry"><label className="flex items-center gap-2"><input type="checkbox" checked={!!form.late_entry} onChange={(e) => set("late_entry", e.target.checked ? 1 : 0)} /> Employee arrived late</label></Field>
         <Field label="Early Exit"><label className="flex items-center gap-2"><input type="checkbox" checked={!!form.early_exit} onChange={(e) => set("early_exit", e.target.checked ? 1 : 0)} /> Employee left early</label></Field>
       </div>

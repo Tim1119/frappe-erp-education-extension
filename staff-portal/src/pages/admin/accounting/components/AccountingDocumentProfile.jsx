@@ -101,6 +101,7 @@ const CONNECTION_CONFIG = {
 // usage below).
 const GROUP = { Customer: "Receivables", Dunning: "Receivables", "Dunning Type": "Receivables" };
 const SECTION = { "Payment Entry": "Payments", "Journal Entry": "Payments", Dunning: "Dunning", "Dunning Type": "Dunning" };
+const HR_DOCTYPES = new Set(["Expense Claim Type", "Purpose of Travel", "Additional Salary", "Vehicle", "Driver", "Vehicle Service Item", "Vehicle Log"]);
 
 // "Create" dropdown actions per doctype -- a config map instead of a
 // bespoke profile page per doctype. Each action decides its own visibility
@@ -209,7 +210,7 @@ export default function AccountingDocumentProfile({ doctype, base }) {
   const showStatus = doctype in { Supplier: 1, "Purchase Invoice": 1, "Payment Entry": 1, "Journal Entry": 1, Customer: 1, Dunning: 1 };
   return <>
     <PageHeader
-      eyebrow={`Accounting · ${GROUP[doctype] || "Payables"} · ${SECTION[doctype] || "Invoicing"}`}
+      eyebrow={HR_DOCTYPES.has(doctype) ? "HR · Expense Claims" : `Accounting · ${GROUP[doctype] || "Payables"} · ${SECTION[doctype] || "Invoicing"}`}
       title={<span style={{ display: "inline-flex", gap: 10, alignItems: "center" }}>{doc.title || doc.party_name || doc.supplier_name || doc.customer_name || doc.name}{showStatus ? <DocumentStatusBadge doctype={doctype} row={doc} /> : null}</span>}
       sub={doc.name}
       button={

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
 import SearchableSelect from "@/components/shared/SearchableSelect";
+import QuickCreateModal from "@/components/shared/QuickCreateModal";
 import { getTaxAccounts } from "@/services/education/salesInvoiceService";
 
 function Field({ label, children, full }) {
@@ -26,6 +27,7 @@ export default function SalesInvoiceTaxModal({ open, onClose, onSave, row, compa
   const [local, setLocal] = useState(EMPTY);
   const [accounts, setAccounts] = useState([]);
   const [error, setError] = useState("");
+  const [quickCreate, setQuickCreate] = useState(null);
 
   useEffect(() => { if (open) { setLocal(row ? { ...row } : { ...EMPTY }); setError(""); } }, [open, row]);
   useEffect(() => { if (!open || !company) { setAccounts([]); return; } getTaxAccounts(company).then(setAccounts).catch(() => setAccounts([])); }, [open, company]);
@@ -48,7 +50,7 @@ export default function SalesInvoiceTaxModal({ open, onClose, onSave, row, compa
     <Modal open={open} onClose={onClose} title={row ? "Edit Tax / Charge" : "Add Tax / Charge"} size="lg" footer={<><Button variant="outline" onClick={onClose}>Cancel</Button><Button variant="default" onClick={handleSave}>Save</Button></>}>
       <div className="grid-form" style={{ gridTemplateColumns: "1fr 1fr" }}>
         <Field label="Type *"><select className="input" value={local.charge_type || ""} onChange={(e) => set("charge_type", e.target.value)}>{CHARGE_TYPES.map((t) => <option key={t}>{t}</option>)}</select></Field>
-        <Field label="Account Head *"><SearchableSelect value={local.account_head || ""} onChange={(v) => set("account_head", v)} options={accounts} disabled={!company} placeholder={company ? "Search account..." : "Select a company first"} /></Field>
+        <Field label="Account Head *"><SearchableSelect value={local.account_head || ""} onChange={(v) => set("account_head", v)} options={accounts} disabled={!company} placeholder={company ? "Search account..." : "Select a company first"} linkedDoctype={null} /></Field>
         <Field label={isActual ? "Amount" : "Rate (%)"}>
           {isActual
             ? <input className="input" type="number" step="any" value={local.tax_amount ?? ""} onChange={(e) => set("tax_amount", e.target.value)} />
@@ -58,6 +60,7 @@ export default function SalesInvoiceTaxModal({ open, onClose, onSave, row, compa
         <Field label="Description" full><input className="input" value={local.description || ""} onChange={(e) => set("description", e.target.value)} /></Field>
       </div>
       {error && <div className="text-sm text-destructive" style={{ marginTop: 10 }}>{error}</div>}
+      <QuickCreateModal open={Boolean(quickCreate)} onClose={() => setQuickCreate(null)} doctype={quickCreate?.doctype} defaults={company ? { company } : {}} onCreated={(name) => { quickCreate?.apply(name); setQuickCreate(null); }} />
     </Modal>
   );
 }

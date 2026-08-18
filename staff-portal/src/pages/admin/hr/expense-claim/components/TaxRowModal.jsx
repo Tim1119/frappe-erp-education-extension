@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
 import SearchableSelect from "@/components/shared/SearchableSelect";
+import QuickCreateModal from "@/components/shared/QuickCreateModal";
 
 function Field({ label, children, full }) {
   return (
@@ -25,6 +26,7 @@ const EMPTY = { account_head: "", description: "", rate: "", tax_amount: "", tot
 export default function TaxRowModal({ open, onClose, onSave, row, taxAccounts, centers, projects, totalSanctionedAmount = 0 }) {
   const [local, setLocal] = useState(EMPTY);
   const [error, setError] = useState("");
+  const [quickCreate, setQuickCreate] = useState(null);
 
   useEffect(() => {
     if (open) {
@@ -79,7 +81,7 @@ export default function TaxRowModal({ open, onClose, onSave, row, taxAccounts, c
     >
       <div className="grid-form" style={{ gridTemplateColumns: "1fr 1fr" }}>
         <Field label="Account Head *" full>
-          <SearchableSelect value={local.account_head || ""} onChange={onAccountHeadChange} options={taxAccounts} />
+          <SearchableSelect value={local.account_head || ""} onChange={onAccountHeadChange} options={taxAccounts} linkedDoctype={null} />
         </Field>
         <Field label="Rate">
           <input className="input" type="number" value={local.rate ?? ""} onChange={(e) => onRateChange(e.target.value)} />
@@ -89,16 +91,17 @@ export default function TaxRowModal({ open, onClose, onSave, row, taxAccounts, c
         </Field>
         <Field label="Total"><Read value={local.total} /></Field>
         <Field label="Cost Center">
-          <SearchableSelect value={local.cost_center || ""} onChange={(v) => set("cost_center", v)} options={centers} />
+          <SearchableSelect value={local.cost_center || ""} onChange={(v) => set("cost_center", v)} options={centers} linkedDoctype="Cost Center" onCreate={() => setQuickCreate({ doctype: "Cost Center", apply: (v) => set("cost_center", v) })} createLabel="Create new Cost Center" />
         </Field>
         <Field label="Project">
-          <SearchableSelect value={local.project || ""} onChange={(v) => set("project", v)} options={projects} />
+          <SearchableSelect value={local.project || ""} onChange={(v) => set("project", v)} options={projects} linkedDoctype="Project" onCreate={() => setQuickCreate({ doctype: "Project", apply: (v) => set("project", v) })} createLabel="Create new Project" />
         </Field>
         <Field label="Description *" full>
           <textarea className="input" value={local.description || ""} onChange={(e) => set("description", e.target.value)} />
         </Field>
       </div>
       {error && <div className="text-sm text-destructive" style={{ marginTop: 10 }}>{error}</div>}
+      <QuickCreateModal open={Boolean(quickCreate)} onClose={() => setQuickCreate(null)} doctype={quickCreate?.doctype} onCreated={(name) => { quickCreate?.apply(name); setQuickCreate(null); }} />
     </Modal>
   );
 }

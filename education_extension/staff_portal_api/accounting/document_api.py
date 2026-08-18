@@ -3,7 +3,11 @@ import frappe
 from frappe import _
 from frappe.utils import cint, flt
 
-ALLOWED = {"Purchase Invoice", "Supplier", "Payment Entry", "Journal Entry", "Payment Reconciliation", "Customer", "Dunning", "Dunning Type"}
+ALLOWED = {
+    "Purchase Invoice", "Supplier", "Payment Entry", "Journal Entry", "Payment Reconciliation",
+    "Customer", "Dunning", "Dunning Type", "Expense Claim Type", "Purpose of Travel",
+    "Additional Salary", "Vehicle", "Driver", "Vehicle Service Item", "Vehicle Log",
+}
 LAYOUT = {"Section Break", "Column Break", "Tab Break", "HTML", "Button", "Fold"}
 
 def check(doctype):

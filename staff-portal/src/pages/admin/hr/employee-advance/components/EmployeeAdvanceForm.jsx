@@ -192,7 +192,7 @@ export default function EmployeeAdvanceForm({ doc, onSave }) {
       <div className="panel-head"><div className="panel-title">Accounting</div></div>
       <div className="grid-form" style={{ padding: 20 }}>
         <F l="Advance Account" c={<SearchableSelect value={f.advance_account} onChange={(v) => set("advance_account", v)} options={accounts} disabled={!f.company} placeholder={f.company ? "Search receivable account..." : "Select an employee first"} />} />
-        <F l="Mode of Payment" c={<SearchableSelect value={f.mode_of_payment} onChange={(v) => set("mode_of_payment", v)} options={modes} />} />
+        <F l="Mode of Payment" c={<SearchableSelect value={f.mode_of_payment} onChange={(v) => set("mode_of_payment", v)} options={modes} linkedDoctype="Mode of Payment" parentDefaults={f.company ? { company: f.company } : {}} />} />
         <F l="Repay Unclaimed Amount from Salary" c={<input type="checkbox" checked={!!f.repay_unclaimed_amount_from_salary} onChange={(e) => set("repay_unclaimed_amount_from_salary", e.target.checked ? 1 : 0)} />} />
         {accountWarning && (
           <div className="text-sm text-destructive" style={{ gridColumn: "1 / -1" }}>{accountWarning}</div>

@@ -36,7 +36,7 @@ const CONFIG = {
 };
 
 export default function AccountingDocumentList({ doctype, base, title }) {
-  const navigate = useNavigate(); const [searchParams, setSearchParams] = useSearchParams(); const { page, setPage } = usePagination(1); const [rows, setRows] = useState([]); const [count, setCount] = useState(0); const [search, setSearch] = useState(""); const config = CONFIG[doctype];
+  const navigate = useNavigate(); const [searchParams, setSearchParams] = useSearchParams(); const { page, setPage } = usePagination(1); const [rows, setRows] = useState([]); const [count, setCount] = useState(0); const [search, setSearch] = useState(""); const config = CONFIG[doctype] || { eyebrow: "HR · Expense Claims", columns: [[doctype, (row) => row.name], ["Modified", (row) => fmtDate(row.modified)]] };
   const connectionFilters = FILTER_PARAMS[doctype] || [];
   const activeFilters = Object.fromEntries(connectionFilters.map(([key]) => [key, searchParams.get(key) || ""]).filter(([, v]) => v));
   const clearParams = (keys) => { const next = new URLSearchParams(searchParams); keys.forEach((k) => next.delete(k)); setSearchParams(next); setPage(1); };

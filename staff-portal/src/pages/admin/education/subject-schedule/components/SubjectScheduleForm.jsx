@@ -236,6 +236,7 @@ export default function SubjectScheduleForm({ schedule, onSave }) {
                 displayField="student_group_name"
                 placeholder="Search class arm..."
                 label="class arm"
+                linkedDoctype="Student Group"
               />
             </div>
 
@@ -276,6 +277,7 @@ export default function SubjectScheduleForm({ schedule, onSave }) {
                   placeholder={selectedGroup?.program ? "Search subject..." : "Select a class arm first"}
                   label="subject"
                   disabled={!selectedGroup?.program}
+                  linkedDoctype="Course"
                 />
               )}
               {isCourseLocked && (
@@ -296,6 +298,7 @@ export default function SubjectScheduleForm({ schedule, onSave }) {
                 displayField="room_name"
                 placeholder="Search classroom..."
                 label="classroom"
+                linkedDoctype="Room"
                 showId
               />
             </div>

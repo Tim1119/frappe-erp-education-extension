@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, ChevronRight, Pencil, Plus, Trash2 } from "lucide-react";
 import SearchableSelect from "@/components/shared/SearchableSelect";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import QuickCreateModal from "@/components/shared/QuickCreateModal";
 import ExpenseRowModal from "./ExpenseRowModal";
 import TaxRowModal from "./TaxRowModal";
 import AdvanceRowModal from "./AdvanceRowModal";
@@ -99,6 +100,7 @@ export default function ExpenseClaimForm({ doc, onSave }) {
   const [editingTax, setEditingTax] = useState(null);
   const [editingAdvance, setEditingAdvance] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null); // { table, index, label }
+  const [quickCreate, setQuickCreate] = useState(null);
 
   useEffect(() => {
     Promise.all([
@@ -254,7 +256,7 @@ export default function ExpenseClaimForm({ doc, onSave }) {
           <input className="input" type="date" value={f.posting_date} onChange={(e) => set("posting_date", e.target.value)} />
         </Field>
         <Field label="From Employee *">
-          <SearchableSelect value={f.employee} onChange={emp} options={employees} displayField="employee_name" showId />
+          <SearchableSelect value={f.employee} onChange={emp} options={employees} displayField="employee_name" showId linkedDoctype={null} />
         </Field>
         <Field label="Employee Name"><Read value={f.employee_name} /></Field>
         <Field label="Department">
@@ -264,6 +266,8 @@ export default function ExpenseClaimForm({ doc, onSave }) {
             options={departments}
             disabled={!f.company}
             placeholder={f.company ? "Search department..." : "Select an employee first"}
+            onCreate={f.company ? () => setQuickCreate({ doctype: "Department", apply: (v) => set("department", v) }) : undefined}
+            createLabel="Create new Department"
           />
         </Field>
         <Field label="Company *"><Read value={f.company} /></Field>
@@ -275,6 +279,7 @@ export default function ExpenseClaimForm({ doc, onSave }) {
             displayField="full_name"
             disabled={!f.employee}
             placeholder={f.employee ? "Search approver..." : "Select an employee first"}
+            linkedDoctype={null}
           />
         </Field>
         <Field label="Approval Status">
@@ -410,21 +415,21 @@ export default function ExpenseClaimForm({ doc, onSave }) {
       <div className="panel-head"><div className="panel-title">Accounting Details</div></div>
       <div className="grid-form" style={{ padding: 20 }}>
         <Field label="Project">
-          <SearchableSelect value={f.project || ""} onChange={(v) => { set("project", v); set("task", ""); }} options={projects} />
+          <SearchableSelect value={f.project || ""} onChange={(v) => { set("project", v); set("task", ""); }} options={projects} onCreate={() => setQuickCreate({ doctype: "Project", apply: (v) => { set("project", v); set("task", ""); } })} createLabel="Create new Project" />
         </Field>
         <Field label="Task">
-          <SearchableSelect value={f.task || ""} onChange={(v) => set("task", v)} options={tasks} disabled={!f.project} placeholder={f.project ? "Search task..." : "Select a project first"} />
+          <SearchableSelect value={f.task || ""} onChange={(v) => set("task", v)} options={tasks} disabled={!f.project} placeholder={f.project ? "Search task..." : "Select a project first"} onCreate={f.project ? () => setQuickCreate({ doctype: "Task", apply: (v) => set("task", v), defaults: { project: f.project } }) : undefined} createLabel="Create new Task" />
         </Field>
         <Field label="Payable Account">
-          <SearchableSelect value={f.payable_account || ""} onChange={(v) => set("payable_account", v)} options={payables} disabled={!f.company} placeholder={f.company ? "Search account..." : "Select an employee first"} />
+          <SearchableSelect value={f.payable_account || ""} onChange={(v) => set("payable_account", v)} options={payables} disabled={!f.company} placeholder={f.company ? "Search account..." : "Select an employee first"} linkedDoctype={null} />
         </Field>
         <Field label="Cost Center">
-          <SearchableSelect value={f.cost_center || ""} onChange={(v) => set("cost_center", v)} options={centers} disabled={!f.company} placeholder={f.company ? "Search cost center..." : "Select an employee first"} />
+          <SearchableSelect value={f.cost_center || ""} onChange={(v) => set("cost_center", v)} options={centers} disabled={!f.company} placeholder={f.company ? "Search cost center..." : "Select an employee first"} onCreate={f.company ? () => setQuickCreate({ doctype: "Cost Center", apply: (v) => set("cost_center", v) }) : undefined} createLabel="Create new Cost Center" />
         </Field>
         {Number(f.is_paid) ? (
           <>
             <Field label="Mode of Payment">
-              <SearchableSelect value={f.mode_of_payment || ""} onChange={(v) => set("mode_of_payment", v)} options={modes} />
+              <SearchableSelect value={f.mode_of_payment || ""} onChange={(v) => set("mode_of_payment", v)} options={modes} onCreate={() => setQuickCreate({ doctype: "Mode of Payment", apply: (v) => set("mode_of_payment", v) })} createLabel="Create new Mode of Payment" />
             </Field>
             <Field label="Clearance Date">
               <input className="input" type="date" value={f.clearance_date || ""} onChange={(e) => set("clearance_date", e.target.value)} />
@@ -432,10 +437,10 @@ export default function ExpenseClaimForm({ doc, onSave }) {
           </>
         ) : null}
         <Field label="Vehicle Log">
-          <SearchableSelect value={f.vehicle_log || ""} onChange={(v) => set("vehicle_log", v)} options={vehicleLogs} />
+          <SearchableSelect value={f.vehicle_log || ""} onChange={(v) => set("vehicle_log", v)} options={vehicleLogs} onCreate={() => setQuickCreate({ doctype: "Vehicle Log", apply: (v) => set("vehicle_log", v) })} createLabel="Create new Vehicle Log" />
         </Field>
         <Field label="Delivery Trip">
-          <SearchableSelect value={f.delivery_trip || ""} onChange={(v) => set("delivery_trip", v)} options={deliveryTrips} />
+          <SearchableSelect value={f.delivery_trip || ""} onChange={(v) => set("delivery_trip", v)} options={deliveryTrips} onCreate={() => setQuickCreate({ doctype: "Delivery Trip", apply: (v) => set("delivery_trip", v) })} createLabel="Create new Delivery Trip" />
         </Field>
         <Field label="Remark" full>
           <textarea className="input" value={f.remark || ""} onChange={(e) => set("remark", e.target.value)} />
@@ -501,6 +506,7 @@ export default function ExpenseClaimForm({ doc, onSave }) {
         description="This row will be removed from the claim. This action cannot be undone."
         confirmLabel="Delete"
       />
+      <QuickCreateModal open={Boolean(quickCreate)} onClose={() => setQuickCreate(null)} doctype={quickCreate?.doctype} defaults={{ ...(f.company ? { company: f.company } : {}), ...(quickCreate?.defaults || {}) }} onCreated={(name) => { quickCreate?.apply(name); setQuickCreate(null); }} />
     </form>
   );
 }

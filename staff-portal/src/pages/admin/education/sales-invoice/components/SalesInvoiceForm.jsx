@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import SearchableSelect from "@/components/shared/SearchableSelect";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import QuickCreateModal from "@/components/shared/QuickCreateModal";
 import {
   getCompanies, getCostCenters, getCustomers, getDebitAccounts, getFeeSchedules,
   getIncomeAccounts, getItems, getLetterHeads, getNamingSeries, getPrintHeadings,
@@ -76,6 +77,7 @@ export default function SalesInvoiceForm({ invoice, onSave }) {
   const [itemModal, setItemModal] = useState(null); // { row, index } | { row: null, index: null }
   const [taxModal, setTaxModal] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null); // { table, index }
+  const [quickCreate, setQuickCreate] = useState(null);
   const canEdit = !invoice || invoice.docstatus === 0;
 
   useEffect(() => {
@@ -193,7 +195,7 @@ export default function SalesInvoiceForm({ invoice, onSave }) {
     }
   }
 
-  const select = (value, onChange, list, placeholder, displayField, dependentDisabled = false) => <SearchableSelect value={value || ""} onChange={onChange} options={list} placeholder={placeholder} label={placeholder} displayField={displayField} disabled={!canEdit || dependentDisabled} showId={Boolean(displayField)} />;
+  const select = (value, onChange, list, placeholder, displayField, dependentDisabled = false, doctype) => { const quick = doctype && !["Employee", "Student", "Instructor", "User", "Account"].includes(doctype); return <SearchableSelect value={value || ""} onChange={onChange} options={list} placeholder={placeholder} label={placeholder} displayField={displayField} disabled={!canEdit || dependentDisabled} showId={Boolean(displayField)} linkedDoctype={quick ? doctype : null} parentDefaults={form.company ? { company: form.company } : {}} onCreate={quick && canEdit && !dependentDisabled ? () => setQuickCreate({ doctype, apply: onChange }) : undefined} createLabel={quick ? `Create new ${doctype}` : undefined} />; };
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className="space-y-4" style={{ padding: 20 }}>
@@ -208,12 +210,12 @@ export default function SalesInvoiceForm({ invoice, onSave }) {
         </Field>
         <Field label="Posting Time"><input className="input" type="time" step="1" disabled={!canEdit || !dateUnlocked} value={form.posting_time || ""} onChange={(e) => update("posting_time", e.target.value)} /></Field>
         <Field label="Payment Due Date"><input className="input" type="date" value={form.due_date || ""} onChange={(e) => update("due_date", e.target.value)} disabled={!canEdit} /></Field>
-        <Field label="Customer" required error={errors.customer}>{select(form.customer, selectCustomer, options.customers, "customer", "customer_name")}</Field>
+        <Field label="Customer" required error={errors.customer}>{select(form.customer, selectCustomer, options.customers, "customer", "customer_name", false, "Customer")}</Field>
         <Field label="Customer Name"><ReadOnly value={form.customer_name} /></Field>
-        <Field label="Company" required error={errors.company}>{select(form.company, selectCompany, options.companies, "company")}</Field>
+        <Field label="Company" required error={errors.company}>{select(form.company, selectCompany, options.companies, "company", undefined, false, "Company")}</Field>
         <Field label="Currency"><ReadOnly value={form.currency} /></Field>
-        <Field label="Student">{select(form.student, (v) => update("student", v), options.students, "student", "student_name")}</Field>
-        <Field label="Fee Schedule">{select(form.fee_schedule, (v) => update("fee_schedule", v), options.schedules, "fee schedule")}</Field>
+        <Field label="Student">{select(form.student, (v) => update("student", v), options.students, "student", "student_name", false, "Student")}</Field>
+        <Field label="Fee Schedule">{select(form.fee_schedule, (v) => update("fee_schedule", v), options.schedules, "fee schedule", undefined, false, "Fee Schedule")}</Field>
       </div></Section>
 
       <Section title="Items" action={canEdit && <button type="button" className="btn btn-secondary" onClick={() => setItemModal({ row: null, index: null })}><Plus size={14} /> Add Row</button>}>
@@ -236,7 +238,7 @@ export default function SalesInvoiceForm({ invoice, onSave }) {
       <Section title="Discount" collapsible open={discountOpen} onToggle={() => setDiscountOpen(!discountOpen)}><div className="grid gap-4 md:grid-cols-3"><Field label="Apply Discount On"><select className="select" value={form.apply_discount_on || ""} onChange={(e) => update("apply_discount_on", e.target.value)} disabled={!canEdit}><option>Grand Total</option><option>Net Total</option></select></Field><Field label="Discount Amount"><input className="input" type="number" value={form.discount_amount || 0} onChange={(e) => update("discount_amount", Number(e.target.value))} disabled={!canEdit} /></Field><Field label="Additional Discount Percentage"><input className="input" type="number" value={form.additional_discount_percentage || 0} onChange={(e) => update("additional_discount_percentage", Number(e.target.value))} disabled={!canEdit} /></Field></div></Section>
 
       <Section title="Taxes" collapsible open={taxesOpen} onToggle={() => setTaxesOpen(!taxesOpen)} action={taxesOpen && canEdit && <button type="button" className="btn btn-secondary" onClick={(e) => { e.stopPropagation(); setTaxModal({ row: null, index: null }); }}><Plus size={14} /> Add Tax</button>}>
-        <div className="grid gap-4 md:grid-cols-2"><Field label="Sales Taxes and Charges Template">{select(form.taxes_and_charges, (v) => update("taxes_and_charges", v), options.taxTemplates, "tax template")}</Field><Field label="Tax Category">{select(form.tax_category, (v) => update("tax_category", v), options.taxCategories, "tax category")}</Field></div>
+        <div className="grid gap-4 md:grid-cols-2"><Field label="Sales Taxes and Charges Template">{select(form.taxes_and_charges, (v) => update("taxes_and_charges", v), options.taxTemplates, "tax template", undefined, false, "Sales Taxes and Charges Template")}</Field><Field label="Tax Category">{select(form.tax_category, (v) => update("tax_category", v), options.taxCategories, "tax category", undefined, false, "Tax Category")}</Field></div>
         <div className="mt-3 overflow-x-auto"><table className="tbl"><thead><tr><th>Type</th><th>Account Head</th><th>Rate</th><th>Tax Amount</th><th /></tr></thead><tbody>
           {form.taxes.map((row, i) => (
             <tr key={i} className={canEdit ? "cursor-pointer" : undefined} onClick={() => canEdit && setTaxModal({ row, index: i })}>
@@ -251,7 +253,7 @@ export default function SalesInvoiceForm({ invoice, onSave }) {
 
       <Section title="Totals"><div className="grid gap-4 md:grid-cols-3"><Field label="Grand Total"><ReadOnly value={`₦${grandTotal.toLocaleString()}`} /></Field><Field label="Rounding Adjustment"><ReadOnly value={`₦${roundingAdjustment.toLocaleString()}`} /></Field><Field label="Rounded Total"><ReadOnly value={`₦${roundedTotal.toLocaleString()}`} /></Field></div><div className="mt-4 grid gap-4 md:grid-cols-2"><Field label="Outstanding Amount"><ReadOnly value={`₦${Number(invoice?.outstanding_amount ?? roundedTotal).toLocaleString()}`} /></Field><Field label="In Words"><ReadOnly value={invoice?.in_words || "Calculated on save"} /></Field></div></Section>
 
-      <Section title="Accounting" collapsible open={accountingOpen} onToggle={() => setAccountingOpen(!accountingOpen)}><div className="grid gap-4 md:grid-cols-3"><Field label="Debit To">{select(form.debit_to, (v) => update("debit_to", v), options.debit, form.company ? "Search receivable account..." : "Select a company first", undefined, !form.company)}</Field><Field label="Income Account">{select(form.income_account, (v) => update("income_account", v), options.income, form.company ? "Search income account..." : "Select a company first", undefined, !form.company)}</Field><Field label="Cost Center">{select(form.cost_center, (v) => update("cost_center", v), options.costs, form.company ? "Search cost center..." : "Select a company first", undefined, !form.company)}</Field></div><div className="mt-4"><Field label="Remarks"><textarea className="input" rows={3} value={form.remarks || ""} onChange={(e) => update("remarks", e.target.value)} disabled={!canEdit} /></Field></div></Section>
+      <Section title="Accounting" collapsible open={accountingOpen} onToggle={() => setAccountingOpen(!accountingOpen)}><div className="grid gap-4 md:grid-cols-3"><Field label="Debit To">{select(form.debit_to, (v) => update("debit_to", v), options.debit, form.company ? "Search receivable account..." : "Select a company first", undefined, !form.company, "Account")}</Field><Field label="Income Account">{select(form.income_account, (v) => update("income_account", v), options.income, form.company ? "Search income account..." : "Select a company first", undefined, !form.company, "Account")}</Field><Field label="Cost Center">{select(form.cost_center, (v) => update("cost_center", v), options.costs, form.company ? "Search cost center..." : "Select a company first", undefined, !form.company, "Cost Center")}</Field></div><div className="mt-4"><Field label="Remarks"><textarea className="input" rows={3} value={form.remarks || ""} onChange={(e) => update("remarks", e.target.value)} disabled={!canEdit} /></Field></div></Section>
 
       <Section title="More Information" collapsible open={moreOpen} onToggle={() => setMoreOpen(!moreOpen)}><div className="grid gap-4 md:grid-cols-2"><Field label="Is Return (Credit Note)"><label className="flex h-9 items-center gap-2"><input type="checkbox" checked={Boolean(Number(form.is_return))} onChange={(e) => toggleReturn(e.target.checked)} disabled={!canEdit} /> Yes</label></Field>{Boolean(Number(form.is_return)) && <Field label="Return Against">{select(form.return_against, (v) => update("return_against", v), options.returnInvoices, "Search submitted sales invoice...")}</Field>}<Field label="Letter Head">{select(form.letter_head, (v) => update("letter_head", v), options.letterHeads, "letter head")}</Field><Field label="Print Heading">{select(form.select_print_heading, (v) => update("select_print_heading", v), options.printHeadings, "print heading")}</Field></div></Section>
 
@@ -272,6 +274,7 @@ export default function SalesInvoiceForm({ invoice, onSave }) {
         onConfirm={() => { removeRow(deleteTarget.table, deleteTarget.index); setDeleteTarget(null); }}
         title="Remove this row?" description="This action cannot be undone." confirmLabel="Remove"
       />
+      <QuickCreateModal open={Boolean(quickCreate)} onClose={() => setQuickCreate(null)} doctype={quickCreate?.doctype} defaults={form.company ? { company: form.company } : {}} onCreated={(name) => { quickCreate?.apply(name); setQuickCreate(null); }} />
     </form>
   );
 }

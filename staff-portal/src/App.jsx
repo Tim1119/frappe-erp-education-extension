@@ -68,6 +68,11 @@ import EmployeeAnalyticsPage from "@/pages/admin/hr/reports/EmployeeAnalyticsPag
 import EmployeeLeaveBalancePage from "@/pages/admin/hr/reports/EmployeeLeaveBalancePage";
 import EmployeeLeaveBalanceSummaryPage from "@/pages/admin/hr/reports/EmployeeLeaveBalanceSummaryPage";
 import EmployeeAdvanceSummaryPage from "@/pages/admin/hr/reports/EmployeeAdvanceSummaryPage";
+import UnpaidExpenseClaimPage from "@/pages/admin/hr/reports/UnpaidExpenseClaimPage";
+import VehicleExpensesPage from "@/pages/admin/hr/reports/VehicleExpensesPage";
+import AccountingDocumentList from "@/pages/admin/accounting/components/AccountingDocumentList";
+import AccountingDocumentFormPage from "@/pages/admin/accounting/components/AccountingDocumentFormPage";
+import AccountingDocumentProfile from "@/pages/admin/accounting/components/AccountingDocumentProfile";
 import EmployeeExitsPage from "@/pages/admin/hr/reports/EmployeeExitsPage";
 
 // HR Other Reports
@@ -435,6 +440,36 @@ export default function App() {
         <Route path="employee-leave-balance" element={<EmployeeLeaveBalancePage />} />
         <Route path="employee-leave-balance-summary" element={<EmployeeLeaveBalanceSummaryPage />} />
         <Route path="employee-advance-summary" element={<EmployeeAdvanceSummaryPage />} />
+        <Route path="unpaid-expense-claim" element={<UnpaidExpenseClaimPage />} />
+        <Route path="vehicle-expenses" element={<VehicleExpensesPage />} />
+        <Route path="expense-claim-types" element={<AccountingDocumentList doctype="Expense Claim Type" base="expense-claim-types" title="Expense Claim Types" />} />
+        <Route path="expense-claim-types/new" element={<AccountingDocumentFormPage doctype="Expense Claim Type" base="expense-claim-types" />} />
+        <Route path="expense-claim-types/:id/edit" element={<AccountingDocumentFormPage doctype="Expense Claim Type" base="expense-claim-types" />} />
+        <Route path="expense-claim-types/:id" element={<AccountingDocumentProfile doctype="Expense Claim Type" base="expense-claim-types" />} />
+        <Route path="purposes-of-travel" element={<AccountingDocumentList doctype="Purpose of Travel" base="purposes-of-travel" title="Purposes of Travel" />} />
+        <Route path="purposes-of-travel/new" element={<AccountingDocumentFormPage doctype="Purpose of Travel" base="purposes-of-travel" />} />
+        <Route path="purposes-of-travel/:id/edit" element={<AccountingDocumentFormPage doctype="Purpose of Travel" base="purposes-of-travel" />} />
+        <Route path="purposes-of-travel/:id" element={<AccountingDocumentProfile doctype="Purpose of Travel" base="purposes-of-travel" />} />
+        <Route path="additional-salaries" element={<AccountingDocumentList doctype="Additional Salary" base="additional-salaries" title="Additional Salaries" />} />
+        <Route path="additional-salaries/new" element={<AccountingDocumentFormPage doctype="Additional Salary" base="additional-salaries" />} />
+        <Route path="additional-salaries/:id/edit" element={<AccountingDocumentFormPage doctype="Additional Salary" base="additional-salaries" />} />
+        <Route path="additional-salaries/:id" element={<AccountingDocumentProfile doctype="Additional Salary" base="additional-salaries" />} />
+        <Route path="vehicles" element={<AccountingDocumentList doctype="Vehicle" base="vehicles" title="Vehicles" />} />
+        <Route path="vehicles/new" element={<AccountingDocumentFormPage doctype="Vehicle" base="vehicles" />} />
+        <Route path="vehicles/:id/edit" element={<AccountingDocumentFormPage doctype="Vehicle" base="vehicles" />} />
+        <Route path="vehicles/:id" element={<AccountingDocumentProfile doctype="Vehicle" base="vehicles" />} />
+        <Route path="drivers" element={<AccountingDocumentList doctype="Driver" base="drivers" title="Drivers" />} />
+        <Route path="drivers/new" element={<AccountingDocumentFormPage doctype="Driver" base="drivers" />} />
+        <Route path="drivers/:id/edit" element={<AccountingDocumentFormPage doctype="Driver" base="drivers" />} />
+        <Route path="drivers/:id" element={<AccountingDocumentProfile doctype="Driver" base="drivers" />} />
+        <Route path="vehicle-service-items" element={<AccountingDocumentList doctype="Vehicle Service Item" base="vehicle-service-items" title="Vehicle Service Items" />} />
+        <Route path="vehicle-service-items/new" element={<AccountingDocumentFormPage doctype="Vehicle Service Item" base="vehicle-service-items" />} />
+        <Route path="vehicle-service-items/:id/edit" element={<AccountingDocumentFormPage doctype="Vehicle Service Item" base="vehicle-service-items" />} />
+        <Route path="vehicle-service-items/:id" element={<AccountingDocumentProfile doctype="Vehicle Service Item" base="vehicle-service-items" />} />
+        <Route path="vehicle-logs" element={<AccountingDocumentList doctype="Vehicle Log" base="vehicle-logs" title="Vehicle Logs" />} />
+        <Route path="vehicle-logs/new" element={<AccountingDocumentFormPage doctype="Vehicle Log" base="vehicle-logs" />} />
+        <Route path="vehicle-logs/:id/edit" element={<AccountingDocumentFormPage doctype="Vehicle Log" base="vehicle-logs" />} />
+        <Route path="vehicle-logs/:id" element={<AccountingDocumentProfile doctype="Vehicle Log" base="vehicle-logs" />} />
         <Route path="employee-exits" element={<EmployeeExitsPage />} />
 
         {/* HR Other Reports */}

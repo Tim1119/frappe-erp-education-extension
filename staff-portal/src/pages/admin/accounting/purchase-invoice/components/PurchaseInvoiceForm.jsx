@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, ChevronRight, Pencil, Plus, Trash2 } from "lucide-react";
 import SearchableSelect from "@/components/shared/SearchableSelect";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import QuickCreateModal from "@/components/shared/QuickCreateModal";
 import { Button } from "@/components/ui/button";
 import { getAccountingLinkOptions } from "@/services/accounting/documentService";
 import { callMethod } from "@/services/frappeClient";
@@ -159,6 +160,7 @@ export default function PurchaseInvoiceForm({ initial, onSave, submitLabel = "Sa
   const [scheduleModal, setScheduleModal] = useState(null);
   const [advanceModal, setAdvanceModal] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null); // { table, index }
+  const [quickCreate, setQuickCreate] = useState(null);
 
   function upsertRow(table, row, index) {
     setForm((f) => {
@@ -194,7 +196,7 @@ export default function PurchaseInvoiceForm({ initial, onSave, submitLabel = "Sa
       {tab === "Details" && <>
         <CollapsibleSection title="Information" open={open.information} onToggle={() => toggle("information")}>
           <Field label="Series"><select className="input" value={form.naming_series} onChange={(e) => set("naming_series", e.target.value)}>{NAMING_SERIES.map((s) => <option key={s} value={s}>{s}</option>)}</select></Field>
-          <Field label="Supplier" required><SearchableSelect value={form.supplier} onChange={onSupplierChange} options={suppliers} placeholder="Search supplier..." /></Field>
+          <Field label="Supplier" required><SearchableSelect value={form.supplier} onChange={onSupplierChange} options={suppliers} placeholder="Search supplier..." onCreate={() => setQuickCreate({ doctype: "Supplier", apply: onSupplierChange })} createLabel="Create new Supplier" /></Field>
           <Field label="Supplier Name"><Read value={form.supplier_name} /></Field>
           <Field label="Posting Date" required>
             <input className="input" type="date" disabled={!form.set_posting_time} value={form.posting_date || ""} onChange={(e) => set("posting_date", e.target.value)} />
@@ -205,7 +207,7 @@ export default function PurchaseInvoiceForm({ initial, onSave, submitLabel = "Sa
           <Field label="Edit Posting Date and Time">
             <label className="flex min-h-10 items-center gap-2 text-sm font-medium"><input type="checkbox" checked={Boolean(form.set_posting_time)} onChange={(e) => onSetPostingTime(e.target.checked)} /> Edit Posting Date and Time</label>
           </Field>
-          <Field label="Company"><SearchableSelect value={form.company} onChange={onCompanyChange} options={companies} placeholder="Search company..." /></Field>
+          <Field label="Company"><SearchableSelect value={form.company} onChange={onCompanyChange} options={companies} placeholder="Search company..." onCreate={() => setQuickCreate({ doctype: "Company", apply: onCompanyChange })} createLabel="Create new Company" /></Field>
           <Field label="Due Date"><input className="input" type="date" value={form.due_date || ""} onChange={(e) => set("due_date", e.target.value)} /></Field>
           <Field label="Is Return (Debit Note)"><label className="flex min-h-10 items-center gap-2 text-sm font-medium"><input type="checkbox" checked={Boolean(form.is_return)} onChange={(e) => set("is_return", e.target.checked ? 1 : 0)} /> Is Return</label></Field>
           <Field label="Is Paid"><label className="flex min-h-10 items-center gap-2 text-sm font-medium"><input type="checkbox" checked={Boolean(form.is_paid)} onChange={(e) => set("is_paid", e.target.checked ? 1 : 0)} /> Is Paid</label></Field>
@@ -217,7 +219,7 @@ export default function PurchaseInvoiceForm({ initial, onSave, submitLabel = "Sa
         </CollapsibleSection>
 
         <CollapsibleSection title="Accounting Dimensions" open={Boolean(open.dimensions)} onToggle={() => toggle("dimensions")}>
-          <Field label="Cost Center"><SearchableSelect value={form.cost_center || ""} onChange={(v) => set("cost_center", v)} options={costCenters} disabled={!form.company} placeholder={form.company ? "Search cost center..." : "Select a company first"} /></Field>
+          <Field label="Cost Center"><SearchableSelect value={form.cost_center || ""} onChange={(v) => set("cost_center", v)} options={costCenters} disabled={!form.company} placeholder={form.company ? "Search cost center..." : "Select a company first"} onCreate={form.company ? () => setQuickCreate({ doctype: "Cost Center", apply: (v) => set("cost_center", v) }) : undefined} createLabel="Create new Cost Center" /></Field>
           <Field label="Project"><input className="input" value={form.project || ""} onChange={(e) => set("project", e.target.value)} /></Field>
         </CollapsibleSection>
 
@@ -252,7 +254,7 @@ export default function PurchaseInvoiceForm({ initial, onSave, submitLabel = "Sa
 
         <CollapsibleSection title="Taxes and Charges" open={Boolean(open.taxes)} onToggle={() => toggle("taxes")}
           action={<Button type="button" variant="outline" size="sm" onClick={() => setTaxModal({ row: null })}><Plus size={14} className="mr-1" /> Add Row</Button>}>
-          <Field label="Purchase Taxes and Charges Template"><SearchableSelect value={form.taxes_and_charges || ""} onChange={(v) => set("taxes_and_charges", v)} options={taxTemplates} disabled={!form.company} placeholder={form.company ? "Search template..." : "Select a company first"} /></Field>
+          <Field label="Purchase Taxes and Charges Template"><SearchableSelect value={form.taxes_and_charges || ""} onChange={(v) => set("taxes_and_charges", v)} options={taxTemplates} disabled={!form.company} placeholder={form.company ? "Search template..." : "Select a company first"} onCreate={form.company ? () => setQuickCreate({ doctype: "Purchase Taxes and Charges Template", apply: (v) => set("taxes_and_charges", v) }) : undefined} createLabel="Create new Purchase Taxes and Charges Template" /></Field>
           <Field label="Tax Category"><input className="input" value={form.tax_category || ""} onChange={(e) => set("tax_category", e.target.value)} /></Field>
           <div style={{ gridColumn: "1 / -1", overflowX: "auto" }}>
             <table className="tbl">
@@ -291,7 +293,7 @@ export default function PurchaseInvoiceForm({ initial, onSave, submitLabel = "Sa
       {tab === "Payments" && <>
         <CollapsibleSection title="Payments" open={Boolean(open.payments)} onToggle={() => toggle("payments")}>
           <Field label="Mode of Payment"><input className="input" value={form.mode_of_payment || ""} onChange={(e) => set("mode_of_payment", e.target.value)} /></Field>
-          <Field label="Cash/Bank Account"><SearchableSelect value={form.cash_bank_account || ""} onChange={(v) => set("cash_bank_account", v)} options={cashAccounts} disabled={!form.company} placeholder={form.company ? "Search account..." : "Select a company first"} /></Field>
+          <Field label="Cash/Bank Account"><SearchableSelect value={form.cash_bank_account || ""} onChange={(v) => set("cash_bank_account", v)} options={cashAccounts} disabled={!form.company} placeholder={form.company ? "Search account..." : "Select a company first"} onCreate={form.company ? () => setQuickCreate({ doctype: "Account", apply: (v) => set("cash_bank_account", v) }) : undefined} createLabel="Create new Account" /></Field>
           <Field label="Paid Amount"><input className="input" type="number" step="any" value={form.paid_amount ?? ""} onChange={(e) => set("paid_amount", e.target.value)} /></Field>
         </CollapsibleSection>
 
@@ -320,7 +322,7 @@ export default function PurchaseInvoiceForm({ initial, onSave, submitLabel = "Sa
       {tab === "Terms" && <>
         <CollapsibleSection title="Payment Terms" open={Boolean(open.terms)} onToggle={() => toggle("terms")}
           action={<Button type="button" variant="outline" size="sm" onClick={() => setScheduleModal({ row: null })}><Plus size={14} className="mr-1" /> Add Row</Button>}>
-          <Field label="Payment Terms Template"><SearchableSelect value={form.payment_terms_template || ""} onChange={(v) => set("payment_terms_template", v)} options={paymentTermsTemplates} /></Field>
+          <Field label="Payment Terms Template"><SearchableSelect value={form.payment_terms_template || ""} onChange={(v) => set("payment_terms_template", v)} options={paymentTermsTemplates} onCreate={() => setQuickCreate({ doctype: "Payment Terms Template", apply: (v) => set("payment_terms_template", v) })} createLabel="Create new Payment Terms Template" /></Field>
           <div style={{ gridColumn: "1 / -1", overflowX: "auto" }}>
             <table className="tbl">
               <thead><tr><th>Due Date</th><th>Invoice Portion</th><th>Payment Amount</th><th /></tr></thead>
@@ -349,7 +351,7 @@ export default function PurchaseInvoiceForm({ initial, onSave, submitLabel = "Sa
         </CollapsibleSection>
 
         <CollapsibleSection title="Accounting Details" open={Boolean(open.accountingDetails)} onToggle={() => toggle("accountingDetails")}>
-          <Field label="Credit To" required><SearchableSelect value={form.credit_to || ""} onChange={(v) => set("credit_to", v)} options={creditAccounts} disabled={!form.company} placeholder={form.company ? "Search account..." : "Select a company first"} /></Field>
+          <Field label="Credit To" required><SearchableSelect value={form.credit_to || ""} onChange={(v) => set("credit_to", v)} options={creditAccounts} disabled={!form.company} placeholder={form.company ? "Search account..." : "Select a company first"} onCreate={form.company ? () => setQuickCreate({ doctype: "Account", apply: (v) => set("credit_to", v) }) : undefined} createLabel="Create new Account" /></Field>
           <Field label="Is Opening Entry"><select className="input" value={form.is_opening || "No"} onChange={(e) => set("is_opening", e.target.value)}><option>No</option><option>Yes</option></select></Field>
         </CollapsibleSection>
 
@@ -385,6 +387,7 @@ export default function PurchaseInvoiceForm({ initial, onSave, submitLabel = "Sa
         onConfirm={() => { removeRow(deleteTarget.table, deleteTarget.index); setDeleteTarget(null); }}
         title="Remove this row?" description="This action cannot be undone." confirmLabel="Remove"
       />
+      <QuickCreateModal open={Boolean(quickCreate)} onClose={() => setQuickCreate(null)} doctype={quickCreate?.doctype} defaults={form.company ? { company: form.company } : {}} onCreated={(name) => { quickCreate?.apply(name); setQuickCreate(null); }} />
     </form>
   );
 }

@@ -1,7 +1,28 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { Search, X, ChevronDown } from "lucide-react";
+import { Search, X, ChevronDown, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import QuickCreateModal from "@/components/shared/QuickCreateModal";
+
+const INFERRED_DOCTYPES = {
+  "academic year": "Academic Year", "academic term": "Academic Term", class: "Program", program: "Program",
+  "class arm": "Student Group", "student group": "Student Group", subject: "Course", course: "Course",
+  classroom: "Room", room: "Room", "grading scale": "Grading Scale", "assessment group": "Assessment Group",
+  "fee category": "Fees Category", "fees category": "Fees Category", "student category": "Student Category",
+  "student batch name": "Student Batch Name", guardian: "Guardian", "leave type": "Leave Type",
+  shift: "Shift Type", "shift type": "Shift Type", "purpose of travel": "Purpose of Travel",
+  "expense claim type": "Expense Claim Type", "holiday list": "Holiday List", "cost center": "Cost Center",
+  company: "Company", department: "Department", designation: "Designation", "employee grade": "Employee Grade",
+  "mode of payment": "Mode of Payment", "salary structure": "Salary Structure", item: "Item", project: "Project",
+  task: "Task", "payment terms template": "Payment Terms Template", "tax category": "Tax Category",
+};
+const NEVER_INFER = ["employee", "student", "instructor", "teacher", "user", "account"];
+
+function inferDoctype(label, placeholder) {
+  const source = `${label || ""} ${placeholder || ""}`.toLowerCase().replace(/\b(search|select|find|new|active|first)\b/g, " ").replace(/\.{3}/g, " ");
+  if (NEVER_INFER.some((name) => new RegExp(`\\b${name}\\b`).test(source))) return null;
+  return Object.entries(INFERRED_DOCTYPES).sort(([a], [b]) => b.length - a.length).find(([key]) => source.includes(key))?.[1] || null;
+}
 
 /**
  * A searchable dropdown select (combobox) built for the portal.
@@ -29,12 +50,19 @@ export default function SearchableSelect({
   options = [],
   displayField,
   placeholder = "Select...",
-  label = "item",
+  label,
   disabled = false,
   showId = false,
+  onCreate,
+  createLabel = "Create new",
+  linkedDoctype,
+  onRefreshOptions,
+  parentDefaults = {},
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [quickCreateOpen, setQuickCreateOpen] = useState(false);
+  const [createdOptions, setCreatedOptions] = useState([]);
   const [position, setPosition] = useState({ top: 0, left: 0, width: 0, maxHeight: 260, openUpward: false });
   const wrapperRef = useRef(null);
   const inputRef = useRef(null);
@@ -46,9 +74,11 @@ export default function SearchableSelect({
     return opt.course_name || opt.guardian_name || opt.instructor_name || opt.name || "";
   };
 
-  const selected = options.find((o) => o.name === value);
+  const effectiveDoctype = linkedDoctype === null ? null : linkedDoctype || inferDoctype(label, placeholder);
+  const allOptions = [...options, ...createdOptions.filter((created) => !options.some((option) => option.name === created.name))];
+  const selected = allOptions.find((o) => o.name === value);
 
-  const filtered = options.filter((o) => {
+  const filtered = allOptions.filter((o) => {
     const s = search.toLowerCase();
     return (
       (o.name || "").toLowerCase().includes(s) ||
@@ -128,7 +158,7 @@ export default function SearchableSelect({
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder={`Find ${label}...`}
+                placeholder={`Find ${label || "item"}...`}
                 className="flex-1 border-0 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
                 onClick={(e) => e.stopPropagation()}
               />
@@ -173,6 +203,21 @@ export default function SearchableSelect({
                 })
               )}
             </div>
+            {(onCreate || effectiveDoctype) && (
+              <div
+                className="flex cursor-pointer items-center gap-2 border-t px-3 py-2 text-sm text-primary hover:bg-accent"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsOpen(false);
+                  setSearch("");
+                  if (onCreate) onCreate(); else setQuickCreateOpen(true);
+                }}
+              >
+                <Plus size={14} />
+                <span>{onCreate ? createLabel : `Create new ${effectiveDoctype}`}</span>
+              </div>
+            )}
           </div>,
           document.body,
         )
@@ -197,7 +242,7 @@ export default function SearchableSelect({
         <span className={cn("truncate", value ? "text-foreground" : "text-muted-foreground")}>
           {selected
             ? (showId ? `${selected.name} — ${getDisplay(selected)}` : getDisplay(selected))
-            : placeholder}
+            : value || placeholder}
         </span>
         <div className="flex items-center gap-1">
           {value && (
@@ -216,6 +261,18 @@ export default function SearchableSelect({
         </div>
       </button>
       {dropdownContent}
+      <QuickCreateModal
+        open={quickCreateOpen}
+        onClose={() => setQuickCreateOpen(false)}
+        doctype={effectiveDoctype}
+        defaults={parentDefaults}
+        onCreated={(name) => {
+          setCreatedOptions((current) => current.some((option) => option.name === name) ? current : [...current, { name }]);
+          onChange(name);
+          onRefreshOptions?.();
+          setQuickCreateOpen(false);
+        }}
+      />
     </div>
   );
 }

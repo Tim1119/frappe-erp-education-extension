@@ -104,3 +104,63 @@ def get_portal_context():
         "school_abbreviation": school_abbreviation,
         "school_logo": school_logo,
     }
+
+
+@frappe.whitelist()
+def get_quick_entry_fields(doctype):
+    """Return the minimal set of fields needed to quick-create a record."""
+    if not doctype:
+        return []
+
+    meta = frappe.get_meta(doctype)
+    skip_types = {
+        "Section Break",
+        "Column Break",
+        "Tab Break",
+        "HTML",
+        "Button",
+        "Heading",
+        "Fold",
+        "Table",
+    }
+
+    all_visible = []
+    priority = []
+
+    for field in meta.fields:
+        if field.fieldtype in skip_types or field.hidden:
+            continue
+
+        field_data = {
+            "fieldname": field.fieldname,
+            "label": field.label or field.fieldname,
+            "fieldtype": field.fieldtype,
+            "reqd": field.reqd,
+            "options": field.options,
+            "default": field.default,
+        }
+
+        all_visible.append(field_data)
+        if field.reqd or field.in_list_view:
+            priority.append(field_data)
+
+    result = priority if priority else all_visible
+    return result[:8]
+
+
+@frappe.whitelist()
+def quick_create_document(doctype, data):
+    """Create a document with the supplied minimal quick-entry fields."""
+    import json
+
+    if isinstance(data, str):
+        data = json.loads(data)
+
+    doc = frappe.new_doc(doctype)
+    for key, value in data.items():
+        if hasattr(doc, key):
+            doc.set(key, value)
+
+    doc.insert()
+    frappe.db.commit()
+    return {"name": doc.name}

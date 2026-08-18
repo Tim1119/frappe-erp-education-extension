@@ -3,6 +3,7 @@ import { ChevronDown, ChevronRight, Plus, Trash2 } from "lucide-react";
 import SearchableSelect from "@/components/shared/SearchableSelect";
 import Modal from "@/components/shared/Modal";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
+import QuickCreateModal from "@/components/shared/QuickCreateModal";
 import { Button } from "@/components/ui/button";
 import { getAccountingLinkOptions } from "@/services/accounting/documentService";
 import { callMethod } from "@/services/frappeClient";
@@ -79,7 +80,7 @@ function formatChildValue(field, value) {
   return String(value);
 }
 
-function FieldInput({ field, value, onChange, form, row = {} }) {
+function FieldInput({ field, value, onChange, form, row = {}, onQuickCreate, refreshKey }) {
   const [options, setOptions] = useState([]);
   const dynamicDoctype = field.fieldtype === "Dynamic Link" ? row[field.options] : field.options;
   const companyRequired = ["paid_from", "paid_to", "cost_center", "account", "bank_account", "receivable_payable_account", "default_advance_account", "bank_cash_account", "income_account"].includes(field.fieldname);
@@ -92,9 +93,9 @@ function FieldInput({ field, value, onChange, form, row = {} }) {
       payment_type: form.payment_type, reference_type: row.reference_doctype || row.reference_type,
       account: row.account, customer: form.customer,
     }).then((data) => setOptions(data || [])).catch(() => setOptions([]));
-  }, [dynamicDoctype, disabled, field.fieldname, field.fieldtype, form.company, form.customer, form.party, form.party_type, form.payment_type, form.supplier, row.account, row.party, row.party_type, row.reference_doctype, row.reference_type]);
+  }, [dynamicDoctype, disabled, field.fieldname, field.fieldtype, form.company, form.customer, form.party, form.party_type, form.payment_type, form.supplier, refreshKey, row.account, row.party, row.party_type, row.reference_doctype, row.reference_type]);
   if (field.read_only || field.fieldtype === "Read Only") return <Read value={value} />;
-  if (["Link", "Dynamic Link"].includes(field.fieldtype)) return <SearchableSelect value={value || ""} onChange={onChange} options={options} disabled={disabled} placeholder={disabled ? (companyRequired && !form.company ? "Select a company first" : "Complete the dependent field first") : `Search ${field.label || dynamicDoctype}...`} />;
+  if (["Link", "Dynamic Link"].includes(field.fieldtype)) return <SearchableSelect value={value || ""} onChange={onChange} options={options} disabled={disabled} placeholder={disabled ? (companyRequired && !form.company ? "Select a company first" : "Complete the dependent field first") : `Search ${field.label || dynamicDoctype}...`} linkedDoctype={!["Employee", "Student", "Instructor", "User", "Account"].includes(dynamicDoctype) ? dynamicDoctype : null} parentDefaults={form.company ? { company: form.company } : {}} onCreate={dynamicDoctype && !disabled ? () => onQuickCreate({ doctype: dynamicDoctype, label: field.label, apply: onChange }) : undefined} createLabel={`Create new ${field.label || dynamicDoctype}`} />;
   if (field.fieldtype === "Select") return <select className="input" value={value || ""} onChange={(e) => onChange(e.target.value)}><option value="">Select...</option>{String(field.options || "").split("\n").filter(Boolean).map((option) => <option key={option}>{option}</option>)}</select>;
   if (field.fieldtype === "Check") return <label className="flex min-h-10 items-center gap-2 text-sm font-medium"><input type="checkbox" checked={Boolean(Number(value))} onChange={(e) => onChange(e.target.checked ? 1 : 0)} /> Yes</label>;
   if (LONG.has(field.fieldtype)) return <textarea className="input" rows={4} value={value || ""} onChange={(e) => onChange(e.target.value)} />;
@@ -102,8 +103,8 @@ function FieldInput({ field, value, onChange, form, row = {} }) {
   return <input className="input" type={type} step={type === "number" ? "any" : undefined} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
 }
 
-function FormField({ field, value, onChange, form, row }) {
-  return <div className="field" style={LONG.has(field.fieldtype) ? { gridColumn: "1 / -1" } : undefined}><label className="label">{field.label || field.fieldname}{field.reqd ? <span style={{ color: "var(--danger)", marginLeft: 3 }}>*</span> : null}</label><FieldInput field={field} value={value} onChange={onChange} form={form} row={row} />{field.description ? <p className="text-xs text-muted-foreground">{field.description}</p> : null}</div>;
+function FormField({ field, value, onChange, form, row, onQuickCreate, refreshKey }) {
+  return <div className="field" style={LONG.has(field.fieldtype) ? { gridColumn: "1 / -1" } : undefined}><label className="label">{field.label || field.fieldname}{field.reqd ? <span style={{ color: "var(--danger)", marginLeft: 3 }}>*</span> : null}</label><FieldInput field={field} value={value} onChange={onChange} form={form} row={row} onQuickCreate={onQuickCreate} refreshKey={refreshKey} />{field.description ? <p className="text-xs text-muted-foreground">{field.description}</p> : null}</div>;
 }
 
 // Compact summary table (columns = the child doctype's own in_list_view
@@ -111,7 +112,7 @@ function FormField({ field, value, onChange, form, row }) {
 // row -- replaces dumping every child field into an always-expanded card,
 // which got unreadable once a row has a dozen+ fields (Journal Entry
 // Account, Payment Entry Reference).
-function ChildTable({ field, rows, form, onChange }) {
+function ChildTable({ field, rows, form, onChange, onQuickCreate, refreshKey }) {
   const childFields = field.child_fields || [];
   const summaryFields = childFields.filter((f) => f.in_list_view).length ? childFields.filter((f) => f.in_list_view) : childFields.slice(0, 4);
   const [modal, setModal] = useState(null); // { row, index } | null
@@ -147,7 +148,7 @@ function ChildTable({ field, rows, form, onChange }) {
         open={Boolean(modal)} onClose={() => setModal(null)} title={field.label}
         footer={<><Button type="button" variant="outline" onClick={() => setModal(null)}>Cancel</Button><Button type="button" variant="default" onClick={saveModal}>Save Row</Button></>}
       >
-        {modal ? <div className="grid-form">{childFields.map((f) => dependencyMet(f.depends_on, modal.row) && <FormField key={f.fieldname} field={f} value={modal.row[f.fieldname]} onChange={(v) => setModalField(f.fieldname, v)} form={form} row={modal.row} />)}</div> : null}
+        {modal ? <div className="grid-form">{childFields.map((f) => dependencyMet(f.depends_on, modal.row) && <FormField key={f.fieldname} field={f} value={modal.row[f.fieldname]} onChange={(v) => setModalField(f.fieldname, v)} form={form} row={modal.row} onQuickCreate={onQuickCreate} refreshKey={refreshKey} />)}</div> : null}
       </Modal>
       <ConfirmDialog
         open={deleteIndex !== null} onClose={() => setDeleteIndex(null)}
@@ -161,6 +162,7 @@ function ChildTable({ field, rows, form, onChange }) {
 export default function AccountingDocumentForm({ doctype, meta, initial, onSave, submitLabel = "Save" }) {
   const defaults = useMemo(() => Object.fromEntries(meta.fields.filter((field) => field.default !== undefined && field.default !== null).map((field) => [field.fieldname, field.default])), [meta]);
   const [form, setForm] = useState({ ...defaults, ...(initial || {}) });
+  const [quickCreate, setQuickCreate] = useState(null); const [linkRefresh, setLinkRefresh] = useState(0);
   useEffect(() => setForm({ ...defaults, ...(initial || {}) }), [defaults, initial]);
 
   // Posting Date starts locked (matching real Desk's default posture on a
@@ -189,7 +191,7 @@ export default function AccountingDocumentForm({ doctype, meta, initial, onSave,
   }
 
   return <form onSubmit={(event) => { event.preventDefault(); onSave(form); }}><div className="mb-4 flex flex-wrap gap-2">{visibleTabs.length > 1 && visibleTabs.map((tab) => <button type="button" key={tab} className={`btn ${active === tab ? "btn-primary" : "btn-secondary"}`} onClick={() => setActive(tab)}>{tab}</button>)}</div><div className="space-y-4">{Object.entries(tabs[active] || {}).filter(([, config]) => config.fields.length).map(([section, config]) => { const expanded = !config.collapsible || open[`${active}-${section}`]; return <div className="panel" key={section}><button type="button" className={`panel-head w-full text-left ${config.collapsible ? "cursor-pointer" : ""}`} onClick={() => config.collapsible && setOpen((current) => ({ ...current, [`${active}-${section}`]: !expanded }))}><div className="panel-title flex items-center gap-2">{config.collapsible ? expanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />: null}{section}</div></button>{expanded ? <div className="grid-form" style={{ padding: 20 }}>{config.fields.map((field) => {
-    if (field.fieldtype === "Table") return dependencyMet(field.depends_on, form) ? <ChildTable key={field.fieldname} field={field} rows={form[field.fieldname] || []} form={form} onChange={(value) => set(field.fieldname, value)} /> : null;
+    if (field.fieldtype === "Table") return dependencyMet(field.depends_on, form) ? <ChildTable key={field.fieldname} field={field} rows={form[field.fieldname] || []} form={form} onChange={(value) => set(field.fieldname, value)} onQuickCreate={setQuickCreate} refreshKey={linkRefresh} /> : null;
     if (field.fieldname === "posting_date" && hasPostingDate && meta.is_submittable) {
       return (
         <div className="field" key={field.fieldname}>
@@ -201,6 +203,6 @@ export default function AccountingDocumentForm({ doctype, meta, initial, onSave,
         </div>
       );
     }
-    return <FormField key={field.fieldname} field={field} value={form[field.fieldname]} onChange={(value) => set(field.fieldname, value)} form={form} />;
-  })}</div> : null}</div>; })}</div><div className="mt-4 flex justify-end"><button className="btn btn-primary">{submitLabel}</button></div></form>;
+    return <FormField key={field.fieldname} field={field} value={form[field.fieldname]} onChange={(value) => set(field.fieldname, value)} form={form} onQuickCreate={setQuickCreate} refreshKey={linkRefresh} />;
+  })}</div> : null}</div>; })}</div><div className="mt-4 flex justify-end"><button className="btn btn-primary">{submitLabel}</button></div><QuickCreateModal open={Boolean(quickCreate)} onClose={() => setQuickCreate(null)} doctype={quickCreate?.doctype} defaults={form.company ? { company: form.company } : {}} onCreated={(name) => { quickCreate?.apply(name); setLinkRefresh((value) => value + 1); setQuickCreate(null); }} /></form>;
 }

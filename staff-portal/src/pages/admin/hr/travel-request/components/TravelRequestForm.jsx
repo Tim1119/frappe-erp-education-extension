@@ -153,7 +153,7 @@ export default function TravelRequestForm({ doc, onSave }) {
             <option value="">Select...</option><option>Domestic</option><option>International</option>
           </select>
         } />
-        <F l="Purpose of Travel *" c={<SearchableSelect value={f.purpose_of_travel} onChange={(v) => set("purpose_of_travel", v)} options={purposes} />} />
+        <F l="Purpose of Travel *" c={<SearchableSelect value={f.purpose_of_travel} onChange={(v) => set("purpose_of_travel", v)} options={purposes} linkedDoctype="Purpose of Travel" />} />
         <F l="Travel Funding" c={
           <select className="input" value={f.travel_funding} onChange={(e) => set("travel_funding", e.target.value)}>
             <option value="">Select...</option>
@@ -189,7 +189,7 @@ export default function TravelRequestForm({ doc, onSave }) {
         ))}
         <F l="Identification Document Type" c={<SearchableSelect value={f.personal_id_type} onChange={(v) => set("personal_id_type", v)} options={ids} />} />
         <F l="Company" c={<R v={f.company} />} />
-        <F l="Cost Center" c={<SearchableSelect value={f.cost_center || ""} onChange={(v) => set("cost_center", v)} options={costCenters} disabled={!f.company} placeholder={f.company ? "Search cost center..." : "Select an employee first"} />} />
+        <F l="Cost Center" c={<SearchableSelect value={f.cost_center || ""} onChange={(v) => set("cost_center", v)} options={costCenters} disabled={!f.company} placeholder={f.company ? "Search cost center..." : "Select an employee first"} linkedDoctype="Cost Center" parentDefaults={f.company ? { company: f.company } : {}} />} />
       </div>
 
       <div className="panel-head">

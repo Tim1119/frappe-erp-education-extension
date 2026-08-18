@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
 import SearchableSelect from "@/components/shared/SearchableSelect";
+import QuickCreateModal from "@/components/shared/QuickCreateModal";
 import { getExpenseAccountAndCostCenter } from "@/services/hr/expenseClaimService";
 
 function Field({ label, children, full }) {
@@ -29,6 +30,7 @@ const EMPTY = { expense_date: today(), expense_type: "", default_account: "", de
 export default function ExpenseRowModal({ open, onClose, onSave, row, types, centers, projects, company, defaultCostCenter }) {
   const [local, setLocal] = useState(EMPTY);
   const [error, setError] = useState("");
+  const [quickCreate, setQuickCreate] = useState(null);
 
   useEffect(() => {
     if (open) {
@@ -87,7 +89,7 @@ export default function ExpenseRowModal({ open, onClose, onSave, row, types, cen
           <input className="input" type="date" value={local.expense_date || ""} onChange={(e) => set("expense_date", e.target.value)} />
         </Field>
         <Field label="Expense Claim Type *">
-          <SearchableSelect value={local.expense_type || ""} onChange={onExpenseTypeChange} options={types} />
+          <SearchableSelect value={local.expense_type || ""} onChange={onExpenseTypeChange} options={types} linkedDoctype="Expense Claim Type" onCreate={() => setQuickCreate({ doctype: "Expense Claim Type", apply: onExpenseTypeChange })} createLabel="Create new Expense Claim Type" />
         </Field>
         <Field label="Amount *">
           <input className="input" type="number" value={local.amount ?? ""} onChange={(e) => onAmountChange(e.target.value)} />
@@ -96,10 +98,10 @@ export default function ExpenseRowModal({ open, onClose, onSave, row, types, cen
           <input className="input" type="number" value={local.sanctioned_amount ?? ""} onChange={(e) => set("sanctioned_amount", e.target.value)} />
         </Field>
         <Field label="Cost Center">
-          <SearchableSelect value={local.cost_center || ""} onChange={(v) => set("cost_center", v)} options={centers} />
+          <SearchableSelect value={local.cost_center || ""} onChange={(v) => set("cost_center", v)} options={centers} linkedDoctype="Cost Center" parentDefaults={company ? { company } : {}} onCreate={() => setQuickCreate({ doctype: "Cost Center", apply: (v) => set("cost_center", v) })} createLabel="Create new Cost Center" />
         </Field>
         <Field label="Project">
-          <SearchableSelect value={local.project || ""} onChange={(v) => set("project", v)} options={projects} />
+          <SearchableSelect value={local.project || ""} onChange={(v) => set("project", v)} options={projects} linkedDoctype="Project" parentDefaults={company ? { company } : {}} onCreate={() => setQuickCreate({ doctype: "Project", apply: (v) => set("project", v) })} createLabel="Create new Project" />
         </Field>
         <Field label="Default Account"><Read value={local.default_account} /></Field>
         <Field label="Description" full>
@@ -107,6 +109,7 @@ export default function ExpenseRowModal({ open, onClose, onSave, row, types, cen
         </Field>
       </div>
       {error && <div className="text-sm text-destructive" style={{ marginTop: 10 }}>{error}</div>}
+      <QuickCreateModal open={Boolean(quickCreate)} onClose={() => setQuickCreate(null)} doctype={quickCreate?.doctype} defaults={company ? { company } : {}} onCreated={(name) => { quickCreate?.apply(name); setQuickCreate(null); }} />
     </Modal>
   );
 }

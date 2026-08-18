@@ -264,16 +264,6 @@ export const ADMIN_NAV = [
         ],
       },
       {
-        key: "hr-expense-claim",
-        label: "Expense Claim",
-        icon: Wallet,
-        children: [
-          { key: "expense-claims", label: "Expense Claim", icon: Wallet, path: "/dashboard/expense-claims" },
-          { key: "employee-advances", label: "Employee Advance", icon: FileText, path: "/dashboard/employee-advances" },
-          { key: "travel-requests", label: "Travel Request", icon: CalendarClock, path: "/dashboard/travel-requests" },
-        ],
-      },
-      {
         key: "hr-key-reports",
         label: "Key Reports",
         icon: BarChart3,
@@ -298,6 +288,73 @@ export const ADMIN_NAV = [
           { key: "daily-work-summary-replies", label: "Daily Work Summary Replies", icon: BarChart3, path: "/dashboard/daily-work-summary-replies" },
         ],
       },
+        ],
+      },
+      {
+        key: "hr-expense-claims",
+        label: "Expense Claims",
+        icon: Wallet,
+        children: [
+          {
+            key: "expense-claims-claims",
+            label: "Claims",
+            icon: Wallet,
+            children: [
+              { key: "expense-claims", label: "Expense Claim", icon: Wallet, path: "/dashboard/expense-claims" },
+              { key: "expense-claim-types", label: "Expense Claim Type", icon: Tag, path: "/dashboard/expense-claim-types" },
+            ],
+          },
+          {
+            key: "expense-claims-advances",
+            label: "Advances",
+            icon: Wallet,
+            children: [
+              { key: "employee-advances", label: "Employee Advance", icon: FileText, path: "/dashboard/employee-advances" },
+              { key: "expense-payment-entries", label: "Payment Entry", icon: Wallet, path: "/dashboard/payment-entries" },
+              { key: "expense-journal-entries", label: "Journal Entry", icon: FileText, path: "/dashboard/journal-entries" },
+              { key: "additional-salaries", label: "Additional Salary", icon: FileText, path: "/dashboard/additional-salaries" },
+            ],
+          },
+          {
+            key: "expense-claims-travel",
+            label: "Travel",
+            icon: CalendarClock,
+            children: [
+              { key: "travel-requests", label: "Travel Request", icon: CalendarClock, path: "/dashboard/travel-requests" },
+              { key: "purposes-of-travel", label: "Purpose of Travel", icon: Tag, path: "/dashboard/purposes-of-travel" },
+            ],
+          },
+          {
+            key: "expense-claims-fleet",
+            label: "Fleet Management",
+            icon: Briefcase,
+            children: [
+              { key: "vehicles", label: "Vehicle", icon: Briefcase, path: "/dashboard/vehicles" },
+              { key: "drivers", label: "Driver", icon: Contact, path: "/dashboard/drivers" },
+              { key: "vehicle-service-items", label: "Vehicle Service Item", icon: Wrench, path: "/dashboard/vehicle-service-items" },
+              { key: "vehicle-logs", label: "Vehicle Log", icon: ClipboardList, path: "/dashboard/vehicle-logs" },
+            ],
+          },
+          {
+            key: "expense-claims-reports",
+            label: "Reports",
+            icon: BarChart3,
+            children: [
+              { key: "expense-employee-advance-summary", label: "Employee Advance Summary", icon: BarChart3, path: "/dashboard/employee-advance-summary" },
+              { key: "unpaid-expense-claim", label: "Unpaid Expense Claim", icon: BarChart3, path: "/dashboard/unpaid-expense-claim" },
+              { key: "vehicle-expenses", label: "Vehicle Expenses", icon: BarChart3, path: "/dashboard/vehicle-expenses" },
+            ],
+          },
+          {
+            key: "expense-claims-accounting-reports",
+            label: "Accounting Reports",
+            icon: BarChart3,
+            children: [
+              { key: "expense-accounts-receivable", label: "Accounts Receivable", icon: BarChart3, path: "/dashboard/accounts-receivable" },
+              { key: "expense-accounts-payable", label: "Accounts Payable", icon: BarChart3, path: "/dashboard/accounts-payable" },
+              { key: "expense-general-ledger", label: "General Ledger", icon: BarChart3, path: "/dashboard/general-ledger" },
+            ],
+          },
         ],
       },
     ],
