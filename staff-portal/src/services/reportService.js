@@ -16,5 +16,8 @@ export function getReportData(reportName, filters = {}) {
 // "list every record of doctype X" lookup, so it lives here once instead
 // of being re-implemented per report page.
 export function getLinkOptions(doctype, filters = {}) {
-  return getList(doctype, { fields: ["name"], filters, order_by: "name asc", limit_page_length: 500 });
+  const fields = doctype === "Employee" ? ["name", "employee_name"] : ["name"];
+  const mergedFilters = doctype === "Employee" ? { status: "Active", ...filters } : filters;
+  const orderBy = doctype === "Employee" ? "employee_name asc" : "name asc";
+  return getList(doctype, { fields, filters: mergedFilters, order_by: orderBy, limit_page_length: 500 });
 }

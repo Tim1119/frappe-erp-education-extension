@@ -1,0 +1,1 @@
+import Page from "../../recruitment/shared/RecruitmentProfilePage";import{CONFIG}from"../shared/shiftAttendanceConfig";export default function TimesheetProfilePage(){return <Page config={CONFIG["timesheet"]}/>}

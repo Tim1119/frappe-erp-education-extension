@@ -1,0 +1,1 @@
+import Page from "../../recruitment/shared/RecruitmentFormPage";import Form from"./components/ActivityTypeForm";import{CONFIG}from"../shared/shiftAttendanceConfig";export default function ActivityTypeFormPage(){return <Page config={CONFIG["activity-type"]} Form={Form}/>}

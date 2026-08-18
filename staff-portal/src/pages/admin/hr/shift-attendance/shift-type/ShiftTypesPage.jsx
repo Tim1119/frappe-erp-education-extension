@@ -1,0 +1,1 @@
+import Page from "../../recruitment/shared/RecruitmentListPage";import{CONFIG}from"../shared/shiftAttendanceConfig";export default function ShiftTypesPage(){return <Page config={CONFIG["shift-type"]}/>}

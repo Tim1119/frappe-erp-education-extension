@@ -1,0 +1,1 @@
+import Page from"./ScriptReportPage";export default function EmployeeHoursUtilizationReport(){return <Page title="Employee Hours Utilization" report="Employee Hours Utilization Based On Timesheet" utilization/>}

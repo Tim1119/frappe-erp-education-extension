@@ -53,6 +53,33 @@ import AttendanceRequestFormPage from "@/pages/admin/hr/attendance-request/Atten
 import EmployeeCheckinsPage from "@/pages/admin/hr/employee-checkin/EmployeeCheckinsPage";
 import EmployeeCheckinProfilePage from "@/pages/admin/hr/employee-checkin/EmployeeCheckinProfilePage";
 import EmployeeCheckinFormPage from "@/pages/admin/hr/employee-checkin/EmployeeCheckinFormPage";
+import ShiftTypesPage from "@/pages/admin/hr/shift-attendance/shift-type/ShiftTypesPage";
+import ShiftTypeFormPage from "@/pages/admin/hr/shift-attendance/shift-type/ShiftTypeFormPage";
+import ShiftTypeProfilePage from "@/pages/admin/hr/shift-attendance/shift-type/ShiftTypeProfilePage";
+import ShiftLocationsPage from "@/pages/admin/hr/shift-attendance/shift-location/ShiftLocationsPage";
+import ShiftLocationFormPage from "@/pages/admin/hr/shift-attendance/shift-location/ShiftLocationFormPage";
+import ShiftLocationProfilePage from "@/pages/admin/hr/shift-attendance/shift-location/ShiftLocationProfilePage";
+import ActivityTypesPage from "@/pages/admin/hr/shift-attendance/activity-type/ActivityTypesPage";
+import ActivityTypeFormPage from "@/pages/admin/hr/shift-attendance/activity-type/ActivityTypeFormPage";
+import ActivityTypeProfilePage from "@/pages/admin/hr/shift-attendance/activity-type/ActivityTypeProfilePage";
+import ShiftAssignmentsPage from "@/pages/admin/hr/shift-attendance/shift-assignment/ShiftAssignmentsPage";
+import ShiftAssignmentFormPage from "@/pages/admin/hr/shift-attendance/shift-assignment/ShiftAssignmentFormPage";
+import ShiftAssignmentProfilePage from "@/pages/admin/hr/shift-attendance/shift-assignment/ShiftAssignmentProfilePage";
+import ShiftSchedulesPage from "@/pages/admin/hr/shift-attendance/shift-schedule/ShiftSchedulesPage";
+import ShiftScheduleFormPage from "@/pages/admin/hr/shift-attendance/shift-schedule/ShiftScheduleFormPage";
+import ShiftScheduleProfilePage from "@/pages/admin/hr/shift-attendance/shift-schedule/ShiftScheduleProfilePage";
+import ShiftScheduleAssignmentsPage from "@/pages/admin/hr/shift-attendance/shift-schedule-assignment/ShiftScheduleAssignmentsPage";
+import ShiftScheduleAssignmentFormPage from "@/pages/admin/hr/shift-attendance/shift-schedule-assignment/ShiftScheduleAssignmentFormPage";
+import ShiftScheduleAssignmentProfilePage from "@/pages/admin/hr/shift-attendance/shift-schedule-assignment/ShiftScheduleAssignmentProfilePage";
+import ShiftRequestsPage from "@/pages/admin/hr/shift-attendance/shift-request/ShiftRequestsPage";
+import ShiftRequestFormPage from "@/pages/admin/hr/shift-attendance/shift-request/ShiftRequestFormPage";
+import ShiftRequestProfilePage from "@/pages/admin/hr/shift-attendance/shift-request/ShiftRequestProfilePage";
+import TimesheetsPage from "@/pages/admin/hr/shift-attendance/timesheet/TimesheetsPage";
+import TimesheetFormPage from "@/pages/admin/hr/shift-attendance/timesheet/TimesheetFormPage";
+import TimesheetProfilePage from "@/pages/admin/hr/shift-attendance/timesheet/TimesheetProfilePage";
+import ShiftAssignmentToolPage from "@/pages/admin/hr/shift-attendance/shift-assignment-tool/ShiftAssignmentToolPage";
+import ShiftAttendancePage from "@/pages/admin/hr/shift-attendance/reports/ShiftAttendancePage";
+import EmployeeHoursUtilizationPage from "@/pages/admin/hr/shift-attendance/reports/EmployeeHoursUtilizationPage";
 import ExpenseClaimsPage from "@/pages/admin/hr/expense-claim/ExpenseClaimsPage";
 import ExpenseClaimProfilePage from "@/pages/admin/hr/expense-claim/ExpenseClaimProfilePage";
 import ExpenseClaimFormPage from "@/pages/admin/hr/expense-claim/ExpenseClaimFormPage";
@@ -560,6 +587,41 @@ export default function App() {
         <Route path="appointment-letters/:id/edit" element={<AppointmentLetterFormPage />} />
         <Route path="appointment-letters/:id" element={<AppointmentLetterProfilePage />} />
         <Route path="attendance" element={<AttendancesPage />} />
+        <Route path="shift-types" element={<ShiftTypesPage />} />
+        <Route path="shift-types/new" element={<ShiftTypeFormPage />} />
+        <Route path="shift-types/:id/edit" element={<ShiftTypeFormPage />} />
+        <Route path="shift-types/:id" element={<ShiftTypeProfilePage />} />
+        <Route path="shift-locations" element={<ShiftLocationsPage />} />
+        <Route path="shift-locations/new" element={<ShiftLocationFormPage />} />
+        <Route path="shift-locations/:id/edit" element={<ShiftLocationFormPage />} />
+        <Route path="shift-locations/:id" element={<ShiftLocationProfilePage />} />
+        <Route path="activity-types" element={<ActivityTypesPage />} />
+        <Route path="activity-types/new" element={<ActivityTypeFormPage />} />
+        <Route path="activity-types/:id/edit" element={<ActivityTypeFormPage />} />
+        <Route path="activity-types/:id" element={<ActivityTypeProfilePage />} />
+        <Route path="shift-assignments" element={<ShiftAssignmentsPage />} />
+        <Route path="shift-assignments/new" element={<ShiftAssignmentFormPage />} />
+        <Route path="shift-assignments/:id/edit" element={<ShiftAssignmentFormPage />} />
+        <Route path="shift-assignments/:id" element={<ShiftAssignmentProfilePage />} />
+        <Route path="shift-schedules" element={<ShiftSchedulesPage />} />
+        <Route path="shift-schedules/new" element={<ShiftScheduleFormPage />} />
+        <Route path="shift-schedules/:id/edit" element={<ShiftScheduleFormPage />} />
+        <Route path="shift-schedules/:id" element={<ShiftScheduleProfilePage />} />
+        <Route path="shift-schedule-assignments" element={<ShiftScheduleAssignmentsPage />} />
+        <Route path="shift-schedule-assignments/new" element={<ShiftScheduleAssignmentFormPage />} />
+        <Route path="shift-schedule-assignments/:id/edit" element={<ShiftScheduleAssignmentFormPage />} />
+        <Route path="shift-schedule-assignments/:id" element={<ShiftScheduleAssignmentProfilePage />} />
+        <Route path="shift-requests" element={<ShiftRequestsPage />} />
+        <Route path="shift-requests/new" element={<ShiftRequestFormPage />} />
+        <Route path="shift-requests/:id/edit" element={<ShiftRequestFormPage />} />
+        <Route path="shift-requests/:id" element={<ShiftRequestProfilePage />} />
+        <Route path="timesheets" element={<TimesheetsPage />} />
+        <Route path="timesheets/new" element={<TimesheetFormPage />} />
+        <Route path="timesheets/:id/edit" element={<TimesheetFormPage />} />
+        <Route path="timesheets/:id" element={<TimesheetProfilePage />} />
+        <Route path="shift-assignment-tool" element={<ShiftAssignmentToolPage />} />
+        <Route path="shift-attendance" element={<ShiftAttendancePage />} />
+        <Route path="employee-hours-utilization" element={<EmployeeHoursUtilizationPage />} />
         <Route path="attendance/new" element={<AttendanceFormPage />} />
         <Route path="attendance/:id/edit" element={<AttendanceFormPage />} />
         <Route path="attendance/:id" element={<AttendanceProfilePage />} />

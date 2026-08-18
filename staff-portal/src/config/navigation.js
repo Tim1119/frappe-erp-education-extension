@@ -34,6 +34,8 @@ import {
   AlertCircle,
   UserSearch,
   MessageSquare,
+  Clock,
+  Timer,
 } from "lucide-react";
 
 /**
@@ -258,21 +260,10 @@ export const ADMIN_NAV = [
         ],
       },
       {
-        key: "hr-attendance",
-        label: "Attendance",
-        icon: CalendarCheck,
-        children: [
-          { key: "attendance", label: "Attendance", icon: CalendarCheck, path: "/dashboard/attendance" },
-          { key: "attendance-requests", label: "Attendance Request", icon: CalendarClock, path: "/dashboard/attendance-requests" },
-          { key: "employee-checkins", label: "Employee Checkin", icon: LogIn, path: "/dashboard/employee-checkins" },
-        ],
-      },
-      {
         key: "hr-key-reports",
         label: "Key Reports",
         icon: BarChart3,
         children: [
-          { key: "monthly-attendance-sheet", label: "Monthly Attendance Sheet", icon: BarChart3, path: "/dashboard/monthly-attendance-sheet" },
           { key: "employee-analytics", label: "Employee Analytics", icon: BarChart3, path: "/dashboard/employee-analytics" },
           { key: "employee-leave-balance", label: "Employee Leave Balance", icon: BarChart3, path: "/dashboard/employee-leave-balance" },
           { key: "employee-leave-balance-summary", label: "Employee Leave Balance Summary", icon: BarChart3, path: "/dashboard/employee-leave-balance-summary" },
@@ -287,7 +278,6 @@ export const ADMIN_NAV = [
         children: [
           { key: "employee-information", label: "Employee Information", icon: BarChart3, path: "/dashboard/employee-information" },
           { key: "employee-birthday", label: "Employee Birthday", icon: BarChart3, path: "/dashboard/employee-birthday" },
-          { key: "employees-working-on-holiday", label: "Employees Working on a Holiday", icon: BarChart3, path: "/dashboard/employees-working-on-holiday" },
           { key: "daily-work-summary-replies", label: "Daily Work Summary Replies", icon: BarChart3, path: "/dashboard/daily-work-summary-replies" },
         ],
       },
@@ -395,6 +385,57 @@ export const ADMIN_NAV = [
             icon: BarChart3,
             children: [
               { key: "recruitment-analytics-report", label: "Recruitment Analytics", icon: BarChart3, path: "/dashboard/recruitment-analytics" },
+            ],
+          },
+        ],
+      },
+      {
+        key: "shift-and-attendance",
+        label: "Shift & Attendance",
+        icon: Clock,
+        children: [
+          {
+            key: "sa-shifts",
+            label: "Shifts",
+            icon: Clock,
+            children: [
+              { key: "shift-type", label: "Shift Type", icon: FileText, path: "/dashboard/shift-types" },
+              { key: "shift-location", label: "Shift Location", icon: FileText, path: "/dashboard/shift-locations" },
+              { key: "shift-assignment", label: "Shift Assignment", icon: FileText, path: "/dashboard/shift-assignments" },
+              { key: "shift-schedule", label: "Shift Schedule", icon: FileText, path: "/dashboard/shift-schedules" },
+              { key: "shift-schedule-assignment", label: "Shift Schedule Assignment", icon: FileText, path: "/dashboard/shift-schedule-assignments" },
+              { key: "shift-request", label: "Shift Request", icon: FileText, path: "/dashboard/shift-requests" },
+              { key: "shift-assignment-tool", label: "Shift Assignment Tool", icon: Wrench, path: "/dashboard/shift-assignment-tool" },
+            ],
+          },
+          {
+            key: "sa-attendance",
+            label: "Attendance",
+            icon: CalendarCheck,
+            children: [
+              { key: "sa-attendance-list", label: "Attendance", icon: CalendarCheck, path: "/dashboard/attendance" },
+              { key: "sa-attendance-requests", label: "Attendance Request", icon: CalendarClock, path: "/dashboard/attendance-requests" },
+              { key: "sa-employee-checkins", label: "Employee Checkin", icon: LogIn, path: "/dashboard/employee-checkins" },
+            ],
+          },
+          {
+            key: "sa-time",
+            label: "Time",
+            icon: Timer,
+            children: [
+              { key: "timesheet", label: "Timesheet", icon: FileText, path: "/dashboard/timesheets" },
+              { key: "activity-type", label: "Activity Type", icon: FileText, path: "/dashboard/activity-types" },
+            ],
+          },
+          {
+            key: "sa-reports",
+            label: "Reports",
+            icon: BarChart3,
+            children: [
+              { key: "sa-monthly-attendance-sheet", label: "Monthly Attendance Sheet", icon: BarChart3, path: "/dashboard/monthly-attendance-sheet" },
+              { key: "shift-attendance-report", label: "Shift Attendance", icon: BarChart3, path: "/dashboard/shift-attendance" },
+              { key: "employee-hours-utilization", label: "Employee Hours Utilization", icon: BarChart3, path: "/dashboard/employee-hours-utilization" },
+              { key: "sa-employees-on-holiday", label: "Employees Working on a Holiday", icon: BarChart3, path: "/dashboard/employees-working-on-holiday" },
             ],
           },
         ],

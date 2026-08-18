@@ -171,7 +171,7 @@ export default function MonthlyAttendanceSheetPage() {
       </PageHeader>
 
       <Card className="no-print mb-4 p-4">
-        <div className="flex flex-wrap items-end gap-4">
+        <div className="grid grid-cols-1 items-end gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-2">
             <Label>Filter Based On <span className="text-destructive">*</span></Label>
             <Select value={filterBasedOn} onValueChange={setFilterBasedOn}>

@@ -1,0 +1,1 @@
+import Page from "../../recruitment/shared/RecruitmentFormPage";import Form from"./components/ShiftLocationForm";import{CONFIG}from"../shared/shiftAttendanceConfig";export default function ShiftLocationFormPage(){return <Page config={CONFIG["shift-location"]} Form={Form}/>}

@@ -1,0 +1,1 @@
+import Page from "../../recruitment/shared/RecruitmentFormPage";import Form from"./components/TimesheetForm";import{CONFIG}from"../shared/shiftAttendanceConfig";export default function TimesheetFormPage(){return <Page config={CONFIG["timesheet"]} Form={Form}/>}

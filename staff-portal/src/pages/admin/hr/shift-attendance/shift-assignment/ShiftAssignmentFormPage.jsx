@@ -1,0 +1,1 @@
+import Page from "../../recruitment/shared/RecruitmentFormPage";import Form from"./components/ShiftAssignmentForm";import{CONFIG}from"../shared/shiftAttendanceConfig";export default function ShiftAssignmentFormPage(){return <Page config={CONFIG["shift-assignment"]} Form={Form}/>}

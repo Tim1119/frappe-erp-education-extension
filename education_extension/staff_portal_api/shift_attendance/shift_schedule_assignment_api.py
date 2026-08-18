@@ -1,0 +1,2 @@
+from ._api import expose
+expose(globals(),"Shift Schedule Assignment",["employee","shift_schedule","shift_location","shift_status","enabled","create_shifts_after"],["name","employee","employee_name","company","shift_schedule","shift_location","shift_status","enabled","create_shifts_after"],["name","employee","employee_name","shift_schedule"],filter_fields=["employee","company","shift_schedule","shift_status"],connections={"shift_assignments":("Shift Assignment","shift_schedule_assignment")})

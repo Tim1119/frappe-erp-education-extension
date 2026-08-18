@@ -121,10 +121,11 @@ export default function SearchableSelect({
       // bottom of a long form.
       const openUpward = spaceBelow < DESIRED && spaceAbove > spaceBelow;
       const maxHeight = Math.max(120, Math.min(DESIRED, openUpward ? spaceAbove : spaceBelow));
+      const dropdownWidth = Math.min(400, window.innerWidth - 16, Math.max(rect.width, 280));
       setPosition({
         top: openUpward ? rect.top - GAP : rect.bottom + GAP,
-        left: rect.left,
-        width: rect.width,
+        left: Math.max(8, Math.min(rect.left, window.innerWidth - dropdownWidth - 8)),
+        width: dropdownWidth,
         maxHeight,
         openUpward,
       });
@@ -144,6 +145,8 @@ export default function SearchableSelect({
                 : { top: position.top }),
               left: position.left,
               width: position.width,
+              minWidth: position.width,
+              maxWidth: 400,
               zIndex: 999999,
               maxHeight: position.maxHeight,
               display: "flex",
@@ -189,11 +192,14 @@ export default function SearchableSelect({
                       )}
                     >
                       {showId ? (
-                        <div className="flex flex-col gap-0.5">
-                          <span className="font-mono text-xs font-semibold">{opt.name}</span>
-                          <span className={isSelected ? "" : "text-muted-foreground"}>
-                            {getDisplay(opt)}
-                          </span>
+                        <div className="flex min-w-0 items-center gap-1 whitespace-nowrap">
+                          <span className="font-medium">{opt.name}</span>
+                          {getDisplay(opt) && getDisplay(opt) !== opt.name && (
+                            <>
+                              <span className="text-muted-foreground">—</span>
+                              <span className="truncate text-muted-foreground">{getDisplay(opt)}</span>
+                            </>
+                          )}
                         </div>
                       ) : (
                         getDisplay(opt)
@@ -205,7 +211,7 @@ export default function SearchableSelect({
             </div>
             {(onCreate || effectiveDoctype) && (
               <div
-                className="flex cursor-pointer items-center gap-2 border-t px-3 py-2 text-sm text-primary hover:bg-accent"
+                className="flex cursor-pointer items-center gap-2 whitespace-nowrap border-t px-3 py-2 text-sm text-primary hover:bg-accent"
                 onMouseDown={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -241,7 +247,9 @@ export default function SearchableSelect({
       >
         <span className={cn("truncate", value ? "text-foreground" : "text-muted-foreground")}>
           {selected
-            ? (showId ? `${selected.name} — ${getDisplay(selected)}` : getDisplay(selected))
+            ? (showId && getDisplay(selected) !== selected.name
+              ? `${selected.name} — ${getDisplay(selected)}`
+              : getDisplay(selected))
             : value || placeholder}
         </span>
         <div className="flex items-center gap-1">

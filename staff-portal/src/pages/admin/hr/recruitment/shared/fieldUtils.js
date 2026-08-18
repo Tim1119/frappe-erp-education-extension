@@ -13,6 +13,9 @@ const QUICK_CREATE_DOCTYPES = new Set([
   "Training Program",
   "Grievance Type",
   "Appointment Letter Template",
+  "Shift Type",
+  "Shift Location",
+  "Activity Type",
 ]);
 
 const REQUIRED_FIELDS = {
@@ -36,6 +39,8 @@ const REQUIRED_TABLES = {
   "interview-feedback": ["skill_assessment"],
   "appointment-letter-templates": ["terms"],
   "appointment-letters": ["terms"],
+  "shift-schedules": ["repeat_on_days"],
+  timesheets: ["time_logs"],
 };
 
 export function linkedDoctypeFor(field) {

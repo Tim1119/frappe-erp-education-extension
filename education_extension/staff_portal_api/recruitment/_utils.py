@@ -117,8 +117,26 @@ def options(doctype):
 
 
 def employee_details(employee):
-    return frappe.db.get_value("Employee", employee,
-        ["employee_name", "department", "company", "designation"], as_dict=True) or {}
+    details = frappe.db.get_value("Employee", employee,
+        ["employee_name", "department", "company", "designation", "shift_request_approver", "leave_approver"], as_dict=True) or {}
+    if details.get("shift_request_approver") or not details.get("department"):
+        return details
+
+    bounds = frappe.db.get_value("Department", details.department, ["lft", "rgt"], as_dict=True)
+    if not bounds:
+        return details
+    departments = frappe.get_all("Department",
+        filters={"lft": ["<=", bounds.lft], "rgt": [">=", bounds.rgt], "disabled": 0},
+        pluck="name", order_by="lft desc")
+    for department in departments:
+        approver = frappe.db.get_value("Department Approver", {
+            "parent": department,
+            "parentfield": "shift_request_approver",
+        }, "approver")
+        if approver:
+            details.shift_request_approver = approver
+            break
+    return details
 
 
 def linked_details(doctype, name, fields):
