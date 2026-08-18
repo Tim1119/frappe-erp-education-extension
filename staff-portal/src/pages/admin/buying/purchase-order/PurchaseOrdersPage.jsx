@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentListPage";import{CONFIG}from"../shared/buyingConfig";export default function PurchaseOrdersPage(){return <Page config={CONFIG["purchase-order"]}/>}

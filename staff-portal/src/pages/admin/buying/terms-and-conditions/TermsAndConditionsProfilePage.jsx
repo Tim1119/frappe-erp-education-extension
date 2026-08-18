@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentProfilePage";import{CONFIG}from"../shared/buyingConfig";export default function TermsAndConditionsProfilePage(){return <Page config={CONFIG["terms-and-conditions"]}/>}

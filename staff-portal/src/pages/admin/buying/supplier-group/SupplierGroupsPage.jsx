@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentListPage";import{CONFIG}from"../shared/buyingConfig";export default function SupplierGroupsPage(){return <Page config={CONFIG["supplier-group"]}/>}

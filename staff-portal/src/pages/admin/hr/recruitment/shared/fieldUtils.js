@@ -16,6 +16,11 @@ const QUICK_CREATE_DOCTYPES = new Set([
   "Shift Type",
   "Shift Location",
   "Activity Type",
+  "Item Group",
+  "Price List",
+  "Supplier Group",
+  "UOM",
+  "Terms and Conditions",
 ]);
 
 const REQUIRED_FIELDS = {
@@ -41,6 +46,11 @@ const REQUIRED_TABLES = {
   "appointment-letters": ["terms"],
   "shift-schedules": ["repeat_on_days"],
   timesheets: ["time_logs"],
+  "material-requests": ["items"],
+  "purchase-orders": ["items"],
+  "request-for-quotation": ["items", "suppliers"],
+  "supplier-quotations": ["items"],
+  "product-bundles": ["items"],
 };
 
 export function linkedDoctypeFor(field) {

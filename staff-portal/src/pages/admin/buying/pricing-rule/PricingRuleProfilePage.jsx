@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentProfilePage";import{CONFIG}from"../shared/buyingConfig";export default function PricingRuleProfilePage(){return <Page config={CONFIG["pricing-rule"]}/>}

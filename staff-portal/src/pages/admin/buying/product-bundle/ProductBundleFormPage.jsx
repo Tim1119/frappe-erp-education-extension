@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentFormPage";import Form from"./components/ProductBundleForm";import{CONFIG}from"../shared/buyingConfig";export default function ProductBundleFormPage(){return <Page config={CONFIG["product-bundle"]} Form={Form}/>}

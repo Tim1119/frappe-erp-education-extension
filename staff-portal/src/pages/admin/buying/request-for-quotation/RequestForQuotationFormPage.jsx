@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentFormPage";import Form from"./components/RequestForQuotationForm";import{CONFIG}from"../shared/buyingConfig";export default function RequestForQuotationFormPage(){return <Page config={CONFIG["request-for-quotation"]} Form={Form}/>}

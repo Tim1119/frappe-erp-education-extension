@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentFormPage";import Form from"./components/PurchaseOrderForm";import{CONFIG}from"../shared/buyingConfig";export default function PurchaseOrderFormPage(){return <Page config={CONFIG["purchase-order"]} Form={Form}/>}

@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentFormPage";import Form from"./components/PromotionalSchemeForm";import{CONFIG}from"../shared/buyingConfig";export default function PromotionalSchemeFormPage(){return <Page config={CONFIG["promotional-scheme"]} Form={Form}/>}

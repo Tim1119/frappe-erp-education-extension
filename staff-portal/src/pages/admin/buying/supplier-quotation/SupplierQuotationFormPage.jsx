@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentFormPage";import Form from"./components/SupplierQuotationForm";import{CONFIG}from"../shared/buyingConfig";export default function SupplierQuotationFormPage(){return <Page config={CONFIG["supplier-quotation"]} Form={Form}/>}

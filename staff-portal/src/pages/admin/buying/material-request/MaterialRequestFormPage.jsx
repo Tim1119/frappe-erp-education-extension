@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentFormPage";import Form from"./components/MaterialRequestForm";import{CONFIG}from"../shared/buyingConfig";export default function MaterialRequestFormPage(){return <Page config={CONFIG["material-request"]} Form={Form}/>}

@@ -36,6 +36,10 @@ import {
   MessageSquare,
   Clock,
   Timer,
+  ShoppingCart,
+  ShoppingBag,
+  Package,
+  Users,
 } from "lucide-react";
 
 /**
@@ -505,6 +509,82 @@ export const ADMIN_NAV = [
               { key: "expense-general-ledger", label: "General Ledger", icon: BarChart3, path: "/dashboard/general-ledger" },
             ],
           },
+        ],
+      },
+    ],
+  },
+  {
+    key: "buying",
+    label: "Buying",
+    icon: ShoppingCart,
+    children: [
+      {
+        key: "buying-transactions",
+        label: "Buying",
+        icon: ShoppingBag,
+        children: [
+          { key: "material-request", label: "Material Request", icon: FileText, path: "/dashboard/material-requests" },
+          { key: "purchase-order", label: "Purchase Order", icon: FileText, path: "/dashboard/purchase-orders" },
+          { key: "request-for-quotation", label: "Request for Quotation", icon: FileText, path: "/dashboard/request-for-quotation" },
+          { key: "supplier-quotation", label: "Supplier Quotation", icon: FileText, path: "/dashboard/supplier-quotations" },
+        ],
+      },
+      {
+        key: "buying-items",
+        label: "Items & Pricing",
+        icon: Package,
+        children: [
+          { key: "item", label: "Item", icon: Package, path: "/dashboard/items" },
+          { key: "item-price", label: "Item Price", icon: FileText, path: "/dashboard/item-prices" },
+          { key: "price-list", label: "Price List", icon: FileText, path: "/dashboard/price-lists" },
+          { key: "product-bundle", label: "Product Bundle", icon: FileText, path: "/dashboard/product-bundles" },
+          { key: "item-group", label: "Item Group", icon: FileText, path: "/dashboard/item-groups" },
+          { key: "pricing-rule", label: "Pricing Rule", icon: FileText, path: "/dashboard/pricing-rules" },
+          { key: "promotional-scheme", label: "Promotional Scheme", icon: FileText, path: "/dashboard/promotional-schemes" },
+        ],
+      },
+      {
+        key: "buying-settings",
+        label: "Settings",
+        icon: Settings,
+        children: [
+          { key: "buying-settings-page", label: "Buying Settings", icon: Settings, path: "/dashboard/buying-settings" },
+          { key: "purchase-taxes-template", label: "Purchase Taxes and Charges Template", icon: FileText, path: "/dashboard/purchase-taxes-templates" },
+          { key: "terms-and-conditions", label: "Terms and Conditions", icon: FileText, path: "/dashboard/terms-and-conditions" },
+        ],
+      },
+      {
+        key: "buying-supplier",
+        label: "Supplier",
+        icon: Users,
+        children: [
+          { key: "buying-suppliers", label: "Supplier", icon: Users, path: "/dashboard/suppliers" },
+          { key: "supplier-group", label: "Supplier Group", icon: FileText, path: "/dashboard/supplier-groups" },
+        ],
+      },
+      {
+        key: "buying-key-reports",
+        label: "Key Reports",
+        icon: BarChart3,
+        children: [
+          { key: "purchase-analytics", label: "Purchase Analytics", icon: BarChart3, path: "/dashboard/purchase-analytics" },
+          { key: "buying-purchase-order-analysis", label: "Purchase Order Analysis", icon: BarChart3, path: "/dashboard/purchase-order-analysis" },
+          { key: "supplier-wise-analytics", label: "Supplier-Wise Sales Analytics", icon: BarChart3, path: "/dashboard/supplier-wise-sales-analytics" },
+          { key: "items-to-order", label: "Items to Order and Receive", icon: BarChart3, path: "/dashboard/items-to-order-and-receive" },
+          { key: "purchase-order-trends", label: "Purchase Order Trends", icon: BarChart3, path: "/dashboard/purchase-order-trends" },
+          { key: "procurement-tracker", label: "Procurement Tracker", icon: BarChart3, path: "/dashboard/procurement-tracker" },
+        ],
+      },
+      {
+        key: "buying-other-reports",
+        label: "Other Reports",
+        icon: BarChart3,
+        children: [
+          { key: "items-to-be-requested", label: "Items To Be Requested", icon: BarChart3, path: "/dashboard/items-to-be-requested" },
+          { key: "item-wise-purchase-history", label: "Item-wise Purchase History", icon: BarChart3, path: "/dashboard/item-wise-purchase-history" },
+          { key: "purchase-receipt-trends", label: "Purchase Receipt Trends", icon: BarChart3, path: "/dashboard/purchase-receipt-trends" },
+          { key: "buying-purchase-invoice-trends", label: "Purchase Invoice Trends", icon: BarChart3, path: "/dashboard/purchase-invoice-trends" },
+          { key: "supplier-quotation-comparison", label: "Supplier Quotation Comparison", icon: BarChart3, path: "/dashboard/supplier-quotation-comparison" },
         ],
       },
     ],

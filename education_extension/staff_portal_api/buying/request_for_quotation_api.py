@@ -1,0 +1,2 @@
+from ._api import expose
+expose(globals(),"Request for Quotation",["naming_series","company","transaction_date","schedule_date","status","subject","message_for_supplier","terms"],["name","company","transaction_date","status","modified","docstatus"],["name","company","subject"],{"items":["item_code","item_name","description","qty","schedule_date","uom","stock_uom","conversion_factor","warehouse","material_request","material_request_item"],"suppliers":["supplier","supplier_name","contact","email_id","send_email"]},True,["company","status"])

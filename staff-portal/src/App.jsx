@@ -153,6 +153,59 @@ import AppointmentLettersPage from "@/pages/admin/hr/recruitment/appointment-let
 import AppointmentLetterFormPage from "@/pages/admin/hr/recruitment/appointment-letter/AppointmentLetterFormPage";
 import AppointmentLetterProfilePage from "@/pages/admin/hr/recruitment/appointment-letter/AppointmentLetterProfilePage";
 
+import MaterialRequestsPage from "@/pages/admin/buying/material-request/MaterialRequestsPage";
+import MaterialRequestFormPage from "@/pages/admin/buying/material-request/MaterialRequestFormPage";
+import MaterialRequestProfilePage from "@/pages/admin/buying/material-request/MaterialRequestProfilePage";
+import PurchaseOrdersPage from "@/pages/admin/buying/purchase-order/PurchaseOrdersPage";
+import PurchaseOrderFormPage from "@/pages/admin/buying/purchase-order/PurchaseOrderFormPage";
+import PurchaseOrderProfilePage from "@/pages/admin/buying/purchase-order/PurchaseOrderProfilePage";
+import RequestsForQuotationPage from "@/pages/admin/buying/request-for-quotation/RequestsForQuotationPage";
+import RequestForQuotationFormPage from "@/pages/admin/buying/request-for-quotation/RequestForQuotationFormPage";
+import RequestForQuotationProfilePage from "@/pages/admin/buying/request-for-quotation/RequestForQuotationProfilePage";
+import SupplierQuotationsPage from "@/pages/admin/buying/supplier-quotation/SupplierQuotationsPage";
+import SupplierQuotationFormPage from "@/pages/admin/buying/supplier-quotation/SupplierQuotationFormPage";
+import SupplierQuotationProfilePage from "@/pages/admin/buying/supplier-quotation/SupplierQuotationProfilePage";
+import ItemsPage from "@/pages/admin/buying/item/ItemsPage";
+import ItemFormPage from "@/pages/admin/buying/item/ItemFormPage";
+import ItemProfilePage from "@/pages/admin/buying/item/ItemProfilePage";
+import ItemPricesPage from "@/pages/admin/buying/item-price/ItemPricesPage";
+import ItemPriceFormPage from "@/pages/admin/buying/item-price/ItemPriceFormPage";
+import ItemPriceProfilePage from "@/pages/admin/buying/item-price/ItemPriceProfilePage";
+import PriceListsPage from "@/pages/admin/buying/price-list/PriceListsPage";
+import PriceListFormPage from "@/pages/admin/buying/price-list/PriceListFormPage";
+import PriceListProfilePage from "@/pages/admin/buying/price-list/PriceListProfilePage";
+import ItemGroupsPage from "@/pages/admin/buying/item-group/ItemGroupsPage";
+import ItemGroupFormPage from "@/pages/admin/buying/item-group/ItemGroupFormPage";
+import ItemGroupProfilePage from "@/pages/admin/buying/item-group/ItemGroupProfilePage";
+import ProductBundlesPage from "@/pages/admin/buying/product-bundle/ProductBundlesPage";
+import ProductBundleFormPage from "@/pages/admin/buying/product-bundle/ProductBundleFormPage";
+import ProductBundleProfilePage from "@/pages/admin/buying/product-bundle/ProductBundleProfilePage";
+import SupplierGroupsPage from "@/pages/admin/buying/supplier-group/SupplierGroupsPage";
+import SupplierGroupFormPage from "@/pages/admin/buying/supplier-group/SupplierGroupFormPage";
+import SupplierGroupProfilePage from "@/pages/admin/buying/supplier-group/SupplierGroupProfilePage";
+import PricingRulesPage from "@/pages/admin/buying/pricing-rule/PricingRulesPage";
+import PricingRuleFormPage from "@/pages/admin/buying/pricing-rule/PricingRuleFormPage";
+import PricingRuleProfilePage from "@/pages/admin/buying/pricing-rule/PricingRuleProfilePage";
+import PromotionalSchemesPage from "@/pages/admin/buying/promotional-scheme/PromotionalSchemesPage";
+import PromotionalSchemeFormPage from "@/pages/admin/buying/promotional-scheme/PromotionalSchemeFormPage";
+import PromotionalSchemeProfilePage from "@/pages/admin/buying/promotional-scheme/PromotionalSchemeProfilePage";
+import PurchaseTaxesTemplatesPage from "@/pages/admin/buying/purchase-taxes-template/PurchaseTaxesTemplatesPage";
+import PurchaseTaxesTemplateFormPage from "@/pages/admin/buying/purchase-taxes-template/PurchaseTaxesTemplateFormPage";
+import PurchaseTaxesTemplateProfilePage from "@/pages/admin/buying/purchase-taxes-template/PurchaseTaxesTemplateProfilePage";
+import TermsAndConditionsPage from "@/pages/admin/buying/terms-and-conditions/TermsAndConditionsPage";
+import TermsAndConditionsFormPage from "@/pages/admin/buying/terms-and-conditions/TermsAndConditionsFormPage";
+import TermsAndConditionsProfilePage from "@/pages/admin/buying/terms-and-conditions/TermsAndConditionsProfilePage";
+import BuyingSettingsPage from "@/pages/admin/buying/buying-settings/BuyingSettingsPage";
+import BuyingPurchaseAnalyticsPage from "@/pages/admin/buying/reports/PurchaseAnalyticsPage";
+import BuyingSupplierWiseSalesAnalyticsPage from "@/pages/admin/buying/reports/SupplierWiseSalesAnalyticsPage";
+import BuyingItemsToOrderAndReceivePage from "@/pages/admin/buying/reports/ItemsToOrderAndReceivePage";
+import BuyingPurchaseOrderTrendsPage from "@/pages/admin/buying/reports/PurchaseOrderTrendsPage";
+import BuyingProcurementTrackerPage from "@/pages/admin/buying/reports/ProcurementTrackerPage";
+import BuyingItemsToBeRequestedPage from "@/pages/admin/buying/reports/ItemsToBeRequestedPage";
+import BuyingItemWisePurchaseHistoryPage from "@/pages/admin/buying/reports/ItemWisePurchaseHistoryPage";
+import BuyingPurchaseReceiptTrendsPage from "@/pages/admin/buying/reports/PurchaseReceiptTrendsPage";
+import BuyingSupplierQuotationComparisonPage from "@/pages/admin/buying/reports/SupplierQuotationComparisonPage";
+
 // HR Key Reports
 import MonthlyAttendanceSheetPage from "@/pages/admin/hr/reports/MonthlyAttendanceSheetPage";
 import RecruitmentAnalyticsPage from "@/pages/admin/hr/reports/RecruitmentAnalyticsPage";
@@ -691,6 +744,74 @@ export default function App() {
         <Route path="employees-working-on-holiday" element={<EmployeesWorkingOnHolidayPage />} />
         <Route path="daily-work-summary-replies" element={<DailyWorkSummaryRepliesPage />} />
 
+
+        {/* Buying */}
+        <Route path="material-requests" element={<MaterialRequestsPage />} />
+        <Route path="material-requests/new" element={<MaterialRequestFormPage />} />
+        <Route path="material-requests/:id/edit" element={<MaterialRequestFormPage />} />
+        <Route path="material-requests/:id" element={<MaterialRequestProfilePage />} />
+        <Route path="purchase-orders" element={<PurchaseOrdersPage />} />
+        <Route path="purchase-orders/new" element={<PurchaseOrderFormPage />} />
+        <Route path="purchase-orders/:id/edit" element={<PurchaseOrderFormPage />} />
+        <Route path="purchase-orders/:id" element={<PurchaseOrderProfilePage />} />
+        <Route path="request-for-quotation" element={<RequestsForQuotationPage />} />
+        <Route path="request-for-quotation/new" element={<RequestForQuotationFormPage />} />
+        <Route path="request-for-quotation/:id/edit" element={<RequestForQuotationFormPage />} />
+        <Route path="request-for-quotation/:id" element={<RequestForQuotationProfilePage />} />
+        <Route path="supplier-quotations" element={<SupplierQuotationsPage />} />
+        <Route path="supplier-quotations/new" element={<SupplierQuotationFormPage />} />
+        <Route path="supplier-quotations/:id/edit" element={<SupplierQuotationFormPage />} />
+        <Route path="supplier-quotations/:id" element={<SupplierQuotationProfilePage />} />
+        <Route path="items" element={<ItemsPage />} />
+        <Route path="items/new" element={<ItemFormPage />} />
+        <Route path="items/:id/edit" element={<ItemFormPage />} />
+        <Route path="items/:id" element={<ItemProfilePage />} />
+        <Route path="item-prices" element={<ItemPricesPage />} />
+        <Route path="item-prices/new" element={<ItemPriceFormPage />} />
+        <Route path="item-prices/:id/edit" element={<ItemPriceFormPage />} />
+        <Route path="item-prices/:id" element={<ItemPriceProfilePage />} />
+        <Route path="price-lists" element={<PriceListsPage />} />
+        <Route path="price-lists/new" element={<PriceListFormPage />} />
+        <Route path="price-lists/:id/edit" element={<PriceListFormPage />} />
+        <Route path="price-lists/:id" element={<PriceListProfilePage />} />
+        <Route path="item-groups" element={<ItemGroupsPage />} />
+        <Route path="item-groups/new" element={<ItemGroupFormPage />} />
+        <Route path="item-groups/:id/edit" element={<ItemGroupFormPage />} />
+        <Route path="item-groups/:id" element={<ItemGroupProfilePage />} />
+        <Route path="product-bundles" element={<ProductBundlesPage />} />
+        <Route path="product-bundles/new" element={<ProductBundleFormPage />} />
+        <Route path="product-bundles/:id/edit" element={<ProductBundleFormPage />} />
+        <Route path="product-bundles/:id" element={<ProductBundleProfilePage />} />
+        <Route path="supplier-groups" element={<SupplierGroupsPage />} />
+        <Route path="supplier-groups/new" element={<SupplierGroupFormPage />} />
+        <Route path="supplier-groups/:id/edit" element={<SupplierGroupFormPage />} />
+        <Route path="supplier-groups/:id" element={<SupplierGroupProfilePage />} />
+        <Route path="pricing-rules" element={<PricingRulesPage />} />
+        <Route path="pricing-rules/new" element={<PricingRuleFormPage />} />
+        <Route path="pricing-rules/:id/edit" element={<PricingRuleFormPage />} />
+        <Route path="pricing-rules/:id" element={<PricingRuleProfilePage />} />
+        <Route path="promotional-schemes" element={<PromotionalSchemesPage />} />
+        <Route path="promotional-schemes/new" element={<PromotionalSchemeFormPage />} />
+        <Route path="promotional-schemes/:id/edit" element={<PromotionalSchemeFormPage />} />
+        <Route path="promotional-schemes/:id" element={<PromotionalSchemeProfilePage />} />
+        <Route path="purchase-taxes-templates" element={<PurchaseTaxesTemplatesPage />} />
+        <Route path="purchase-taxes-templates/new" element={<PurchaseTaxesTemplateFormPage />} />
+        <Route path="purchase-taxes-templates/:id/edit" element={<PurchaseTaxesTemplateFormPage />} />
+        <Route path="purchase-taxes-templates/:id" element={<PurchaseTaxesTemplateProfilePage />} />
+        <Route path="terms-and-conditions" element={<TermsAndConditionsPage />} />
+        <Route path="terms-and-conditions/new" element={<TermsAndConditionsFormPage />} />
+        <Route path="terms-and-conditions/:id/edit" element={<TermsAndConditionsFormPage />} />
+        <Route path="terms-and-conditions/:id" element={<TermsAndConditionsProfilePage />} />
+        <Route path="buying-settings" element={<BuyingSettingsPage />} />
+        <Route path="purchase-analytics" element={<BuyingPurchaseAnalyticsPage />} />
+        <Route path="supplier-wise-sales-analytics" element={<BuyingSupplierWiseSalesAnalyticsPage />} />
+        <Route path="items-to-order-and-receive" element={<BuyingItemsToOrderAndReceivePage />} />
+        <Route path="purchase-order-trends" element={<BuyingPurchaseOrderTrendsPage />} />
+        <Route path="procurement-tracker" element={<BuyingProcurementTrackerPage />} />
+        <Route path="items-to-be-requested" element={<BuyingItemsToBeRequestedPage />} />
+        <Route path="item-wise-purchase-history" element={<BuyingItemWisePurchaseHistoryPage />} />
+        <Route path="purchase-receipt-trends" element={<BuyingPurchaseReceiptTrendsPage />} />
+        <Route path="supplier-quotation-comparison" element={<BuyingSupplierQuotationComparisonPage />} />
         <Route path="purchase-invoices" element={<PurchaseInvoicesPage />} />
         <Route path="purchase-invoices/new" element={<PurchaseInvoiceFormPage />} />
         <Route path="purchase-invoices/:id/edit" element={<PurchaseInvoiceFormPage />} />

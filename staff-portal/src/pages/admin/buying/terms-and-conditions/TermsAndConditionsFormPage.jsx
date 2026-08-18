@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentFormPage";import Form from"./components/TermsAndConditionsForm";import{CONFIG}from"../shared/buyingConfig";export default function TermsAndConditionsFormPage(){return <Page config={CONFIG["terms-and-conditions"]} Form={Form}/>}

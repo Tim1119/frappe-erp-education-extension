@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentFormPage";import Form from"./components/SupplierGroupForm";import{CONFIG}from"../shared/buyingConfig";export default function SupplierGroupFormPage(){return <Page config={CONFIG["supplier-group"]} Form={Form}/>}

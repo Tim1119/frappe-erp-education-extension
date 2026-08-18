@@ -37,7 +37,7 @@ def expose(namespace, doctype, fields, list_fields, search_fields, tables=None, 
 
     @frappe.whitelist()
     @guarded(f"{doctype} options")
-    def get_lookup_options(doctype): return options(doctype)
+    def get_lookup_options(doctype, filters=None): return options(doctype, filters)
 
     @frappe.whitelist()
     @guarded(f"{doctype} employee")

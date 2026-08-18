@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentFormPage";import Form from"./components/PurchaseTaxesTemplateForm";import{CONFIG}from"../shared/buyingConfig";export default function PurchaseTaxesTemplateFormPage(){return <Page config={CONFIG["purchase-taxes-template"]} Form={Form}/>}

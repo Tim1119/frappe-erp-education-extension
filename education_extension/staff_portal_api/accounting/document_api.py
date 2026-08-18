@@ -282,7 +282,7 @@ def get_link_options(link_doctype,company=None,supplier=None,fieldname=None,part
     if link_doctype=="Sales Invoice" and fieldname=="sales_invoice":
         filters["docstatus"]=1
         if customer:filters["customer"]=customer
-    if link_doctype in ("Account","Cost Center"):
+    if link_doctype in ("Account","Cost Center","Warehouse"):
         filters["is_group"]=0
         if fieldname=="credit_to":filters["account_type"]="Payable"
         if fieldname=="income_account":filters["root_type"]="Income"

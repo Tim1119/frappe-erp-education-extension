@@ -43,7 +43,7 @@ def single(doctype, name, tables=None):
     doc = frappe.get_doc(doctype, name)
     data = doc.as_dict()
     for table, fields in (tables or {}).items():
-        data[table] = [{f: row.get(f) for f in fields} for row in doc.get(table, [])]
+        data[table] = [{"name": row.name, **{f: row.get(f) for f in fields}} for row in doc.get(table, [])]
     data["can_edit"] = doc.docstatus == 0 and doc.has_permission("write")
     data["can_delete"] = doc.docstatus != 1 and doc.has_permission("delete")
     return data
@@ -103,17 +103,29 @@ def cancel_doc(doctype, name):
     doc = frappe.get_doc(doctype, name); doc.cancel(); frappe.db.commit(); return doc.as_dict()
 
 
-def options(doctype):
+def options(doctype, filters=None):
+    if isinstance(filters, str):
+        import json
+        filters = json.loads(filters)
+    filters = filters or {}
     fields = {
         "Employee": ["name", "employee_name", "department", "company", "designation"],
         "User": ["name", "full_name"],
         "Job Opening": ["name", "job_title", "designation", "company", "department"],
         "Job Applicant": ["name", "applicant_name", "email_id", "designation", "job_title"],
         "Interview": ["name", "job_applicant", "interview_round"],
+        "Supplier": ["name", "supplier_name", "supplier_group", "default_currency", "default_price_list", "payment_terms"],
+        "Item": ["name", "item_name", "item_group", "stock_uom", "description", "image"],
     }.get(doctype, ["name"])
-    filters = {"Employee": {"status": "Active"}, "User": {"enabled": 1}, "Job Opening": {"status": "Open"}}.get(doctype, {})
-    order = {"Employee": "employee_name", "User": "full_name", "Job Opening": "job_title", "Job Applicant": "applicant_name"}.get(doctype, "name")
-    return frappe.get_all(doctype, fields=fields, filters=filters, order_by=order, limit_page_length=500)
+    base_filters = {"Employee": {"status": "Active"}, "User": {"enabled": 1}, "Job Opening": {"status": "Open"}}.get(doctype, {})
+    if doctype in ("Warehouse", "Cost Center", "Account"):
+        base_filters["is_group"] = 0
+        if filters.get("company"):
+            base_filters["company"] = filters["company"]
+    if doctype == "Account" and filters.get("root_type") in ("Income", "Expense"):
+        base_filters["root_type"] = filters["root_type"]
+    order = {"Employee": "employee_name", "User": "full_name", "Job Opening": "job_title", "Job Applicant": "applicant_name", "Supplier": "supplier_name", "Item": "item_name"}.get(doctype, "name")
+    return frappe.get_all(doctype, fields=fields, filters=base_filters, order_by=order, limit_page_length=500)
 
 
 def employee_details(employee):

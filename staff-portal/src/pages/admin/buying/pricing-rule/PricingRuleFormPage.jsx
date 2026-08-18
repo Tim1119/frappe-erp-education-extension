@@ -1,0 +1,1 @@
+import Page from "../../hr/recruitment/shared/RecruitmentFormPage";import Form from"./components/PricingRuleForm";import{CONFIG}from"../shared/buyingConfig";export default function PricingRuleFormPage(){return <Page config={CONFIG["pricing-rule"]} Form={Form}/>}

@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import PurchaseInvoiceForm from "./components/PurchaseInvoiceForm";
 import { createAccountingDocument, getAccountingDocument, getAccountingNewDocumentDefaults, updateAccountingDocument } from "@/services/accounting/documentService";
 import { getErrorMessage } from "@/utils/errors";
+import PrefillSourceBanner from "@/components/shared/PrefillSourceBanner";
 
 export default function PurchaseInvoiceFormPage() {
   const { id } = useParams(); const edit = Boolean(id); const name = id ? decodeURIComponent(id) : ""; const navigate = useNavigate(); const location = useLocation();
