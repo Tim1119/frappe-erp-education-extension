@@ -89,6 +89,42 @@ import TrainingFeedbackProfilePage from "@/pages/admin/hr/employee-lifecycle/tra
 import TrainingResultsPage from "@/pages/admin/hr/employee-lifecycle/training-result/TrainingResultsPage";
 import TrainingResultFormPage from "@/pages/admin/hr/employee-lifecycle/training-result/TrainingResultFormPage";
 import TrainingResultProfilePage from "@/pages/admin/hr/employee-lifecycle/training-result/TrainingResultProfilePage";
+import StaffingPlansPage from "@/pages/admin/hr/recruitment/staffing-plan/StaffingPlansPage";
+import StaffingPlanFormPage from "@/pages/admin/hr/recruitment/staffing-plan/StaffingPlanFormPage";
+import StaffingPlanProfilePage from "@/pages/admin/hr/recruitment/staffing-plan/StaffingPlanProfilePage";
+import JobRequisitionsPage from "@/pages/admin/hr/recruitment/job-requisition/JobRequisitionsPage";
+import JobRequisitionFormPage from "@/pages/admin/hr/recruitment/job-requisition/JobRequisitionFormPage";
+import JobRequisitionProfilePage from "@/pages/admin/hr/recruitment/job-requisition/JobRequisitionProfilePage";
+import JobOpeningsPage from "@/pages/admin/hr/recruitment/job-opening/JobOpeningsPage";
+import JobOpeningFormPage from "@/pages/admin/hr/recruitment/job-opening/JobOpeningFormPage";
+import JobOpeningProfilePage from "@/pages/admin/hr/recruitment/job-opening/JobOpeningProfilePage";
+import JobApplicantsPage from "@/pages/admin/hr/recruitment/job-applicant/JobApplicantsPage";
+import JobApplicantFormPage from "@/pages/admin/hr/recruitment/job-applicant/JobApplicantFormPage";
+import JobApplicantProfilePage from "@/pages/admin/hr/recruitment/job-applicant/JobApplicantProfilePage";
+import JobOffersPage from "@/pages/admin/hr/recruitment/job-offer/JobOffersPage";
+import JobOfferFormPage from "@/pages/admin/hr/recruitment/job-offer/JobOfferFormPage";
+import JobOfferProfilePage from "@/pages/admin/hr/recruitment/job-offer/JobOfferProfilePage";
+import EmployeeReferralsPage from "@/pages/admin/hr/recruitment/employee-referral/EmployeeReferralsPage";
+import EmployeeReferralFormPage from "@/pages/admin/hr/recruitment/employee-referral/EmployeeReferralFormPage";
+import EmployeeReferralProfilePage from "@/pages/admin/hr/recruitment/employee-referral/EmployeeReferralProfilePage";
+import InterviewTypesPage from "@/pages/admin/hr/recruitment/interview-type/InterviewTypesPage";
+import InterviewTypeFormPage from "@/pages/admin/hr/recruitment/interview-type/InterviewTypeFormPage";
+import InterviewTypeProfilePage from "@/pages/admin/hr/recruitment/interview-type/InterviewTypeProfilePage";
+import InterviewRoundsPage from "@/pages/admin/hr/recruitment/interview-round/InterviewRoundsPage";
+import InterviewRoundFormPage from "@/pages/admin/hr/recruitment/interview-round/InterviewRoundFormPage";
+import InterviewRoundProfilePage from "@/pages/admin/hr/recruitment/interview-round/InterviewRoundProfilePage";
+import InterviewsPage from "@/pages/admin/hr/recruitment/interview/InterviewsPage";
+import InterviewFormPage from "@/pages/admin/hr/recruitment/interview/InterviewFormPage";
+import InterviewProfilePage from "@/pages/admin/hr/recruitment/interview/InterviewProfilePage";
+import InterviewFeedbackPage from "@/pages/admin/hr/recruitment/interview-feedback/InterviewFeedbackPage";
+import InterviewFeedbackFormPage from "@/pages/admin/hr/recruitment/interview-feedback/InterviewFeedbackFormPage";
+import InterviewFeedbackProfilePage from "@/pages/admin/hr/recruitment/interview-feedback/InterviewFeedbackProfilePage";
+import AppointmentLetterTemplatesPage from "@/pages/admin/hr/recruitment/appointment-letter-template/AppointmentLetterTemplatesPage";
+import AppointmentLetterTemplateFormPage from "@/pages/admin/hr/recruitment/appointment-letter-template/AppointmentLetterTemplateFormPage";
+import AppointmentLetterTemplateProfilePage from "@/pages/admin/hr/recruitment/appointment-letter-template/AppointmentLetterTemplateProfilePage";
+import AppointmentLettersPage from "@/pages/admin/hr/recruitment/appointment-letter/AppointmentLettersPage";
+import AppointmentLetterFormPage from "@/pages/admin/hr/recruitment/appointment-letter/AppointmentLetterFormPage";
+import AppointmentLetterProfilePage from "@/pages/admin/hr/recruitment/appointment-letter/AppointmentLetterProfilePage";
 
 // HR Key Reports
 import MonthlyAttendanceSheetPage from "@/pages/admin/hr/reports/MonthlyAttendanceSheetPage";
@@ -475,6 +511,54 @@ export default function App() {
         <Route path="training-result/new" element={<TrainingResultFormPage />} />
         <Route path="training-result/:id/edit" element={<TrainingResultFormPage />} />
         <Route path="training-result/:id" element={<TrainingResultProfilePage />} />
+        <Route path="staffing-plan" element={<StaffingPlansPage />} />
+        <Route path="staffing-plan/new" element={<StaffingPlanFormPage />} />
+        <Route path="staffing-plan/:id/edit" element={<StaffingPlanFormPage />} />
+        <Route path="staffing-plan/:id" element={<StaffingPlanProfilePage />} />
+        <Route path="job-requisition" element={<JobRequisitionsPage />} />
+        <Route path="job-requisition/new" element={<JobRequisitionFormPage />} />
+        <Route path="job-requisition/:id/edit" element={<JobRequisitionFormPage />} />
+        <Route path="job-requisition/:id" element={<JobRequisitionProfilePage />} />
+        <Route path="job-opening" element={<JobOpeningsPage />} />
+        <Route path="job-opening/new" element={<JobOpeningFormPage />} />
+        <Route path="job-opening/:id/edit" element={<JobOpeningFormPage />} />
+        <Route path="job-opening/:id" element={<JobOpeningProfilePage />} />
+        <Route path="job-applicants" element={<JobApplicantsPage />} />
+        <Route path="job-applicants/new" element={<JobApplicantFormPage />} />
+        <Route path="job-applicants/:id/edit" element={<JobApplicantFormPage />} />
+        <Route path="job-applicants/:id" element={<JobApplicantProfilePage />} />
+        <Route path="job-offers" element={<JobOffersPage />} />
+        <Route path="job-offers/new" element={<JobOfferFormPage />} />
+        <Route path="job-offers/:id/edit" element={<JobOfferFormPage />} />
+        <Route path="job-offers/:id" element={<JobOfferProfilePage />} />
+        <Route path="employee-referrals" element={<EmployeeReferralsPage />} />
+        <Route path="employee-referrals/new" element={<EmployeeReferralFormPage />} />
+        <Route path="employee-referrals/:id/edit" element={<EmployeeReferralFormPage />} />
+        <Route path="employee-referrals/:id" element={<EmployeeReferralProfilePage />} />
+        <Route path="interview-types" element={<InterviewTypesPage />} />
+        <Route path="interview-types/new" element={<InterviewTypeFormPage />} />
+        <Route path="interview-types/:id/edit" element={<InterviewTypeFormPage />} />
+        <Route path="interview-types/:id" element={<InterviewTypeProfilePage />} />
+        <Route path="interview-rounds" element={<InterviewRoundsPage />} />
+        <Route path="interview-rounds/new" element={<InterviewRoundFormPage />} />
+        <Route path="interview-rounds/:id/edit" element={<InterviewRoundFormPage />} />
+        <Route path="interview-rounds/:id" element={<InterviewRoundProfilePage />} />
+        <Route path="interviews" element={<InterviewsPage />} />
+        <Route path="interviews/new" element={<InterviewFormPage />} />
+        <Route path="interviews/:id/edit" element={<InterviewFormPage />} />
+        <Route path="interviews/:id" element={<InterviewProfilePage />} />
+        <Route path="interview-feedback" element={<InterviewFeedbackPage />} />
+        <Route path="interview-feedback/new" element={<InterviewFeedbackFormPage />} />
+        <Route path="interview-feedback/:id/edit" element={<InterviewFeedbackFormPage />} />
+        <Route path="interview-feedback/:id" element={<InterviewFeedbackProfilePage />} />
+        <Route path="appointment-letter-templates" element={<AppointmentLetterTemplatesPage />} />
+        <Route path="appointment-letter-templates/new" element={<AppointmentLetterTemplateFormPage />} />
+        <Route path="appointment-letter-templates/:id/edit" element={<AppointmentLetterTemplateFormPage />} />
+        <Route path="appointment-letter-templates/:id" element={<AppointmentLetterTemplateProfilePage />} />
+        <Route path="appointment-letters" element={<AppointmentLettersPage />} />
+        <Route path="appointment-letters/new" element={<AppointmentLetterFormPage />} />
+        <Route path="appointment-letters/:id/edit" element={<AppointmentLetterFormPage />} />
+        <Route path="appointment-letters/:id" element={<AppointmentLetterProfilePage />} />
         <Route path="attendance" element={<AttendancesPage />} />
         <Route path="attendance/new" element={<AttendanceFormPage />} />
         <Route path="attendance/:id/edit" element={<AttendanceFormPage />} />

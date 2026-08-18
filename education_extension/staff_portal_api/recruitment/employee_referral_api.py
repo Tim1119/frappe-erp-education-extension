@@ -1,0 +1,2 @@
+from ._api import expose
+expose(globals(), "Employee Referral", ["first_name","last_name","date","for_designation","email","contact_no","resume_link","current_employer","current_job_title","resume","referrer","is_applicable_for_referral_bonus","qualification_reason","work_references"], ["name","full_name","email","for_designation","referrer_name","date","status","docstatus"], ["name","full_name","email","referrer_name"], submittable=True, filter_fields=["status","for_designation","referrer"])

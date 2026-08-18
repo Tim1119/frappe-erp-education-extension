@@ -1,0 +1,2 @@
+from ._api import expose
+expose(globals(), "Job Offer", ["job_applicant","status","offer_date","designation","company","terms"], ["name","applicant_name","job_applicant","designation","company","offer_date","status","docstatus"], ["name","applicant_name","job_applicant"], {"offer_terms":["offer_term","value"]}, True, ["status","job_applicant","designation","company"], {"employee_onboardings":("Employee Onboarding","job_offer")})

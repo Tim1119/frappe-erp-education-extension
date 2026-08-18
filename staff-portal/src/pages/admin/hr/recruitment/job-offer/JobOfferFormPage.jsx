@@ -1,0 +1,1 @@
+import Page from "../shared/RecruitmentFormPage";import Form from"./components/JobOfferForm";import{CONFIG}from"../shared/recruitmentConfig";export default function JobOfferFormPage(){return <Page config={CONFIG["job-offer"]} Form={Form}/>}

@@ -32,6 +32,8 @@ import {
   Bell,
   UserCog,
   AlertCircle,
+  UserSearch,
+  MessageSquare,
 } from "lucide-react";
 
 /**
@@ -271,7 +273,6 @@ export const ADMIN_NAV = [
         icon: BarChart3,
         children: [
           { key: "monthly-attendance-sheet", label: "Monthly Attendance Sheet", icon: BarChart3, path: "/dashboard/monthly-attendance-sheet" },
-          { key: "recruitment-analytics", label: "Recruitment Analytics", icon: BarChart3, path: "/dashboard/recruitment-analytics" },
           { key: "employee-analytics", label: "Employee Analytics", icon: BarChart3, path: "/dashboard/employee-analytics" },
           { key: "employee-leave-balance", label: "Employee Leave Balance", icon: BarChart3, path: "/dashboard/employee-leave-balance" },
           { key: "employee-leave-balance-summary", label: "Employee Leave Balance Summary", icon: BarChart3, path: "/dashboard/employee-leave-balance-summary" },
@@ -346,6 +347,54 @@ export const ADMIN_NAV = [
               { key: "lifecycle-employee-birthday", label: "Employee Birthday", icon: BarChart3, path: "/dashboard/employee-birthday" },
               { key: "lifecycle-employee-information", label: "Employee Information", icon: BarChart3, path: "/dashboard/employee-information" },
               { key: "lifecycle-employee-analytics", label: "Employee Analytics", icon: BarChart3, path: "/dashboard/employee-analytics" },
+            ],
+          },
+        ],
+      },
+      {
+        key: "recruitment",
+        label: "Recruitment",
+        icon: UserSearch,
+        children: [
+          {
+            key: "recruitment-jobs",
+            label: "Jobs",
+            icon: Briefcase,
+            children: [
+              { key: "staffing-plan", label: "Staffing Plan", icon: FileText, path: "/dashboard/staffing-plan" },
+              { key: "job-requisition", label: "Job Requisition", icon: FileText, path: "/dashboard/job-requisition" },
+              { key: "job-opening", label: "Job Opening", icon: FileText, path: "/dashboard/job-opening" },
+              { key: "job-applicant", label: "Job Applicant", icon: FileText, path: "/dashboard/job-applicants" },
+              { key: "job-offer", label: "Job Offer", icon: FileText, path: "/dashboard/job-offers" },
+              { key: "employee-referral", label: "Employee Referral", icon: FileText, path: "/dashboard/employee-referrals" },
+            ],
+          },
+          {
+            key: "recruitment-interviews",
+            label: "Interviews",
+            icon: MessageSquare,
+            children: [
+              { key: "interview-type", label: "Interview Type", icon: FileText, path: "/dashboard/interview-types" },
+              { key: "interview-round", label: "Interview Round", icon: FileText, path: "/dashboard/interview-rounds" },
+              { key: "interview", label: "Interview", icon: FileText, path: "/dashboard/interviews" },
+              { key: "interview-feedback", label: "Interview Feedback", icon: FileText, path: "/dashboard/interview-feedback" },
+            ],
+          },
+          {
+            key: "recruitment-appointment",
+            label: "Appointment",
+            icon: Award,
+            children: [
+              { key: "appointment-letter-template", label: "Appointment Letter Template", icon: FileText, path: "/dashboard/appointment-letter-templates" },
+              { key: "appointment-letter", label: "Appointment Letter", icon: FileText, path: "/dashboard/appointment-letters" },
+            ],
+          },
+          {
+            key: "recruitment-reports",
+            label: "Reports",
+            icon: BarChart3,
+            children: [
+              { key: "recruitment-analytics-report", label: "Recruitment Analytics", icon: BarChart3, path: "/dashboard/recruitment-analytics" },
             ],
           },
         ],

@@ -1,0 +1,2 @@
+from ._api import expose
+expose(globals(), "Interview Round", ["round_name","interview_type","designation","expected_average_rating"], ["name","round_name","interview_type","designation","expected_average_rating"], ["name","round_name","designation"], {"expected_skill_set":["skill","description"],"interviewers":["user"]}, filter_fields=["interview_type","designation"], connections={"interviews":("Interview","interview_round")})

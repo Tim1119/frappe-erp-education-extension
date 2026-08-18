@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, ChevronRight, Plus, Trash2 } from "lucide-react";
 import SearchableSelect from "@/components/shared/SearchableSelect";
+import AttachField from "@/components/shared/AttachField";
 import Modal from "@/components/shared/Modal";
 import ConfirmDialog from "@/components/shared/ConfirmDialog";
 import QuickCreateModal from "@/components/shared/QuickCreateModal";
@@ -95,6 +96,7 @@ function FieldInput({ field, value, onChange, form, row = {}, onQuickCreate, ref
     }).then((data) => setOptions(data || [])).catch(() => setOptions([]));
   }, [dynamicDoctype, disabled, field.fieldname, field.fieldtype, form.company, form.customer, form.party, form.party_type, form.payment_type, form.supplier, refreshKey, row.account, row.party, row.party_type, row.reference_doctype, row.reference_type]);
   if (field.read_only || field.fieldtype === "Read Only") return <Read value={value} />;
+  if (["Attach", "Attach Image"].includes(field.fieldtype)) return <AttachField value={value || ""} onChange={onChange} label={field.label || field.fieldname} image={field.fieldtype === "Attach Image"} disabled={disabled} fieldname={field.fieldname} />;
   if (["Link", "Dynamic Link"].includes(field.fieldtype)) return <SearchableSelect value={value || ""} onChange={onChange} options={options} disabled={disabled} placeholder={disabled ? (companyRequired && !form.company ? "Select a company first" : "Complete the dependent field first") : `Search ${field.label || dynamicDoctype}...`} linkedDoctype={!["Employee", "Student", "Instructor", "User", "Account"].includes(dynamicDoctype) ? dynamicDoctype : null} parentDefaults={form.company ? { company: form.company } : {}} onCreate={dynamicDoctype && !disabled ? () => onQuickCreate({ doctype: dynamicDoctype, label: field.label, apply: onChange }) : undefined} createLabel={`Create new ${field.label || dynamicDoctype}`} />;
   if (field.fieldtype === "Select") return <select className="input" value={value || ""} onChange={(e) => onChange(e.target.value)}><option value="">Select...</option>{String(field.options || "").split("\n").filter(Boolean).map((option) => <option key={option}>{option}</option>)}</select>;
   if (field.fieldtype === "Check") return <label className="flex min-h-10 items-center gap-2 text-sm font-medium"><input type="checkbox" checked={Boolean(Number(value))} onChange={(e) => onChange(e.target.checked ? 1 : 0)} /> Yes</label>;

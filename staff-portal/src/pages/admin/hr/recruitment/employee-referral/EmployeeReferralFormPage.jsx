@@ -1,0 +1,1 @@
+import Page from "../shared/RecruitmentFormPage";import Form from"./components/EmployeeReferralForm";import{CONFIG}from"../shared/recruitmentConfig";export default function EmployeeReferralFormPage(){return <Page config={CONFIG["employee-referral"]} Form={Form}/>}

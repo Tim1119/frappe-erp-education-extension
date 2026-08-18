@@ -1,0 +1,2 @@
+from ._api import expose
+expose(globals(), "Appointment Letter", ["job_applicant","company","appointment_date","appointment_letter_template","introduction","closing_notes"], ["name","applicant_name","job_applicant","company","appointment_date","appointment_letter_template"], ["name","applicant_name","job_applicant","company"], {"terms":["title","description"]}, filter_fields=["job_applicant","company","appointment_letter_template"])

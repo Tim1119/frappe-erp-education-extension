@@ -1,0 +1,13 @@
+import { callMethod } from "../frappeClient";
+const NS="education_extension.staff_portal_api.recruitment.interview_round_api";
+export const getList=(params={})=>callMethod(`${NS}.get_list`,params);
+export const getSingle=name=>callMethod(`${NS}.get_single`,{name});
+export const create=data=>callMethod(`${NS}.create`,{data});
+export const update=(name,data)=>callMethod(`${NS}.update`,{name,data});
+export const remove=name=>callMethod(`${NS}.delete`,{name});
+export const getConnections=name=>callMethod(`${NS}.get_connections`,{name});
+export const submit=name=>callMethod(`${NS}.submit`,{name});
+export const cancel=name=>callMethod(`${NS}.cancel`,{name});
+export const getLookupOptions=doctype=>callMethod(`${NS}.get_lookup_options`,{doctype});
+export const getEmployeeDetails=employee=>callMethod(`${NS}.get_employee_details`,{employee});
+export const getLinkedDetails=(linked_doctype,name,fields)=>callMethod(`${NS}.get_linked_details`,{linked_doctype,name,fields});

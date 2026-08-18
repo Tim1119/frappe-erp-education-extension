@@ -1,0 +1,1 @@
+import Page from "../shared/RecruitmentFormPage";import Form from"./components/InterviewTypeForm";import{CONFIG}from"../shared/recruitmentConfig";export default function InterviewTypeFormPage(){return <Page config={CONFIG["interview-type"]} Form={Form}/>}

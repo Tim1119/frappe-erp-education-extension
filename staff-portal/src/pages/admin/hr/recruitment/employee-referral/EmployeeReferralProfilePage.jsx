@@ -1,0 +1,1 @@
+import Page from "../shared/RecruitmentProfilePage";import{CONFIG}from"../shared/recruitmentConfig";export default function EmployeeReferralProfilePage(){return <Page config={CONFIG["employee-referral"]}/>}

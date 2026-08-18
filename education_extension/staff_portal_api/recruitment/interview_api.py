@@ -1,0 +1,2 @@
+from ._api import expose
+expose(globals(), "Interview", ["interview_round","job_applicant","status","scheduled_on","from_time","to_time","resume_link","interview_summary"], ["name","job_applicant","interview_round","designation","scheduled_on","from_time","to_time","average_rating","status","docstatus"], ["name","job_applicant","interview_round","designation"], {"interview_details":["interviewer"]}, True, ["status","job_applicant","interview_round","designation"], {"interview_feedback":("Interview Feedback","interview")})

@@ -1,0 +1,1 @@
+import Page from "../shared/RecruitmentProfilePage";import{CONFIG}from"../shared/recruitmentConfig";export default function InterviewRoundProfilePage(){return <Page config={CONFIG["interview-round"]}/>}

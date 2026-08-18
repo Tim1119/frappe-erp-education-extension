@@ -1,0 +1,1 @@
+import Page from "../shared/RecruitmentFormPage";import Form from"./components/AppointmentLetterTemplateForm";import{CONFIG}from"../shared/recruitmentConfig";export default function AppointmentLetterTemplateFormPage(){return <Page config={CONFIG["appointment-letter-template"]} Form={Form}/>}

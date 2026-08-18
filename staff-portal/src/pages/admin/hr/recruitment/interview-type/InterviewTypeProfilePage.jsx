@@ -1,0 +1,1 @@
+import Page from "../shared/RecruitmentProfilePage";import{CONFIG}from"../shared/recruitmentConfig";export default function InterviewTypeProfilePage(){return <Page config={CONFIG["interview-type"]}/>}

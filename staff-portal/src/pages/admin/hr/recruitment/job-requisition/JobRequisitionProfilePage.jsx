@@ -1,0 +1,1 @@
+import Page from "../shared/RecruitmentProfilePage";import{CONFIG}from"../shared/recruitmentConfig";export default function JobRequisitionProfilePage(){return <Page config={CONFIG["job-requisition"]}/>}

@@ -1,0 +1,2 @@
+from ._api import expose
+expose(globals(), "Job Requisition", ["designation","department","no_of_positions","expected_compensation","company","status","requested_by","posting_date","expected_by","completed_on","description","reason_for_requesting"], ["name","designation","no_of_positions","expected_compensation","requested_by_name","expected_by","status","docstatus"], ["name","designation","requested_by_name"], filter_fields=["status","designation","department","company","requested_by"], connections={"job_openings":("Job Opening","job_requisition")})
