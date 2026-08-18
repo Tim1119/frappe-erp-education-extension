@@ -209,6 +209,11 @@ export const ADMIN_NAV = [
     icon: Briefcase,
     children: [
       {
+        key: "hr-overview",
+        label: "HR Overview",
+        icon: Briefcase,
+        children: [
+      {
         key: "hr-setup",
         label: "Setup",
         icon: Settings,
@@ -291,6 +296,8 @@ export const ADMIN_NAV = [
           { key: "employee-birthday", label: "Employee Birthday", icon: BarChart3, path: "/dashboard/employee-birthday" },
           { key: "employees-working-on-holiday", label: "Employees Working on a Holiday", icon: BarChart3, path: "/dashboard/employees-working-on-holiday" },
           { key: "daily-work-summary-replies", label: "Daily Work Summary Replies", icon: BarChart3, path: "/dashboard/daily-work-summary-replies" },
+        ],
+      },
         ],
       },
     ],
