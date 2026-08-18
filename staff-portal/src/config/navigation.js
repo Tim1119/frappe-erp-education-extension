@@ -387,6 +387,59 @@ export const ADMIN_NAV = [
           },
         ],
       },
+      {
+        key: "financial-reports",
+        label: "Financial Reports",
+        icon: BarChart3,
+        children: [
+          {
+            key: "ledgers",
+            label: "Ledgers",
+            icon: BarChart3,
+            children: [
+              { key: "general-ledger", label: "General Ledger", icon: BarChart3, path: "/dashboard/general-ledger" },
+              { key: "customer-ledger-summary", label: "Customer Ledger Summary", icon: BarChart3, path: "/dashboard/customer-ledger-summary" },
+              { key: "supplier-ledger-summary", label: "Supplier Ledger Summary", icon: BarChart3, path: "/dashboard/supplier-ledger-summary" },
+            ],
+          },
+          {
+            key: "financial-statements",
+            label: "Financial Statements",
+            icon: BarChart3,
+            children: [
+              { key: "trial-balance", label: "Trial Balance", icon: BarChart3, path: "/dashboard/trial-balance" },
+              { key: "profit-and-loss", label: "Profit and Loss Statement", icon: BarChart3, path: "/dashboard/profit-and-loss" },
+              { key: "balance-sheet", label: "Balance Sheet", icon: BarChart3, path: "/dashboard/balance-sheet" },
+              { key: "cash-flow", label: "Cash Flow", icon: BarChart3, path: "/dashboard/cash-flow" },
+              { key: "consolidated-financial-statement", label: "Consolidated Financial Statement", icon: BarChart3, path: "/dashboard/consolidated-financial-statement" },
+            ],
+          },
+          {
+            key: "profitability",
+            label: "Profitability",
+            icon: BarChart3,
+            children: [
+              { key: "gross-profit", label: "Gross Profit", icon: BarChart3, path: "/dashboard/gross-profit" },
+              { key: "profitability-analysis", label: "Profitability Analysis", icon: BarChart3, path: "/dashboard/profitability-analysis" },
+              { key: "sales-invoice-trends", label: "Sales Invoice Trends", icon: BarChart3, path: "/dashboard/sales-invoice-trends" },
+              { key: "purchase-invoice-trends", label: "Purchase Invoice Trends", icon: BarChart3, path: "/dashboard/purchase-invoice-trends" },
+            ],
+          },
+          {
+            key: "other-reports",
+            label: "Other Reports",
+            icon: BarChart3,
+            children: [
+              { key: "trial-balance-for-party", label: "Trial Balance for Party", icon: BarChart3, path: "/dashboard/trial-balance-for-party" },
+              { key: "payment-period-based-on-invoice-date", label: "Payment Period Based On Invoice Date", icon: BarChart3, path: "/dashboard/payment-period-based-on-invoice-date" },
+              { key: "sales-partners-commission", label: "Sales Partners Commission", icon: BarChart3, path: "/dashboard/sales-partners-commission" },
+              { key: "customer-credit-balance", label: "Customer Credit Balance", icon: BarChart3, path: "/dashboard/customer-credit-balance" },
+              { key: "sales-payment-summary", label: "Sales Payment Summary", icon: BarChart3, path: "/dashboard/sales-payment-summary" },
+              { key: "address-and-contacts", label: "Address And Contacts", icon: BarChart3, path: "/dashboard/address-and-contacts" },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];

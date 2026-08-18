@@ -109,6 +109,23 @@ import AccountsReceivableSummaryPage from "@/pages/admin/accounting/reports/Acco
 import SalesRegisterPage from "@/pages/admin/accounting/reports/SalesRegisterPage";
 import ItemWiseSalesRegisterPage from "@/pages/admin/accounting/reports/ItemWiseSalesRegisterPage";
 import DeliveredItemsToBeBilledPage from "@/pages/admin/accounting/reports/DeliveredItemsToBeBilledPage";
+import GeneralLedgerPage from "@/pages/admin/accounting/reports/GeneralLedgerPage";
+import CustomerLedgerSummaryPage from "@/pages/admin/accounting/reports/CustomerLedgerSummaryPage";
+import TrialBalancePage from "@/pages/admin/accounting/reports/TrialBalancePage";
+import ProfitAndLossStatementPage from "@/pages/admin/accounting/reports/ProfitAndLossStatementPage";
+import BalanceSheetPage from "@/pages/admin/accounting/reports/BalanceSheetPage";
+import CashFlowPage from "@/pages/admin/accounting/reports/CashFlowPage";
+import ConsolidatedFinancialStatementPage from "@/pages/admin/accounting/reports/ConsolidatedFinancialStatementPage";
+import GrossProfitPage from "@/pages/admin/accounting/reports/GrossProfitPage";
+import ProfitabilityAnalysisPage from "@/pages/admin/accounting/reports/ProfitabilityAnalysisPage";
+import SalesInvoiceTrendsPage from "@/pages/admin/accounting/reports/SalesInvoiceTrendsPage";
+import PurchaseInvoiceTrendsPage from "@/pages/admin/accounting/reports/PurchaseInvoiceTrendsPage";
+import TrialBalanceForPartyPage from "@/pages/admin/accounting/reports/TrialBalanceForPartyPage";
+import PaymentPeriodBasedOnInvoiceDatePage from "@/pages/admin/accounting/reports/PaymentPeriodBasedOnInvoiceDatePage";
+import SalesPartnersCommissionPage from "@/pages/admin/accounting/reports/SalesPartnersCommissionPage";
+import CustomerCreditBalancePage from "@/pages/admin/accounting/reports/CustomerCreditBalancePage";
+import SalesPaymentSummaryPage from "@/pages/admin/accounting/reports/SalesPaymentSummaryPage";
+import AddressAndContactsPage from "@/pages/admin/accounting/reports/AddressAndContactsPage";
 
 // ─── Admin pages ───────────────────────────────────────────────────────
 import StudentsPage from "@/pages/admin/education/students/StudentsPage";
@@ -467,6 +484,23 @@ export default function App() {
         <Route path="sales-register" element={<SalesRegisterPage />} />
         <Route path="item-wise-sales-register" element={<ItemWiseSalesRegisterPage />} />
         <Route path="delivered-items-to-be-billed" element={<DeliveredItemsToBeBilledPage />} />
+        <Route path="general-ledger" element={<GeneralLedgerPage />} />
+        <Route path="customer-ledger-summary" element={<CustomerLedgerSummaryPage />} />
+        <Route path="trial-balance" element={<TrialBalancePage />} />
+        <Route path="profit-and-loss" element={<ProfitAndLossStatementPage />} />
+        <Route path="balance-sheet" element={<BalanceSheetPage />} />
+        <Route path="cash-flow" element={<CashFlowPage />} />
+        <Route path="consolidated-financial-statement" element={<ConsolidatedFinancialStatementPage />} />
+        <Route path="gross-profit" element={<GrossProfitPage />} />
+        <Route path="profitability-analysis" element={<ProfitabilityAnalysisPage />} />
+        <Route path="sales-invoice-trends" element={<SalesInvoiceTrendsPage />} />
+        <Route path="purchase-invoice-trends" element={<PurchaseInvoiceTrendsPage />} />
+        <Route path="trial-balance-for-party" element={<TrialBalanceForPartyPage />} />
+        <Route path="payment-period-based-on-invoice-date" element={<PaymentPeriodBasedOnInvoiceDatePage />} />
+        <Route path="sales-partners-commission" element={<SalesPartnersCommissionPage />} />
+        <Route path="customer-credit-balance" element={<CustomerCreditBalancePage />} />
+        <Route path="sales-payment-summary" element={<SalesPaymentSummaryPage />} />
+        <Route path="address-and-contacts" element={<AddressAndContactsPage />} />
 
         {/* ─── Class Arms ────────────────────────────────────── */}
         <Route path="class-arms" element={<ClassArmsPage />} />
