@@ -1,0 +1,1 @@
+import Page from "../shared/LifecycleProfilePage";import{CONFIG}from"../shared/lifecycleConfig";export default function TrainingResultProfilePage(){return <Page config={CONFIG["training-result"]} base="training-result"/>}

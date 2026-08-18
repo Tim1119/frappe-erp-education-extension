@@ -1,0 +1,1 @@
+import Page from "../shared/LifecycleFormPage";import Form from"./components/TrainingFeedbackForm";import{CONFIG}from"../shared/lifecycleConfig";export default function TrainingFeedbackFormPage(){return <Page config={CONFIG["training-feedback"]} base="training-feedback" Form={Form}/>}

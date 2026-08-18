@@ -1,0 +1,1 @@
+import Page from "../shared/LifecycleListPage";import{CONFIG}from"../shared/lifecycleConfig";export default function EmployeeOnboardingsPage(){return <Page config={CONFIG["employee-onboarding"]} base="employee-onboarding"/>}

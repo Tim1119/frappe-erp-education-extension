@@ -213,6 +213,10 @@ def get_connections(employee):
         links = {
             "attendance": ("Attendance", "employee"), "leave_applications": ("Leave Application", "employee"),
             "expense_claims": ("Expense Claim", "employee"), "employee_advances": ("Employee Advance", "employee"),
+            "employee_onboarding": ("Employee Onboarding", "employee"),
+            "employee_grievances": ("Employee Grievance", "raised_by"),
+            "employee_skill_maps": ("Employee Skill Map", "employee"),
+            "training_feedback": ("Training Feedback", "employee"),
         }
         return {key: frappe.db.count(doctype, {field: employee}) for key, (doctype, field) in links.items()}
     except Exception as e:

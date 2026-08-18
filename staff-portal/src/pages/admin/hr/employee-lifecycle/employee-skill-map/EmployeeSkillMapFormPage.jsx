@@ -1,0 +1,1 @@
+import Page from "../shared/LifecycleFormPage";import Form from"./components/EmployeeSkillMapForm";import{CONFIG}from"../shared/lifecycleConfig";export default function EmployeeSkillMapFormPage(){return <Page config={CONFIG["employee-skill-map"]} base="employee-skill-map" Form={Form}/>}

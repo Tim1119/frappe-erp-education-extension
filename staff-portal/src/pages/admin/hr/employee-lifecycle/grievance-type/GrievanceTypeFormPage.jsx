@@ -1,0 +1,1 @@
+import Page from "../shared/LifecycleFormPage";import Form from"./components/GrievanceTypeForm";import{CONFIG}from"../shared/lifecycleConfig";export default function GrievanceTypeFormPage(){return <Page config={CONFIG["grievance-type"]} base="grievance-type" Form={Form}/>}

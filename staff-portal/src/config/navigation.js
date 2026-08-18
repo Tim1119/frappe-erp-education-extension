@@ -30,6 +30,8 @@ import {
   ReceiptText,
   HandCoins,
   Bell,
+  UserCog,
+  AlertCircle,
 } from "lucide-react";
 
 /**
@@ -288,6 +290,43 @@ export const ADMIN_NAV = [
           { key: "daily-work-summary-replies", label: "Daily Work Summary Replies", icon: BarChart3, path: "/dashboard/daily-work-summary-replies" },
         ],
       },
+        ],
+      },
+      {
+        key: "employee-lifecycle",
+        label: "Employee Lifecycle",
+        icon: UserCog,
+        children: [
+          {
+            key: "lifecycle-onboarding",
+            label: "Onboarding",
+            icon: UserPlus,
+            children: [
+              { key: "employee-onboarding-template", label: "Employee Onboarding Template", icon: FileText, path: "/dashboard/employee-onboarding-template" },
+              { key: "employee-onboarding", label: "Employee Onboarding", icon: FileText, path: "/dashboard/employee-onboarding" },
+              { key: "employee-skill-map", label: "Employee Skill Map", icon: FileText, path: "/dashboard/employee-skill-map" },
+            ],
+          },
+          {
+            key: "lifecycle-grievance",
+            label: "Grievance",
+            icon: AlertCircle,
+            children: [
+              { key: "grievance-type", label: "Grievance Type", icon: FileText, path: "/dashboard/grievance-type" },
+              { key: "employee-grievance", label: "Employee Grievance", icon: FileText, path: "/dashboard/employee-grievance" },
+            ],
+          },
+          {
+            key: "lifecycle-training",
+            label: "Training",
+            icon: GraduationCap,
+            children: [
+              { key: "training-program", label: "Training Program", icon: FileText, path: "/dashboard/training-program" },
+              { key: "training-event", label: "Training Event", icon: FileText, path: "/dashboard/training-event" },
+              { key: "training-feedback", label: "Training Feedback", icon: FileText, path: "/dashboard/training-feedback" },
+              { key: "training-result", label: "Training Result", icon: FileText, path: "/dashboard/training-result" },
+            ],
+          },
         ],
       },
       {

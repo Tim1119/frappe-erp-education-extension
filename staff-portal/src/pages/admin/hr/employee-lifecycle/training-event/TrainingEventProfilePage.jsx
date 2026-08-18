@@ -1,0 +1,1 @@
+import Page from "../shared/LifecycleProfilePage";import{CONFIG}from"../shared/lifecycleConfig";export default function TrainingEventProfilePage(){return <Page config={CONFIG["training-event"]} base="training-event"/>}

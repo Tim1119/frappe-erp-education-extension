@@ -1,0 +1,1 @@
+import Page from "../shared/LifecycleFormPage";import Form from"./components/EmployeeGrievanceForm";import{CONFIG}from"../shared/lifecycleConfig";export default function EmployeeGrievanceFormPage(){return <Page config={CONFIG["employee-grievance"]} base="employee-grievance" Form={Form}/>}

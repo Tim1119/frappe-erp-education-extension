@@ -1,0 +1,1 @@
+import Page from "../shared/LifecycleFormPage";import Form from"./components/EmployeeOnboardingForm";import{CONFIG}from"../shared/lifecycleConfig";export default function EmployeeOnboardingFormPage(){return <Page config={CONFIG["employee-onboarding"]} base="employee-onboarding" Form={Form}/>}

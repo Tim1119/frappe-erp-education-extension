@@ -1,0 +1,1 @@
+import Page from "../shared/LifecycleProfilePage";import{CONFIG}from"../shared/lifecycleConfig";export default function EmployeeGrievanceProfilePage(){return <Page config={CONFIG["employee-grievance"]} base="employee-grievance"/>}

@@ -60,6 +60,33 @@ import EmployeeAdvanceFormPage from "@/pages/admin/hr/employee-advance/EmployeeA
 import TravelRequestsPage from "@/pages/admin/hr/travel-request/TravelRequestsPage";
 import TravelRequestProfilePage from "@/pages/admin/hr/travel-request/TravelRequestProfilePage";
 import TravelRequestFormPage from "@/pages/admin/hr/travel-request/TravelRequestFormPage";
+import GrievanceTypesPage from "@/pages/admin/hr/employee-lifecycle/grievance-type/GrievanceTypesPage";
+import GrievanceTypeFormPage from "@/pages/admin/hr/employee-lifecycle/grievance-type/GrievanceTypeFormPage";
+import GrievanceTypeProfilePage from "@/pages/admin/hr/employee-lifecycle/grievance-type/GrievanceTypeProfilePage";
+import TrainingProgramsPage from "@/pages/admin/hr/employee-lifecycle/training-program/TrainingProgramsPage";
+import TrainingProgramFormPage from "@/pages/admin/hr/employee-lifecycle/training-program/TrainingProgramFormPage";
+import TrainingProgramProfilePage from "@/pages/admin/hr/employee-lifecycle/training-program/TrainingProgramProfilePage";
+import EmployeeOnboardingTemplatesPage from "@/pages/admin/hr/employee-lifecycle/employee-onboarding-template/EmployeeOnboardingTemplatesPage";
+import EmployeeOnboardingTemplateFormPage from "@/pages/admin/hr/employee-lifecycle/employee-onboarding-template/EmployeeOnboardingTemplateFormPage";
+import EmployeeOnboardingTemplateProfilePage from "@/pages/admin/hr/employee-lifecycle/employee-onboarding-template/EmployeeOnboardingTemplateProfilePage";
+import EmployeeOnboardingsPage from "@/pages/admin/hr/employee-lifecycle/employee-onboarding/EmployeeOnboardingsPage";
+import EmployeeOnboardingFormPage from "@/pages/admin/hr/employee-lifecycle/employee-onboarding/EmployeeOnboardingFormPage";
+import EmployeeOnboardingProfilePage from "@/pages/admin/hr/employee-lifecycle/employee-onboarding/EmployeeOnboardingProfilePage";
+import EmployeeSkillMapsPage from "@/pages/admin/hr/employee-lifecycle/employee-skill-map/EmployeeSkillMapsPage";
+import EmployeeSkillMapFormPage from "@/pages/admin/hr/employee-lifecycle/employee-skill-map/EmployeeSkillMapFormPage";
+import EmployeeSkillMapProfilePage from "@/pages/admin/hr/employee-lifecycle/employee-skill-map/EmployeeSkillMapProfilePage";
+import EmployeeGrievancesPage from "@/pages/admin/hr/employee-lifecycle/employee-grievance/EmployeeGrievancesPage";
+import EmployeeGrievanceFormPage from "@/pages/admin/hr/employee-lifecycle/employee-grievance/EmployeeGrievanceFormPage";
+import EmployeeGrievanceProfilePage from "@/pages/admin/hr/employee-lifecycle/employee-grievance/EmployeeGrievanceProfilePage";
+import TrainingEventsPage from "@/pages/admin/hr/employee-lifecycle/training-event/TrainingEventsPage";
+import TrainingEventFormPage from "@/pages/admin/hr/employee-lifecycle/training-event/TrainingEventFormPage";
+import TrainingEventProfilePage from "@/pages/admin/hr/employee-lifecycle/training-event/TrainingEventProfilePage";
+import TrainingFeedbackPage from "@/pages/admin/hr/employee-lifecycle/training-feedback/TrainingFeedbackPage";
+import TrainingFeedbackFormPage from "@/pages/admin/hr/employee-lifecycle/training-feedback/TrainingFeedbackFormPage";
+import TrainingFeedbackProfilePage from "@/pages/admin/hr/employee-lifecycle/training-feedback/TrainingFeedbackProfilePage";
+import TrainingResultsPage from "@/pages/admin/hr/employee-lifecycle/training-result/TrainingResultsPage";
+import TrainingResultFormPage from "@/pages/admin/hr/employee-lifecycle/training-result/TrainingResultFormPage";
+import TrainingResultProfilePage from "@/pages/admin/hr/employee-lifecycle/training-result/TrainingResultProfilePage";
 
 // HR Key Reports
 import MonthlyAttendanceSheetPage from "@/pages/admin/hr/reports/MonthlyAttendanceSheetPage";
@@ -408,6 +435,42 @@ export default function App() {
         <Route path="daily-work-summary-groups/:id/edit" element={<DailyWorkSummaryGroupFormPage />} />
         <Route path="daily-work-summary-groups/:id" element={<DailyWorkSummaryGroupProfilePage />} />
         <Route path="team-updates" element={<TeamUpdatesPage />} />
+        <Route path="grievance-type" element={<GrievanceTypesPage />} />
+        <Route path="grievance-type/new" element={<GrievanceTypeFormPage />} />
+        <Route path="grievance-type/:id/edit" element={<GrievanceTypeFormPage />} />
+        <Route path="grievance-type/:id" element={<GrievanceTypeProfilePage />} />
+        <Route path="training-program" element={<TrainingProgramsPage />} />
+        <Route path="training-program/new" element={<TrainingProgramFormPage />} />
+        <Route path="training-program/:id/edit" element={<TrainingProgramFormPage />} />
+        <Route path="training-program/:id" element={<TrainingProgramProfilePage />} />
+        <Route path="employee-onboarding-template" element={<EmployeeOnboardingTemplatesPage />} />
+        <Route path="employee-onboarding-template/new" element={<EmployeeOnboardingTemplateFormPage />} />
+        <Route path="employee-onboarding-template/:id/edit" element={<EmployeeOnboardingTemplateFormPage />} />
+        <Route path="employee-onboarding-template/:id" element={<EmployeeOnboardingTemplateProfilePage />} />
+        <Route path="employee-onboarding" element={<EmployeeOnboardingsPage />} />
+        <Route path="employee-onboarding/new" element={<EmployeeOnboardingFormPage />} />
+        <Route path="employee-onboarding/:id/edit" element={<EmployeeOnboardingFormPage />} />
+        <Route path="employee-onboarding/:id" element={<EmployeeOnboardingProfilePage />} />
+        <Route path="employee-skill-map" element={<EmployeeSkillMapsPage />} />
+        <Route path="employee-skill-map/new" element={<EmployeeSkillMapFormPage />} />
+        <Route path="employee-skill-map/:id/edit" element={<EmployeeSkillMapFormPage />} />
+        <Route path="employee-skill-map/:id" element={<EmployeeSkillMapProfilePage />} />
+        <Route path="employee-grievance" element={<EmployeeGrievancesPage />} />
+        <Route path="employee-grievance/new" element={<EmployeeGrievanceFormPage />} />
+        <Route path="employee-grievance/:id/edit" element={<EmployeeGrievanceFormPage />} />
+        <Route path="employee-grievance/:id" element={<EmployeeGrievanceProfilePage />} />
+        <Route path="training-event" element={<TrainingEventsPage />} />
+        <Route path="training-event/new" element={<TrainingEventFormPage />} />
+        <Route path="training-event/:id/edit" element={<TrainingEventFormPage />} />
+        <Route path="training-event/:id" element={<TrainingEventProfilePage />} />
+        <Route path="training-feedback" element={<TrainingFeedbackPage />} />
+        <Route path="training-feedback/new" element={<TrainingFeedbackFormPage />} />
+        <Route path="training-feedback/:id/edit" element={<TrainingFeedbackFormPage />} />
+        <Route path="training-feedback/:id" element={<TrainingFeedbackProfilePage />} />
+        <Route path="training-result" element={<TrainingResultsPage />} />
+        <Route path="training-result/new" element={<TrainingResultFormPage />} />
+        <Route path="training-result/:id/edit" element={<TrainingResultFormPage />} />
+        <Route path="training-result/:id" element={<TrainingResultProfilePage />} />
         <Route path="attendance" element={<AttendancesPage />} />
         <Route path="attendance/new" element={<AttendanceFormPage />} />
         <Route path="attendance/:id/edit" element={<AttendanceFormPage />} />

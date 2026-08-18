@@ -1,0 +1,1 @@
+import Page from "../shared/LifecycleProfilePage";import{CONFIG}from"../shared/lifecycleConfig";export default function EmployeeSkillMapProfilePage(){return <Page config={CONFIG["employee-skill-map"]} base="employee-skill-map"/>}

@@ -1,0 +1,1 @@
+import Page from "../shared/LifecycleFormPage";import Form from"./components/TrainingProgramForm";import{CONFIG}from"../shared/lifecycleConfig";export default function TrainingProgramFormPage(){return <Page config={CONFIG["training-program"]} base="training-program" Form={Form}/>}
