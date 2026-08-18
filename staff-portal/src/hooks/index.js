@@ -99,6 +99,7 @@ const LABEL_MAP = {
   "compensatory-leave-requests": "Compensatory Leave Requests",
   "hr-settings": "HR Settings",
   "daily-work-summary-groups": "Daily Work Summary Groups",
+  "daily-work-summaries": "Daily Work Summaries",
   "team-updates": "Team Updates",
   attendance: "Attendance",
   "attendance-requests": "Attendance Requests",

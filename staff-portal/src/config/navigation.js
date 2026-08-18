@@ -327,6 +327,27 @@ export const ADMIN_NAV = [
               { key: "training-result", label: "Training Result", icon: FileText, path: "/dashboard/training-result" },
             ],
           },
+          {
+            key: "lifecycle-daily-work-summary",
+            label: "Daily Work Summary",
+            icon: ClipboardList,
+            children: [
+              { key: "lifecycle-daily-work-summaries", label: "Daily Work Summary", icon: ClipboardList, path: "/dashboard/daily-work-summaries" },
+              { key: "lifecycle-daily-work-summary-groups", label: "Daily Work Summary Group", icon: ClipboardList, path: "/dashboard/daily-work-summary-groups" },
+              { key: "lifecycle-daily-work-summary-replies", label: "Daily Work Summary Replies", icon: BarChart3, path: "/dashboard/daily-work-summary-replies" },
+            ],
+          },
+          {
+            key: "lifecycle-reports",
+            label: "Reports",
+            icon: BarChart3,
+            children: [
+              { key: "lifecycle-employee-exits", label: "Employee Exits", icon: BarChart3, path: "/dashboard/employee-exits" },
+              { key: "lifecycle-employee-birthday", label: "Employee Birthday", icon: BarChart3, path: "/dashboard/employee-birthday" },
+              { key: "lifecycle-employee-information", label: "Employee Information", icon: BarChart3, path: "/dashboard/employee-information" },
+              { key: "lifecycle-employee-analytics", label: "Employee Analytics", icon: BarChart3, path: "/dashboard/employee-analytics" },
+            ],
+          },
         ],
       },
       {

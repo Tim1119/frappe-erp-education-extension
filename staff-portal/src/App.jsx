@@ -41,6 +41,8 @@ import HRSettingsFormPage from "@/pages/admin/hr/hr-settings/HRSettingsFormPage"
 import DailyWorkSummaryGroupsPage from "@/pages/admin/hr/daily-work-summary-group/DailyWorkSummaryGroupsPage";
 import DailyWorkSummaryGroupProfilePage from "@/pages/admin/hr/daily-work-summary-group/DailyWorkSummaryGroupProfilePage";
 import DailyWorkSummaryGroupFormPage from "@/pages/admin/hr/daily-work-summary-group/DailyWorkSummaryGroupFormPage";
+import DailyWorkSummariesPage from "@/pages/admin/hr/employee-lifecycle/daily-work-summary/DailyWorkSummariesPage";
+import DailyWorkSummaryProfilePage from "@/pages/admin/hr/employee-lifecycle/daily-work-summary/DailyWorkSummaryProfilePage";
 import TeamUpdatesPage from "@/pages/admin/hr/team-updates/TeamUpdatesPage";
 import AttendancesPage from "@/pages/admin/hr/attendance/AttendancesPage";
 import AttendanceProfilePage from "@/pages/admin/hr/attendance/AttendanceProfilePage";
@@ -434,6 +436,8 @@ export default function App() {
         <Route path="daily-work-summary-groups/new" element={<DailyWorkSummaryGroupFormPage />} />
         <Route path="daily-work-summary-groups/:id/edit" element={<DailyWorkSummaryGroupFormPage />} />
         <Route path="daily-work-summary-groups/:id" element={<DailyWorkSummaryGroupProfilePage />} />
+        <Route path="daily-work-summaries" element={<DailyWorkSummariesPage />} />
+        <Route path="daily-work-summaries/:id" element={<DailyWorkSummaryProfilePage />} />
         <Route path="team-updates" element={<TeamUpdatesPage />} />
         <Route path="grievance-type" element={<GrievanceTypesPage />} />
         <Route path="grievance-type/new" element={<GrievanceTypeFormPage />} />
