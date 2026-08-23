@@ -68,7 +68,7 @@ export default function SalesInvoiceProfilePage() {
     setBusy(true);
     try {
       const draft = await callMethod("erpnext.accounts.doctype.payment_entry.payment_entry.get_payment_entry", { dt: "Sales Invoice", dn: name });
-      navigate("/dashboard/payment-entries/new", { state: { prefill: draft } });
+      navigate("/dashboard/payment-entries/new", { state: { prefill: { ...draft, sales_invoice: name } } });
     } catch (err) { toast.error(getErrorMessage(err)); } finally { setBusy(false); }
   }
   async function handleMakeReturn() {
@@ -86,11 +86,17 @@ export default function SalesInvoiceProfilePage() {
   // on_hold field so Payment's condition is simpler than Purchase Invoice's.
   const canPay = submitted && Number(invoice.outstanding_amount) !== 0;
   const canReturn = submitted && !invoice.is_return && (Number(invoice.outstanding_amount) >= 0 || Math.abs(Number(invoice.outstanding_amount)) < Number(invoice.grand_total));
+  const salesOrders = [...new Set((invoice.items || []).map((row) => row.sales_order).filter(Boolean))];
+  const salesOrderPath = salesOrders.length === 1
+    ? `/dashboard/sales-orders/${encodeURIComponent(salesOrders[0])}`
+    : `/dashboard/sales-orders?sales_invoice=${encodeURIComponent(name)}`;
 
   const connectionItems = [
-    { key: "payments", label: "Payment Entry", icon: Wallet, path: `/dashboard/payment-entries?reference_name=${encodeURIComponent(name)}&reference_doctype=${encodeURIComponent("Sales Invoice")}` },
+    { key: "payment_entries", label: "Payment Entry", icon: Wallet, path: `/dashboard/payment-entries?reference_name=${encodeURIComponent(name)}&reference_doctype=${encodeURIComponent("Sales Invoice")}` },
     { key: "journal_entries", label: "Journal Entry", icon: FileText, path: `/dashboard/journal-entries?reference_name=${encodeURIComponent(name)}&reference_type=${encodeURIComponent("Sales Invoice")}` },
-    { key: "sales_returns", label: "Return / Credit Note", icon: FileText, path: `/dashboard/sales-invoices?return_against=${encodeURIComponent(name)}` },
+    { key: "returns", label: "Return / Credit Note", icon: FileText, path: `/dashboard/sales-invoices?return_against=${encodeURIComponent(name)}` },
+    { key: "sales_orders", label: "Sales Order", icon: FileText, path: salesOrderPath },
+    { key: "dunning", label: "Dunning", icon: FileText, path: `/dashboard/dunning?sales_invoice=${encodeURIComponent(name)}` },
   ];
 
   return <>

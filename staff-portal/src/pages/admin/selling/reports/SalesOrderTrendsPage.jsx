@@ -1,0 +1,1 @@
+import Report from"../../buying/reports/components/BuyingReportPage";import{trendFilters}from"./reportFilters";export default function Page(){return <Report eyebrow="Selling · Reports" title="Sales Order Trends" report="Sales Order Trends" filters={trendFilters(true)}/>}

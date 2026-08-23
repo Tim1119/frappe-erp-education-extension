@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
 import { Card } from "@/components/ui/card";
@@ -44,7 +44,7 @@ function Filter({ config, value, values, onChange }) {
 }
 
 export default function PayablesReportPage({ reportName }) {
-  const config = REPORTS[reportName]; const navigate = useNavigate(); const defaults = useMemo(() => Object.fromEntries(config.fields.map((f) => [f.fieldname, typeof f.default === "function" ? f.default() : f.default ?? (f.fieldtype === "Check" ? 0 : f.fieldtype === "MultiSelectList" ? [] : "")])), [config]); const [values, setValues] = useState(defaults); const [columns, setColumns] = useState([]); const [rows, setRows] = useState([]); const [visibleRows, setVisibleRows] = useState([]); const [loading, setLoading] = useState(false); const [hasRun, setHasRun] = useState(false);
+  const config = REPORTS[reportName]; const navigate = useNavigate(); const [searchParams] = useSearchParams(); const queryParty = searchParams.get("party") || ""; const queryPartyType = searchParams.get("party_type") || ""; const defaults = useMemo(() => ({ ...Object.fromEntries(config.fields.map((f) => [f.fieldname, typeof f.default === "function" ? f.default() : f.default ?? (f.fieldtype === "Check" ? 0 : f.fieldtype === "MultiSelectList" ? [] : "")])), ...(queryParty ? { party: queryParty } : {}), ...(queryPartyType ? { party_type: queryPartyType } : {}) }), [config, queryParty, queryPartyType]); const [values, setValues] = useState(defaults); const [columns, setColumns] = useState([]); const [rows, setRows] = useState([]); const [visibleRows, setVisibleRows] = useState([]); const [loading, setLoading] = useState(false); const [hasRun, setHasRun] = useState(false);
   async function load() { const missing = config.fields.find((f) => f.reqd && !values[f.fieldname]); if (missing) { toast.error(`${missing.label} is required.`); return; } try { setLoading(true); const result = await getReportData(reportName, Object.fromEntries(Object.entries(values).filter(([, value]) => value !== "" && value !== undefined))); setColumns((result.columns || []).map((column) => ({ ...column, label: t(column.label) }))); setRows((result.result || []).filter((row) => !Array.isArray(row))); setHasRun(true); } catch (error) { toast.error(getErrorMessage(error)); } finally { setLoading(false); } }
   const printFilters = config.fields.map((f) => ({ label: f.label, value: values[f.fieldname] })).filter((f) => f.value !== "" && f.value !== 0);
   // Purchase Order / Purchase Receipt are intentionally excluded here --

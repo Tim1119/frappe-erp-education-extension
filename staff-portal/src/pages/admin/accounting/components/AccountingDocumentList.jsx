@@ -18,9 +18,10 @@ import { DocumentStatusBadge } from "./documentStatus";
 // Entry list), so the chip they drive is the reference_name one below,
 // not a separate chip.
 const FILTER_PARAMS = {
-  "Purchase Invoice": [["supplier", "Supplier"], ["company", "Company"], ["return_against", "Return Against"]],
+  "Purchase Invoice": [["supplier", "Supplier"], ["company", "Company"], ["return_against", "Return Against"], ["purchase_order", "Purchase Order"]],
   "Payment Entry": [["reference_name", null], ["reference_doctype", null], ["party", "Party"], ["party_type", "Party Type"]],
   "Journal Entry": [["reference_name", null], ["reference_type", null]],
+  Dunning: [["sales_invoice", "Sales Invoice"]],
 };
 
 const money = (v) => (v ? `₦${Number(v).toLocaleString()}` : "—");

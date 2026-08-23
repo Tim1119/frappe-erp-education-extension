@@ -9,6 +9,8 @@ import {
   updateSalesInvoice,
 } from "@/services/education/salesInvoiceService.js";
 import { getErrorMessage } from "@/utils/errors.js";
+import PrefillSourceBanner from "@/components/shared/PrefillSourceBanner";
+import { cleanNewDocumentPrefill } from "@/utils/prefill";
 
 export default function SalesInvoiceFormPage() {
   const navigate = useNavigate();
@@ -20,7 +22,8 @@ export default function SalesInvoiceFormPage() {
   // mapped draft (real make_sales_return()) via router state instead of a
   // blank new record -- SalesInvoiceForm already treats a truthy `invoice`
   // prop as data to load rather than a blank form, so this is a drop-in.
-  const [invoice, setInvoice] = useState(location.state?.prefill || null);
+  const prefill = location.state?.prefill;
+  const [invoice, setInvoice] = useState(() => cleanNewDocumentPrefill(prefill) || null);
   const [loading, setLoading] = useState(editing);
 
   useEffect(() => {
@@ -68,6 +71,7 @@ export default function SalesInvoiceFormPage() {
         title={editing ? "Edit Sales Invoice" : "Create Sales Invoice"}
         sub={isReadOnly ? "This document is read-only" : undefined}
       />
+      {!editing && <PrefillSourceBanner prefill={prefill} />}
       <div className="panel">
         <SalesInvoiceForm invoice={invoice} onSave={save} />
       </div>

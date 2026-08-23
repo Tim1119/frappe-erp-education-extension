@@ -80,6 +80,7 @@ export default function SalesInvoicesPage() {
   const companyFilter = searchParams.get("company") || "";
   const customerFilter = searchParams.get("customer") || "";
   const returnAgainstFilter = searchParams.get("return_against") || "";
+  const salesOrderFilter = searchParams.get("sales_order") || "";
   const { page, setPage, reset } = usePagination(1);
 
   const [rows, setRows] = useState([]);
@@ -124,6 +125,7 @@ export default function SalesInvoicesPage() {
         company: companyFilter || undefined,
         customer: customerFilter || undefined,
         return_against: returnAgainstFilter || undefined,
+        sales_order: salesOrderFilter || undefined,
       });
       setRows(result.rows || []);
       setTotal(result.count || 0);
@@ -137,11 +139,11 @@ export default function SalesInvoicesPage() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, search, studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter, companyFilter, customerFilter, returnAgainstFilter]);
+  }, [page, search, studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter, companyFilter, customerFilter, returnAgainstFilter, salesOrderFilter]);
 
   useEffect(() => {
     reset();
-  }, [studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter, companyFilter, customerFilter, returnAgainstFilter, reset]);
+  }, [studentFilter, statusFilter, feeScheduleFilter, academicYearFilter, academicTermFilter, companyFilter, customerFilter, returnAgainstFilter, salesOrderFilter, reset]);
 
   function clearStudentFilter() {
     const next = new URLSearchParams(searchParams);
@@ -164,6 +166,12 @@ export default function SalesInvoicesPage() {
   function clearReturnAgainstFilter() {
     const next = new URLSearchParams(searchParams);
     next.delete("return_against");
+    setSearchParams(next);
+  }
+
+  function clearSalesOrderFilter() {
+    const next = new URLSearchParams(searchParams);
+    next.delete("sales_order");
     setSearchParams(next);
   }
 
@@ -217,6 +225,7 @@ export default function SalesInvoicesPage() {
       <ActiveFilterChip label="Company" value={companyFilter} onClear={clearCompanyFilter} />
       <ActiveFilterChip label="Customer" value={customerFilter} onClear={clearCustomerFilter} />
       <ActiveFilterChip label="Return Against" value={returnAgainstFilter} onClear={clearReturnAgainstFilter} />
+      <ActiveFilterChip label="Sales Order" value={salesOrderFilter} onClear={clearSalesOrderFilter} />
 
       <Card>
         <Table>

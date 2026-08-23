@@ -6,6 +6,7 @@ import PurchaseInvoiceForm from "./components/PurchaseInvoiceForm";
 import { createAccountingDocument, getAccountingDocument, getAccountingNewDocumentDefaults, updateAccountingDocument } from "@/services/accounting/documentService";
 import { getErrorMessage } from "@/utils/errors";
 import PrefillSourceBanner from "@/components/shared/PrefillSourceBanner";
+import { cleanNewDocumentPrefill } from "@/utils/prefill";
 
 export default function PurchaseInvoiceFormPage() {
   const { id } = useParams(); const edit = Boolean(id); const name = id ? decodeURIComponent(id) : ""; const navigate = useNavigate(); const location = useLocation();
@@ -18,7 +19,7 @@ export default function PurchaseInvoiceFormPage() {
 
   useEffect(() => {
     if (edit) getAccountingDocument("Purchase Invoice", name).then(setDoc);
-    else if (prefill) setDoc(prefill);
+    else if (prefill) setDoc(cleanNewDocumentPrefill(prefill));
     else getAccountingNewDocumentDefaults("Purchase Invoice").then(setDoc).catch(() => setDoc({}));
   }, [edit, name]);
 
@@ -38,6 +39,7 @@ export default function PurchaseInvoiceFormPage() {
   return (
     <>
       <PageHeader eyebrow="Accounting · Payables · Invoicing" title={`${edit ? "Edit" : "Create"} Purchase Invoice`} />
+      {!edit && <PrefillSourceBanner prefill={prefill} />}
       <PurchaseInvoiceForm initial={doc} onSave={save} submitLabel={edit ? "Update" : "Create"} />
     </>
   );

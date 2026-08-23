@@ -205,6 +205,48 @@ import BuyingItemsToBeRequestedPage from "@/pages/admin/buying/reports/ItemsToBe
 import BuyingItemWisePurchaseHistoryPage from "@/pages/admin/buying/reports/ItemWisePurchaseHistoryPage";
 import BuyingPurchaseReceiptTrendsPage from "@/pages/admin/buying/reports/PurchaseReceiptTrendsPage";
 import BuyingSupplierQuotationComparisonPage from "@/pages/admin/buying/reports/SupplierQuotationComparisonPage";
+import QuotationsPage from "@/pages/admin/selling/quotation/QuotationsPage";
+import QuotationFormPage from "@/pages/admin/selling/quotation/QuotationFormPage";
+import QuotationProfilePage from "@/pages/admin/selling/quotation/QuotationProfilePage";
+import SalesOrdersPage from "@/pages/admin/selling/sales-order/SalesOrdersPage";
+import SalesOrderFormPage from "@/pages/admin/selling/sales-order/SalesOrderFormPage";
+import SalesOrderProfilePage from "@/pages/admin/selling/sales-order/SalesOrderProfilePage";
+import BlanketOrdersPage from "@/pages/admin/selling/blanket-order/BlanketOrdersPage";
+import BlanketOrderFormPage from "@/pages/admin/selling/blanket-order/BlanketOrderFormPage";
+import BlanketOrderProfilePage from "@/pages/admin/selling/blanket-order/BlanketOrderProfilePage";
+import SalesPartnersPage from "@/pages/admin/selling/sales-partner/SalesPartnersPage";
+import SalesPartnerFormPage from "@/pages/admin/selling/sales-partner/SalesPartnerFormPage";
+import SalesPartnerProfilePage from "@/pages/admin/selling/sales-partner/SalesPartnerProfilePage";
+import SalesPersonsPage from "@/pages/admin/selling/sales-person/SalesPersonsPage";
+import SalesPersonFormPage from "@/pages/admin/selling/sales-person/SalesPersonFormPage";
+import SalesPersonProfilePage from "@/pages/admin/selling/sales-person/SalesPersonProfilePage";
+import CustomerGroupsPage from "@/pages/admin/selling/customer-group/CustomerGroupsPage";
+import CustomerGroupFormPage from "@/pages/admin/selling/customer-group/CustomerGroupFormPage";
+import CustomerGroupProfilePage from "@/pages/admin/selling/customer-group/CustomerGroupProfilePage";
+import TerritoriesPage from "@/pages/admin/selling/territory/TerritoriesPage";
+import TerritoryFormPage from "@/pages/admin/selling/territory/TerritoryFormPage";
+import TerritoryProfilePage from "@/pages/admin/selling/territory/TerritoryProfilePage";
+import LeadSourcesPage from "@/pages/admin/selling/lead-source/LeadSourcesPage";
+import LeadSourceFormPage from "@/pages/admin/selling/lead-source/LeadSourceFormPage";
+import LeadSourceProfilePage from "@/pages/admin/selling/lead-source/LeadSourceProfilePage";
+import CampaignsPage from "@/pages/admin/selling/campaign/CampaignsPage";
+import CampaignFormPage from "@/pages/admin/selling/campaign/CampaignFormPage";
+import CampaignProfilePage from "@/pages/admin/selling/campaign/CampaignProfilePage";
+import SalesTaxesTemplatesPage from "@/pages/admin/selling/sales-taxes-template/SalesTaxesTemplatesPage";
+import SalesTaxesTemplateFormPage from "@/pages/admin/selling/sales-taxes-template/SalesTaxesTemplateFormPage";
+import SalesTaxesTemplateProfilePage from "@/pages/admin/selling/sales-taxes-template/SalesTaxesTemplateProfilePage";
+import SellingSettingsPage from "@/pages/admin/selling/selling-settings/SellingSettingsPage";
+import SellingSalesAnalyticsPage from "@/pages/admin/selling/reports/SalesAnalyticsPage";
+import SellingSalesOrderAnalysisPage from "@/pages/admin/selling/reports/SalesOrderAnalysisPage";
+import SellingSalesFunnelPage from "@/pages/admin/selling/reports/SalesFunnelPage";
+import SellingSalesOrderTrendsPage from "@/pages/admin/selling/reports/SalesOrderTrendsPage";
+import SellingQuotationTrendsPage from "@/pages/admin/selling/reports/QuotationTrendsPage";
+import SellingCustomerAcquisitionPage from "@/pages/admin/selling/reports/CustomerAcquisitionPage";
+import SellingInactiveCustomersPage from "@/pages/admin/selling/reports/InactiveCustomersPage";
+import SellingSalesPersonSummaryPage from "@/pages/admin/selling/reports/SalesPersonSummaryPage";
+import SellingItemWiseSalesHistoryPage from "@/pages/admin/selling/reports/ItemWiseSalesHistoryPage";
+import SellingSalesInvoiceTrendsPage from "@/pages/admin/selling/reports/SalesInvoiceTrendsPage";
+import SellingDeliveryNoteTrendsPage from "@/pages/admin/selling/reports/DeliveryNoteTrendsPage";
 
 // HR Key Reports
 import MonthlyAttendanceSheetPage from "@/pages/admin/hr/reports/MonthlyAttendanceSheetPage";
@@ -812,6 +854,59 @@ export default function App() {
         <Route path="item-wise-purchase-history" element={<BuyingItemWisePurchaseHistoryPage />} />
         <Route path="purchase-receipt-trends" element={<BuyingPurchaseReceiptTrendsPage />} />
         <Route path="supplier-quotation-comparison" element={<BuyingSupplierQuotationComparisonPage />} />
+        {/* Selling */}
+        <Route path="quotations" element={<QuotationsPage />} />
+        <Route path="quotations/new" element={<QuotationFormPage />} />
+        <Route path="quotations/:id/edit" element={<QuotationFormPage />} />
+        <Route path="quotations/:id" element={<QuotationProfilePage />} />
+        <Route path="sales-orders" element={<SalesOrdersPage />} />
+        <Route path="sales-orders/new" element={<SalesOrderFormPage />} />
+        <Route path="sales-orders/:id/edit" element={<SalesOrderFormPage />} />
+        <Route path="sales-orders/:id" element={<SalesOrderProfilePage />} />
+        <Route path="blanket-orders" element={<BlanketOrdersPage />} />
+        <Route path="blanket-orders/new" element={<BlanketOrderFormPage />} />
+        <Route path="blanket-orders/:id/edit" element={<BlanketOrderFormPage />} />
+        <Route path="blanket-orders/:id" element={<BlanketOrderProfilePage />} />
+        <Route path="sales-partners" element={<SalesPartnersPage />} />
+        <Route path="sales-partners/new" element={<SalesPartnerFormPage />} />
+        <Route path="sales-partners/:id/edit" element={<SalesPartnerFormPage />} />
+        <Route path="sales-partners/:id" element={<SalesPartnerProfilePage />} />
+        <Route path="sales-persons" element={<SalesPersonsPage />} />
+        <Route path="sales-persons/new" element={<SalesPersonFormPage />} />
+        <Route path="sales-persons/:id/edit" element={<SalesPersonFormPage />} />
+        <Route path="sales-persons/:id" element={<SalesPersonProfilePage />} />
+        <Route path="customer-groups" element={<CustomerGroupsPage />} />
+        <Route path="customer-groups/new" element={<CustomerGroupFormPage />} />
+        <Route path="customer-groups/:id/edit" element={<CustomerGroupFormPage />} />
+        <Route path="customer-groups/:id" element={<CustomerGroupProfilePage />} />
+        <Route path="territories" element={<TerritoriesPage />} />
+        <Route path="territories/new" element={<TerritoryFormPage />} />
+        <Route path="territories/:id/edit" element={<TerritoryFormPage />} />
+        <Route path="territories/:id" element={<TerritoryProfilePage />} />
+        <Route path="lead-sources" element={<LeadSourcesPage />} />
+        <Route path="lead-sources/new" element={<LeadSourceFormPage />} />
+        <Route path="lead-sources/:id/edit" element={<LeadSourceFormPage />} />
+        <Route path="lead-sources/:id" element={<LeadSourceProfilePage />} />
+        <Route path="campaigns" element={<CampaignsPage />} />
+        <Route path="campaigns/new" element={<CampaignFormPage />} />
+        <Route path="campaigns/:id/edit" element={<CampaignFormPage />} />
+        <Route path="campaigns/:id" element={<CampaignProfilePage />} />
+        <Route path="sales-taxes-templates" element={<SalesTaxesTemplatesPage />} />
+        <Route path="sales-taxes-templates/new" element={<SalesTaxesTemplateFormPage />} />
+        <Route path="sales-taxes-templates/:id/edit" element={<SalesTaxesTemplateFormPage />} />
+        <Route path="sales-taxes-templates/:id" element={<SalesTaxesTemplateProfilePage />} />
+        <Route path="selling-settings" element={<SellingSettingsPage />} />
+        <Route path="sales-analytics" element={<SellingSalesAnalyticsPage />} />
+        <Route path="sales-order-analysis" element={<SellingSalesOrderAnalysisPage />} />
+        <Route path="sales-funnel" element={<SellingSalesFunnelPage />} />
+        <Route path="sales-order-trends" element={<SellingSalesOrderTrendsPage />} />
+        <Route path="quotation-trends" element={<SellingQuotationTrendsPage />} />
+        <Route path="customer-acquisition" element={<SellingCustomerAcquisitionPage />} />
+        <Route path="inactive-customers" element={<SellingInactiveCustomersPage />} />
+        <Route path="sales-person-summary" element={<SellingSalesPersonSummaryPage />} />
+        <Route path="item-wise-sales-history" element={<SellingItemWiseSalesHistoryPage />} />
+        <Route path="selling-sales-invoice-trends" element={<SellingSalesInvoiceTrendsPage />} />
+        <Route path="delivery-note-trends" element={<SellingDeliveryNoteTrendsPage />} />
         <Route path="purchase-invoices" element={<PurchaseInvoicesPage />} />
         <Route path="purchase-invoices/new" element={<PurchaseInvoiceFormPage />} />
         <Route path="purchase-invoices/:id/edit" element={<PurchaseInvoiceFormPage />} />

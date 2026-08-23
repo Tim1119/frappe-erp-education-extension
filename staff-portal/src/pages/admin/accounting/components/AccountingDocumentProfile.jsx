@@ -207,6 +207,13 @@ export default function AccountingDocumentProfile({ doctype, base }) {
   }
   if (!doc || !meta) return <div className="muted">Loading…</div>;
   const createActions = (CREATE_ACTIONS[doctype] || []).filter((item) => item.show(doc));
+  const viewActions = doctype === "Customer" ? [
+    { label: "Accounts Receivable", path: `/dashboard/accounts-receivable?party=${encodeURIComponent(doc.name)}` },
+    { label: "Accounting Ledger", path: `/dashboard/general-ledger?party=${encodeURIComponent(doc.name)}&party_type=Customer` },
+  ] : doctype === "Supplier" ? [
+    { label: "Accounts Payable", path: `/dashboard/accounts-payable?party=${encodeURIComponent(doc.name)}` },
+    { label: "Accounting Ledger", path: `/dashboard/general-ledger?party=${encodeURIComponent(doc.name)}&party_type=Supplier` },
+  ] : [];
   const showStatus = doctype in { Supplier: 1, "Purchase Invoice": 1, "Payment Entry": 1, "Journal Entry": 1, Customer: 1, Dunning: 1 };
   return <>
     <PageHeader
@@ -215,6 +222,12 @@ export default function AccountingDocumentProfile({ doctype, base }) {
       sub={doc.name}
       button={
         <div className="flex gap-2">
+          {viewActions.length ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild><Button variant="outline" size="sm">View <ChevronDown className="ml-1 h-4 w-4" /></Button></DropdownMenuTrigger>
+              <DropdownMenuContent align="end">{viewActions.map((item) => <DropdownMenuItem key={item.label} onClick={() => navigate(item.path)}>{item.label}</DropdownMenuItem>)}</DropdownMenuContent>
+            </DropdownMenu>
+          ) : null}
           {doc.can_edit && <Button variant="outline" onClick={() => navigate(`/dashboard/${base}/${encodeURIComponent(name)}/edit`)}>Edit</Button>}
           {Boolean(meta.is_submittable) && doc.docstatus === 0 && <Button variant="default" onClick={() => action(submitAccountingDocument, `${doctype} submitted`)}>Submit</Button>}
           {createActions.length ? (

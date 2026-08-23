@@ -107,7 +107,7 @@ export default function ReportTable({
 
   return (
     <div className="w-full overflow-auto report-table-scroll">
-      <table className="w-full border-collapse text-xs">
+      <table className="min-w-max w-full border-collapse text-xs">
         <thead>
           <tr>
             {columns.map((col) => (

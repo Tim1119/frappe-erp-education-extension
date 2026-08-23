@@ -8,6 +8,8 @@ expose(globals(), "Staffing Plan", ["company","department","from_date","to_date"
 
 @frappe.whitelist()
 @guarded("Staffing Plan connections")
-def get_connections(name):
+def get_connections(name=None):
     """Job Opening is the only Recruitment document directly linked to a Staffing Plan."""
+    if not name:
+        frappe.throw("Staffing Plan document name is required")
     return {"job_openings": frappe.db.count("Job Opening", {"staffing_plan": name})}

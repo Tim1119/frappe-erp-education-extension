@@ -5,6 +5,10 @@ const SOURCES=[
   ["supplier_quotation","Supplier Quotation","supplier-quotations"],
   ["purchase_order","Purchase Order","purchase-orders"],
   ["request_for_quotation","Request for Quotation","request-for-quotation"],
+  ["quotation","Quotation","quotations"],
+  ["sales_order","Sales Order","sales-orders"],
+  ["purchase_invoice","Purchase Invoice","purchase-invoices"],
+  ["sales_invoice","Sales Invoice","sales-invoices"],
 ];
 
 export default function PrefillSourceBanner({prefill}){

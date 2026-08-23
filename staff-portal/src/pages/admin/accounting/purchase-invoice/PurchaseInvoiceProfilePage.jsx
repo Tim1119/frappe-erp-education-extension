@@ -91,7 +91,7 @@ export default function PurchaseInvoiceProfilePage() {
     setBusy(true);
     try {
       const draft = await callMethod("erpnext.accounts.doctype.payment_entry.payment_entry.get_payment_entry", { dt: "Purchase Invoice", dn: name });
-      navigate("/dashboard/payment-entries/new", { state: { prefill: draft } });
+      navigate("/dashboard/payment-entries/new", { state: { prefill: { ...draft, purchase_invoice: name } } });
     } catch (e) { toast.error(getErrorMessage(e)); } finally { setBusy(false); }
   }
   async function handleMakeDebitNote() {
@@ -129,11 +129,16 @@ export default function PurchaseInvoiceProfilePage() {
   const canBlock = doc.docstatus === 1 && !doc.is_return && Number(doc.outstanding_amount) !== 0 && !doc.on_hold;
   const canUnblock = doc.docstatus === 1 && !doc.is_return && Boolean(doc.on_hold);
   const showCreateMenu = canPay || canReturn || canBlock || canUnblock;
+  const purchaseOrders = [...new Set((doc.items || []).map((row) => row.purchase_order).filter(Boolean))];
+  const purchaseOrderPath = purchaseOrders.length === 1
+    ? `/dashboard/purchase-orders/${encodeURIComponent(purchaseOrders[0])}`
+    : `/dashboard/purchase-orders?purchase_invoice=${encodeURIComponent(name)}`;
 
   const connectionItems = [
     { key: "payments", label: "Payment Entry", icon: Wallet, path: `/dashboard/payment-entries?reference_name=${encodeURIComponent(name)}&reference_doctype=${encodeURIComponent("Purchase Invoice")}` },
     { key: "journal_entries", label: "Journal Entry", icon: FileText, path: `/dashboard/journal-entries?reference_name=${encodeURIComponent(name)}&reference_type=${encodeURIComponent("Purchase Invoice")}` },
     { key: "purchase_returns", label: "Return / Debit Note", icon: FileText, path: `/dashboard/purchase-invoices?return_against=${encodeURIComponent(name)}` },
+    { key: "purchase_orders", label: "Purchase Order", icon: FileText, path: purchaseOrderPath },
   ];
 
   return (

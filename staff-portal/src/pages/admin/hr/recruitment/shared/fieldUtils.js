@@ -21,6 +21,12 @@ const QUICK_CREATE_DOCTYPES = new Set([
   "Supplier Group",
   "UOM",
   "Terms and Conditions",
+  "Customer Group",
+  "Territory",
+  "Campaign",
+  "Lead Source",
+  "Sales Partner",
+  "Sales Person",
 ]);
 
 const REQUIRED_FIELDS = {
@@ -51,6 +57,9 @@ const REQUIRED_TABLES = {
   "request-for-quotation": ["items", "suppliers"],
   "supplier-quotations": ["items"],
   "product-bundles": ["items"],
+  quotations: ["items"],
+  "sales-orders": ["items"],
+  "blanket-orders": ["items"],
 };
 
 export function linkedDoctypeFor(field) {

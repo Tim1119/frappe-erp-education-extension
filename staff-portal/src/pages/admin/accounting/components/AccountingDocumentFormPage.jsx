@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import Form from "./AccountingDocumentForm";
 import { createAccountingDocument, getAccountingDocument, getAccountingMeta, getAccountingNewDocumentDefaults, updateAccountingDocument } from "@/services/accounting/documentService";
+import PrefillSourceBanner from "@/components/shared/PrefillSourceBanner";
+import { cleanNewDocumentPrefill } from "@/utils/prefill";
 
 const GROUP = { Customer: "Receivables", Dunning: "Receivables", "Dunning Type": "Receivables" };
 const SECTION = { "Payment Entry": "Payments", "Journal Entry": "Payments", Dunning: "Dunning", "Dunning Type": "Dunning" };
@@ -20,11 +22,11 @@ export default function AccountingDocumentFormPage({ doctype, base }) {
   useEffect(() => {
     getAccountingMeta(doctype).then(setMeta);
     if (edit) getAccountingDocument(doctype, name).then(setDoc);
-    else if (prefill) setDoc(prefill);
+    else if (prefill) setDoc(cleanNewDocumentPrefill(prefill));
     else getAccountingNewDocumentDefaults(doctype).then(setDoc).catch(() => setDoc({}));
   }, [doctype, edit, name]);
   async function save(data) { try { const result = edit ? await updateAccountingDocument(doctype, name, data) : await createAccountingDocument(doctype, data); toast.success(`${doctype} ${edit ? "updated" : "created"}`); navigate(`/dashboard/${base}/${encodeURIComponent(result.name || name)}`); } catch (error) { toast.error(String(error)); } }
   if (!meta || !doc) return <div className="muted">Loading…</div>;
   const eyebrow = HR_DOCTYPES.has(doctype) ? "HR · Expense Claims" : `Accounting · ${GROUP[doctype] || "Payables"} · ${SECTION[doctype] || "Invoicing"}`;
-  return <><PageHeader eyebrow={eyebrow} title={`${edit ? "Edit" : "Create"} ${doctype}`} /><Form doctype={doctype} meta={meta} initial={doc} onSave={save} /></>;
+  return <><PageHeader eyebrow={eyebrow} title={`${edit ? "Edit" : "Create"} ${doctype}`} />{!edit && <PrefillSourceBanner prefill={prefill} />}<Form doctype={doctype} meta={meta} initial={doc} onSave={save} /></>;
 }

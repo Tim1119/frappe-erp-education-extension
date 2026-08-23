@@ -18,6 +18,7 @@ def get_sales_invoices(
     company=None,
     customer=None,
     return_against=None,
+    sales_order=None,
 ):
     page = cint(page)
     page_size = cint(page_size)
@@ -39,6 +40,18 @@ def get_sales_invoices(
         filters["customer"] = customer
     if return_against:
         filters["return_against"] = return_against
+
+    invoice_names = None
+    if sales_order:
+        invoice_names = frappe.get_all(
+            "Sales Invoice Item",
+            filters={"sales_order": sales_order, "docstatus": ["<", 2]},
+            distinct=True,
+            pluck="parent",
+        )
+        if not invoice_names:
+            return {"rows": [], "count": 0, "page": page, "page_size": page_size, "total_pages": 0}
+        filters["name"] = ["in", invoice_names]
 
     or_filters = []
     if search:
@@ -208,6 +221,10 @@ def _set_sales_invoice_fields(doc, data):
                     "description": row.get("description"),
                     "income_account": row.get("income_account"),
                     "cost_center": row.get("cost_center") or data.get("cost_center"),
+                    "sales_order": row.get("sales_order"),
+                    "so_detail": row.get("so_detail"),
+                    "delivery_note": row.get("delivery_note"),
+                    "dn_detail": row.get("dn_detail"),
                 })
 
     if "taxes" in data:
@@ -343,8 +360,9 @@ def get_connections(name):
     if not name:
         frappe.throw(_("Sales Invoice name is required"))
 
-    return {
-        "payments": len(frappe.get_all(
+    try:
+        return {
+        "payment_entries": len(frappe.get_all(
             "Payment Entry Reference",
             filters={"reference_doctype": "Sales Invoice", "reference_name": name, "docstatus": 1},
             distinct=True, pluck="parent",
@@ -354,8 +372,21 @@ def get_connections(name):
             filters={"reference_type": "Sales Invoice", "reference_name": name, "docstatus": 1},
             distinct=True, pluck="parent",
         )),
-        "sales_returns": frappe.db.count("Sales Invoice", {"return_against": name, "docstatus": 1}),
-    }
+        "returns": frappe.db.count("Sales Invoice", {"return_against": name, "docstatus": 1}),
+        "sales_orders": len(frappe.get_all(
+            "Sales Invoice Item",
+            filters={"parent": name, "sales_order": ["not in", ["", None]], "docstatus": ["<", 2]},
+            distinct=True, pluck="sales_order",
+        )),
+        "dunning": len(frappe.get_all(
+            "Overdue Payment",
+            filters={"sales_invoice": name, "docstatus": 1},
+            distinct=True, pluck="parent",
+        )),
+        }
+    except Exception as e:
+        frappe.log_error(str(e), "Sales Invoice API")
+        return {}
 
 
 @frappe.whitelist()

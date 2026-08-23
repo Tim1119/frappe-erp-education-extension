@@ -5,7 +5,9 @@ expose(globals(), "Job Opening", ["job_title","designation","status","posted_on"
 
 @frappe.whitelist()
 @guarded("Job Opening connections")
-def get_connections(name):
+def get_connections(name=None):
+    if not name:
+        frappe.throw("Job Opening document name is required")
     opening = frappe.get_doc("Job Opening", name)
     return {"job_applicants": frappe.db.count("Job Applicant", {"job_title": name}),
             "job_requisitions": 1 if opening.job_requisition else 0}

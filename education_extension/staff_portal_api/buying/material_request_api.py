@@ -1,7 +1,7 @@
 import frappe
 from education_extension.staff_portal_api.recruitment._utils import guarded
 from ._api import expose
-expose(globals(),"Material Request",["naming_series","material_request_type","transaction_date","schedule_date","company","set_warehouse","set_from_warehouse","purpose","letter_head"],["name","material_request_type","transaction_date","schedule_date","company","set_warehouse","status","docstatus"],["name","material_request_type","company"],{"items":["item_code","item_name","description","qty","uom","stock_uom","conversion_factor","schedule_date","warehouse","from_warehouse","project","cost_center"]},True,["company","material_request_type","status"])
+expose(globals(),"Material Request",["naming_series","material_request_type","transaction_date","schedule_date","company","set_warehouse","set_from_warehouse","purpose","letter_head"],["name","material_request_type","transaction_date","schedule_date","company","set_warehouse","status","docstatus"],["name","material_request_type","company"],{"items":["item_code","item_name","description","qty","uom","stock_uom","conversion_factor","schedule_date","warehouse","from_warehouse","project","cost_center","sales_order","sales_order_item"]},True,["company","material_request_type","status"],child_filter_fields={"sales_order":("Material Request Item","sales_order","parent")})
 
 @frappe.whitelist()
 @guarded("Material Request connections")

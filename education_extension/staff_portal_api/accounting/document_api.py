@@ -141,6 +141,14 @@ CHILD_FORCE_EDITABLE_FIELDS = {
     "Overdue Payment": {"sales_invoice", "due_date", "outstanding", "overdue_days", "interest", "dunning_level"},
 }
 
+CHILD_PRESERVE_FIELDS = {
+    # Mapped Purchase Order drafts carry these read-only controller fields.
+    # They must survive the portal's child-row allowlist or the saved invoice
+    # permanently loses its source-document connection, but remain read-only
+    # in the form just as they are in Desk.
+    "Purchase Invoice Item": {"purchase_order", "po_detail", "purchase_receipt", "pr_detail"},
+}
+
 @frappe.whitelist()
 def get_new_document_defaults(doctype):
     # Real Desk fills posting_date/company client-side on every new
@@ -188,7 +196,7 @@ def get_meta(doctype):
     return {"issingle":meta.issingle,"is_submittable":meta.is_submittable,"fields":[field_dict(f,read_only_override=(True if f.fieldname in readonly_override else None)) for f in meta.fields if not f.hidden and f.fieldtype not in ("HTML","Button","Fold") and f.fieldname not in exclude]}
 
 @frappe.whitelist()
-def get_documents(doctype,page=1,page_size=20,search=None,status=None,supplier_group=None,supplier=None,company=None,party_type=None,party=None,voucher_type=None,payment_type=None,reference_name=None,reference_doctype=None,reference_type=None,return_against=None,customer_group=None,customer_type=None,territory=None,customer=None,dunning_type=None):
+def get_documents(doctype,page=1,page_size=20,search=None,status=None,supplier_group=None,supplier=None,company=None,party_type=None,party=None,voucher_type=None,payment_type=None,reference_name=None,reference_doctype=None,reference_type=None,return_against=None,customer_group=None,customer_type=None,territory=None,customer=None,dunning_type=None,purchase_order=None,sales_invoice=None):
     check(doctype);page,page_size=cint(page),cint(page_size);meta=frappe.get_meta(doctype);filters={k:v for k,v in {"status":status,"supplier_group":supplier_group,"supplier":supplier,"company":company,"party_type":party_type,"party":party,"voucher_type":voucher_type,"payment_type":payment_type,"return_against":return_against,"customer_group":customer_group,"customer_type":customer_type,"territory":territory,"customer":customer,"dunning_type":dunning_type}.items() if v and meta.has_field(k)}
     names=None
     # reference_name alone used to always mean "Purchase Invoice" here, which
@@ -206,6 +214,14 @@ def get_documents(doctype,page=1,page_size=20,search=None,status=None,supplier_g
         filters["name"]=["in",names]
     elif reference_name and doctype=="Journal Entry":
         names=frappe.get_all("Journal Entry Account",filters={"reference_type":reference_type or "Purchase Invoice","reference_name":reference_name,"docstatus":1},pluck="parent")
+        if not names:return {"rows":[],"count":0,"page":page,"page_size":page_size}
+        filters["name"]=["in",names]
+    elif purchase_order and doctype=="Purchase Invoice":
+        names=frappe.get_all("Purchase Invoice Item",filters={"purchase_order":purchase_order,"docstatus":["<",2]},distinct=True,pluck="parent")
+        if not names:return {"rows":[],"count":0,"page":page,"page_size":page_size}
+        filters["name"]=["in",names]
+    elif sales_invoice and doctype=="Dunning":
+        names=frappe.get_all("Overdue Payment",filters={"sales_invoice":sales_invoice,"docstatus":1},distinct=True,pluck="parent")
         if not names:return {"rows":[],"count":0,"page":page,"page_size":page_size}
         filters["name"]=["in",names]
     search_map={"Supplier":["name","supplier_name"],"Purchase Invoice":["name","supplier","bill_no"],"Payment Entry":["name","party","party_name","reference_no"],"Journal Entry":["name","title","cheque_no"],"Customer":["name","customer_name"],"Dunning":["name","customer_name"],"Dunning Type":["name","dunning_type"]}
@@ -252,7 +268,8 @@ def apply(d,data):
             # the row before insert (e.g. Overdue Payment.sales_invoice,
             # which is `reqd`, making the whole row fail to save).
             child_editable=CHILD_FORCE_EDITABLE_FIELDS.get(f.options) or set()
-            child_fields={x.fieldname:x for x in child_meta.fields if x.fieldtype not in LAYOUT and (not x.read_only or x.fieldname in child_editable)}
+            child_preserve=CHILD_PRESERVE_FIELDS.get(f.options) or set()
+            child_fields={x.fieldname:x for x in child_meta.fields if x.fieldtype not in LAYOUT and (not x.read_only or x.fieldname in child_editable or x.fieldname in child_preserve)}
             for row in data.get(f.fieldname) or []:d.append(f.fieldname,{k:_cast(child_fields[k].fieldtype,v) for k,v in row.items() if k in child_fields})
         else:d.set(f.fieldname,_cast(f.fieldtype,data.get(f.fieldname)))
 
@@ -349,6 +366,7 @@ def get_connections(doctype,name):
             "payments": len(frappe.get_all("Payment Entry Reference",filters={"reference_doctype":"Purchase Invoice","reference_name":name,"docstatus":1},distinct=True,pluck="parent")),
             "journal_entries": len(frappe.get_all("Journal Entry Account",filters={"reference_type":"Purchase Invoice","reference_name":name,"docstatus":1},distinct=True,pluck="parent")),
             "purchase_returns": frappe.db.count("Purchase Invoice",{"return_against":name,"docstatus":1}),
+            "purchase_orders": len(frappe.get_all("Purchase Invoice Item",filters={"parent":name,"purchase_order":["not in",["",None]],"docstatus":["<",2]},distinct=True,pluck="purchase_order")),
         }
     if doctype=="Payment Entry":
         return {"journal_entries": len(frappe.get_all("Journal Entry Account",filters={"reference_type":"Payment Entry","reference_name":name},distinct=True,pluck="parent"))}

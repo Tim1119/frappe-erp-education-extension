@@ -5,14 +5,20 @@ from ._utils import (cancel_doc, create_doc, delete_doc, employee_details, guard
 
 
 def expose(namespace, doctype, fields, list_fields, search_fields, tables=None, submittable=False,
-           filter_fields=None, connections=None):
-    tables, filter_fields, connections = tables or {}, filter_fields or [], connections or {}
+           filter_fields=None, connections=None, child_filter_fields=None):
+    tables, filter_fields, connections, child_filter_fields = tables or {}, filter_fields or [], connections or {}, child_filter_fields or {}
 
     @frappe.whitelist()
     @guarded(f"{doctype} list")
     def get_list(page=1, page_size=20, search=None, **kwargs):
+        filters = {field: kwargs.get(field) for field in filter_fields}
+        for key, (child_doctype, match_field, result_field) in child_filter_fields.items():
+            value = kwargs.get(key)
+            if value:
+                names = frappe.get_all(child_doctype, filters={match_field: value}, distinct=True, pluck=result_field)
+                filters["name"] = ["in", [name for name in names if name]]
         return list_docs(doctype, list_fields, page, page_size, search, search_fields,
-            {field: kwargs.get(field) for field in filter_fields})
+            filters)
 
     @frappe.whitelist()
     @guarded(f"{doctype} get")
@@ -32,7 +38,9 @@ def expose(namespace, doctype, fields, list_fields, search_fields, tables=None, 
 
     @frappe.whitelist()
     @guarded(f"{doctype} connections")
-    def get_connections(name):
+    def get_connections(name=None):
+        if not name:
+            frappe.throw(f"{doctype} document name is required")
         return {key: frappe.db.count(target, {link: name}) for key, (target, link) in connections.items()}
 
     @frappe.whitelist()

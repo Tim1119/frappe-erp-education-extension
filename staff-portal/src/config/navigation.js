@@ -40,6 +40,7 @@ import {
   ShoppingBag,
   Package,
   Users,
+  Store,
 } from "lucide-react";
 
 /**
@@ -587,6 +588,55 @@ export const ADMIN_NAV = [
           { key: "supplier-quotation-comparison", label: "Supplier Quotation Comparison", icon: BarChart3, path: "/dashboard/supplier-quotation-comparison" },
         ],
       },
+    ],
+  },
+  {
+    key: "selling",
+    label: "Selling",
+    icon: Store,
+    children: [
+      { key: "selling-transactions", label: "Selling", icon: ShoppingBag, children: [
+        { key: "selling-customer", label: "Customer", icon: Users, path: "/dashboard/customers" },
+        { key: "quotation", label: "Quotation", icon: FileText, path: "/dashboard/quotations" },
+        { key: "sales-order", label: "Sales Order", icon: FileText, path: "/dashboard/sales-orders" },
+        { key: "selling-sales-invoice", label: "Sales Invoice", icon: FileText, path: "/dashboard/sales-invoices" },
+        { key: "blanket-order", label: "Blanket Order", icon: FileText, path: "/dashboard/blanket-orders" },
+        { key: "sales-partner", label: "Sales Partner", icon: FileText, path: "/dashboard/sales-partners" },
+        { key: "sales-person", label: "Sales Person", icon: FileText, path: "/dashboard/sales-persons" },
+      ]},
+      { key: "selling-items", label: "Items & Pricing", icon: Package, children: [
+        { key: "selling-item", label: "Item", icon: Package, path: "/dashboard/items" },
+        { key: "selling-item-price", label: "Item Price", icon: FileText, path: "/dashboard/item-prices" },
+        { key: "selling-price-list", label: "Price List", icon: FileText, path: "/dashboard/price-lists" },
+        { key: "selling-item-group", label: "Item Group", icon: FileText, path: "/dashboard/item-groups" },
+        { key: "selling-product-bundle", label: "Product Bundle", icon: FileText, path: "/dashboard/product-bundles" },
+        { key: "selling-pricing-rule", label: "Pricing Rule", icon: FileText, path: "/dashboard/pricing-rules" },
+      ]},
+      { key: "selling-settings", label: "Settings", icon: Settings, children: [
+        { key: "selling-settings-page", label: "Selling Settings", icon: Settings, path: "/dashboard/selling-settings" },
+        { key: "selling-taxes-template", label: "Sales Taxes and Charges Template", icon: FileText, path: "/dashboard/sales-taxes-templates" },
+        { key: "selling-terms", label: "Terms and Conditions", icon: FileText, path: "/dashboard/terms-and-conditions" },
+        { key: "lead-source", label: "Lead Source", icon: FileText, path: "/dashboard/lead-sources" },
+        { key: "customer-group", label: "Customer Group", icon: FileText, path: "/dashboard/customer-groups" },
+        { key: "territory", label: "Territory", icon: FileText, path: "/dashboard/territories" },
+        { key: "campaign", label: "Campaign", icon: FileText, path: "/dashboard/campaigns" },
+      ]},
+      { key: "selling-key-reports", label: "Key Reports", icon: BarChart3, children: [
+        { key: "sales-analytics", label: "Sales Analytics", icon: BarChart3, path: "/dashboard/sales-analytics" },
+        { key: "sales-order-analysis", label: "Sales Order Analysis", icon: BarChart3, path: "/dashboard/sales-order-analysis" },
+        { key: "sales-funnel", label: "Sales Funnel", icon: BarChart3, path: "/dashboard/sales-funnel" },
+        { key: "sales-order-trends", label: "Sales Order Trends", icon: BarChart3, path: "/dashboard/sales-order-trends" },
+        { key: "quotation-trends", label: "Quotation Trends", icon: BarChart3, path: "/dashboard/quotation-trends" },
+        { key: "customer-acquisition", label: "Customer Acquisition and Loyalty", icon: BarChart3, path: "/dashboard/customer-acquisition" },
+        { key: "inactive-customers", label: "Inactive Customers", icon: BarChart3, path: "/dashboard/inactive-customers" },
+        { key: "sales-person-summary", label: "Sales Person-wise Summary", icon: BarChart3, path: "/dashboard/sales-person-summary" },
+        { key: "item-wise-sales-history", label: "Item-wise Sales History", icon: BarChart3, path: "/dashboard/item-wise-sales-history" },
+      ]},
+      { key: "selling-other-reports", label: "Other Reports", icon: BarChart3, children: [
+        { key: "selling-sales-invoice-trends", label: "Sales Invoice Trends", icon: BarChart3, path: "/dashboard/selling-sales-invoice-trends" },
+        { key: "selling-customer-credit-balance", label: "Customer Credit Balance", icon: BarChart3, path: "/dashboard/customer-credit-balance" },
+        { key: "delivery-note-trends", label: "Delivery Note Trends", icon: BarChart3, path: "/dashboard/delivery-note-trends" },
+      ]},
     ],
   },
   {

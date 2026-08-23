@@ -1,0 +1,1 @@
+import Report from"../../buying/reports/components/BuyingReportPage";import{analyticsFilters}from"./reportFilters";export default function Page(){return <Report eyebrow="Selling · Reports" title="Sales Analytics" report="Sales Analytics" filters={analyticsFilters}/>}

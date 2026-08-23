@@ -23,14 +23,15 @@ export async function getReportData(reportName, filters = {}) {
 // Department, Employee, etc.) -- every report filter bar needs this same
 // "list every record of doctype X" lookup, so it lives here once instead
 // of being re-implemented per report page.
-export function getLinkOptions(doctype, filters = {}) {
+export function getLinkOptions(doctype, filters = {}, requestedFields = []) {
   const displayFields = {
     Employee: "employee_name",
     Supplier: "supplier_name",
     Item: "item_name",
+    Customer: "customer_name",
   };
   const displayField = displayFields[doctype];
-  const fields = displayField ? ["name", displayField] : ["name"];
+  const fields = [...new Set(["name", ...(displayField ? [displayField] : []), ...requestedFields])];
   const mergedFilters = doctype === "Employee" ? { status: "Active", ...filters } : filters;
   const orderBy = doctype === "Employee" ? "employee_name asc" : "name asc";
   return getList(doctype, { fields, filters: mergedFilters, order_by: orderBy, limit_page_length: 500 });

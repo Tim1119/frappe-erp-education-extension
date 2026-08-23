@@ -116,6 +116,8 @@ def options(doctype, filters=None):
         "Interview": ["name", "job_applicant", "interview_round"],
         "Supplier": ["name", "supplier_name", "supplier_group", "default_currency", "default_price_list", "payment_terms"],
         "Item": ["name", "item_name", "item_group", "stock_uom", "description", "image"],
+        "Customer": ["name", "customer_name", "customer_group", "territory", "default_currency", "default_price_list", "payment_terms"],
+        "Lead": ["name", "lead_name", "company_name", "email_id"],
     }.get(doctype, ["name"])
     base_filters = {"Employee": {"status": "Active"}, "User": {"enabled": 1}, "Job Opening": {"status": "Open"}}.get(doctype, {})
     if doctype in ("Warehouse", "Cost Center", "Account"):
@@ -124,7 +126,7 @@ def options(doctype, filters=None):
             base_filters["company"] = filters["company"]
     if doctype == "Account" and filters.get("root_type") in ("Income", "Expense"):
         base_filters["root_type"] = filters["root_type"]
-    order = {"Employee": "employee_name", "User": "full_name", "Job Opening": "job_title", "Job Applicant": "applicant_name", "Supplier": "supplier_name", "Item": "item_name"}.get(doctype, "name")
+    order = {"Employee": "employee_name", "User": "full_name", "Job Opening": "job_title", "Job Applicant": "applicant_name", "Supplier": "supplier_name", "Item": "item_name", "Customer": "customer_name", "Lead": "lead_name"}.get(doctype, "name")
     return frappe.get_all(doctype, fields=fields, filters=base_filters, order_by=order, limit_page_length=500)
 
 

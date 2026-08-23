@@ -5,7 +5,9 @@ expose(globals(), "Job Applicant", ["applicant_name","email_id","phone_number","
 
 @frappe.whitelist()
 @guarded("Job Applicant connections")
-def get_connections(name):
+def get_connections(name=None):
+    if not name:
+        frappe.throw("Job Applicant document name is required")
     applicant = frappe.get_doc("Job Applicant", name)
     return {"job_offers": frappe.db.count("Job Offer", {"job_applicant": name}),
             "interviews": frappe.db.count("Interview", {"job_applicant": name}),
