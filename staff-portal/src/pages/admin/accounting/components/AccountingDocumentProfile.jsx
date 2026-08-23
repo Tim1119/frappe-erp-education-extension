@@ -48,6 +48,13 @@ const CONNECTION_CONFIG = {
   ],
   "Payment Entry": [
     {
+      key: "expense_claim", label: "Expense Claim", icon: FileText,
+      compute: (doc) => {
+        const { count, matches } = countByReferenceDoctype(doc.references, "reference_doctype", "reference_name", "Expense Claim");
+        return { count, path: count === 1 ? `/dashboard/expense-claims/${encodeURIComponent(matches[0].reference_name)}` : count ? `/dashboard/expense-claims?employee=${encodeURIComponent(doc.party || "")}` : null };
+      },
+    },
+    {
       key: "purchase_invoice", label: "Purchase Invoice", icon: FileText,
       compute: (doc) => {
         const { count, matches } = countByReferenceDoctype(doc.references, "reference_doctype", "reference_name", "Purchase Invoice");
@@ -64,6 +71,13 @@ const CONNECTION_CONFIG = {
     { key: "journal_entries", label: "Journal Entry", icon: FileText, path: () => `/dashboard/journal-entries` },
   ],
   "Journal Entry": [
+    {
+      key: "expense_claim", label: "Expense Claim", icon: FileText,
+      compute: (doc) => {
+        const { count, matches } = countByReferenceDoctype(doc.accounts, "reference_type", "reference_name", "Expense Claim");
+        return { count, path: count === 1 ? `/dashboard/expense-claims/${encodeURIComponent(matches[0].reference_name)}` : count ? "/dashboard/expense-claims" : null };
+      },
+    },
     {
       key: "purchase_invoice", label: "Purchase Invoice", icon: FileText,
       compute: (doc) => {

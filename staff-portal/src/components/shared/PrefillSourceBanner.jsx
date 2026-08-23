@@ -9,6 +9,7 @@ const SOURCES=[
   ["sales_order","Sales Order","sales-orders"],
   ["purchase_invoice","Purchase Invoice","purchase-invoices"],
   ["sales_invoice","Sales Invoice","sales-invoices"],
+  ["expense_claim","Expense Claim","expense-claims"],
 ];
 
 export default function PrefillSourceBanner({prefill}){

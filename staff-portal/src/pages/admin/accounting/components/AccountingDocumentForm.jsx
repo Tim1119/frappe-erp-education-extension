@@ -121,20 +121,21 @@ function FieldInput({ field, value, onChange, form, row = {}, onQuickCreate, ref
   // from their row. Using only the row left Payment Reconciliation.party
   // without a Customer/Supplier target and therefore without any options.
   const dynamicDoctype = field.fieldtype === "Dynamic Link" ? (row[field.options] || form[field.options]) : field.options;
-  const companyRequired = ["paid_from", "paid_to", "cost_center", "account", "bank_account", "receivable_payable_account", "default_advance_account", "bank_cash_account", "income_account"].includes(field.fieldname);
-  const disabled = !dependencyMet(field.depends_on, form) || (companyRequired && !form.company);
+  const effectiveCompany = form.company || row.company;
+  const companyRequired = ["paid_from", "paid_to", "cost_center", "account", "default_account", "bank_account", "receivable_payable_account", "default_advance_account", "bank_cash_account", "income_account"].includes(field.fieldname);
+  const disabled = !dependencyMet(field.depends_on, form) || (companyRequired && !effectiveCompany);
   useEffect(() => {
     if (!["Link", "Dynamic Link"].includes(field.fieldtype) || !dynamicDoctype || disabled) { setOptions([]); return; }
     getAccountingLinkOptions(dynamicDoctype, {
-      company: form.company, supplier: form.supplier, fieldname: field.fieldname,
+      company: effectiveCompany, supplier: form.supplier, fieldname: field.fieldname,
       party_type: form.party_type || row.party_type, party: form.party || row.party,
       payment_type: form.payment_type, reference_type: row.reference_doctype || row.reference_type,
       account: row.account, customer: form.customer,
     }).then((data) => setOptions(data || [])).catch(() => setOptions([]));
-  }, [dynamicDoctype, disabled, field.fieldname, field.fieldtype, form.company, form.customer, form.party, form.party_type, form.payment_type, form.supplier, refreshKey, row.account, row.party, row.party_type, row.reference_doctype, row.reference_type]);
+  }, [dynamicDoctype, disabled, effectiveCompany, field.fieldname, field.fieldtype, form.customer, form.party, form.party_type, form.payment_type, form.supplier, refreshKey, row.account, row.party, row.party_type, row.reference_doctype, row.reference_type]);
   if (field.read_only || field.fieldtype === "Read Only") return <Read value={value} />;
   if (["Attach", "Attach Image"].includes(field.fieldtype)) return <AttachField value={value || ""} onChange={onChange} label={field.label || field.fieldname} image={field.fieldtype === "Attach Image"} disabled={disabled} fieldname={field.fieldname} />;
-  if (["Link", "Dynamic Link"].includes(field.fieldtype)) return <SearchableSelect value={value || ""} onChange={onChange} options={options} displayField="label" showId={["Customer", "Supplier", "Employee", "Student"].includes(dynamicDoctype)} disabled={disabled} placeholder={disabled ? (companyRequired && !form.company ? "Select a company first" : "Complete the dependent field first") : `Search ${field.label || dynamicDoctype}...`} linkedDoctype={!["Employee", "Student", "Instructor", "User", "Account"].includes(dynamicDoctype) ? dynamicDoctype : null} parentDefaults={form.company ? { company: form.company } : {}} onCreate={dynamicDoctype && !disabled ? () => onQuickCreate({ doctype: dynamicDoctype, label: field.label, apply: onChange }) : undefined} createLabel={`Create new ${field.label || dynamicDoctype}`} />;
+  if (["Link", "Dynamic Link"].includes(field.fieldtype)) return <SearchableSelect value={value || ""} onChange={onChange} options={options} displayField="label" showId={["Customer", "Supplier", "Employee", "Student"].includes(dynamicDoctype)} disabled={disabled} placeholder={disabled ? (companyRequired && !effectiveCompany ? "Select a company first" : "Complete the dependent field first") : `Search ${field.label || dynamicDoctype}...`} linkedDoctype={!["Employee", "Student", "Instructor", "User", "Account"].includes(dynamicDoctype) ? dynamicDoctype : null} parentDefaults={effectiveCompany ? { company: effectiveCompany } : {}} onCreate={dynamicDoctype && !disabled ? () => onQuickCreate({ doctype: dynamicDoctype, label: field.label, apply: onChange }) : undefined} createLabel={`Create new ${field.label || dynamicDoctype}`} />;
   if (field.fieldtype === "Select") return <select className="input" value={value || ""} onChange={(e) => onChange(e.target.value)}><option value="">Select...</option>{String(field.options || "").split("\n").filter(Boolean).map((option) => <option key={option}>{option}</option>)}</select>;
   if (field.fieldtype === "Check") return <label className="flex min-h-10 items-center gap-2 text-sm font-medium"><input type="checkbox" checked={Boolean(Number(value))} onChange={(e) => onChange(e.target.checked ? 1 : 0)} /> Yes</label>;
   if (LONG.has(field.fieldtype)) return <textarea className="input" rows={4} value={value || ""} onChange={(e) => onChange(e.target.value)} />;

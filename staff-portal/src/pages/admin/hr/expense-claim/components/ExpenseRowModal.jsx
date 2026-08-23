@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
 import SearchableSelect from "@/components/shared/SearchableSelect";
 import QuickCreateModal from "@/components/shared/QuickCreateModal";
 import { getExpenseAccountAndCostCenter } from "@/services/hr/expenseClaimService";
+import { getErrorMessage } from "@/utils/errors";
 
-function Field({ label, children, full }) {
+function Field({ label, children, full, required = false }) {
   return (
     <div className="field" style={full ? { gridColumn: "1 / -1" } : undefined}>
-      <label className="label">{label}</label>
+      <label className="label">{label}{required ? <span className="ml-1 text-destructive">*</span> : null}</label>
       {children}
     </div>
   );
@@ -28,9 +30,11 @@ const EMPTY = { expense_date: today(), expense_type: "", default_account: "", de
 // One modal, reused for both Add (row === null) and Edit (row === the
 // existing Expense Claim Detail row being changed).
 export default function ExpenseRowModal({ open, onClose, onSave, row, types, centers, projects, company, defaultCostCenter }) {
+  const navigate = useNavigate();
   const [local, setLocal] = useState(EMPTY);
   const [error, setError] = useState("");
   const [quickCreate, setQuickCreate] = useState(null);
+  const [needsAccountSetup, setNeedsAccountSetup] = useState(false);
 
   useEffect(() => {
     if (open) {
@@ -38,6 +42,7 @@ export default function ExpenseRowModal({ open, onClose, onSave, row, types, cen
       // from the parent document's own cost_center -- mirrored here so a
       // new row starts pre-filled instead of the user having to repick it.
       setLocal(row ? { ...row } : { ...EMPTY, expense_date: today(), cost_center: defaultCostCenter || "" });
+      setNeedsAccountSetup(false);
       setError("");
     }
   }, [open, row, defaultCostCenter]);
@@ -53,20 +58,23 @@ export default function ExpenseRowModal({ open, onClose, onSave, row, types, cen
   // get_expense_claim_account_and_cost_center() and sets default_account +
   // cost_center on the row from the result.
   async function onExpenseTypeChange(v) {
-    set("expense_type", v);
-    if (!v || !company) return;
+    setLocal((x) => ({ ...x, expense_type: v, default_account: "" }));
+    setNeedsAccountSetup(false);
+    setError("");
+    if (!v) return;
+    if (!company) return setError("Select an employee and company before choosing an Expense Claim Type.");
     try {
       const res = await getExpenseAccountAndCostCenter(v, company);
       setLocal((x) => ({ ...x, default_account: res?.account ?? x.default_account, cost_center: res?.cost_center ?? x.cost_center }));
-    } catch {
-      // No default account configured for this Expense Claim Type/Company --
-      // leave cost_center as-is, it falls back to the header cost_center on
-      // save (see expense_claim_api.py's _set()).
+    } catch (lookupError) {
+      setNeedsAccountSetup(true);
+      setError(getErrorMessage(lookupError));
     }
   }
 
   function handleSave() {
     if (!local.expense_type) return setError("Expense Claim Type is required.");
+    if (!local.default_account) return setError("Configure a default account for this Expense Claim Type and company before saving the row.");
     if (!(Number(local.amount) > 0)) return setError("Amount is required.");
     onSave(local);
   }
@@ -88,10 +96,10 @@ export default function ExpenseRowModal({ open, onClose, onSave, row, types, cen
         <Field label="Expense Date">
           <input className="input" type="date" value={local.expense_date || ""} onChange={(e) => set("expense_date", e.target.value)} />
         </Field>
-        <Field label="Expense Claim Type *">
-          <SearchableSelect value={local.expense_type || ""} onChange={onExpenseTypeChange} options={types} linkedDoctype="Expense Claim Type" onCreate={() => setQuickCreate({ doctype: "Expense Claim Type", apply: onExpenseTypeChange })} createLabel="Create new Expense Claim Type" />
+        <Field label="Expense Claim Type" required>
+          <SearchableSelect value={local.expense_type || ""} onChange={onExpenseTypeChange} options={types} linkedDoctype={null} />
         </Field>
-        <Field label="Amount *">
+        <Field label="Amount" required>
           <input className="input" type="number" value={local.amount ?? ""} onChange={(e) => onAmountChange(e.target.value)} />
         </Field>
         <Field label="Sanctioned Amount">
@@ -109,6 +117,7 @@ export default function ExpenseRowModal({ open, onClose, onSave, row, types, cen
         </Field>
       </div>
       {error && <div className="text-sm text-destructive" style={{ marginTop: 10 }}>{error}</div>}
+      {needsAccountSetup && local.expense_type ? <Button type="button" variant="outline" className="mt-3" onClick={() => { onClose(); navigate(`/dashboard/expense-claim-types/${encodeURIComponent(local.expense_type)}/edit`); }}>Configure Expense Claim Type</Button> : null}
       <QuickCreateModal open={Boolean(quickCreate)} onClose={() => setQuickCreate(null)} doctype={quickCreate?.doctype} defaults={company ? { company } : {}} onCreated={(name) => { quickCreate?.apply(name); setQuickCreate(null); }} />
     </Modal>
   );

@@ -3,10 +3,10 @@ import Modal from "@/components/shared/Modal";
 import { Button } from "@/components/ui/button";
 import SearchableSelect from "@/components/shared/SearchableSelect";
 
-function Field({ label, children, full }) {
+function Field({ label, children, full, required = false }) {
   return (
     <div className="field" style={full ? { gridColumn: "1 / -1" } : undefined}>
-      <label className="label">{label}</label>
+      <label className="label">{label}{required ? <span className="ml-1 text-destructive">*</span> : null}</label>
       {children}
     </div>
   );
@@ -80,7 +80,7 @@ export default function AdvanceRowModal({ open, onClose, onSave, row, advanceOpt
       }
     >
       <div className="grid-form" style={{ gridTemplateColumns: "1fr 1fr" }}>
-        <Field label="Employee Advance *" full>
+        <Field label="Employee Advance" full required>
           <SearchableSelect
             value={local.employee_advance || ""}
             onChange={onEmployeeAdvanceChange}
@@ -91,7 +91,7 @@ export default function AdvanceRowModal({ open, onClose, onSave, row, advanceOpt
         </Field>
         <Field label="Posting Date"><Read value={local.posting_date} /></Field>
         <Field label="Advance Paid"><Read value={local.advance_paid} /></Field>
-        <Field label="Unclaimed Amount"><Read value={local.unclaimed_amount} /></Field>
+        <Field label="Unclaimed Amount" required><Read value={local.unclaimed_amount} /></Field>
         <Field label="Returned Amount"><Read value={local.return_amount} /></Field>
         <Field label="Allocated Amount">
           <input className="input" type="number" value={local.allocated_amount ?? ""} onChange={(e) => set("allocated_amount", e.target.value)} />

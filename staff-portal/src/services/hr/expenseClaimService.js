@@ -4,6 +4,7 @@ const N = "education_extension.staff_portal_api.hr.expense_claim_api";
 
 export const getExpenseClaims = (params = {}) => callMethod(`${N}.get_expense_claims`, params);
 export const getExpenseClaim = (name) => callMethod(`${N}.get_expense_claim`, { name });
+export const getExpenseClaimConnections = (name) => callMethod(`${N}.get_connections`, { name });
 export const createExpenseClaim = (data) => callMethod(`${N}.create_expense_claim`, { data });
 export const updateExpenseClaim = (name, data) => callMethod(`${N}.update_expense_claim`, { name, data });
 export const deleteExpenseClaim = (name) => callMethod(`${N}.delete_expense_claim`, { name });
@@ -17,6 +18,7 @@ export const getExpenseClaimTasks = (project) => callMethod(`${N}.get_tasks`, { 
 export const getExpenseClaimApprovers = (employee) => callMethod(`${N}.get_approvers`, { employee });
 export const getExpenseClaimAccounts = (company, kind) => callMethod(`${N}.get_accounts`, { company, kind });
 export const getExpenseClaimCostCenters = (company) => callMethod(`${N}.get_cost_centers`, { company });
+export const getExpenseClaimCompanyDefaults = (company) => callMethod(`${N}.get_company_defaults`, { company });
 export const getExpenseClaimAdvances = (employee, company) => callMethod(`${N}.get_advances`, { employee, company });
 export const getExpenseAccountAndCostCenter = (expense_type, company) =>
   callMethod(`${N}.get_expense_account_and_cost_center`, { expense_type, company });

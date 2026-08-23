@@ -60,7 +60,48 @@ def get_expense_claim(name):
     x = d.as_dict()
     x["can_edit"] = d.docstatus == 0 and d.has_permission("write")
     x["can_delete"] = d.docstatus != 1 and d.has_permission("delete")
+    x["make_payment_via_journal_entry"] = cint(
+        frappe.db.get_single_value("Accounts Settings", "make_payment_via_journal_entry")
+    )
     return x
+
+
+@frappe.whitelist()
+def get_connections(name):
+    """Return the links declared by Expense Claim's Desk dashboard."""
+    frappe.get_doc("Expense Claim", name).check_permission("read")
+    payment_entries = frappe.get_all(
+        "Payment Entry Reference",
+        filters={
+            "reference_doctype": "Expense Claim",
+            "reference_name": name,
+            "docstatus": 1,
+        },
+        distinct=True,
+        pluck="parent",
+    )
+    journal_entries = frappe.get_all(
+        "Journal Entry Account",
+        filters={
+            "reference_type": "Expense Claim",
+            "reference_name": name,
+            "docstatus": 1,
+        },
+        distinct=True,
+        pluck="parent",
+    )
+    employee_advances = frappe.get_all(
+        "Expense Claim Advance",
+        filters={"parent": name, "employee_advance": ["not in", ["", None]]},
+        distinct=True,
+        pluck="employee_advance",
+    )
+    return {
+        "payment_entries": len(payment_entries),
+        "journal_entries": len(journal_entries),
+        "employee_advances": len(employee_advances),
+        "employee_advance_names": employee_advances,
+    }
 
 
 def _set(d, x):
@@ -220,6 +261,22 @@ def get_cost_centers(company):
     if not company:
         return []
     return safe(lambda: frappe.get_all("Cost Center", fields=["name"], filters={"company": company, "is_group": 0}, order_by="name", limit_page_length=500))
+
+
+@frappe.whitelist()
+def get_company_defaults(company):
+    """Mirror Expense Claim's fetch_from fields for the selected employee's company."""
+    if not company:
+        return {}
+    values = frappe.db.get_value(
+        "Company", company,
+        ["default_expense_claim_payable_account", "cost_center"],
+        as_dict=True,
+    ) or {}
+    return {
+        "payable_account": values.get("default_expense_claim_payable_account"),
+        "cost_center": values.get("cost_center"),
+    }
 
 
 @frappe.whitelist()

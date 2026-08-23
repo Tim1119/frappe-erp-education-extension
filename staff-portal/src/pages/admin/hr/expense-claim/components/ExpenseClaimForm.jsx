@@ -12,6 +12,7 @@ import {
   getExpenseClaimAdvances,
   getExpenseClaimApprovers,
   getExpenseClaimCostCenters,
+  getExpenseClaimCompanyDefaults,
   getExpenseClaimDepartments,
   getExpenseClaimEmployees,
   getExpenseClaimOptions,
@@ -20,10 +21,10 @@ import {
 
 const today = () => new Date().toISOString().slice(0, 10);
 
-function Field({ label, children, full }) {
+function Field({ label, children, full, required = false }) {
   return (
     <div className="field" style={full ? { gridColumn: "1 / -1" } : undefined}>
-      <label className="label">{label}</label>
+      <label className="label">{label}{required ? <span className="ml-1 text-destructive">*</span> : null}</label>
       {children}
     </div>
   );
@@ -54,7 +55,7 @@ function CollapsibleSection({ title, open, onToggle, action, children }) {
           {open ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
           {title}
         </div>
-        {action}
+        {open ? action : null}
       </div>
       {open && children}
     </>
@@ -101,6 +102,7 @@ export default function ExpenseClaimForm({ doc, onSave }) {
   const [editingAdvance, setEditingAdvance] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null); // { table, index, label }
   const [quickCreate, setQuickCreate] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     Promise.all([
@@ -195,6 +197,13 @@ export default function ExpenseClaimForm({ doc, onSave }) {
     // cost_center for every expense row that already has an expense_type
     // set, since a company change means the old lookup is stale.
     if (e?.company) {
+      getExpenseClaimCompanyDefaults(e.company).then((defaults) => {
+        setF((x) => x.employee === v ? {
+          ...x,
+          payable_account: defaults?.payable_account || x.payable_account,
+          cost_center: defaults?.cost_center || x.cost_center,
+        } : x);
+      }).catch(() => {});
       f.expenses.forEach((row, i) => {
         if (!row.expense_type) return;
         getExpenseAccountAndCostCenter(row.expense_type, e.company).then((res) => {
@@ -243,19 +252,32 @@ export default function ExpenseClaimForm({ doc, onSave }) {
     return { totalClaimed, totalSanctioned, totalTaxes, totalAdvance, grandTotal };
   }, [f.expenses, f.taxes, f.advances]);
 
+  function submit(event) {
+    event.preventDefault();
+    if (!f.naming_series) return setError("Series is required.");
+    if (!f.posting_date) return setError("Posting Date is required.");
+    if (!f.employee) return setError("From Employee is required.");
+    if (!f.company) return setError("Company is required.");
+    if (!f.expenses.length) return setError("At least one Expense row is required.");
+    if (!Number(f.is_paid) && !f.payable_account) return setError("Payable Account is required when the claim is not marked as paid.");
+    if (Number(f.is_paid) && !f.mode_of_payment) return setError("Mode of Payment is required when Is Paid is enabled.");
+    setError("");
+    onSave(f);
+  }
+
   return (
-    <form onSubmit={(e) => { e.preventDefault(); onSave(f); }}>
+    <form onSubmit={submit}>
       <div className="panel-head"><div className="panel-title">Expense Claim Information</div></div>
       <div className="grid-form" style={{ padding: 20 }}>
-        <Field label="Series *">
+        <Field label="Series" required>
           <select className="input" value={f.naming_series} onChange={(e) => set("naming_series", e.target.value)}>
             <option>HR-EXP-.YYYY.-</option>
           </select>
         </Field>
-        <Field label="Posting Date *">
+        <Field label="Posting Date" required>
           <input className="input" type="date" value={f.posting_date} onChange={(e) => set("posting_date", e.target.value)} />
         </Field>
-        <Field label="From Employee *">
+        <Field label="From Employee" required>
           <SearchableSelect value={f.employee} onChange={emp} options={employees} displayField="employee_name" showId linkedDoctype={null} />
         </Field>
         <Field label="Employee Name"><Read value={f.employee_name} /></Field>
@@ -270,7 +292,7 @@ export default function ExpenseClaimForm({ doc, onSave }) {
             createLabel="Create new Department"
           />
         </Field>
-        <Field label="Company *"><Read value={f.company} /></Field>
+        <Field label="Company" required><Read value={f.company} /></Field>
         <Field label="Expense Approver">
           <SearchableSelect
             value={f.expense_approver || ""}
@@ -293,7 +315,7 @@ export default function ExpenseClaimForm({ doc, onSave }) {
       </div>
 
       <div className="panel-head">
-        <div className="panel-title">Expenses</div>
+        <div className="panel-title">Expenses <span className="text-destructive">*</span></div>
         <button type="button" className="btn btn-secondary" onClick={() => setEditingExpense(-1)}>
           <Plus size={14} />Add Row
         </button>
@@ -420,7 +442,7 @@ export default function ExpenseClaimForm({ doc, onSave }) {
         <Field label="Task">
           <SearchableSelect value={f.task || ""} onChange={(v) => set("task", v)} options={tasks} disabled={!f.project} placeholder={f.project ? "Search task..." : "Select a project first"} onCreate={f.project ? () => setQuickCreate({ doctype: "Task", apply: (v) => set("task", v), defaults: { project: f.project } }) : undefined} createLabel="Create new Task" />
         </Field>
-        <Field label="Payable Account">
+        <Field label="Payable Account" required={!Number(f.is_paid)}>
           <SearchableSelect value={f.payable_account || ""} onChange={(v) => set("payable_account", v)} options={payables} disabled={!f.company} placeholder={f.company ? "Search account..." : "Select an employee first"} linkedDoctype={null} />
         </Field>
         <Field label="Cost Center">
@@ -428,7 +450,7 @@ export default function ExpenseClaimForm({ doc, onSave }) {
         </Field>
         {Number(f.is_paid) ? (
           <>
-            <Field label="Mode of Payment">
+            <Field label="Mode of Payment" required>
               <SearchableSelect value={f.mode_of_payment || ""} onChange={(v) => set("mode_of_payment", v)} options={modes} onCreate={() => setQuickCreate({ doctype: "Mode of Payment", apply: (v) => set("mode_of_payment", v) })} createLabel="Create new Mode of Payment" />
             </Field>
             <Field label="Clearance Date">
@@ -466,6 +488,7 @@ export default function ExpenseClaimForm({ doc, onSave }) {
       </div>
 
       <div className="p-5 text-right">
+        {error ? <div className="mb-3 text-sm text-destructive">{error}</div> : null}
         <button className="btn btn-primary">{doc ? "Update" : "Create"} Expense Claim</button>
       </div>
 

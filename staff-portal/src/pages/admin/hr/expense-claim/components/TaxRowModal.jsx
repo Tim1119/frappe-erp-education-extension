@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import SearchableSelect from "@/components/shared/SearchableSelect";
 import QuickCreateModal from "@/components/shared/QuickCreateModal";
 
-function Field({ label, children, full }) {
+function Field({ label, children, full, required = false }) {
   return (
     <div className="field" style={full ? { gridColumn: "1 / -1" } : undefined}>
-      <label className="label">{label}</label>
+      <label className="label">{label}{required ? <span className="ml-1 text-destructive">*</span> : null}</label>
       {children}
     </div>
   );
@@ -80,7 +80,7 @@ export default function TaxRowModal({ open, onClose, onSave, row, taxAccounts, c
       }
     >
       <div className="grid-form" style={{ gridTemplateColumns: "1fr 1fr" }}>
-        <Field label="Account Head *" full>
+        <Field label="Account Head" full required>
           <SearchableSelect value={local.account_head || ""} onChange={onAccountHeadChange} options={taxAccounts} linkedDoctype={null} />
         </Field>
         <Field label="Rate">
@@ -96,7 +96,7 @@ export default function TaxRowModal({ open, onClose, onSave, row, taxAccounts, c
         <Field label="Project">
           <SearchableSelect value={local.project || ""} onChange={(v) => set("project", v)} options={projects} linkedDoctype="Project" onCreate={() => setQuickCreate({ doctype: "Project", apply: (v) => set("project", v) })} createLabel="Create new Project" />
         </Field>
-        <Field label="Description *" full>
+        <Field label="Description" full required>
           <textarea className="input" value={local.description || ""} onChange={(e) => set("description", e.target.value)} />
         </Field>
       </div>
