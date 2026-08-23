@@ -187,7 +187,7 @@ def get_meta(doctype):
     # "fetch" button this portal doesn't build).
     def field_dict(f, read_only_override=None):
         read_only = f.read_only if read_only_override is None else (1 if read_only_override else 0)
-        out={"fieldname":f.fieldname,"fieldtype":f.fieldtype,"label":f.label,"options":f.options,"reqd":f.reqd,"read_only":read_only,"hidden":f.hidden,"depends_on":f.depends_on,"default":f.default,"collapsible":f.collapsible,"description":f.description,"in_list_view":f.in_list_view}
+        out={"fieldname":f.fieldname,"fieldtype":f.fieldtype,"label":f.label,"options":f.options,"reqd":f.reqd,"read_only":read_only,"hidden":f.hidden,"depends_on":f.depends_on,"mandatory_depends_on":f.mandatory_depends_on,"default":f.default,"collapsible":f.collapsible,"collapsible_depends_on":f.collapsible_depends_on,"description":f.description,"in_list_view":f.in_list_view}
         if f.fieldtype=="Table":
             child_exclude=CHILD_EXCLUDE_FIELDS.get(f.options) or set()
             child_editable=CHILD_FORCE_EDITABLE_FIELDS.get(f.options) or set()
@@ -273,14 +273,59 @@ def apply(d,data):
             for row in data.get(f.fieldname) or []:d.append(f.fieldname,{k:_cast(child_fields[k].fieldtype,v) for k,v in row.items() if k in child_fields})
         else:d.set(f.fieldname,_cast(f.fieldtype,data.get(f.fieldname)))
 
+def set_purchase_invoice_item_defaults(doc):
+    """Apply the same item/account defaults that ERPNext Desk applies.
+
+    Rows normally receive these values in the portal item modal. This
+    server-side pass also covers mapped Purchase Orders, copied drafts, and
+    other rows that can reach save without being opened in that modal.
+    """
+    if doc.doctype != "Purchase Invoice":
+        return
+
+    from erpnext.stock.get_item_details import get_item_details
+
+    for item in doc.get("items") or []:
+        if not item.item_code or item.expense_account:
+            continue
+
+        details = get_item_details(
+            frappe._dict({
+                "item_code": item.item_code,
+                "doctype": "Purchase Invoice",
+                "company": doc.company,
+                "supplier": doc.supplier,
+                "currency": doc.currency,
+                "conversion_rate": doc.conversion_rate or 1,
+                "price_list": doc.buying_price_list,
+                "buying_price_list": doc.buying_price_list,
+                "price_list_currency": doc.currency,
+                "plc_conversion_rate": 1,
+                "transaction_date": doc.posting_date,
+                "bill_date": doc.bill_date,
+                "project": item.project or doc.project,
+                "qty": item.qty or 1,
+                "uom": item.uom,
+                "cost_center": item.cost_center or doc.cost_center,
+                "is_return": doc.is_return,
+                "update_stock": doc.update_stock,
+                "is_subcontracted": doc.is_subcontracted,
+                "ignore_pricing_rule": doc.ignore_pricing_rule,
+            }),
+            doc.as_dict(),
+        )
+        for fieldname in ("expense_account", "cost_center", "uom", "stock_uom", "conversion_factor"):
+            if not item.get(fieldname) and details.get(fieldname):
+                item.set(fieldname, details.get(fieldname))
+
 @frappe.whitelist()
 def create_document(doctype,data):
-    check(doctype);data=json.loads(data) if isinstance(data,str) else data;d=frappe.new_doc(doctype);apply(d,data);d.insert();frappe.db.commit();return d.as_dict()
+    check(doctype);data=json.loads(data) if isinstance(data,str) else data;d=frappe.new_doc(doctype);apply(d,data);set_purchase_invoice_item_defaults(d);d.insert();frappe.db.commit();return d.as_dict()
 @frappe.whitelist()
 def update_document(doctype,name,data):
     check(doctype);data=json.loads(data) if isinstance(data,str) else data;d=frappe.get_doc(doctype,name)
     if frappe.get_meta(doctype).is_submittable and d.docstatus:frappe.throw(_("Only draft documents can be edited"))
-    apply(d,data);d.save();frappe.db.commit();return d.as_dict()
+    apply(d,data);set_purchase_invoice_item_defaults(d);d.save();frappe.db.commit();return d.as_dict()
 @frappe.whitelist()
 def delete_document(doctype,name):check(doctype);frappe.delete_doc(doctype,name);frappe.db.commit();return {"message":"Deleted"}
 @frappe.whitelist()
@@ -309,7 +354,8 @@ def get_link_options(link_doctype,company=None,supplier=None,fieldname=None,part
             if bank_side: filters["account_type"]=["in",["Bank","Cash"]]
             elif party_type: filters["account_type"]="Receivable" if party_type=="Customer" else "Payable"
         if fieldname=="receivable_payable_account" and party_type:
-            filters.update({"account_type":"Receivable" if party_type=="Customer" else "Payable","root_type":"Asset" if party_type=="Customer" else "Liability"})
+            account_type=frappe.db.get_value("Party Type",party_type,"account_type") or ("Receivable" if party_type=="Customer" else "Payable")
+            filters.update({"account_type":account_type,"root_type":"Asset" if account_type=="Receivable" else "Liability"})
         if fieldname=="default_advance_account" and party_type:
             filters.update({"account_type":"Receivable" if party_type=="Customer" else "Payable","root_type":"Liability" if party_type=="Customer" else "Asset"})
         if fieldname in ("bank_cash_account","cash_bank_account"):filters["account_type"]=["in",["Bank","Cash"]]
@@ -321,7 +367,8 @@ def get_link_options(link_doctype,company=None,supplier=None,fieldname=None,part
             filters["is_company_account"]=1
             if company:filters["company"]=company
     if link_doctype in ("Sales Taxes and Charges Template","Purchase Taxes and Charges Template"):filters.update({"company":company,"disabled":0})
-    if link_doctype=="DocType" and fieldname=="party_type":filters["name"]=["in",["Customer","Supplier","Employee","Shareholder"]]
+    if link_doctype=="DocType" and fieldname=="party_type":
+        filters["name"]=["in",frappe.get_all("Party Type",pluck="name")]
     if fieldname=="advance_reference":
         filters["docstatus"]=1
         if link_doctype=="Payment Entry" and party:filters.update({"party_type":"Supplier","party":party,"payment_type":"Pay"})
@@ -331,11 +378,35 @@ def get_link_options(link_doctype,company=None,supplier=None,fieldname=None,part
         party_field=(party_type or "").lower()
         if party and party_field and frappe.get_meta(link_doctype).has_field(party_field):filters[party_field]=party
     if link_doctype=="Address" and supplier:filters.update({"link_doctype":"Supplier","link_name":supplier}) if False else None
-    try:return frappe.get_all(link_doctype,fields=["name"],filters=filters,order_by="name",limit_page_length=500)
+    try:
+        meta=frappe.get_meta(link_doctype)
+        title_field=meta.title_field if meta.title_field and meta.has_field(meta.title_field) else None
+        fields=["name"]+([title_field] if title_field else [])
+        rows=frappe.get_all(link_doctype,fields=fields,filters=filters,order_by="name",limit_page_length=500)
+        for row in rows:row["label"]=row.get(title_field) if title_field else row.name
+        return rows
     except Exception as e:frappe.log_error(str(e),"Accounting Document API");return []
 
 def reconciliation_doc(data):
     data=json.loads(data) if isinstance(data,str) else data
+    data=dict(data or {})
+    meta=frappe.get_meta("Payment Reconciliation")
+    # Virtual documents do not pass through normal database field casting.
+    # Browser number inputs and DocField defaults therefore arrive as strings
+    # (notably invoice_limit/payment_limit), but the ERPNext controller uses
+    # those values directly as Python slice indices. Cast both parent and
+    # generated child-table values to their real DocField types first.
+    for field in meta.fields:
+        if field.fieldname not in data:
+            continue
+        if field.fieldtype=="Table":
+            child_fields={x.fieldname:x for x in frappe.get_meta(field.options).fields}
+            data[field.fieldname]=[
+                {key:_cast(child_fields[key].fieldtype,value) if key in child_fields else value for key,value in row.items()}
+                for row in (data.get(field.fieldname) or [])
+            ]
+        else:
+            data[field.fieldname]=_cast(field.fieldtype,data.get(field.fieldname))
     return frappe.get_doc({"doctype":"Payment Reconciliation",**(data or {})})
 
 @frappe.whitelist()

@@ -365,7 +365,11 @@ export default function PurchaseInvoiceForm({ initial, onSave, submitLabel = "Sa
 
       <PurchaseInvoiceItemModal
         open={Boolean(itemModal)} onClose={() => setItemModal(null)} row={itemModal?.row}
-        company={form.company} defaultCostCenter={form.cost_center}
+        company={form.company} supplier={form.supplier} currency={form.currency}
+        buyingPriceList={form.buying_price_list} conversionRate={form.conversion_rate}
+        postingDate={form.posting_date} billDate={form.bill_date} project={form.project}
+        taxCategory={form.tax_category} isReturn={form.is_return}
+        defaultCostCenter={form.cost_center}
         onSave={(row) => { upsertRow("items", row, itemModal?.index); setItemModal(null); }}
       />
       <PurchaseInvoiceTaxModal
