@@ -318,14 +318,34 @@ def set_purchase_invoice_item_defaults(doc):
             if not item.get(fieldname) and details.get(fieldname):
                 item.set(fieldname, details.get(fieldname))
 
+def set_vehicle_log_defaults(doc):
+    """Apply Vehicle Log's license_plate fetch_from values server-side.
+
+    Desk fills these fields in its model layer. The portal intentionally does
+    not accept client values for read-only fields, so obtain them from Vehicle
+    again before validation and persistence.
+    """
+    if doc.doctype != "Vehicle Log" or not doc.license_plate:
+        return
+    vehicle = frappe.db.get_value(
+        "Vehicle", doc.license_plate,
+        ["employee", "model", "make", "last_odometer"],
+        as_dict=True,
+    ) or {}
+    if not doc.employee:
+        doc.employee = vehicle.get("employee")
+    doc.model = vehicle.get("model")
+    doc.make = vehicle.get("make")
+    doc.last_odometer = cint(vehicle.get("last_odometer"))
+
 @frappe.whitelist()
 def create_document(doctype,data):
-    check(doctype);data=json.loads(data) if isinstance(data,str) else data;d=frappe.new_doc(doctype);apply(d,data);set_purchase_invoice_item_defaults(d);d.insert();frappe.db.commit();return d.as_dict()
+    check(doctype);data=json.loads(data) if isinstance(data,str) else data;d=frappe.new_doc(doctype);apply(d,data);set_purchase_invoice_item_defaults(d);set_vehicle_log_defaults(d);d.insert();frappe.db.commit();return d.as_dict()
 @frappe.whitelist()
 def update_document(doctype,name,data):
     check(doctype);data=json.loads(data) if isinstance(data,str) else data;d=frappe.get_doc(doctype,name)
     if frappe.get_meta(doctype).is_submittable and d.docstatus:frappe.throw(_("Only draft documents can be edited"))
-    apply(d,data);set_purchase_invoice_item_defaults(d);d.save();frappe.db.commit();return d.as_dict()
+    apply(d,data);set_purchase_invoice_item_defaults(d);set_vehicle_log_defaults(d);d.save();frappe.db.commit();return d.as_dict()
 @frappe.whitelist()
 def delete_document(doctype,name):check(doctype);frappe.delete_doc(doctype,name);frappe.db.commit();return {"message":"Deleted"}
 @frappe.whitelist()

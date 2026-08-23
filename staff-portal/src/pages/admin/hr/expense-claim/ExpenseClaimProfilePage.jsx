@@ -174,7 +174,21 @@ export default function ExpenseClaimProfilePage() {
   const canViewLedger = d.docstatus > 0 && d.approval_status !== "Rejected";
   const canViewBankEntries = d.docstatus === 1 && Number(d.total_amount_reimbursed || 0) > 0;
   const toDate = String(d.modified || "").slice(0, 10);
-  const ledgerPath = `/dashboard/general-ledger?voucher_no=${encodeURIComponent(name)}&company=${encodeURIComponent(d.company || "")}&from_date=${encodeURIComponent(d.posting_date || "")}&to_date=${encodeURIComponent(toDate)}&show_cancelled_entries=${d.docstatus === 2 ? 1 : 0}`;
+  // Desk's General Ledger voucher_no on_change selects consolidated voucher
+  // categorization, while the report itself enables dimensions and the
+  // default finance book. Put the complete effective state in the URL so the
+  // portal produces the same request instead of depending on effect order.
+  const ledgerParams = new URLSearchParams({
+    voucher_no: name,
+    company: d.company || "",
+    from_date: d.posting_date || "",
+    to_date: toDate,
+    categorize_by: "Categorize by Voucher (Consolidated)",
+    include_dimensions: "1",
+    include_default_book_entries: "1",
+    show_cancelled_entries: d.docstatus === 2 ? "1" : "0",
+  });
+  const ledgerPath = `/dashboard/general-ledger?${ledgerParams.toString()}`;
   const bankEntriesPath = Number(d.make_payment_via_journal_entry)
     ? `/dashboard/journal-entries?reference_name=${encodeURIComponent(name)}&reference_type=${encodeURIComponent("Expense Claim")}`
     : `/dashboard/payment-entries?reference_name=${encodeURIComponent(name)}&reference_doctype=${encodeURIComponent("Expense Claim")}`;

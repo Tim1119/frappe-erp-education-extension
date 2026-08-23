@@ -105,6 +105,30 @@ const AUTO_FILL = {
       } catch { return null; }
     },
   },
+  // Vehicle Log relies on DocType fetch_from fields in Desk. The generic
+  // portal form does not run Frappe's client-side model fetcher, so mirror
+  // license_plate.employee/model/make/last_odometer here and show the
+  // read-only values immediately after a vehicle is selected.
+  "Vehicle Log": {
+    async license_plate(value, form) {
+      if (!value) return { employee: "", model: "", make: "", last_odometer: "" };
+      try {
+        const data = await callMethod("frappe.client.get_value", {
+          doctype: "Vehicle",
+          filters: { name: value },
+          fieldname: ["employee", "model", "make", "last_odometer"],
+        });
+        return {
+          employee: form.employee || data?.employee || "",
+          model: data?.model || "",
+          make: data?.make || "",
+          last_odometer: data?.last_odometer ?? 0,
+        };
+      } catch {
+        return { model: "", make: "", last_odometer: "" };
+      }
+    },
+  },
 };
 
 function formatChildValue(field, value) {

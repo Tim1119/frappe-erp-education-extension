@@ -36,6 +36,9 @@ export function formatDisplay(value, fieldtype) {
  * @param {boolean}  [showTotals] — mirrors the real report's own
  *   add_total_row flag; default true to match the reports already built
  *   against this component (both had add_total_row: 1).
+ * @param {Array}    [footerRows] — summary rows already calculated by the
+ *   report backend. When present these are rendered verbatim instead of
+ *   calculating another total from the body rows.
  * @param {boolean}  [showColumnFilters] — per-column filter input row;
  *   default true. Set false for reports with many single-character/
  *   low-cardinality columns (e.g. one column per day of the month) where
@@ -48,6 +51,7 @@ export default function ReportTable({
   onVisibleRowsChange,
   emptyMessage = "No data found",
   showTotals = true,
+  footerRows = [],
   showColumnFilters = true,
 }) {
   const [filters, setFilters] = useState({});
@@ -106,7 +110,7 @@ export default function ReportTable({
   }
 
   return (
-    <div className="w-full overflow-auto report-table-scroll">
+    <div className="report-table-scroll block min-w-0 max-w-full overflow-x-auto overflow-y-hidden overscroll-x-contain">
       <table className="min-w-max w-full border-collapse text-xs">
         <thead>
           <tr>
@@ -173,7 +177,18 @@ export default function ReportTable({
             </tr>
           )}
         </tbody>
-        {showTotals && sortedRows.length > 0 && (
+        {footerRows.length > 0 ? (
+          <tfoot>
+            {footerRows.map((row, rowIndex) => (
+              <tr key={`${row.account || "summary"}-${rowIndex}`} className={cn("bg-muted/40 font-semibold", rowIndex === 0 && "border-t-2")}>
+                {columns.map((col) => {
+                  const value = row[col.fieldname];
+                  return <td key={col.fieldname} className="border-r px-2 py-1.5 last:border-r-0">{value === null || value === undefined || value === "" ? "" : formatDisplay(value, col.fieldtype)}</td>;
+                })}
+              </tr>
+            ))}
+          </tfoot>
+        ) : showTotals && sortedRows.length > 0 && (
           <tfoot>
             <tr className="border-t-2 bg-muted/50 font-semibold">
               {columns.map((col) => (
