@@ -1,0 +1,12 @@
+import { callMethod } from "../../frappeClient";
+const NS = "education_extension.staff_portal_api.hr.leaves.leave_allocation_api";
+export const getLeaveAllocations = (params={}) => callMethod(`${NS}.get_leave_allocations`, params);
+export const getLeaveAllocation = name => callMethod(`${NS}.get_leave_allocation`, {name});
+export const createLeaveAllocation = data => callMethod(`${NS}.create_leave_allocation`, {data});
+export const updateLeaveAllocation = (name,data) => callMethod(`${NS}.update_leave_allocation`, {name,data});
+export const deleteLeaveAllocation = name => callMethod(`${NS}.delete_leave_allocation`, {name});
+export const submitLeaveAllocation = name => callMethod(`${NS}.submit_leave_allocation`, {name});
+export const cancelLeaveAllocation = name => callMethod(`${NS}.cancel_leave_allocation`, {name});
+export const getLeaveAllocationOptions = () => callMethod(`${NS}.get_options`);
+export const getLeaveAllocationConnections = name => callMethod(`${NS}.get_connections`, {name});
+export const getCurrentLeaveBalance = (employee,leave_type,date) => callMethod(`${NS}.get_current_balance`, {employee,leave_type,date});

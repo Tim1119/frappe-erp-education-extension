@@ -1,0 +1,10 @@
+import { callMethod } from "../../frappeClient";
+const NS = "education_extension.staff_portal_api.hr.leaves.leave_period_api";
+export const getLeavePeriods = (params={}) => callMethod(`${NS}.get_leave_periods`, params);
+export const getLeavePeriod = name => callMethod(`${NS}.get_leave_period`, {name});
+export const createLeavePeriod = data => callMethod(`${NS}.create_leave_period`, {data});
+export const updateLeavePeriod = (name,data) => callMethod(`${NS}.update_leave_period`, {name,data});
+export const deleteLeavePeriod = name => callMethod(`${NS}.delete_leave_period`, {name});
+export const getLeavePeriodOptions = () => callMethod(`${NS}.get_options`);
+export const getLeavePeriodConnections = name => callMethod(`${NS}.get_connections`, {name});
+export const grantLeaves = name => callMethod(`${NS}.grant_leaves`, {name});

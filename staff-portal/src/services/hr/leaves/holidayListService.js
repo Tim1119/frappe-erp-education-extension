@@ -1,0 +1,10 @@
+import { callMethod } from "../../frappeClient";
+const NS = "education_extension.staff_portal_api.hr.leaves.holiday_list_api";
+export const getHolidayLists = (params={}) => callMethod(`${NS}.get_holiday_lists`, params);
+export const getHolidayList = name => callMethod(`${NS}.get_holiday_list`, {name});
+export const createHolidayList = data => callMethod(`${NS}.create_holiday_list`, {data});
+export const updateHolidayList = (name,data) => callMethod(`${NS}.update_holiday_list`, {name,data});
+export const deleteHolidayList = name => callMethod(`${NS}.delete_holiday_list`, {name});
+export const getHolidayListOptions = () => callMethod(`${NS}.get_options`);
+export const getHolidayListConnections = name => callMethod(`${NS}.get_connections`, {name});
+export const getWeeklyOffDates = data => callMethod(`${NS}.get_weekly_off_dates`, {data});

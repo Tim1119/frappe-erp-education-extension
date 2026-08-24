@@ -30,12 +30,36 @@ import EmployeeGroupFormPage from "@/pages/admin/hr/employee-group/EmployeeGroup
 import EmployeeGradesPage from "@/pages/admin/hr/employee-grade/EmployeeGradesPage";
 import EmployeeGradeProfilePage from "@/pages/admin/hr/employee-grade/EmployeeGradeProfilePage";
 import EmployeeGradeFormPage from "@/pages/admin/hr/employee-grade/EmployeeGradeFormPage";
-import LeaveApplicationsPage from "@/pages/admin/hr/leave-application/LeaveApplicationsPage";
-import LeaveApplicationProfilePage from "@/pages/admin/hr/leave-application/LeaveApplicationProfilePage";
-import LeaveApplicationFormPage from "@/pages/admin/hr/leave-application/LeaveApplicationFormPage";
-import CompensatoryLeaveRequestsPage from "@/pages/admin/hr/compensatory-leave-request/CompensatoryLeaveRequestsPage";
-import CompensatoryLeaveRequestProfilePage from "@/pages/admin/hr/compensatory-leave-request/CompensatoryLeaveRequestProfilePage";
-import CompensatoryLeaveRequestFormPage from "@/pages/admin/hr/compensatory-leave-request/CompensatoryLeaveRequestFormPage";
+import LeaveApplicationsPage from "@/pages/admin/hr/leaves/leave-application/LeaveApplicationsPage";
+import LeaveApplicationProfilePage from "@/pages/admin/hr/leaves/leave-application/LeaveApplicationProfilePage";
+import LeaveApplicationFormPage from "@/pages/admin/hr/leaves/leave-application/LeaveApplicationFormPage";
+import CompensatoryLeaveRequestsPage from "@/pages/admin/hr/leaves/compensatory-leave-request/CompensatoryLeaveRequestsPage";
+import CompensatoryLeaveRequestProfilePage from "@/pages/admin/hr/leaves/compensatory-leave-request/CompensatoryLeaveRequestProfilePage";
+import CompensatoryLeaveRequestFormPage from "@/pages/admin/hr/leaves/compensatory-leave-request/CompensatoryLeaveRequestFormPage";
+import LeaveTypesPage from "@/pages/admin/hr/leaves/leave-type/LeaveTypesPage";
+import LeaveTypeProfilePage from "@/pages/admin/hr/leaves/leave-type/LeaveTypeProfilePage";
+import LeaveTypeFormPage from "@/pages/admin/hr/leaves/leave-type/LeaveTypeFormPage";
+import LeavePeriodsPage from "@/pages/admin/hr/leaves/leave-period/LeavePeriodsPage";
+import LeavePeriodProfilePage from "@/pages/admin/hr/leaves/leave-period/LeavePeriodProfilePage";
+import LeavePeriodFormPage from "@/pages/admin/hr/leaves/leave-period/LeavePeriodFormPage";
+import LeavePoliciesPage from "@/pages/admin/hr/leaves/leave-policy/LeavePoliciesPage";
+import LeavePolicyProfilePage from "@/pages/admin/hr/leaves/leave-policy/LeavePolicyProfilePage";
+import LeavePolicyFormPage from "@/pages/admin/hr/leaves/leave-policy/LeavePolicyFormPage";
+import LeaveAllocationsPage from "@/pages/admin/hr/leaves/leave-allocation/LeaveAllocationsPage";
+import LeaveAllocationProfilePage from "@/pages/admin/hr/leaves/leave-allocation/LeaveAllocationProfilePage";
+import LeaveAllocationFormPage from "@/pages/admin/hr/leaves/leave-allocation/LeaveAllocationFormPage";
+import LeavePolicyAssignmentsPage from "@/pages/admin/hr/leaves/leave-policy-assignment/LeavePolicyAssignmentsPage";
+import LeavePolicyAssignmentProfilePage from "@/pages/admin/hr/leaves/leave-policy-assignment/LeavePolicyAssignmentProfilePage";
+import LeavePolicyAssignmentFormPage from "@/pages/admin/hr/leaves/leave-policy-assignment/LeavePolicyAssignmentFormPage";
+import LeaveEncashmentsPage from "@/pages/admin/hr/leaves/leave-encashment/LeaveEncashmentsPage";
+import LeaveEncashmentProfilePage from "@/pages/admin/hr/leaves/leave-encashment/LeaveEncashmentProfilePage";
+import LeaveEncashmentFormPage from "@/pages/admin/hr/leaves/leave-encashment/LeaveEncashmentFormPage";
+import LeaveBlockListsPage from "@/pages/admin/hr/leaves/leave-block-list/LeaveBlockListsPage";
+import LeaveBlockListProfilePage from "@/pages/admin/hr/leaves/leave-block-list/LeaveBlockListProfilePage";
+import LeaveBlockListFormPage from "@/pages/admin/hr/leaves/leave-block-list/LeaveBlockListFormPage";
+import HolidayListsPage from "@/pages/admin/hr/leaves/holiday-list/HolidayListsPage";
+import HolidayListProfilePage from "@/pages/admin/hr/leaves/holiday-list/HolidayListProfilePage";
+import HolidayListFormPage from "@/pages/admin/hr/leaves/holiday-list/HolidayListFormPage";
 import HRSettingsPage from "@/pages/admin/hr/hr-settings/HRSettingsPage";
 import HRSettingsFormPage from "@/pages/admin/hr/hr-settings/HRSettingsFormPage";
 import DailyWorkSummaryGroupsPage from "@/pages/admin/hr/daily-work-summary-group/DailyWorkSummaryGroupsPage";
@@ -588,6 +612,38 @@ export default function App() {
         <Route path="compensatory-leave-requests/new" element={<CompensatoryLeaveRequestFormPage />} />
         <Route path="compensatory-leave-requests/:id/edit" element={<CompensatoryLeaveRequestFormPage />} />
         <Route path="compensatory-leave-requests/:id" element={<CompensatoryLeaveRequestProfilePage />} />
+        <Route path="leave-types" element={<LeaveTypesPage />} />
+        <Route path="leave-types/new" element={<LeaveTypeFormPage />} />
+        <Route path="leave-types/:id/edit" element={<LeaveTypeFormPage />} />
+        <Route path="leave-types/:id" element={<LeaveTypeProfilePage />} />
+        <Route path="leave-periods" element={<LeavePeriodsPage />} />
+        <Route path="leave-periods/new" element={<LeavePeriodFormPage />} />
+        <Route path="leave-periods/:id/edit" element={<LeavePeriodFormPage />} />
+        <Route path="leave-periods/:id" element={<LeavePeriodProfilePage />} />
+        <Route path="leave-policies" element={<LeavePoliciesPage />} />
+        <Route path="leave-policies/new" element={<LeavePolicyFormPage />} />
+        <Route path="leave-policies/:id/edit" element={<LeavePolicyFormPage />} />
+        <Route path="leave-policies/:id" element={<LeavePolicyProfilePage />} />
+        <Route path="leave-allocations" element={<LeaveAllocationsPage />} />
+        <Route path="leave-allocations/new" element={<LeaveAllocationFormPage />} />
+        <Route path="leave-allocations/:id/edit" element={<LeaveAllocationFormPage />} />
+        <Route path="leave-allocations/:id" element={<LeaveAllocationProfilePage />} />
+        <Route path="leave-policy-assignments" element={<LeavePolicyAssignmentsPage />} />
+        <Route path="leave-policy-assignments/new" element={<LeavePolicyAssignmentFormPage />} />
+        <Route path="leave-policy-assignments/:id/edit" element={<LeavePolicyAssignmentFormPage />} />
+        <Route path="leave-policy-assignments/:id" element={<LeavePolicyAssignmentProfilePage />} />
+        <Route path="leave-encashments" element={<LeaveEncashmentsPage />} />
+        <Route path="leave-encashments/new" element={<LeaveEncashmentFormPage />} />
+        <Route path="leave-encashments/:id/edit" element={<LeaveEncashmentFormPage />} />
+        <Route path="leave-encashments/:id" element={<LeaveEncashmentProfilePage />} />
+        <Route path="leave-block-lists" element={<LeaveBlockListsPage />} />
+        <Route path="leave-block-lists/new" element={<LeaveBlockListFormPage />} />
+        <Route path="leave-block-lists/:id/edit" element={<LeaveBlockListFormPage />} />
+        <Route path="leave-block-lists/:id" element={<LeaveBlockListProfilePage />} />
+        <Route path="holiday-lists" element={<HolidayListsPage />} />
+        <Route path="holiday-lists/new" element={<HolidayListFormPage />} />
+        <Route path="holiday-lists/:id/edit" element={<HolidayListFormPage />} />
+        <Route path="holiday-lists/:id" element={<HolidayListProfilePage />} />
         <Route path="hr-settings" element={<HRSettingsPage />} />
         <Route path="hr-settings/edit" element={<HRSettingsFormPage />} />
         <Route path="daily-work-summary-groups" element={<DailyWorkSummaryGroupsPage />} />

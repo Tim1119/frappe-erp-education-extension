@@ -121,7 +121,7 @@ export default function SearchableSelect({
       // bottom of a long form.
       const openUpward = spaceBelow < DESIRED && spaceAbove > spaceBelow;
       const maxHeight = Math.max(120, Math.min(DESIRED, openUpward ? spaceAbove : spaceBelow));
-      const dropdownWidth = Math.min(400, window.innerWidth - 16, Math.max(rect.width, 280));
+      const dropdownWidth = Math.min(520, window.innerWidth - 16, Math.max(rect.width, 320));
       setPosition({
         top: openUpward ? rect.top - GAP : rect.bottom + GAP,
         left: Math.max(8, Math.min(rect.left, window.innerWidth - dropdownWidth - 8)),
@@ -146,7 +146,7 @@ export default function SearchableSelect({
               left: position.left,
               width: position.width,
               minWidth: position.width,
-              maxWidth: 400,
+              maxWidth: 520,
               zIndex: 999999,
               maxHeight: position.maxHeight,
               display: "flex",
@@ -192,13 +192,12 @@ export default function SearchableSelect({
                       )}
                     >
                       {showId ? (
-                        <div className="flex min-w-0 items-center gap-1 whitespace-nowrap">
-                          <span className="font-medium">{opt.name}</span>
+                        <div className="min-w-0">
+                          <div className="font-medium">{opt.name}</div>
                           {getDisplay(opt) && getDisplay(opt) !== opt.name && (
-                            <>
-                              <span className="text-muted-foreground">—</span>
-                              <span className="truncate text-muted-foreground">{getDisplay(opt)}</span>
-                            </>
+                            <div className="mt-0.5 whitespace-normal break-words text-xs leading-4 text-muted-foreground">
+                              {getDisplay(opt)}
+                            </div>
                           )}
                         </div>
                       ) : (
@@ -274,9 +273,12 @@ export default function SearchableSelect({
         onClose={() => setQuickCreateOpen(false)}
         doctype={effectiveDoctype}
         defaults={parentDefaults}
-        onCreated={(name) => {
-          setCreatedOptions((current) => current.some((option) => option.name === name) ? current : [...current, { name }]);
-          onChange(name);
+        onCreated={(name, createdDocument = {}) => {
+          const createdOption = { ...createdDocument, name };
+          setCreatedOptions((current) => current.some((option) => option.name === name)
+            ? current.map((option) => option.name === name ? { ...option, ...createdOption } : option)
+            : [...current, createdOption]);
+          onChange(name, createdOption);
           onRefreshOptions?.();
           setQuickCreateOpen(false);
         }}

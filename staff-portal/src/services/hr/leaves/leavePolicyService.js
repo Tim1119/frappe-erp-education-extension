@@ -1,0 +1,11 @@
+import { callMethod } from "../../frappeClient";
+const NS = "education_extension.staff_portal_api.hr.leaves.leave_policy_api";
+export const getLeavePolicies = (params={}) => callMethod(`${NS}.get_leave_policies`, params);
+export const getLeavePolicy = name => callMethod(`${NS}.get_leave_policy`, {name});
+export const createLeavePolicy = data => callMethod(`${NS}.create_leave_policy`, {data});
+export const updateLeavePolicy = (name,data) => callMethod(`${NS}.update_leave_policy`, {name,data});
+export const deleteLeavePolicy = name => callMethod(`${NS}.delete_leave_policy`, {name});
+export const submitLeavePolicy = name => callMethod(`${NS}.submit_leave_policy`, {name});
+export const cancelLeavePolicy = name => callMethod(`${NS}.cancel_leave_policy`, {name});
+export const getLeavePolicyOptions = () => callMethod(`${NS}.get_options`);
+export const getLeavePolicyConnections = name => callMethod(`${NS}.get_connections`, {name});

@@ -1,0 +1,12 @@
+import { callMethod } from "../../frappeClient";
+const NS = "education_extension.staff_portal_api.hr.leaves.leave_encashment_api";
+export const getLeaveEncashments = (params={}) => callMethod(`${NS}.get_leave_encashments`, params);
+export const getLeaveEncashment = name => callMethod(`${NS}.get_leave_encashment`, {name});
+export const createLeaveEncashment = data => callMethod(`${NS}.create_leave_encashment`, {data});
+export const updateLeaveEncashment = (name,data) => callMethod(`${NS}.update_leave_encashment`, {name,data});
+export const deleteLeaveEncashment = name => callMethod(`${NS}.delete_leave_encashment`, {name});
+export const submitLeaveEncashment = name => callMethod(`${NS}.submit_leave_encashment`, {name});
+export const cancelLeaveEncashment = name => callMethod(`${NS}.cancel_leave_encashment`, {name});
+export const getLeaveEncashmentOptions = () => callMethod(`${NS}.get_options`);
+export const getLeaveEncashmentConnections = name => callMethod(`${NS}.get_connections`, {name});
+export const getEncashmentDetails = params => callMethod(`${NS}.get_encashment_details`, params);

@@ -25,6 +25,7 @@ import {
   Network,
   BadgeCheck,
   CalendarPlus,
+  CalendarDays,
   MessageSquareText,
   LogIn,
   ReceiptText,
@@ -246,15 +247,6 @@ export const ADMIN_NAV = [
         ],
       },
       {
-        key: "hr-leaves",
-        label: "Leaves",
-        icon: CalendarCheck,
-        children: [
-          { key: "leave-applications", label: "Leave Application", icon: CalendarCheck, path: "/dashboard/leave-applications" },
-          { key: "compensatory-leave-requests", label: "Compensatory Leave Request", icon: CalendarPlus, path: "/dashboard/compensatory-leave-requests" },
-        ],
-      },
-      {
         key: "hr-settings-group",
         label: "Settings",
         icon: Settings,
@@ -270,8 +262,6 @@ export const ADMIN_NAV = [
         icon: BarChart3,
         children: [
           { key: "employee-analytics", label: "Employee Analytics", icon: BarChart3, path: "/dashboard/employee-analytics" },
-          { key: "employee-leave-balance", label: "Employee Leave Balance", icon: BarChart3, path: "/dashboard/employee-leave-balance" },
-          { key: "employee-leave-balance-summary", label: "Employee Leave Balance Summary", icon: BarChart3, path: "/dashboard/employee-leave-balance-summary" },
           { key: "employee-advance-summary", label: "Employee Advance Summary", icon: BarChart3, path: "/dashboard/employee-advance-summary" },
           { key: "employee-exits", label: "Employee Exits", icon: BarChart3, path: "/dashboard/employee-exits" },
         ],
@@ -390,6 +380,46 @@ export const ADMIN_NAV = [
             icon: BarChart3,
             children: [
               { key: "recruitment-analytics-report", label: "Recruitment Analytics", icon: BarChart3, path: "/dashboard/recruitment-analytics" },
+            ],
+          },
+        ],
+      },
+      {
+        key: "hr-leaves",
+        label: "Leaves",
+        icon: CalendarDays,
+        children: [
+          {
+            key: "leave-transactions",
+            label: "Transactions",
+            icon: CalendarCheck,
+            children: [
+              { key: "leave-applications", label: "Leave Application", icon: CalendarCheck, path: "/dashboard/leave-applications" },
+              { key: "compensatory-leave-requests", label: "Compensatory Leave Request", icon: CalendarPlus, path: "/dashboard/compensatory-leave-requests" },
+              { key: "leave-allocations", label: "Leave Allocation", icon: FileText, path: "/dashboard/leave-allocations" },
+              { key: "leave-policy-assignments", label: "Leave Policy Assignment", icon: FileText, path: "/dashboard/leave-policy-assignments" },
+              { key: "leave-encashments", label: "Leave Encashment", icon: FileText, path: "/dashboard/leave-encashments" },
+            ],
+          },
+          {
+            key: "leave-setup",
+            label: "Setup",
+            icon: Settings,
+            children: [
+              { key: "leave-types", label: "Leave Type", icon: FileText, path: "/dashboard/leave-types" },
+              { key: "leave-periods", label: "Leave Period", icon: FileText, path: "/dashboard/leave-periods" },
+              { key: "leave-policies", label: "Leave Policy", icon: FileText, path: "/dashboard/leave-policies" },
+              { key: "leave-block-lists", label: "Leave Block List", icon: FileText, path: "/dashboard/leave-block-lists" },
+              { key: "holiday-lists", label: "Holiday List", icon: CalendarDays, path: "/dashboard/holiday-lists" },
+            ],
+          },
+          {
+            key: "leave-reports",
+            label: "Reports",
+            icon: BarChart3,
+            children: [
+              { key: "leaves-employee-leave-balance", label: "Employee Leave Balance", icon: BarChart3, path: "/dashboard/employee-leave-balance" },
+              { key: "leaves-employee-leave-balance-summary", label: "Employee Leave Balance Summary", icon: BarChart3, path: "/dashboard/employee-leave-balance-summary" },
             ],
           },
         ],
