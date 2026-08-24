@@ -1,0 +1,1 @@
+import PerformanceProfilePage from "../shared/PerformanceProfilePage";import{performanceConfigs}from"../shared/performanceConfigs";export default function EnergyPointRuleProfilePage(){return <PerformanceProfilePage config={performanceConfigs.energyPointRule}/>}

@@ -60,6 +60,18 @@ import LeaveBlockListFormPage from "@/pages/admin/hr/leaves/leave-block-list/Lea
 import HolidayListsPage from "@/pages/admin/hr/leaves/holiday-list/HolidayListsPage";
 import HolidayListProfilePage from "@/pages/admin/hr/leaves/holiday-list/HolidayListProfilePage";
 import HolidayListFormPage from "@/pages/admin/hr/leaves/holiday-list/HolidayListFormPage";
+import {
+  AppraisalTemplatesPage, AppraisalTemplateFormPage, AppraisalTemplateProfilePage,
+  KRAsPage, KRAFormPage, KRAProfilePage,
+  EmployeeFeedbackCriteriaPage, EmployeeFeedbackCriteriaFormPage, EmployeeFeedbackCriteriaProfilePage,
+  AppraisalsPage, AppraisalFormPage, AppraisalProfilePage,
+  AppraisalCyclesPage, AppraisalCycleFormPage, AppraisalCycleProfilePage,
+  EmployeePerformanceFeedbacksPage, EmployeePerformanceFeedbackFormPage, EmployeePerformanceFeedbackProfilePage,
+  GoalsPage, GoalFormPage, GoalProfilePage,
+  EmployeePromotionsPage, EmployeePromotionFormPage, EmployeePromotionProfilePage,
+  EnergyPointRulesPage, EnergyPointRuleFormPage, EnergyPointRuleProfilePage,
+  EnergyPointSettingsPage, EnergyPointLogsPage, EnergyPointLogProfilePage,
+} from "@/pages/admin/hr/performance";
 import HRSettingsPage from "@/pages/admin/hr/hr-settings/HRSettingsPage";
 import HRSettingsFormPage from "@/pages/admin/hr/hr-settings/HRSettingsFormPage";
 import DailyWorkSummaryGroupsPage from "@/pages/admin/hr/daily-work-summary-group/DailyWorkSummaryGroupsPage";
@@ -644,6 +656,45 @@ export default function App() {
         <Route path="holiday-lists/new" element={<HolidayListFormPage />} />
         <Route path="holiday-lists/:id/edit" element={<HolidayListFormPage />} />
         <Route path="holiday-lists/:id" element={<HolidayListProfilePage />} />
+        <Route path="appraisal-templates" element={<AppraisalTemplatesPage />} />
+        <Route path="appraisal-templates/new" element={<AppraisalTemplateFormPage />} />
+        <Route path="appraisal-templates/:id/edit" element={<AppraisalTemplateFormPage />} />
+        <Route path="appraisal-templates/:id" element={<AppraisalTemplateProfilePage />} />
+        <Route path="kras" element={<KRAsPage />} />
+        <Route path="kras/new" element={<KRAFormPage />} />
+        <Route path="kras/:id/edit" element={<KRAFormPage />} />
+        <Route path="kras/:id" element={<KRAProfilePage />} />
+        <Route path="employee-feedback-criteria" element={<EmployeeFeedbackCriteriaPage />} />
+        <Route path="employee-feedback-criteria/new" element={<EmployeeFeedbackCriteriaFormPage />} />
+        <Route path="employee-feedback-criteria/:id/edit" element={<EmployeeFeedbackCriteriaFormPage />} />
+        <Route path="employee-feedback-criteria/:id" element={<EmployeeFeedbackCriteriaProfilePage />} />
+        <Route path="appraisals" element={<AppraisalsPage />} />
+        <Route path="appraisals/new" element={<AppraisalFormPage />} />
+        <Route path="appraisals/:id/edit" element={<AppraisalFormPage />} />
+        <Route path="appraisals/:id" element={<AppraisalProfilePage />} />
+        <Route path="appraisal-cycles" element={<AppraisalCyclesPage />} />
+        <Route path="appraisal-cycles/new" element={<AppraisalCycleFormPage />} />
+        <Route path="appraisal-cycles/:id/edit" element={<AppraisalCycleFormPage />} />
+        <Route path="appraisal-cycles/:id" element={<AppraisalCycleProfilePage />} />
+        <Route path="employee-performance-feedbacks" element={<EmployeePerformanceFeedbacksPage />} />
+        <Route path="employee-performance-feedbacks/new" element={<EmployeePerformanceFeedbackFormPage />} />
+        <Route path="employee-performance-feedbacks/:id/edit" element={<EmployeePerformanceFeedbackFormPage />} />
+        <Route path="employee-performance-feedbacks/:id" element={<EmployeePerformanceFeedbackProfilePage />} />
+        <Route path="goals" element={<GoalsPage />} />
+        <Route path="goals/new" element={<GoalFormPage />} />
+        <Route path="goals/:id/edit" element={<GoalFormPage />} />
+        <Route path="goals/:id" element={<GoalProfilePage />} />
+        <Route path="employee-promotions" element={<EmployeePromotionsPage />} />
+        <Route path="employee-promotions/new" element={<EmployeePromotionFormPage />} />
+        <Route path="employee-promotions/:id/edit" element={<EmployeePromotionFormPage />} />
+        <Route path="employee-promotions/:id" element={<EmployeePromotionProfilePage />} />
+        <Route path="energy-point-rules" element={<EnergyPointRulesPage />} />
+        <Route path="energy-point-rules/new" element={<EnergyPointRuleFormPage />} />
+        <Route path="energy-point-rules/:id/edit" element={<EnergyPointRuleFormPage />} />
+        <Route path="energy-point-rules/:id" element={<EnergyPointRuleProfilePage />} />
+        <Route path="energy-point-settings" element={<EnergyPointSettingsPage />} />
+        <Route path="energy-point-logs" element={<EnergyPointLogsPage />} />
+        <Route path="energy-point-logs/:id" element={<EnergyPointLogProfilePage />} />
         <Route path="hr-settings" element={<HRSettingsPage />} />
         <Route path="hr-settings/edit" element={<HRSettingsFormPage />} />
         <Route path="daily-work-summary-groups" element={<DailyWorkSummaryGroupsPage />} />

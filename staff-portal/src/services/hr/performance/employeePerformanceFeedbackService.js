@@ -1,0 +1,12 @@
+import { callMethod } from "../../frappeClient";
+const NS="education_extension.staff_portal_api.hr.performance.employee_performance_feedback_api";
+export const getEmployeePerformanceFeedbacks=params=>callMethod(`${NS}.get_employee_performance_feedbacks`,params||{});
+export const getEmployeePerformanceFeedback=name=>callMethod(`${NS}.get_employee_performance_feedback`,{name});
+export const createEmployeePerformanceFeedback=data=>callMethod(`${NS}.create_employee_performance_feedback`,{data});
+export const updateEmployeePerformanceFeedback=(name,data)=>callMethod(`${NS}.update_employee_performance_feedback`,{name,data});
+export const deleteEmployeePerformanceFeedback=name=>callMethod(`${NS}.delete_employee_performance_feedback`,{name});
+export const submitEmployeePerformanceFeedback=name=>callMethod(`${NS}.submit_employee_performance_feedback`,{name});
+export const cancelEmployeePerformanceFeedback=name=>callMethod(`${NS}.cancel_employee_performance_feedback`,{name});
+export const getEmployeePerformanceFeedbackOptions=()=>callMethod(`${NS}.get_options`);
+export const getFeedbackDetails=appraisal=>callMethod(`${NS}.get_feedback_details`,{appraisal});
+export const getEmployeePerformanceFeedbackConnections=name=>callMethod(`${NS}.get_connections`,{name});

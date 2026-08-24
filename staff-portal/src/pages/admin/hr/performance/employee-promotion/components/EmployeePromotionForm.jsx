@@ -1,0 +1,1 @@
+import PerformanceDocumentForm from "../../shared/PerformanceDocumentForm";import{performanceConfigs}from"../../shared/performanceConfigs";export default function EmployeePromotionForm({document,onSave}){return <PerformanceDocumentForm config={performanceConfigs.employeePromotion} document={document} onSave={onSave}/>}

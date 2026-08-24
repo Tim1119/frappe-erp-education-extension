@@ -1,0 +1,1 @@
+import PerformanceDocumentForm from "../../shared/PerformanceDocumentForm";import{performanceConfigs}from"../../shared/performanceConfigs";export default function GoalForm({document,onSave}){return <PerformanceDocumentForm config={performanceConfigs.goal} document={document} onSave={onSave}/>}

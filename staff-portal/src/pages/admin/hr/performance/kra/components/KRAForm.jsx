@@ -1,0 +1,1 @@
+import PerformanceDocumentForm from "../../shared/PerformanceDocumentForm";import{performanceConfigs}from"../../shared/performanceConfigs";export default function KRAForm({document,onSave}){return <PerformanceDocumentForm config={performanceConfigs.kra} document={document} onSave={onSave}/>}

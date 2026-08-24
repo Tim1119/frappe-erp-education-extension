@@ -9,14 +9,14 @@
         window.csrf_token = "{{ frappe.session.csrf_token }}";
     </script>
 
-    <link rel="stylesheet" href="/assets/education_extension/staff_portal/index.css">
+    <link rel="stylesheet" href="/assets/education_extension/staff_portal/index.css?v={{ staff_portal_version }}">
 </head>
 
 <body>
     <div id="root"></div>
 
     <script type="module"
-        src="/assets/education_extension/staff_portal/index.js">
+        src="/assets/education_extension/staff_portal/index.js?v={{ staff_portal_version }}">
     </script>
 </body>
 </html>

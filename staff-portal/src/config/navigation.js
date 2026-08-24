@@ -35,6 +35,12 @@ import {
   AlertCircle,
   UserSearch,
   MessageSquare,
+  TrendingUp,
+  ClipboardCheck,
+  RefreshCw,
+  Target,
+  ArrowUpCircle,
+  Zap,
   Clock,
   Timer,
   ShoppingCart,
@@ -420,6 +426,52 @@ export const ADMIN_NAV = [
             children: [
               { key: "leaves-employee-leave-balance", label: "Employee Leave Balance", icon: BarChart3, path: "/dashboard/employee-leave-balance" },
               { key: "leaves-employee-leave-balance-summary", label: "Employee Leave Balance Summary", icon: BarChart3, path: "/dashboard/employee-leave-balance-summary" },
+            ],
+          },
+        ],
+      },
+      {
+        key: "hr-performance",
+        label: "Performance",
+        icon: TrendingUp,
+        children: [
+          {
+            key: "performance-masters",
+            label: "Masters",
+            icon: Settings,
+            children: [
+              { key: "appraisal-templates", label: "Appraisal Template", icon: FileText, path: "/dashboard/appraisal-templates" },
+              { key: "kras", label: "KRA", icon: FileText, path: "/dashboard/kras" },
+              { key: "employee-feedback-criteria", label: "Employee Feedback Criteria", icon: FileText, path: "/dashboard/employee-feedback-criteria" },
+            ],
+          },
+          {
+            key: "performance-appraisal",
+            label: "Appraisal",
+            icon: ClipboardCheck,
+            children: [
+              { key: "appraisals", label: "Appraisal", icon: ClipboardCheck, path: "/dashboard/appraisals" },
+              { key: "appraisal-cycles", label: "Appraisal Cycle", icon: RefreshCw, path: "/dashboard/appraisal-cycles" },
+              { key: "employee-performance-feedbacks", label: "Employee Performance Feedback", icon: MessageSquare, path: "/dashboard/employee-performance-feedbacks" },
+              { key: "goals", label: "Goal", icon: Target, path: "/dashboard/goals" },
+            ],
+          },
+          {
+            key: "performance-promotion",
+            label: "Promotion",
+            icon: ArrowUpCircle,
+            children: [
+              { key: "employee-promotions", label: "Employee Promotion", icon: ArrowUpCircle, path: "/dashboard/employee-promotions" },
+            ],
+          },
+          {
+            key: "performance-energy-points",
+            label: "Energy Points",
+            icon: Zap,
+            children: [
+              { key: "energy-point-rules", label: "Energy Point Rule", icon: Zap, path: "/dashboard/energy-point-rules" },
+              { key: "energy-point-settings", label: "Energy Point Settings", icon: Settings, path: "/dashboard/energy-point-settings" },
+              { key: "energy-point-logs", label: "Energy Point Log", icon: FileText, path: "/dashboard/energy-point-logs" },
             ],
           },
         ],

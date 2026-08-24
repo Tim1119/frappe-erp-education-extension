@@ -1,0 +1,1 @@
+import PerformanceListPage from "../shared/PerformanceListPage";import{performanceConfigs}from"../shared/performanceConfigs";export default function EmployeePromotionsPage(){return <PerformanceListPage config={performanceConfigs.employeePromotion}/>}

@@ -1,0 +1,1 @@
+import PerformanceDocumentForm from "../../shared/PerformanceDocumentForm";import{performanceConfigs}from"../../shared/performanceConfigs";export default function AppraisalTemplateForm({document,onSave}){return <PerformanceDocumentForm config={performanceConfigs.appraisalTemplate} document={document} onSave={onSave}/>}

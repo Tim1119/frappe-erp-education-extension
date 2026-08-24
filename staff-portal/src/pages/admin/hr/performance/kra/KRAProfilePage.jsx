@@ -1,0 +1,1 @@
+import PerformanceProfilePage from "../shared/PerformanceProfilePage";import{performanceConfigs}from"../shared/performanceConfigs";export default function KRAProfilePage(){return <PerformanceProfilePage config={performanceConfigs.kra}/>}

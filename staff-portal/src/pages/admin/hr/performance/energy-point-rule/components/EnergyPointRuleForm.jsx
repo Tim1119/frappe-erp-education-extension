@@ -1,0 +1,1 @@
+import PerformanceDocumentForm from "../../shared/PerformanceDocumentForm";import{performanceConfigs}from"../../shared/performanceConfigs";export default function EnergyPointRuleForm({document,onSave}){return <PerformanceDocumentForm config={performanceConfigs.energyPointRule} document={document} onSave={onSave}/>}

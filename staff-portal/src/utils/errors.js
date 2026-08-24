@@ -6,7 +6,12 @@
  */
 function stripHtml(str) {
 	if (typeof str !== "string") return str;
-	return str.replace(/<[^>]*>/g, "").trim();
+	return str
+		.replace(/<br\s*\/?>/gi, " ")
+		.replace(/<\/p>|<\/div>|<\/li>/gi, " ")
+		.replace(/<[^>]*>/g, "")
+		.replace(/\s+/g, " ")
+		.trim();
 }
 
 export function getErrorMessage(error, fallback = "Something went wrong. Please try again.") {

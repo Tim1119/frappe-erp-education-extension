@@ -1,0 +1,1 @@
+import PerformanceListPage from "../shared/PerformanceListPage";import{performanceConfigs}from"../shared/performanceConfigs";export default function EnergyPointLogsPage(){return <PerformanceListPage config={performanceConfigs.energyPointLog}/>}

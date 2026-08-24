@@ -1,0 +1,1 @@
+import PerformanceProfilePage from "../shared/PerformanceProfilePage";import{performanceConfigs}from"../shared/performanceConfigs";export default function AppraisalProfilePage(){return <PerformanceProfilePage config={performanceConfigs.appraisal}/>}

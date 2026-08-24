@@ -1,0 +1,12 @@
+import { callMethod } from "../../frappeClient";
+const NS="education_extension.staff_portal_api.hr.performance.employee_promotion_api";
+export const getEmployeePromotions=params=>callMethod(`${NS}.get_employee_promotions`,params||{});
+export const getEmployeePromotion=name=>callMethod(`${NS}.get_employee_promotion`,{name});
+export const createEmployeePromotion=data=>callMethod(`${NS}.create_employee_promotion`,{data});
+export const updateEmployeePromotion=(name,data)=>callMethod(`${NS}.update_employee_promotion`,{name,data});
+export const deleteEmployeePromotion=name=>callMethod(`${NS}.delete_employee_promotion`,{name});
+export const submitEmployeePromotion=name=>callMethod(`${NS}.submit_employee_promotion`,{name});
+export const cancelEmployeePromotion=name=>callMethod(`${NS}.cancel_employee_promotion`,{name});
+export const getEmployeePromotionOptions=()=>callMethod(`${NS}.get_options`);
+export const getEmployeePromotionProperty=(employee,fieldname)=>callMethod(`${NS}.get_employee_property`,{employee,fieldname});
+export const getEmployeePromotionConnections=name=>callMethod(`${NS}.get_connections`,{name});

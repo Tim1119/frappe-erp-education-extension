@@ -1,0 +1,10 @@
+import { callMethod } from "../../frappeClient";
+const NS="education_extension.staff_portal_api.hr.performance.energy_point_rule_api";
+export const getEnergyPointRules=params=>callMethod(`${NS}.get_energy_point_rules`,params||{});
+export const getEnergyPointRule=name=>callMethod(`${NS}.get_energy_point_rule`,{name});
+export const createEnergyPointRule=data=>callMethod(`${NS}.create_energy_point_rule`,{data});
+export const updateEnergyPointRule=(name,data)=>callMethod(`${NS}.update_energy_point_rule`,{name,data});
+export const deleteEnergyPointRule=name=>callMethod(`${NS}.delete_energy_point_rule`,{name});
+export const getEnergyPointRuleOptions=()=>callMethod(`${NS}.get_options`);
+export const getEnergyPointReferenceFields=reference_doctype=>callMethod(`${NS}.get_reference_fields`,{reference_doctype});
+export const getEnergyPointRuleConnections=name=>callMethod(`${NS}.get_connections`,{name});

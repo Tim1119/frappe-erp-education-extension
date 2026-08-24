@@ -1,0 +1,1 @@
+import PerformanceDocumentForm from "../../shared/PerformanceDocumentForm";import{performanceConfigs}from"../../shared/performanceConfigs";export default function EmployeeFeedbackCriteriaForm({document,onSave}){return <PerformanceDocumentForm config={performanceConfigs.employeeFeedbackCriteria} document={document} onSave={onSave}/>}

@@ -72,7 +72,7 @@ async function request(path, { method = "GET", body, headers } = {}) {
 function safeParseServerMessages(raw) {
 	try {
 		const arr = JSON.parse(raw);
-		return arr
+		const messages = arr
 			.map((m) => {
 				try {
 					return JSON.parse(m).message;
@@ -80,7 +80,8 @@ function safeParseServerMessages(raw) {
 					return m;
 				}
 			})
-			.join(" ");
+			.filter(Boolean);
+		return [...new Set(messages)].join(" ");
 	} catch {
 		return raw;
 	}

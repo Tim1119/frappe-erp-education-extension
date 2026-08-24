@@ -1,0 +1,10 @@
+import { callMethod } from "../../frappeClient";
+const NS="education_extension.staff_portal_api.hr.performance.goal_api";
+export const getGoals=params=>callMethod(`${NS}.get_goals`,params||{});
+export const getGoal=name=>callMethod(`${NS}.get_goal`,{name});
+export const createGoal=data=>callMethod(`${NS}.create_goal`,{data});
+export const updateGoal=(name,data)=>callMethod(`${NS}.update_goal`,{name,data});
+export const deleteGoal=name=>callMethod(`${NS}.delete_goal`,{name});
+export const getGoalOptions=()=>callMethod(`${NS}.get_options`);
+export const updateGoalProgress=(name,progress)=>callMethod(`${NS}.update_progress`,{name,progress});
+export const getGoalConnections=name=>callMethod(`${NS}.get_connections`,{name});

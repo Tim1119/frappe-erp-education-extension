@@ -1,0 +1,1 @@
+import PerformanceFormPage from "../shared/PerformanceFormPage";import{performanceConfigs}from"../shared/performanceConfigs";export default function EmployeeFeedbackCriteriaFormPage(){return <PerformanceFormPage config={performanceConfigs.employeeFeedbackCriteria}/>}

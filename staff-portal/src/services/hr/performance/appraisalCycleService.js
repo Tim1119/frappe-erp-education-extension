@@ -1,0 +1,14 @@
+import { callMethod } from "../../frappeClient";
+const NS="education_extension.staff_portal_api.hr.performance.appraisal_cycle_api";
+export const getAppraisalCycles=params=>callMethod(`${NS}.get_appraisal_cycles`,params||{});
+export const getAppraisalCycle=name=>callMethod(`${NS}.get_appraisal_cycle`,{name});
+export const createAppraisalCycle=data=>callMethod(`${NS}.create_appraisal_cycle`,{data});
+export const updateAppraisalCycle=(name,data)=>callMethod(`${NS}.update_appraisal_cycle`,{name,data});
+export const deleteAppraisalCycle=name=>callMethod(`${NS}.delete_appraisal_cycle`,{name});
+export const getAppraisalCycleOptions=()=>callMethod(`${NS}.get_options`);
+export const getAppraisees=data=>callMethod(`${NS}.get_appraisees`,{data});
+export const createCycleAppraisals=name=>callMethod(`${NS}.create_appraisals`,{name});
+export const startAppraisalCycle=name=>callMethod(`${NS}.start_cycle`,{name});
+export const completeAppraisalCycle=name=>callMethod(`${NS}.complete_cycle`,{name});
+export const reopenAppraisalCycle=name=>callMethod(`${NS}.reopen_cycle`,{name});
+export const getAppraisalCycleConnections=name=>callMethod(`${NS}.get_connections`,{name});
