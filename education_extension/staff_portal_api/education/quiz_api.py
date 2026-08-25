@@ -23,7 +23,7 @@ def get_quizzes(
             ["title", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Quiz",
         fields=[
             "name",
@@ -171,7 +171,7 @@ def delete_quiz(name):
 def get_questions():
     """Get all questions for dropdown"""
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Question",
             fields=["name", "question"],
             order_by="name",

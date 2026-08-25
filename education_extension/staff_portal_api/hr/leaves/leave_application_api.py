@@ -18,11 +18,11 @@ def get_leave_applications(page=1, page_size=20, search=None, employee=None, lea
     or_filters = [["name", "like", f"%{search}%"], ["employee_name", "like", f"%{search}%"]] if search else []
     fields = ["name", "employee", "employee_name", "leave_type", "from_date", "to_date", "total_leave_days",
               "department", "status", "company", "docstatus", "posting_date"]
-    rows = frappe.get_all("Leave Application", fields=fields, filters=filters, or_filters=or_filters,
+    rows = frappe.get_list("Leave Application", fields=fields, filters=filters, or_filters=or_filters,
                           order_by="posting_date desc, name desc", start=(page - 1) * page_size, page_length=page_size)
     for row in rows:
         row["can_edit"] = row.docstatus == 0 and frappe.has_permission("Leave Application", "write", doc=row.name)
-    total = len(frappe.get_all("Leave Application", filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
+    total = len(frappe.get_list("Leave Application", filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
     return {"rows": rows, "count": total, "page": page, "page_size": page_size,
             "total_pages": (total + page_size - 1) // page_size if page_size else 1}
 
@@ -97,7 +97,7 @@ def _safe(title, fn, fallback=None):
 
 @frappe.whitelist()
 def get_employees():
-    return _safe("Leave Application API", lambda: frappe.get_all("Employee", fields=["name", "employee_name", "department", "company"], filters={"status": "Active"}, order_by="employee_name", limit_page_length=500))
+    return _safe("Leave Application API", lambda: frappe.get_list("Employee", fields=["name", "employee_name", "department", "company"], filters={"status": "Active"}, order_by="employee_name", limit_page_length=500))
 
 
 @frappe.whitelist()
@@ -116,12 +116,12 @@ def get_leave_types(employee=None, date=None):
     def load():
         filters = {}
         if employee and date:
-            allocated = frappe.get_all("Leave Allocation", filters={"employee": employee, "docstatus": 1,
+            allocated = frappe.get_list("Leave Allocation", filters={"employee": employee, "docstatus": 1,
                 "from_date": ["<=", date], "to_date": [">=", date]}, pluck="leave_type", limit_page_length=0)
-            unpaid = frappe.get_all("Leave Type", filters={"is_lwp": 1}, pluck="name", limit_page_length=0)
+            unpaid = frappe.get_list("Leave Type", filters={"is_lwp": 1}, pluck="name", limit_page_length=0)
             names = list(dict.fromkeys(allocated + unpaid))
-            return frappe.get_all("Leave Type", fields=["name", "is_lwp"], filters={"name": ["in", names]}) if names else []
-        return frappe.get_all("Leave Type", fields=["name", "is_lwp"], order_by="name", limit_page_length=500)
+            return frappe.get_list("Leave Type", fields=["name", "is_lwp"], filters={"name": ["in", names]}) if names else []
+        return frappe.get_list("Leave Type", fields=["name", "is_lwp"], order_by="name", limit_page_length=500)
     return _safe("Leave Application API", load)
 
 
@@ -161,7 +161,7 @@ def get_leave_balance(employee, leave_type, date=None, to_date=None):
         balance_date = date or today()
         if frappe.db.get_value("Leave Type", leave_type, "is_lwp"):
             return 0
-        if not frappe.get_all(
+        if not frappe.get_list(
             "Leave Allocation",
             filters={
                 "employee": employee,
@@ -208,7 +208,7 @@ def get_allocation_period(employee, leave_type, from_date=None, to_date=None):
             return {"valid": False, "is_lwp": False, "periods": []}
 
         is_lwp = bool(frappe.db.get_value("Leave Type", leave_type, "is_lwp"))
-        allocations = frappe.get_all(
+        allocations = frappe.get_list(
             "Leave Allocation",
             filters={"employee": employee, "leave_type": leave_type, "docstatus": 1},
             fields=["name", "from_date", "to_date", "total_leaves_allocated"],
@@ -249,18 +249,18 @@ def get_leave_approvers(employee):
         if employee_values.get("leave_approver"):
             users.insert(0, employee_values.get("leave_approver"))
         users = list(dict.fromkeys(users))
-        return frappe.get_all("User", fields=["name", "full_name"], filters={"name": ["in", users], "enabled": 1}) if users else []
+        return frappe.get_list("User", fields=["name", "full_name"], filters={"name": ["in", users], "enabled": 1}) if users else []
     return _safe("Leave Application API", load)
 
 
 @frappe.whitelist()
-def get_companies(): return _safe("Leave Application API", lambda: frappe.get_all("Company", fields=["name"], order_by="name", limit_page_length=500))
+def get_companies(): return _safe("Leave Application API", lambda: frappe.get_list("Company", fields=["name"], order_by="name", limit_page_length=500))
 @frappe.whitelist()
-def get_departments(): return _safe("Leave Application API", lambda: frappe.get_all("Department", fields=["name"], order_by="name", limit_page_length=500))
+def get_departments(): return _safe("Leave Application API", lambda: frappe.get_list("Department", fields=["name"], order_by="name", limit_page_length=500))
 @frappe.whitelist()
-def get_salary_slips(employee=None): return _safe("Leave Application API", lambda: frappe.get_all("Salary Slip", fields=["name"], filters={"employee": employee} if employee else {}, order_by="posting_date desc", limit_page_length=500))
+def get_salary_slips(employee=None): return _safe("Leave Application API", lambda: frappe.get_list("Salary Slip", fields=["name"], filters={"employee": employee} if employee else {}, order_by="posting_date desc", limit_page_length=500))
 @frappe.whitelist()
-def get_letter_heads(): return _safe("Leave Application API", lambda: frappe.get_all("Letter Head", fields=["name"], order_by="name", limit_page_length=500))
+def get_letter_heads(): return _safe("Leave Application API", lambda: frappe.get_list("Letter Head", fields=["name"], order_by="name", limit_page_length=500))
 
 
 @frappe.whitelist()

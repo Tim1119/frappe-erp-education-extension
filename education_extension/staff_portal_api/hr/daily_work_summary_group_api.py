@@ -14,12 +14,12 @@ def get_daily_work_summary_groups(page=1, page_size=20, search=None, enabled=Non
     if holiday_list:
         filters["holiday_list"] = holiday_list
     or_filters = [["name", "like", f"%{search}%"], ["subject", "like", f"%{search}%"]] if search else []
-    rows = frappe.get_all("Daily Work Summary Group", fields=["name", "enabled", "send_emails_at", "holiday_list", "subject", "modified"], filters=filters, or_filters=or_filters, order_by="modified desc", start=(page - 1) * page_size, page_length=page_size)
+    rows = frappe.get_list("Daily Work Summary Group", fields=["name", "enabled", "send_emails_at", "holiday_list", "subject", "modified"], filters=filters, or_filters=or_filters, order_by="modified desc", start=(page - 1) * page_size, page_length=page_size)
     for row in rows:
         row["user_count"] = frappe.db.count("Daily Work Summary Group User", {"parent": row.name})
         row["can_edit"] = frappe.has_permission("Daily Work Summary Group", "write", doc=row.name)
         row["can_delete"] = frappe.has_permission("Daily Work Summary Group", "delete", doc=row.name)
-    total = len(frappe.get_all("Daily Work Summary Group", filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
+    total = len(frappe.get_list("Daily Work Summary Group", filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
     return {"rows": rows, "count": total, "page": page, "page_size": page_size, "total_pages": (total + page_size - 1) // page_size if page_size else 1}
 
 
@@ -88,12 +88,12 @@ def _safe(fn):
 
 @frappe.whitelist()
 def get_users():
-    return _safe(lambda: frappe.get_all("User", fields=["name", "full_name", "email", "enabled"], order_by="full_name", limit_page_length=500))
+    return _safe(lambda: frappe.get_list("User", fields=["name", "full_name", "email", "enabled"], order_by="full_name", limit_page_length=500))
 
 
 @frappe.whitelist()
 def get_holiday_lists():
-    return _safe(lambda: frappe.get_all("Holiday List", fields=["name", "from_date", "to_date"], order_by="name", limit_page_length=500))
+    return _safe(lambda: frappe.get_list("Holiday List", fields=["name", "from_date", "to_date"], order_by="name", limit_page_length=500))
 
 
 @frappe.whitelist()

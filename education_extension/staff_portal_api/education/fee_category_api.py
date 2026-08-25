@@ -22,7 +22,7 @@ def get_fee_categories(
             ["description", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Fee Category",
         fields=[
             "name",
@@ -158,7 +158,7 @@ def delete_fee_category(name):
 def get_companies():
     """Get all companies for dropdown"""
     try:
-        companies = frappe.get_all(
+        companies = frappe.get_list(
             "Company",
             fields=["name"],
             order_by="name",
@@ -176,7 +176,7 @@ def get_accounts(company):
         return []
     
     try:
-        accounts = frappe.get_all(
+        accounts = frappe.get_list(
             "Account",
             fields=["name"],
             filters={
@@ -199,7 +199,7 @@ def get_cost_centers(company):
         return []
     
     try:
-        cost_centers = frappe.get_all(
+        cost_centers = frappe.get_list(
             "Cost Center",
             fields=["name"],
             filters={

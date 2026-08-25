@@ -21,7 +21,7 @@ def get_assessment_criteria_list(page=1, page_size=20, search=None, assessment_c
             ["assessment_criteria_group", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Assessment Criteria",
         fields=["name", "assessment_criteria", "assessment_criteria_group"],
         filters=filters,
@@ -107,7 +107,7 @@ def delete_assessment_criteria(name):
 @frappe.whitelist()
 def get_assessment_criteria_groups():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Assessment Criteria Group", fields=["name"],
             order_by="name", limit_page_length=500,
         )

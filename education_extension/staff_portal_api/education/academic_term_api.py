@@ -27,7 +27,7 @@ def get_academic_terms(
             ["title", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Academic Term",
         fields=[
             "name",
@@ -124,7 +124,7 @@ def delete_academic_term(name):
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Year",
             fields=["name"],
             order_by="name desc",

@@ -10,14 +10,14 @@ def get_employee_grades(page=1, page_size=20, search=None, salary_structure=None
     page, page_size = cint(page), cint(page_size)
     filters = {"default_salary_structure": salary_structure} if salary_structure else {}
     or_filters = [["name", "like", f"%{search}%"]] if search else []
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Employee Grade", fields=["name", "default_salary_structure", "currency", "default_base_pay"],
         filters=filters, or_filters=or_filters, order_by="modified desc",
         start=(page - 1) * page_size, page_length=page_size,
     )
     for row in rows:
         row["can_edit"] = frappe.has_permission("Employee Grade", "write", doc=row.name)
-    total = len(frappe.get_all("Employee Grade", filters=filters, or_filters=or_filters,
+    total = len(frappe.get_list("Employee Grade", filters=filters, or_filters=or_filters,
                                pluck="name", limit_page_length=0))
     return {"rows": rows, "count": total, "page": page, "page_size": page_size,
             "total_pages": (total + page_size - 1) // page_size if page_size else 1}
@@ -75,7 +75,7 @@ def delete_employee_grade(name):
 def get_salary_structures():
     """Matches employee_grade.js: submitted and active Salary Structures only."""
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Salary Structure", fields=["name", "currency"],
             filters={"docstatus": 1, "is_active": "Yes"}, order_by="name", limit_page_length=500,
         )

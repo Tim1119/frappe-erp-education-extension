@@ -90,7 +90,7 @@ def get_school_term_results(
             ["student_admission_id", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "School Term Result",
         fields=[
             "name", "student", "student_admission_id", "assessment_group",
@@ -110,7 +110,7 @@ def get_school_term_results(
     # of a per-row query.
     student_names = list({r.student for r in rows if r.student})
     if student_names:
-        student_rows = frappe.get_all(
+        student_rows = frappe.get_list(
             "Student", filters={"name": ["in", student_names]}, fields=["name", "student_name"],
         )
         name_by_student = {s.name: s.student_name for s in student_rows}
@@ -257,7 +257,7 @@ def get_school_print_format():
 @frappe.whitelist()
 def get_students():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student", fields=["name", "student_name"],
             order_by="student_name", limit_page_length=500,
         )
@@ -272,7 +272,7 @@ def get_assessment_groups():
     doctype; only leaf nodes are ever referenced by real Assessment
     Result / School Term Result rows."""
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Assessment Group", filters={"is_group": 0},
             fields=["name", "assessment_group_name"], order_by="name",
         )
@@ -284,7 +284,7 @@ def get_assessment_groups():
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Year", fields=["name"], order_by="year_start_date desc", limit_page_length=500,
         )
     except Exception as e:
@@ -298,7 +298,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Term", fields=["name", "title"],
             filters=filters, order_by="term_start_date desc", limit_page_length=500,
         )
@@ -310,7 +310,7 @@ def get_academic_terms(academic_year=None):
 @frappe.whitelist()
 def get_student_groups():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Group", fields=["name", "student_group_name"],
             order_by="student_group_name", limit_page_length=500,
         )
@@ -322,7 +322,7 @@ def get_student_groups():
 @frappe.whitelist()
 def get_courses():
     try:
-        return frappe.get_all("Course", fields=["name", "course_name"], order_by="course_name", limit_page_length=500)
+        return frappe.get_list("Course", fields=["name", "course_name"], order_by="course_name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching subjects: {str(e)}", "School Term Result API")
         return []
@@ -331,7 +331,7 @@ def get_courses():
 @frappe.whitelist()
 def get_assessment_criteria():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Assessment Criteria", fields=["name"], order_by="name", limit_page_length=500,
         )
     except Exception as e:

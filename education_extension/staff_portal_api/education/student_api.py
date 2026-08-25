@@ -4,6 +4,10 @@ import frappe
 from frappe import _
 from frappe.utils import cint
 
+from education_extension.staff_portal_api.permissions import (
+    ensure_doctype_permission,
+)
+
 
 @frappe.whitelist()
 def get_students(
@@ -22,6 +26,8 @@ def get_students(
 
     page = cint(page)
     page_size = cint(page_size)
+
+    ensure_doctype_permission("Student", "read")
 
     filters = {}
 
@@ -64,7 +70,7 @@ def get_students(
 
     if course:
         # Course -> Student Group(s) teaching it -> students in those groups
-        group_names = frappe.get_all(
+        group_names = frappe.get_list(
             "Student Group",
             filters={"course": course},
             pluck="name",
@@ -82,13 +88,13 @@ def get_students(
     if student_admission:
         # Student Admission -> Student Applicant(s) it admitted -> Student
         # records created from those applicants
-        applicant_names = frappe.get_all(
+        applicant_names = frappe.get_list(
             "Student Applicant",
             filters={"student_admission": student_admission},
             pluck="name",
         )
         student_names = (
-            frappe.get_all(
+            frappe.get_list(
                 "Student",
                 filters={"student_applicant": ["in", applicant_names]},
                 pluck="name",
@@ -109,7 +115,7 @@ def get_students(
             }
         filters["name"] = ["in", list(matching_names)]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Student",
         fields=[
             "name",
@@ -140,7 +146,7 @@ def get_students(
         # Program Enrollments (Current Class)
         # ------------------------------------------------------
 
-        enrollments = frappe.get_all(
+        enrollments = frappe.get_list(
             "Program Enrollment",
             filters={
                 "student": ["in", student_names],
@@ -238,6 +244,7 @@ def get_student(name):
         "Student",
         name
     )
+    ensure_doctype_permission("Student", "read", student)
 
     data = student.as_dict()
 
@@ -293,7 +300,7 @@ def update_student(student, data):
         "Student",
         student
     )
-
+    ensure_doctype_permission("Student", "write", doc)
 
     guardians = data.pop("guardians", None)
 
@@ -348,6 +355,7 @@ def update_student(student, data):
 
 @frappe.whitelist()
 def create_student(data):
+    ensure_doctype_permission("Student", "create")
 
     if isinstance(data, str):
         data = json.loads(data)
@@ -413,7 +421,7 @@ def get_class_arms(
             ["program", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Student Group",  # Assuming class arm is Student Group
         fields=[
             "name",
@@ -456,7 +464,7 @@ def get_guardians(search=None):
             f"%{search}%"
         ]
 
-    return frappe.get_all(
+    return frappe.get_list(
         "Guardian",
         filters=filters,
         fields=[

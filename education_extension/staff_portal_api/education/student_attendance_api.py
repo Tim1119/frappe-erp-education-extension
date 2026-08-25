@@ -4,6 +4,10 @@ import frappe
 from frappe import _
 from frappe.utils import cint
 
+from education_extension.staff_portal_api.permissions import (
+    ensure_doctype_permission,
+)
+
 STATUS_OPTIONS = ["Present", "Absent", "Leave"]
 
 
@@ -21,7 +25,10 @@ def get_student_attendance_list(
     page = cint(page)
     page_size = cint(page_size)
 
+    ensure_doctype_permission("Student Attendance", "read")
+
     filters = {}
+
     if student:
         filters["student"] = student
     if student_group:
@@ -40,7 +47,7 @@ def get_student_attendance_list(
             ["student_name", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Student Attendance",
         fields=[
             "name",
@@ -76,11 +83,13 @@ def get_student_attendance(name):
         frappe.throw(_("Student Attendance name is required"))
 
     doc = frappe.get_doc("Student Attendance", name)
+    ensure_doctype_permission("Student Attendance", "read", doc)
     return doc.as_dict()
 
 
 @frappe.whitelist()
 def create_student_attendance(data):
+    ensure_doctype_permission("Student Attendance", "create")
     if isinstance(data, str):
         data = json.loads(data)
 
@@ -121,6 +130,7 @@ def update_student_attendance(name, data):
         data = json.loads(data)
 
     doc = frappe.get_doc("Student Attendance", name)
+    ensure_doctype_permission("Student Attendance", "write", doc)
 
     # status is the ONLY allow_on_submit field on this doctype (checked
     # the real JSON) -- once submitted, Frappe itself rejects any actual
@@ -142,6 +152,7 @@ def delete_student_attendance(name):
         frappe.throw(_("Student Attendance name is required"))
 
     doc = frappe.get_doc("Student Attendance", name)
+    ensure_doctype_permission("Student Attendance", "delete", doc)
 
     if doc.docstatus == 1:
         frappe.throw(_("Cannot delete a submitted document. Please cancel it first."))
@@ -158,6 +169,7 @@ def submit_student_attendance(name):
         frappe.throw(_("Student Attendance name is required"))
 
     doc = frappe.get_doc("Student Attendance", name)
+    ensure_doctype_permission("Student Attendance", "submit", doc)
 
     if doc.docstatus == 1:
         frappe.throw(_("Document is already submitted"))
@@ -176,6 +188,7 @@ def cancel_student_attendance(name):
         frappe.throw(_("Student Attendance name is required"))
 
     doc = frappe.get_doc("Student Attendance", name)
+    ensure_doctype_permission("Student Attendance", "cancel", doc)
 
     if doc.docstatus == 2:
         frappe.throw(_("Document is already cancelled"))
@@ -191,7 +204,7 @@ def cancel_student_attendance(name):
 @frappe.whitelist()
 def get_course_schedules():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Course Schedule", fields=["name", "title"],
             order_by="creation desc", limit_page_length=500,
         )
@@ -207,16 +220,17 @@ def get_course_schedule_details(course_schedule):
     unconditionally get written onto this record on save."""
     if not course_schedule:
         return None
-    return frappe.db.get_value(
+    details = frappe.db.get_value(
         "Course Schedule", course_schedule,
         ["student_group", "schedule_date", "course"], as_dict=True,
     )
+    return details
 
 
 @frappe.whitelist()
 def get_student_groups():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Group", fields=["name", "student_group_name"],
             order_by="student_group_name", limit_page_length=500,
         )

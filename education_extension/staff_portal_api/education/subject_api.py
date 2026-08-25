@@ -48,7 +48,7 @@ def get_subjects(
             ["description", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Course",
         fields=[
             "name",
@@ -312,7 +312,7 @@ def create_assessment_criteria(data):
 @frappe.whitelist()
 def get_departments():
     try:
-        return frappe.get_all("Department", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Department", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching departments: {str(e)}", "Subject API")
         return []
@@ -320,7 +320,7 @@ def get_departments():
 @frappe.whitelist()
 def get_topics():
     try:
-        return frappe.get_all("Topic", fields=["name", "topic_name"], order_by="topic_name", limit_page_length=500)
+        return frappe.get_list("Topic", fields=["name", "topic_name"], order_by="topic_name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching topics: {str(e)}", "Subject API")
         return []
@@ -328,7 +328,7 @@ def get_topics():
 @frappe.whitelist()
 def get_grading_scales():
     try:
-        return frappe.get_all("Grading Scale", fields=["name"], filters={"docstatus": 1}, order_by="name", limit_page_length=500)
+        return frappe.get_list("Grading Scale", fields=["name"], filters={"docstatus": 1}, order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching grading scales: {str(e)}", "Subject API")
         return []
@@ -336,7 +336,7 @@ def get_grading_scales():
 @frappe.whitelist()
 def get_assessment_criteria():
     try:
-        return frappe.get_all("Assessment Criteria", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Assessment Criteria", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching assessment criteria: {str(e)}", "Subject API")
         return []

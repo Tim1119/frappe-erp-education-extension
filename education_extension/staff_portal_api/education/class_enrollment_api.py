@@ -35,7 +35,7 @@ def get_class_enrollments(
             ["student_name", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Program Enrollment",
         fields=[
             "name",
@@ -244,7 +244,7 @@ def get_connections(class_enrollment):
 @frappe.whitelist()
 def get_students():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student", fields=["name", "student_name"],
             order_by="student_name", limit_page_length=500,
         )
@@ -256,7 +256,7 @@ def get_students():
 @frappe.whitelist()
 def get_programs():
     try:
-        return frappe.get_all("Program", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Program", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching programs: {str(e)}", "Class Enrollment API")
         return []
@@ -265,7 +265,7 @@ def get_programs():
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Year", fields=["name"], order_by="name desc", limit_page_length=500,
         )
     except Exception as e:
@@ -279,7 +279,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Term", fields=["name"], filters=filters,
             order_by="name", limit_page_length=500,
         )
@@ -291,7 +291,7 @@ def get_academic_terms(academic_year=None):
 @frappe.whitelist()
 def get_student_categories():
     try:
-        return frappe.get_all("Student Category", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Student Category", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching student categories: {str(e)}", "Class Enrollment API")
         return []
@@ -300,7 +300,7 @@ def get_student_categories():
 @frappe.whitelist()
 def get_student_batches():
     try:
-        return frappe.get_all("Student Batch Name", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Student Batch Name", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching student batches: {str(e)}", "Class Enrollment API")
         return []
@@ -309,7 +309,7 @@ def get_student_batches():
 @frappe.whitelist()
 def get_school_houses():
     try:
-        return frappe.get_all("School House", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("School House", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching school houses: {str(e)}", "Class Enrollment API")
         return []
@@ -318,7 +318,7 @@ def get_school_houses():
 @frappe.whitelist()
 def get_fee_schedules():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Fee Schedule",
             fields=["name", "academic_term", "student_category", "due_date", "total_amount"],
             order_by="name desc",

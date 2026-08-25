@@ -33,14 +33,14 @@ def list_docs(doctype, fields, page=1, page_size=20, search=None, search_fields=
     page, page_size = max(cint(page), 1), max(cint(page_size), 1)
     filters = {key: value for key, value in (filters or {}).items() if value not in (None, "")}
     or_filters = [[field, "like", f"%{search}%"] for field in (search_fields or ["name"])] if search else []
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         doctype, fields=fields, filters=filters, or_filters=or_filters,
         order_by=order_by, start=(page - 1) * page_size, page_length=page_size,
     )
     for row in rows:
         row["can_edit"] = row.get("docstatus", 0) == 0 and frappe.has_permission(doctype, "write", doc=row.name)
         row["can_delete"] = row.get("docstatus", 0) != 1 and frappe.has_permission(doctype, "delete", doc=row.name)
-    count = len(frappe.get_all(doctype, filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
+    count = len(frappe.get_list(doctype, filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
     return {"rows": rows, "count": count, "page": page, "page_size": page_size,
             "total_pages": (count + page_size - 1) // page_size}
 
@@ -108,7 +108,7 @@ def get_options(doctype, filters=None, fields=None):
     default_filters = {"Employee": {"status": "Active"}, "User": {"enabled": 1}}
     effective_filters = {**default_filters.get(doctype, {}), **(filters or {})}
     order_by = {"Employee": "employee_name", "User": "full_name", "Training Event": "event_name"}.get(doctype, "name")
-    return frappe.get_all(doctype, fields=fields or default_fields.get(doctype, ["name"]), filters=effective_filters, order_by=order_by, limit_page_length=500)
+    return frappe.get_list(doctype, fields=fields or default_fields.get(doctype, ["name"]), filters=effective_filters, order_by=order_by, limit_page_length=500)
 
 
 def employee_details(employee):

@@ -16,14 +16,14 @@ def get_designations(page=1, page_size=20, search=None, appraisal_template=None,
             limit_page_length=0,
         )
         filters["name"] = ["in", parent_names or [""]]
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Designation", fields=["name", "designation_name", "description", "appraisal_template"],
         filters=filters, or_filters=or_filters, order_by="designation_name asc",
         start=(page - 1) * page_size, page_length=page_size,
     )
     for row in rows:
         row["can_edit"] = frappe.has_permission("Designation", "write", doc=row.name)
-    total = len(frappe.get_all("Designation", filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
+    total = len(frappe.get_list("Designation", filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
     return {"rows": rows, "count": total, "page": page, "page_size": page_size,
             "total_pages": (total + page_size - 1) // page_size if page_size else 1}
 
@@ -99,7 +99,7 @@ def get_connections(designation):
 @frappe.whitelist()
 def get_appraisal_templates():
     try:
-        return frappe.get_all("Appraisal Template", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Appraisal Template", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching Appraisal Templates: {str(e)}", "Designation API")
         return []
@@ -108,7 +108,7 @@ def get_appraisal_templates():
 @frappe.whitelist()
 def get_skills():
     try:
-        return frappe.get_all("Skill", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Skill", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching Skills: {str(e)}", "Designation API")
         return []

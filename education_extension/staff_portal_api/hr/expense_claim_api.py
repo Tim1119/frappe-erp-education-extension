@@ -39,7 +39,7 @@ def get_expense_claims(page=1, page_size=20, search=None, employee=None, status=
         "total_amount_reimbursed", "grand_total", "docstatus",
     ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Expense Claim", fields=fields, filters=filters, or_filters=or_filters,
         order_by="posting_date desc,name desc", start=(page - 1) * page_size, page_length=page_size,
     )
@@ -47,7 +47,7 @@ def get_expense_claims(page=1, page_size=20, search=None, employee=None, status=
         r["can_edit"] = r.docstatus == 0 and frappe.has_permission("Expense Claim", "write", doc=r.name)
         r["can_delete"] = r.docstatus != 1 and frappe.has_permission("Expense Claim", "delete", doc=r.name)
 
-    total = len(frappe.get_all("Expense Claim", filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
+    total = len(frappe.get_list("Expense Claim", filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
     return {
         "rows": rows, "count": total, "page": page, "page_size": page_size,
         "total_pages": (total + page_size - 1) // page_size if page_size else 1,
@@ -186,7 +186,7 @@ def safe(fn):
 
 @frappe.whitelist()
 def get_employees():
-    return safe(lambda: frappe.get_all(
+    return safe(lambda: frappe.get_list(
         "Employee", fields=["name", "employee_name", "company", "department"],
         filters={"status": "Active"}, order_by="employee_name", limit_page_length=500,
     ))
@@ -194,14 +194,14 @@ def get_employees():
 
 @frappe.whitelist()
 def get_options(doctype):
-    return safe(lambda: frappe.get_all(doctype, fields=["name"], order_by="name", limit_page_length=500))
+    return safe(lambda: frappe.get_list(doctype, fields=["name"], order_by="name", limit_page_length=500))
 
 
 @frappe.whitelist()
 def get_departments(company=None):
     """Mirrors expense_claim.js's frm.set_query('department', {filters: {company}})."""
     filters = {"company": company} if company else {}
-    return safe(lambda: frappe.get_all("Department", fields=["name"], filters=filters, order_by="name", limit_page_length=500))
+    return safe(lambda: frappe.get_list("Department", fields=["name"], filters=filters, order_by="name", limit_page_length=500))
 
 
 @frappe.whitelist()
@@ -210,7 +210,7 @@ def get_tasks(project=None):
     real Desk behavior shows no options at all until a Project is chosen."""
     if not project:
         return []
-    return safe(lambda: frappe.get_all("Task", fields=["name", "subject"], filters={"project": project}, order_by="name", limit_page_length=500))
+    return safe(lambda: frappe.get_list("Task", fields=["name", "subject"], filters={"project": project}, order_by="name", limit_page_length=500))
 
 
 @frappe.whitelist()
@@ -253,14 +253,14 @@ def get_accounts(company, kind):
         {"account_type": "Payable", "report_type": "Balance Sheet"} if kind == "payable"
         else {"account_type": ["in", ["Tax", "Chargeable", "Income Account", "Expenses Included In Valuation"]]}
     )
-    return safe(lambda: frappe.get_all("Account", fields=["name"], filters=filters, order_by="name", limit_page_length=500))
+    return safe(lambda: frappe.get_list("Account", fields=["name"], filters=filters, order_by="name", limit_page_length=500))
 
 
 @frappe.whitelist()
 def get_cost_centers(company):
     if not company:
         return []
-    return safe(lambda: frappe.get_all("Cost Center", fields=["name"], filters={"company": company, "is_group": 0}, order_by="name", limit_page_length=500))
+    return safe(lambda: frappe.get_list("Cost Center", fields=["name"], filters={"company": company, "is_group": 0}, order_by="name", limit_page_length=500))
 
 
 @frappe.whitelist()
@@ -292,7 +292,7 @@ def get_advances(employee, company=None):
         if company_currency:
             filters["currency"] = company_currency
 
-    return safe(lambda: frappe.get_all(
+    return safe(lambda: frappe.get_list(
         "Employee Advance",
         fields=["name", "posting_date", "paid_amount", "claimed_amount", "return_amount", "advance_account"],
         filters=filters, order_by="posting_date desc", limit_page_length=500,

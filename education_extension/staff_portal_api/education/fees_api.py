@@ -47,7 +47,7 @@ def get_fees(
             ["student_name", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Fees",
         fields=[
             "name",
@@ -246,7 +246,7 @@ def cancel_fee(name):
 @frappe.whitelist()
 def get_students():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student", fields=["name", "student_name"],
             order_by="student_name", limit_page_length=500,
         )
@@ -258,7 +258,7 @@ def get_students():
 @frappe.whitelist()
 def get_program_enrollments():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Program Enrollment",
             fields=["name", "student", "student_name", "program"],
             order_by="creation desc", limit_page_length=500,
@@ -271,7 +271,7 @@ def get_program_enrollments():
 @frappe.whitelist()
 def get_fee_structures():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Fee Structure",
             fields=[
                 "name", "program", "academic_year", "academic_term",
@@ -288,7 +288,7 @@ def get_fee_structures():
 @frappe.whitelist()
 def get_student_categories():
     try:
-        return frappe.get_all("Student Category", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Student Category", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching student categories: {str(e)}", "Fees API")
         return []
@@ -297,7 +297,7 @@ def get_student_categories():
 @frappe.whitelist()
 def get_student_batches():
     try:
-        return frappe.get_all("Student Batch Name", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Student Batch Name", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching student batches: {str(e)}", "Fees API")
         return []
@@ -306,7 +306,7 @@ def get_student_batches():
 @frappe.whitelist()
 def get_fee_categories():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Fee Category", fields=["name", "item"],
             order_by="name", limit_page_length=500,
         )
@@ -318,7 +318,7 @@ def get_fee_categories():
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Year", fields=["name"], order_by="name desc", limit_page_length=500,
         )
     except Exception as e:
@@ -332,7 +332,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Term", fields=["name"], filters=filters,
             order_by="name", limit_page_length=500,
         )
@@ -344,7 +344,7 @@ def get_academic_terms(academic_year=None):
 @frappe.whitelist()
 def get_companies():
     try:
-        return frappe.get_all("Company", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Company", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching companies: {str(e)}", "Fees API")
         return []
@@ -355,7 +355,7 @@ def get_receivable_accounts(company):
     if not company:
         return []
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Account",
             fields=["name"],
             filters={
@@ -377,7 +377,7 @@ def get_income_accounts(company):
     if not company:
         return []
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Account",
             fields=["name"],
             filters={
@@ -398,7 +398,7 @@ def get_cost_centers(company):
     if not company:
         return []
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Cost Center",
             fields=["name"],
             filters={"company": company, "is_group": 0},
@@ -413,7 +413,7 @@ def get_cost_centers(company):
 @frappe.whitelist()
 def get_letter_heads():
     try:
-        return frappe.get_all("Letter Head", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Letter Head", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching letter heads: {str(e)}", "Fees API")
         return []
@@ -422,7 +422,7 @@ def get_letter_heads():
 @frappe.whitelist()
 def get_print_headings():
     try:
-        return frappe.get_all("Print Heading", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Print Heading", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching print headings: {str(e)}", "Fees API")
         return []

@@ -44,7 +44,7 @@ def get_topics(
             ["description", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Topic",
         fields=[
             "name",

@@ -35,7 +35,7 @@ def get_subject_schedules(
             ["title", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Course Schedule",
         fields=[
             "name",
@@ -184,7 +184,7 @@ def delete_subject_schedule(name):
 @frappe.whitelist()
 def get_student_groups():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Group",
             fields=[
                 "name", "student_group_name", "group_based_on",
@@ -200,7 +200,7 @@ def get_student_groups():
 @frappe.whitelist()
 def get_instructors():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Instructor", fields=["name", "instructor_name"],
             order_by="instructor_name", limit_page_length=500,
         )
@@ -212,7 +212,7 @@ def get_instructors():
 @frappe.whitelist()
 def get_courses():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Course", fields=["name", "course_name"],
             order_by="course_name", limit_page_length=500,
         )
@@ -240,7 +240,7 @@ def get_instructors_for_student_group(student_group):
         )
         if not assigned:
             return []
-        return frappe.get_all(
+        return frappe.get_list(
             "Instructor",
             filters={"name": ["in", assigned]},
             fields=["name", "instructor_name"],
@@ -277,7 +277,7 @@ def get_courses_for_program(program=None):
 @frappe.whitelist()
 def get_rooms():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Room", fields=["name", "room_name"],
             order_by="room_name", limit_page_length=500,
         )

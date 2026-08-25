@@ -20,7 +20,7 @@ def expose(namespace, *args, **kwargs):
         filters = {"is_group": 0}
         if company:
             filters["company"] = company
-        return frappe.get_all("Warehouse", fields=["name"], filters=filters,
+        return frappe.get_list("Warehouse", fields=["name"], filters=filters,
             order_by="name", limit_page_length=500)
 
     namespace["get_default_company"] = get_default_company

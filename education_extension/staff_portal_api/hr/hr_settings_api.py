@@ -41,23 +41,23 @@ def _safe(fn):
 
 @frappe.whitelist()
 def get_roles():
-    return _safe(lambda: frappe.get_all("Role", fields=["name"], order_by="name", limit_page_length=500))
+    return _safe(lambda: frappe.get_list("Role", fields=["name"], order_by="name", limit_page_length=500))
 
 
 @frappe.whitelist()
 def get_email_templates():
-    return _safe(lambda: frappe.get_all("Email Template", fields=["name", "subject"], order_by="name", limit_page_length=500))
+    return _safe(lambda: frappe.get_list("Email Template", fields=["name", "subject"], order_by="name", limit_page_length=500))
 
 
 @frappe.whitelist()
 def get_web_forms():
-    return _safe(lambda: frappe.get_all("Web Form", fields=["name", "title"], order_by="title", limit_page_length=500))
+    return _safe(lambda: frappe.get_list("Web Form", fields=["name", "title"], order_by="title", limit_page_length=500))
 
 
 @frappe.whitelist()
 def get_outgoing_email_accounts():
     """Matches hr_settings.js sender and hiring_sender filters."""
-    return _safe(lambda: frappe.get_all("Email Account", fields=["name", "email_id"], filters={"enable_outgoing": 1}, order_by="name", limit_page_length=500))
+    return _safe(lambda: frappe.get_list("Email Account", fields=["name", "email_id"], filters={"enable_outgoing": 1}, order_by="name", limit_page_length=500))
 
 
 @frappe.whitelist()

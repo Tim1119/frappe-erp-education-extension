@@ -30,4 +30,4 @@ def get_single(name):
 @frappe.whitelist()
 @guarded("Daily Work Summary groups", list)
 def get_groups():
-    return frappe.get_all("Daily Work Summary Group", fields=["name"], order_by="name", limit_page_length=500)
+    return frappe.get_list("Daily Work Summary Group", fields=["name"], order_by="name", limit_page_length=500)

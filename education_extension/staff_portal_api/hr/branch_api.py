@@ -9,7 +9,7 @@ from frappe.utils import cint
 def get_branches(page=1, page_size=20, search=None):
     page, page_size = cint(page), cint(page_size)
     filters = [["Branch", "branch", "like", f"%{search}%"]] if search else []
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Branch", fields=["name", "branch"], filters=filters,
         order_by="branch asc", start=(page - 1) * page_size, page_length=page_size,
     )

@@ -6,7 +6,7 @@ from education_extension.staff_portal_api.recruitment._utils import guarded, par
 @guarded("Shift Assignment Tool employees")
 def get_employees(company, branch=None, department=None, designation=None, grade=None, employment_type=None):
     filters={k:v for k,v in {"company":company,"branch":branch,"department":department,"designation":designation,"grade":grade,"employment_type":employment_type,"status":"Active"}.items() if v}
-    return frappe.get_all("Employee",fields=["name","employee_name","branch","department","designation","default_shift"],filters=filters,order_by="employee_name",limit_page_length=500)
+    return frappe.get_list("Employee",fields=["name","employee_name","branch","department","designation","default_shift"],filters=filters,order_by="employee_name",limit_page_length=500)
 
 @frappe.whitelist()
 @guarded("Shift Assignment Tool assign")
@@ -31,7 +31,7 @@ def get_shift_requests(company=None,shift_type=None,approver=None,from_date=None
         if v: filters[k]=v
     if from_date: filters["to_date"]=[">=",from_date]
     if to_date: filters["from_date"]=["<=",to_date]
-    return frappe.get_all("Shift Request",fields=["name","employee","employee_name","shift_type","from_date","to_date"],filters=filters,limit_page_length=500)
+    return frappe.get_list("Shift Request",fields=["name","employee","employee_name","shift_type","from_date","to_date"],filters=filters,limit_page_length=500)
 
 @frappe.whitelist()
 @guarded("Shift Assignment Tool process requests")

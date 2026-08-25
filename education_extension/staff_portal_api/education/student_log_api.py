@@ -39,7 +39,7 @@ def get_student_logs(
             ["log", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Student Log",
         fields=[
             "name",
@@ -139,7 +139,7 @@ def delete_student_log(name):
 @frappe.whitelist()
 def get_students():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student",
             fields=["name", "student_name"],
             order_by="student_name",
@@ -153,7 +153,7 @@ def get_students():
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Year",
             fields=["name"],
             order_by="name desc",
@@ -170,7 +170,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Term",
             fields=["name"],
             filters=filters,
@@ -185,7 +185,7 @@ def get_academic_terms(academic_year=None):
 @frappe.whitelist()
 def get_programs():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Program",
             fields=["name"],
             order_by="name",
@@ -199,7 +199,7 @@ def get_programs():
 @frappe.whitelist()
 def get_student_batches():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Batch Name",
             fields=["name"],
             order_by="name",

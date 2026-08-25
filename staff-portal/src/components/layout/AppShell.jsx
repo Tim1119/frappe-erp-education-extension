@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import PageBreadcrumbs from "./PageBreadcrumbs";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import EducationPermissionBoundary from "@/components/guards/EducationPermissionBoundary";
 
 export default function AppShell() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -38,7 +39,9 @@ export default function AppShell() {
             <div className="no-print">
               <PageBreadcrumbs />
             </div>
-            <Outlet />
+            <EducationPermissionBoundary>
+              <Outlet />
+            </EducationPermissionBoundary>
           </main>
         </div>
       </div>

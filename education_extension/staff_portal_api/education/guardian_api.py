@@ -23,7 +23,7 @@ def get_guardians(
             ["mobile_number", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Guardian",
         fields=[
             "name",
@@ -229,7 +229,7 @@ def delete_guardian(name):
 def get_students():
     """Get all students for dropdown"""
     try:
-        students = frappe.get_all(
+        students = frappe.get_list(
             "Student",
             fields=["name", "student_name"],
             order_by="student_name",

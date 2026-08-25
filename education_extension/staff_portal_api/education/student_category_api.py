@@ -19,7 +19,7 @@ def get_student_categories(page=1, page_size=20, search=None):
             ["category", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Student Category",
         fields=["name", "category"],
         filters=filters,

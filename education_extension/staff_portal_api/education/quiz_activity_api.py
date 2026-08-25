@@ -48,7 +48,7 @@ def get_quiz_activities(
             ["quiz", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Quiz Activity",
         fields=[
             "name", "enrollment", "student", "course", "quiz",
@@ -95,7 +95,7 @@ def delete_quiz_activity(name):
 @frappe.whitelist()
 def get_students():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student", fields=["name", "student_name"],
             order_by="student_name", limit_page_length=500,
         )
@@ -107,7 +107,7 @@ def get_students():
 @frappe.whitelist()
 def get_courses():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Course", fields=["name", "course_name"],
             order_by="course_name", limit_page_length=500,
         )
@@ -119,7 +119,7 @@ def get_courses():
 @frappe.whitelist()
 def get_quizzes():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Quiz", fields=["name", "title"],
             order_by="title", limit_page_length=500,
         )

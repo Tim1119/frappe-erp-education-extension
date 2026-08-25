@@ -37,7 +37,7 @@ def get_fee_structures(
             ["program", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Fee Structure",
         fields=[
             "name",
@@ -219,7 +219,7 @@ def cancel_fee_structure(name):
 @frappe.whitelist()
 def get_programs():
     try:
-        return frappe.get_all("Program", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Program", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching programs: {str(e)}", "Fee Structure API")
         return []
@@ -227,7 +227,7 @@ def get_programs():
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all("Academic Year", fields=["name"], order_by="name desc", limit_page_length=500)
+        return frappe.get_list("Academic Year", fields=["name"], order_by="name desc", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching academic years: {str(e)}", "Fee Structure API")
         return []
@@ -238,7 +238,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all("Academic Term", fields=["name"], filters=filters, order_by="name", limit_page_length=500)
+        return frappe.get_list("Academic Term", fields=["name"], filters=filters, order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching academic terms: {str(e)}", "Fee Structure API")
         return []
@@ -246,7 +246,7 @@ def get_academic_terms(academic_year=None):
 @frappe.whitelist()
 def get_student_categories():
     try:
-        return frappe.get_all("Student Category", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Student Category", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching student categories: {str(e)}", "Fee Structure API")
         return []
@@ -254,7 +254,7 @@ def get_student_categories():
 @frappe.whitelist()
 def get_fee_categories():
     try:
-        return frappe.get_all("Fee Category", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Fee Category", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching fee categories: {str(e)}", "Fee Structure API")
         return []
@@ -262,7 +262,7 @@ def get_fee_categories():
 @frappe.whitelist()
 def get_companies():
     try:
-        return frappe.get_all("Company", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Company", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching companies: {str(e)}", "Fee Structure API")
         return []
@@ -272,7 +272,7 @@ def get_receivable_accounts(company):
     if not company:
         return []
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Account",
             fields=["name"],
             filters={
@@ -293,7 +293,7 @@ def get_cost_centers(company):
     if not company:
         return []
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Cost Center",
             fields=["name"],
             filters={

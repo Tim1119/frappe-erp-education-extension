@@ -33,7 +33,7 @@ def get_subject_enrollments(
             ["course", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Course Enrollment",
         fields=[
             "name",
@@ -125,7 +125,7 @@ def delete_subject_enrollment(name):
 @frappe.whitelist()
 def get_students():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student", fields=["name", "student_name"],
             order_by="student_name", limit_page_length=500,
         )
@@ -137,7 +137,7 @@ def get_students():
 @frappe.whitelist()
 def get_courses():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Course", fields=["name", "course_name"],
             order_by="course_name", limit_page_length=500,
         )
@@ -149,7 +149,7 @@ def get_courses():
 @frappe.whitelist()
 def get_program_enrollments():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Program Enrollment", fields=["name", "student_name", "program"],
             order_by="creation desc", limit_page_length=500,
         )

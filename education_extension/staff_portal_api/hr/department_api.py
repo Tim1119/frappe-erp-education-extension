@@ -12,14 +12,14 @@ def get_departments(page=1, page_size=20, search=None, company=None, parent_depa
     if parent_department:
         filters["parent_department"] = parent_department
     or_filters = [["name", "like", f"%{search}%"], ["department_name", "like", f"%{search}%"]] if search else []
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Department", fields=["name", "department_name", "parent_department", "company", "is_group", "disabled"],
         filters=filters, or_filters=or_filters, order_by="department_name asc",
         start=(page - 1) * page_size, page_length=page_size,
     )
     for row in rows:
         row["can_edit"] = bool(row.parent_department) and frappe.has_permission("Department", "write", doc=row.name)
-    total = len(frappe.get_all(
+    total = len(frappe.get_list(
         "Department", filters=filters, or_filters=or_filters,
         pluck="name", limit_page_length=0,
     ))
@@ -89,7 +89,7 @@ def delete_department(name):
 @frappe.whitelist()
 def get_companies():
     try:
-        return frappe.get_all("Company", fields=["name", "company_name"], order_by="company_name", limit_page_length=500)
+        return frappe.get_list("Company", fields=["name", "company_name"], order_by="company_name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching companies: {str(e)}", "Department API")
         return []
@@ -99,7 +99,7 @@ def get_companies():
 def get_parent_departments():
     """Matches department.js: parent_department must be a group node."""
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Department", fields=["name", "department_name"], filters={"is_group": 1},
             order_by="department_name", limit_page_length=500,
         )

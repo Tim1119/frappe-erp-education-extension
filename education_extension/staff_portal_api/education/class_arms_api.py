@@ -3,6 +3,10 @@ import json
 from frappe import _
 from frappe.utils import cint
 
+from education_extension.staff_portal_api.permissions import (
+    ensure_doctype_permission,
+)
+
 @frappe.whitelist()
 def get_class_arms(
     page=1,
@@ -17,6 +21,8 @@ def get_class_arms(
     page = cint(page)
     page_size = cint(page_size)
 
+    ensure_doctype_permission("Student Group", "read")
+
     filters = {}
     or_filters = []
 
@@ -29,7 +35,6 @@ def get_class_arms(
     if course:
         filters["course"] = course
     if instructor:
-        # Get Student Groups where this instructor is assigned
         groups_with_instructor = frappe.get_all(
             "Student Group Instructor",
             filters={"instructor": instructor},
@@ -49,7 +54,7 @@ def get_class_arms(
             ["student_group_name", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Student Group",
         fields=[
             "name",
@@ -105,6 +110,7 @@ def get_class_arm(name):
         frappe.throw(_("Class Arm name is required"))
 
     doc = frappe.get_doc("Student Group", name)
+    ensure_doctype_permission("Student Group", "read", doc)
     result = doc.as_dict()
     
     # Ensure child tables are properly formatted
@@ -148,6 +154,7 @@ def get_class_arm_connections(student_group):
 
 @frappe.whitelist()
 def create_class_arm(data):
+    ensure_doctype_permission("Student Group", "create")
     if isinstance(data, str):
         data = json.loads(data)
 
@@ -199,6 +206,7 @@ def update_class_arm(name, data):
         data = json.loads(data)
 
     doc = frappe.get_doc("Student Group", name)
+    ensure_doctype_permission("Student Group", "write", doc)
     
     # Update fields
     if "student_group_name" in data:
@@ -254,6 +262,8 @@ def delete_class_arm(name):
     if not name:
         frappe.throw(_("Class Arm name is required"))
 
+    doc = frappe.get_doc("Student Group", name)
+    ensure_doctype_permission("Student Group", "delete", doc)
     frappe.delete_doc("Student Group", name)
     frappe.db.commit()
 
@@ -263,18 +273,18 @@ def delete_class_arm(name):
 def get_class_arm_options():
     """Get all options for dropdowns"""
     try:
-        programs = frappe.get_all("Program", fields=["name"], order_by="name", limit_page_length=500)
-        academic_years = frappe.get_all("Academic Year", fields=["name"], order_by="name desc", limit_page_length=500)
-        academic_terms = frappe.get_all("Academic Term", fields=["name"], order_by="name", limit_page_length=500)
-        courses = frappe.get_all("Course", fields=["name"], order_by="name", limit_page_length=500)
-        batches = frappe.get_all("Student Batch Name", fields=["name"], order_by="name", limit_page_length=500)
-        student_categories = frappe.get_all("Student Category", fields=["name"], order_by="name", limit_page_length=500)
+        programs = frappe.get_list("Program", fields=["name"], order_by="name", limit_page_length=500)
+        academic_years = frappe.get_list("Academic Year", fields=["name"], order_by="name desc", limit_page_length=500)
+        academic_terms = frappe.get_list("Academic Term", fields=["name"], order_by="name", limit_page_length=500)
+        courses = frappe.get_list("Course", fields=["name"], order_by="name", limit_page_length=500)
+        batches = frappe.get_list("Student Batch Name", fields=["name"], order_by="name", limit_page_length=500)
+        student_categories = frappe.get_list("Student Category", fields=["name"], order_by="name", limit_page_length=500)
         
         # Get students for dropdown
-        students = frappe.get_all("Student", fields=["name", "student_name"], order_by="student_name", limit_page_length=500)
+        students = frappe.get_list("Student", fields=["name", "student_name"], order_by="student_name", limit_page_length=500)
         
         # Get instructors for dropdown
-        instructors = frappe.get_all("Instructor", fields=["name", "instructor_name"], order_by="instructor_name", limit_page_length=500)
+        instructors = frappe.get_list("Instructor", fields=["name", "instructor_name"], order_by="instructor_name", limit_page_length=500)
         
         return {
             "programs": programs,
@@ -303,7 +313,7 @@ def get_class_arm_options():
 def get_students():
     """Get all students for dropdown"""
     try:
-        return frappe.get_all("Student", fields=["name", "student_name"], order_by="student_name", limit_page_length=500)
+        return frappe.get_list("Student", fields=["name", "student_name"], order_by="student_name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching students: {str(e)}", "Class Arms API")
         return []
@@ -312,7 +322,7 @@ def get_students():
 def get_instructors():
     """Get all instructors for dropdown"""
     try:
-        return frappe.get_all("Instructor", fields=["name", "instructor_name"], order_by="instructor_name", limit_page_length=500)
+        return frappe.get_list("Instructor", fields=["name", "instructor_name"], order_by="instructor_name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching instructors: {str(e)}", "Class Arms API")
         return []
@@ -321,7 +331,7 @@ def get_instructors():
 def get_programs():
     """Get all programs for dropdown"""
     try:
-        return frappe.get_all("Program", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Program", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching programs: {str(e)}", "Class Arms API")
         return []
@@ -330,7 +340,7 @@ def get_programs():
 def get_academic_years():
     """Get all academic years for dropdown"""
     try:
-        return frappe.get_all("Academic Year", fields=["name"], order_by="name desc", limit_page_length=500)
+        return frappe.get_list("Academic Year", fields=["name"], order_by="name desc", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching academic years: {str(e)}", "Class Arms API")
         return []
@@ -342,7 +352,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all("Academic Term", fields=["name"], filters=filters, order_by="name", limit_page_length=500)
+        return frappe.get_list("Academic Term", fields=["name"], filters=filters, order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching academic terms: {str(e)}", "Class Arms API")
         return []
@@ -351,7 +361,7 @@ def get_academic_terms(academic_year=None):
 def get_courses():
     """Get all courses for dropdown"""
     try:
-        return frappe.get_all("Course", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Course", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching courses: {str(e)}", "Class Arms API")
         return []
@@ -360,7 +370,7 @@ def get_courses():
 def get_batches():
     """Get all batches for dropdown"""
     try:
-        return frappe.get_all("Student Batch Name", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Student Batch Name", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching batches: {str(e)}", "Class Arms API")
         return []
@@ -369,7 +379,7 @@ def get_batches():
 def get_student_categories():
     """Get all student categories for dropdown"""
     try:
-        return frappe.get_all("Student Category", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Student Category", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching student categories: {str(e)}", "Class Arms API")
         return []

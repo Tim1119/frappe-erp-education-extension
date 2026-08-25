@@ -1,55 +1,135 @@
 """
-Staff Portal API — Portal Context
-==================================
-
-Place this file at:
-  education_extension/education_extension/staff_portal_api/portal_api.py
-
-Provides the ``get_portal_context`` endpoint that returns the logged-in
-user's role (admin vs teacher), their linked Instructor record (if any),
-and the school branding from Education Settings.
+Staff Portal API - Portal Context
 """
+
+import json
 
 import frappe
 from frappe import _
 
+from education_extension.staff_portal_api.permissions import (
+    get_doctype_permissions,
+)
+
+
+PORTAL_DOCTYPES = [
+    "Student",
+    "Student Group",
+    "Student Attendance",
+    "Assessment Plan",
+    "Assessment Result",
+    "Assessment Group",
+    "Assessment Criteria",
+    "Grading Scale",
+    "School Term Result",
+    "Course Schedule",
+    "Course",
+    "Topic",
+    "Program",
+    "Program Enrollment",
+    "Course Enrollment",
+    "Instructor",
+    "Guardian",
+    "Article",
+    "Video",
+    "Quiz",
+    "Subject Activity",
+    "Quiz Activity",
+    "Student Leave Application",
+    "Academic Year",
+    "Education Settings",
+    "Fees",
+    "Fee Structure",
+    "Fee Schedule",
+    "Sales Invoice",
+    "Employee",
+    "Department",
+    "Designation",
+    "Leave Application",
+    "Employee Checkin",
+    "Expense Claim",
+    "Company",
+    "Branch",
+    "Employee Group",
+    "Employee Grade",
+    "HR Settings",
+    "Daily Work Summary Group",
+    "Daily Work Summary",
+    "Employee Onboarding Template",
+    "Employee Onboarding",
+    "Employee Skill Map",
+    "Grievance Type",
+    "Employee Grievance",
+    "Training Program",
+    "Training Event",
+    "Training Feedback",
+    "Training Result",
+    "Staffing Plan",
+    "Job Requisition",
+    "Job Opening",
+    "Job Applicant",
+    "Job Offer",
+    "Employee Referral",
+    "Interview Type",
+    "Interview Round",
+    "Interview",
+    "Interview Feedback",
+    "Appointment Letter Template",
+    "Appointment Letter",
+    "Compensatory Leave Request",
+    "Leave Allocation",
+    "Leave Policy Assignment",
+    "Leave Encashment",
+    "Leave Type",
+    "Leave Period",
+    "Leave Policy",
+    "Leave Block List",
+    "Holiday List",
+    "Appraisal Template",
+    "KRA",
+    "Employee Feedback Criteria",
+    "Appraisal",
+    "Appraisal Cycle",
+    "Employee Performance Feedback",
+    "Goal",
+    "Employee Promotion",
+    "Energy Point Rule",
+    "Energy Point Settings",
+    "Energy Point Log",
+    "Attendance",
+    "Attendance Request",
+    "Shift Type",
+    "Shift Location",
+    "Shift Assignment",
+    "Shift Schedule",
+    "Shift Schedule Assignment",
+    "Shift Request",
+    "Timesheet",
+    "Activity Type",
+    "Expense Claim Type",
+    "Employee Advance",
+    "Travel Request",
+    "Purpose of Travel",
+    "Additional Salary",
+    "Vehicle",
+    "Driver",
+    "Vehicle Service Item",
+    "Vehicle Log",
+]
+
 
 @frappe.whitelist()
 def get_portal_context():
-    """
-    Returns a dict consumed by the staff portal frontend on login:
-
-      {
-        "role": "admin" | "teacher",
-        "instructor": "INS-0001" | None,
-        "instructor_name": "Mr. Adewale" | None,
-        "school_name": "Brightwood International School",
-        "school_abbreviation": "BIS",
-        "school_logo": "/files/logo.png" | None,
-      }
-
-    Role logic:
-      - If the user has the "Education Manager" role → admin
-      - Else if the user has an Employee linked to an Instructor → teacher
-      - Else → teacher (safe default; backend permissions still apply)
-    """
-
     user = frappe.session.user
 
     if user == "Guest":
         frappe.throw(_("Not logged in"), frappe.AuthenticationError)
 
-    # ── Determine role ────────────────────────────────────────────────
-
     user_roles = frappe.get_roles(user)
-    is_admin = "Education Manager" in user_roles
-
-    # ── Find linked Instructor ────────────────────────────────────────
 
     instructor = None
     instructor_name = None
 
-    # User → Employee (via user_id field on Employee)
     employee = frappe.db.get_value(
         "Employee",
         {"user_id": user, "status": "Active"},
@@ -57,7 +137,6 @@ def get_portal_context():
     )
 
     if employee:
-        # Employee → Instructor (via employee field on Instructor)
         instr = frappe.db.get_value(
             "Instructor",
             {"employee": employee},
@@ -68,14 +147,33 @@ def get_portal_context():
             instructor = instr.name
             instructor_name = instr.instructor_name
 
-    # ── School branding ─────────────────────────────────────────────────
-    # Full name, abbreviation, and logo live on three different doctypes,
-    # not one doctype with a fallback:
-    #   - school_name: Company.company_name, via School Settings' `school`
-    #     Link (School Settings itself has no name field of its own)
-    #   - school_abbreviation: Education Settings.school_college_name_abbreviation
-    #   - school_logo: Education Settings.school_college_logo (School Settings
-    #     has no logo field -- only signature/stamp Attach Image fields)
+    # In portal_api.py, change the role detection to:
+
+    if "Education Manager" in user_roles:
+        portal_role = "admin"
+    elif "Accounts User" in user_roles or "Sales User" in user_roles:
+        portal_role = "bursar"
+    elif "Teacher" in user_roles or instructor:
+        portal_role = "teacher"
+    else:
+        frappe.throw(
+            _("You do not have access to the Staff Portal"),
+            frappe.PermissionError,
+        )
+
+    permissions = {}
+    for doctype in PORTAL_DOCTYPES:
+        try:
+            permissions[doctype] = get_doctype_permissions(doctype)
+        except Exception:
+            permissions[doctype] = {
+                "read": False,
+                "write": False,
+                "create": False,
+                "delete": False,
+                "submit": False,
+                "cancel": False,
+            }
 
     school_name = ""
     school_abbreviation = ""
@@ -91,13 +189,18 @@ def get_portal_context():
 
     try:
         settings = frappe.get_single("Education Settings")
-        school_abbreviation = getattr(settings, "school_college_name_abbreviation", "") or ""
+        school_abbreviation = (
+            getattr(settings, "school_college_name_abbreviation", "") or ""
+        )
         school_logo = getattr(settings, "school_college_logo", None)
     except Exception:
         pass
 
     return {
-        "role": "admin" if is_admin else "teacher",
+        "role": portal_role,
+        "frappe_roles": user_roles,
+        "permissions": permissions,
+        "employee": employee,
         "instructor": instructor,
         "instructor_name": instructor_name,
         "school_name": school_name or "School Portal",
@@ -108,9 +211,11 @@ def get_portal_context():
 
 @frappe.whitelist()
 def get_quick_entry_fields(doctype):
-    """Return the minimal set of fields needed to quick-create a record."""
     if not doctype:
         return []
+
+    if not frappe.has_permission(doctype, ptype="create"):
+        frappe.throw(_("Not permitted"), frappe.PermissionError)
 
     meta = frappe.get_meta(doctype)
     skip_types = {
@@ -150,17 +255,22 @@ def get_quick_entry_fields(doctype):
 
 @frappe.whitelist()
 def quick_create_document(doctype, data):
-    """Create a document with the supplied minimal quick-entry fields."""
-    import json
+    if not doctype:
+        frappe.throw(_("DocType is required"))
+
+    if not frappe.has_permission(doctype, ptype="create"):
+        frappe.throw(_("Not permitted"), frappe.PermissionError)
 
     if isinstance(data, str):
         data = json.loads(data)
 
     doc = frappe.new_doc(doctype)
+
     for key, value in data.items():
         if hasattr(doc, key):
             doc.set(key, value)
 
     doc.insert()
     frappe.db.commit()
+
     return {"name": doc.name}

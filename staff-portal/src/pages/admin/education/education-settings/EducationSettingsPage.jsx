@@ -16,6 +16,7 @@ import {
   getAcademicTerms,
 } from "@/services/education/educationSettingsService";
 import { getErrorMessage } from "@/utils/errors";
+import { useAuth } from "@/context/AuthContext";
 
 const INSTRUCTOR_NAMING_OPTIONS = ["Full Name", "Naming Series", "Employee Number"];
 
@@ -60,6 +61,8 @@ function Check({ label, description, checked, onChange }) {
 }
 
 export default function EducationSettingsPage() {
+  const { can } = useAuth();
+  const canEdit = can("Education Settings", "write");
   const [form, setForm] = useState(EMPTY);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -152,6 +155,7 @@ export default function EducationSettingsPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    if (!canEdit) return;
     setSaving(true);
     try {
       await updateEducationSettings(form);
@@ -175,7 +179,14 @@ export default function EducationSettingsPage() {
     <>
       <PageHeader eyebrow="Settings" title="Education Settings" />
 
+      {!canEdit && (
+        <div className="mb-4 rounded-md border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+          You have read-only access to Education Settings.
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-4">
+        <fieldset disabled={!canEdit} className="space-y-4">
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-base">Academic Defaults</CardTitle>
@@ -401,11 +412,12 @@ export default function EducationSettingsPage() {
         </Card>
 
         <div className="flex justify-end">
-          <Button type="submit" disabled={saving}>
+          {canEdit && <Button type="submit" disabled={saving}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save
-          </Button>
+          </Button>}
         </div>
+        </fieldset>
       </form>
     </>
   );

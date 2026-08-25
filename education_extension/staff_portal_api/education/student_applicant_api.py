@@ -41,7 +41,7 @@ def get_student_applicants(
             ["title", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Student Applicant",
         fields=[
             "name",
@@ -282,7 +282,7 @@ def delete_student_applicant(name):
 def get_programs():
     """Get all programs for dropdown"""
     try:
-        return frappe.get_all("Program", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Program", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching programs: {str(e)}", "Student Applicant API")
         return []
@@ -291,7 +291,7 @@ def get_programs():
 def get_academic_years():
     """Get all academic years for dropdown"""
     try:
-        return frappe.get_all("Academic Year", fields=["name"], order_by="name desc", limit_page_length=500)
+        return frappe.get_list("Academic Year", fields=["name"], order_by="name desc", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching academic years: {str(e)}", "Student Applicant API")
         return []
@@ -303,7 +303,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all("Academic Term", fields=["name"], filters=filters, order_by="name", limit_page_length=500)
+        return frappe.get_list("Academic Term", fields=["name"], filters=filters, order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching academic terms: {str(e)}", "Student Applicant API")
         return []
@@ -312,7 +312,7 @@ def get_academic_terms(academic_year=None):
 def get_genders():
     """Get all genders for dropdown"""
     try:
-        return frappe.get_all("Gender", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Gender", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching genders: {str(e)}", "Student Applicant API")
         return []
@@ -321,7 +321,7 @@ def get_genders():
 def get_student_categories():
     """Get all student categories for dropdown"""
     try:
-        return frappe.get_all("Student Category", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Student Category", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching student categories: {str(e)}", "Student Applicant API")
         return []
@@ -330,7 +330,7 @@ def get_student_categories():
 def get_guardians():
     """Get all guardians for dropdown"""
     try:
-        return frappe.get_all("Guardian", fields=["name", "guardian_name"], order_by="guardian_name", limit_page_length=500)
+        return frappe.get_list("Guardian", fields=["name", "guardian_name"], order_by="guardian_name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching guardians: {str(e)}", "Student Applicant API")
         return []

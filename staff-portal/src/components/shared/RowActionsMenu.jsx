@@ -7,6 +7,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  requiredPermissionForActionText,
+  useEducationPermissionSurface,
+} from "@/components/guards/EducationPermissionBoundary";
 
 /**
  * Row-level actions dropdown for list/table pages.
@@ -22,6 +26,9 @@ import {
  *   Additional menu items rendered between Edit and the delete separator.
  */
 export default function RowActionsMenu({ onView, onEdit, onDelete, extra = [] }) {
+  const surface = useEducationPermissionSurface();
+  const showEdit = onEdit && (!surface || surface.permissions.write);
+  const showDelete = onDelete && (!surface || surface.permissions.delete);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -40,12 +47,15 @@ export default function RowActionsMenu({ onView, onEdit, onDelete, extra = [] })
             <Eye className="mr-2 h-4 w-4" /> View
           </DropdownMenuItem>
         )}
-        {onEdit && (
+        {showEdit && (
           <DropdownMenuItem onClick={onEdit}>
             <Pencil className="mr-2 h-4 w-4" /> Edit
           </DropdownMenuItem>
         )}
-        {extra.map((item, i) => {
+        {extra.filter((item) => {
+          const permission = requiredPermissionForActionText(item.label, surface?.mode);
+          return !permission || !surface || surface.permissions[permission];
+        }).map((item, i) => {
           const Icon = item.icon;
           return (
             <DropdownMenuItem key={i} onClick={item.onClick}>
@@ -54,7 +64,7 @@ export default function RowActionsMenu({ onView, onEdit, onDelete, extra = [] })
             </DropdownMenuItem>
           );
         })}
-        {onDelete && (
+        {showDelete && (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem

@@ -47,7 +47,7 @@ def get_classes(
             ["program_abbreviation", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Program",
         fields=[
             "name",
@@ -173,7 +173,7 @@ def delete_class(name):
 @frappe.whitelist()
 def get_departments():
     try:
-        return frappe.get_all("Department", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Department", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching departments: {str(e)}", "Class API")
         return []
@@ -181,7 +181,7 @@ def get_departments():
 @frappe.whitelist()
 def get_courses():
     try:
-        return frappe.get_all("Course", fields=["name", "course_name"], order_by="course_name", limit_page_length=500)
+        return frappe.get_list("Course", fields=["name", "course_name"], order_by="course_name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching courses: {str(e)}", "Class API")
         return []
@@ -189,7 +189,7 @@ def get_courses():
 @frappe.whitelist()
 def get_programs():
     try:
-        return frappe.get_all("Program", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Program", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching programs: {str(e)}", "Class API")
         return []

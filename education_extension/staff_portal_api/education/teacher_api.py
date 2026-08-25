@@ -3,6 +3,69 @@ import json
 from frappe import _
 from frappe.utils import cint
 
+# @frappe.whitelist()
+# def get_teachers(
+#     page=1,
+#     page_size=20,
+#     search=None,
+#     status=None,
+#     department=None,
+# ):
+#     page = cint(page)
+#     page_size = cint(page_size)
+
+#     filters = {}
+
+#     if status:
+#         filters["status"] = status
+
+#     if department:
+#         filters["department"] = department
+
+#     or_filters = []
+
+#     if search:
+#         or_filters = [
+#             ["name", "like", f"%{search}%"],
+#             ["instructor_name", "like", f"%{search}%"],
+#             ["employee", "like", f"%{search}%"],
+#         ]
+
+#     rows = frappe.get_list(
+#         "Instructor",
+#         fields=[
+#             "name",
+#             "instructor_name",
+#             "employee",
+#             "department",
+#             "status",
+#             "gender",
+#             "image",
+#         ],
+#         filters=filters,
+#         or_filters=or_filters,
+#         order_by="modified desc",
+#         start=(page - 1) * page_size,
+#         page_length=page_size,
+#     )
+
+#     total = frappe.db.count(
+#         "Instructor",
+#         filters=filters,
+#     )
+
+#     return {
+#         "rows": rows,
+#         "count": total,
+#         "page": page,
+#         "page_size": page_size,
+#         "total_pages": (
+#             (total + page_size - 1) // page_size
+#             if page_size else 1
+#         ),
+#     }
+
+
 @frappe.whitelist()
 def get_teachers(
     page=1,
@@ -18,12 +81,10 @@ def get_teachers(
 
     if status:
         filters["status"] = status
-
     if department:
         filters["department"] = department
 
     or_filters = []
-
     if search:
         or_filters = [
             ["name", "like", f"%{search}%"],
@@ -31,16 +92,11 @@ def get_teachers(
             ["employee", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Instructor",
         fields=[
-            "name",
-            "instructor_name",
-            "employee",
-            "department",
-            "status",
-            "gender",
-            "image",
+            "name", "instructor_name", "employee",
+            "department", "status", "gender", "image",
         ],
         filters=filters,
         or_filters=or_filters,
@@ -49,22 +105,17 @@ def get_teachers(
         page_length=page_size,
     )
 
-    total = frappe.db.count(
-        "Instructor",
-        filters=filters,
-    )
+    total = frappe.db.count("Instructor", filters=filters)
 
     return {
         "rows": rows,
         "count": total,
         "page": page,
         "page_size": page_size,
-        "total_pages": (
-            (total + page_size - 1) // page_size
-            if page_size else 1
-        ),
+        "total_pages": (total + page_size - 1) // page_size if page_size else 1,
     }
-
+    
+    
 @frappe.whitelist()
 def get_teacher(name):
     if not name:
@@ -182,7 +233,7 @@ def delete_teacher(name):
 def get_departments():
     """Get all departments for dropdown"""
     try:
-        departments = frappe.get_all(
+        departments = frappe.get_list(
             "Department",
             fields=["name"],
             order_by="name",
@@ -197,7 +248,7 @@ def get_departments():
 def get_employees():
     """Get all employees for dropdown"""
     try:
-        employees = frappe.get_all(
+        employees = frappe.get_list(
             "Employee",
             fields=["name", "employee_name"],
             order_by="employee_name",
@@ -212,7 +263,7 @@ def get_employees():
 def get_academic_years():
     """Get all academic years for dropdown"""
     try:
-        years = frappe.get_all(
+        years = frappe.get_list(
             "Academic Year",
             fields=["name"],
             order_by="name desc",
@@ -227,7 +278,7 @@ def get_academic_years():
 def get_academic_terms():
     """Get all academic terms for dropdown"""
     try:
-        terms = frappe.get_all(
+        terms = frappe.get_list(
             "Academic Term",
             fields=["name"],
             order_by="name",
@@ -242,7 +293,7 @@ def get_academic_terms():
 def get_programs():
     """Get all programs for dropdown"""
     try:
-        programs = frappe.get_all(
+        programs = frappe.get_list(
             "Program",
             fields=["name"],
             order_by="name",

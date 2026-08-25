@@ -83,7 +83,7 @@ def delete_subject_activity(name):
 @frappe.whitelist()
 def get_students():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student", fields=["name", "student_name"],
             order_by="student_name", limit_page_length=500,
         )
@@ -95,7 +95,7 @@ def get_students():
 @frappe.whitelist()
 def get_courses():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Course", fields=["name", "course_name"],
             order_by="course_name", limit_page_length=500,
         )

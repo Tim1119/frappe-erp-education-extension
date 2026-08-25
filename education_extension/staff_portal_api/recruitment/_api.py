@@ -15,7 +15,7 @@ def expose(namespace, doctype, fields, list_fields, search_fields, tables=None, 
         for key, (child_doctype, match_field, result_field) in child_filter_fields.items():
             value = kwargs.get(key)
             if value:
-                names = frappe.get_all(child_doctype, filters={match_field: value}, distinct=True, pluck=result_field)
+                names = frappe.get_list(child_doctype, filters={match_field: value}, distinct=True, pluck=result_field)
                 filters["name"] = ["in", [name for name in names if name]]
         return list_docs(doctype, list_fields, page, page_size, search, search_fields,
             filters)

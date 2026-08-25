@@ -3,15 +3,19 @@ import json
 import frappe
 from frappe import _
 
+from education_extension.staff_portal_api.permissions import ensure_doctype_permission
+
 
 @frappe.whitelist()
 def get_education_settings():
+    ensure_doctype_permission("Education Settings", "read")
     doc = frappe.get_single("Education Settings")
     return doc.as_dict()
 
 
 @frappe.whitelist()
 def update_education_settings(data):
+    ensure_doctype_permission("Education Settings", "write")
     if isinstance(data, str):
         data = json.loads(data)
 
@@ -53,7 +57,7 @@ def update_education_settings(data):
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Year",
             fields=["name"],
             order_by="name desc",
@@ -70,7 +74,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Term",
             fields=["name"],
             filters=filters,

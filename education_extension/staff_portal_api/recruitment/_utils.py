@@ -29,12 +29,12 @@ def list_docs(doctype, fields, page=1, page_size=20, search=None, search_fields=
     page, page_size = max(cint(page), 1), max(cint(page_size), 1)
     filters = {k: v for k, v in (filters or {}).items() if v not in (None, "")}
     or_filters = [[f, "like", f"%{search}%"] for f in (search_fields or ["name"])] if search else []
-    rows = frappe.get_all(doctype, fields=fields, filters=filters, or_filters=or_filters,
+    rows = frappe.get_list(doctype, fields=fields, filters=filters, or_filters=or_filters,
         order_by="modified desc", start=(page - 1) * page_size, page_length=page_size)
     for row in rows:
         row["can_edit"] = row.get("docstatus", 0) == 0 and frappe.has_permission(doctype, "write", doc=row.name)
         row["can_delete"] = row.get("docstatus", 0) != 1 and frappe.has_permission(doctype, "delete", doc=row.name)
-    count = len(frappe.get_all(doctype, filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
+    count = len(frappe.get_list(doctype, filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
     return {"rows": rows, "count": count, "page": page, "page_size": page_size,
         "total_pages": (count + page_size - 1) // page_size}
 
@@ -127,7 +127,7 @@ def options(doctype, filters=None):
     if doctype == "Account" and filters.get("root_type") in ("Income", "Expense"):
         base_filters["root_type"] = filters["root_type"]
     order = {"Employee": "employee_name", "User": "full_name", "Job Opening": "job_title", "Job Applicant": "applicant_name", "Supplier": "supplier_name", "Item": "item_name", "Customer": "customer_name", "Lead": "lead_name"}.get(doctype, "name")
-    return frappe.get_all(doctype, fields=fields, filters=base_filters, order_by=order, limit_page_length=500)
+    return frappe.get_list(doctype, fields=fields, filters=base_filters, order_by=order, limit_page_length=500)
 
 
 def employee_details(employee):
@@ -139,7 +139,7 @@ def employee_details(employee):
     bounds = frappe.db.get_value("Department", details.department, ["lft", "rgt"], as_dict=True)
     if not bounds:
         return details
-    departments = frappe.get_all("Department",
+    departments = frappe.get_list("Department",
         filters={"lft": ["<=", bounds.lft], "rgt": [">=", bounds.rgt], "disabled": 0},
         pluck="name", order_by="lft desc")
     for department in departments:

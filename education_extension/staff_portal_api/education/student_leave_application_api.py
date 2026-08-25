@@ -32,7 +32,7 @@ def get_student_leave_applications(
             ["student_name", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Student Leave Application",
         fields=[
             "name",
@@ -208,7 +208,7 @@ def get_connections(leave_application):
 @frappe.whitelist()
 def get_students():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student", fields=["name", "student_name"],
             order_by="student_name", limit_page_length=500,
         )
@@ -223,7 +223,7 @@ def get_class_arms():
     from get_student_groups_for_student() below, which is scoped to a
     single student for the create/edit form's real set_query mirror."""
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Group", fields=["name", "student_group_name"],
             order_by="student_group_name", limit_page_length=500,
         )
@@ -250,7 +250,7 @@ def get_student_groups_for_student(student):
         group_names = get_student_groups(student) or []
         if not group_names:
             return []
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Group",
             fields=["name", "student_group_name"],
             filters={"name": ("in", group_names)},
@@ -278,7 +278,7 @@ def get_course_schedules_for_student(student):
         group_names = get_student_groups(student) or []
         if not group_names:
             return []
-        return frappe.get_all(
+        return frappe.get_list(
             "Course Schedule",
             fields=["name", "title", "student_group"],
             filters={"student_group": ("in", group_names)},

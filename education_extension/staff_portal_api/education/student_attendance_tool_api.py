@@ -123,7 +123,7 @@ def get_student_groups(group_based_on=None):
         filters = {"disabled": 0}
         if group_based_on:
             filters["group_based_on"] = group_based_on
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Group", fields=["name", "student_group_name"],
             filters=filters, order_by="student_group_name", limit_page_length=500,
         )
@@ -135,7 +135,7 @@ def get_student_groups(group_based_on=None):
 @frappe.whitelist()
 def get_course_schedules():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Course Schedule", fields=["name", "title"],
             order_by="creation desc", limit_page_length=500,
         )

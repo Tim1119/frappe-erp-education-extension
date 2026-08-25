@@ -21,7 +21,7 @@ def get_assessment_plans():
     picker) does not restrict this to submitted plans. Not inventing a
     restriction the real tool doesn't have."""
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Assessment Plan", fields=["name", "assessment_name"],
             order_by="creation desc", limit_page_length=500,
         )

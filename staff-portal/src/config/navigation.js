@@ -872,6 +872,99 @@ export const ADMIN_NAV = [
 
 // ─── TEACHER navigation ───────────────────────────────────────────────
 
+// export const TEACHER_NAV = [
+//   {
+//     key: "dashboard",
+//     label: "Dashboard",
+//     icon: LayoutDashboard,
+//     path: "/dashboard",
+//   },
+//   {
+//     key: "education",
+//     label: "Education",
+//     icon: GraduationCap,
+//     children: [
+//       {
+//         key: "student-instructor",
+//         label: "Student & Instructor",
+//         icon: Users2,
+//         children: [
+//           { key: "students", label: "Student", icon: GraduationCap, path: "/dashboard/students" },
+//           { key: "teachers", label: "Teacher", icon: Contact, path: "/dashboard/teachers" },
+//           { key: "class-arms", label: "Class Arm", icon: Users2, path: "/dashboard/class-arms" },
+//         ],
+//       },
+//       {
+//         key: "masters",
+//         label: "Masters",
+//         icon: Layers,
+//         children: [
+//           { key: "classes", label: "Class", icon: GraduationCap, path: "/dashboard/classes" },
+//           { key: "subjects", label: "Subject", icon: BookOpen, path: "/dashboard/subjects" },
+//           { key: "topics", label: "Topic", icon: Tag, path: "/dashboard/topics" },
+//         ],
+//       },
+//       {
+//         key: "content-masters",
+//         label: "Content Masters",
+//         icon: BookOpenCheck,
+//         children: [
+//           { key: "articles", label: "Article", icon: FileText, path: "/dashboard/articles" },
+//           { key: "videos", label: "Video", icon: Play, path: "/dashboard/videos" },
+//           { key: "quizzes", label: "Quiz", icon: ClipboardList, path: "/dashboard/quizzes" },
+//         ],
+//       },
+//       {
+//         key: "admission",
+//         label: "Admission",
+//         icon: UserPlus,
+//         children: [
+//           { key: "subject-enrollment", label: "Subject Enrollment", icon: BookOpen, path: "/dashboard/subject-enrollment" },
+//         ],
+//       },
+//       {
+//         key: "attendance",
+//         label: "Attendance",
+//         icon: CalendarCheck,
+//         children: [
+//           { key: "student-leave-application", label: "Student Leave Application", icon: FileText, path: "/dashboard/student-leave-application" },
+//           { key: "subject-activity", label: "Subject Activity", icon: BookOpen, path: "/dashboard/subject-activity" },
+//           { key: "quiz-activity", label: "Quiz Activity", icon: ClipboardList, path: "/dashboard/quiz-activity" },
+//         ],
+//       },
+//       {
+//         key: "assessment-reports",
+//         label: "Assessment Reports",
+//         icon: BarChart3,
+//         children: [
+//           { key: "subject-assessment-report", label: "Subject wise Assessment Report", icon: BarChart3, path: "/dashboard/subject-assessment-report" },
+//           { key: "final-assessment-grades", label: "Final Assessment Grades", icon: BarChart3, path: "/dashboard/final-assessment-grades" },
+//         ],
+//       },
+//       {
+//         key: "tools",
+//         label: "Tools",
+//         icon: Wrench,
+//         children: [
+//           { key: "student-attendance-tool", label: "Student Attendance Tool", icon: Wrench, path: "/dashboard/student-attendance-tool" },
+//           { key: "assessment-result-tool", label: "Assessment Result Tool", icon: Wrench, path: "/dashboard/assessment-result-tool" },
+//         ],
+//       },
+//       {
+//         key: "other-reports",
+//         label: "Other Reports",
+//         icon: BarChart3,
+//         children: [
+//           { key: "student-guardian-contacts", label: "Student and Guardian Contact Details", icon: BarChart3, path: "/dashboard/student-guardian-contacts" },
+//         ],
+//       },
+//     ],
+//   },
+// ];
+
+
+// ─── TEACHER navigation ───────────────────────────────────────────────
+
 export const TEACHER_NAV = [
   {
     key: "dashboard",
@@ -915,10 +1008,21 @@ export const TEACHER_NAV = [
         ],
       },
       {
+        key: "settings-group",
+        label: "Settings",
+        icon: Settings,
+        children: [
+          { key: "education-settings", label: "Education Settings", icon: Settings, path: "/dashboard/education-settings" },
+          { key: "grading-scale", label: "Grading Scale", icon: BarChart3, path: "/dashboard/grading-scale" },
+          { key: "academic-year", label: "Academic Year", icon: CalendarClock, path: "/dashboard/academic-year" },
+        ],
+      },
+      {
         key: "admission",
         label: "Admission",
         icon: UserPlus,
         children: [
+          { key: "class-enrollment", label: "Class Enrollment", icon: GraduationCap, path: "/dashboard/class-enrollment" },
           { key: "subject-enrollment", label: "Subject Enrollment", icon: BookOpen, path: "/dashboard/subject-enrollment" },
         ],
       },
@@ -927,9 +1031,23 @@ export const TEACHER_NAV = [
         label: "Attendance",
         icon: CalendarCheck,
         children: [
+          { key: "student-attendance", label: "Student Attendance", icon: CalendarCheck, path: "/dashboard/student-attendance" },
           { key: "student-leave-application", label: "Student Leave Application", icon: FileText, path: "/dashboard/student-leave-application" },
+          { key: "attendance-subject-enrollment", label: "Subject Enrollment", icon: BookOpen, path: "/dashboard/subject-enrollment" },
           { key: "subject-activity", label: "Subject Activity", icon: BookOpen, path: "/dashboard/subject-activity" },
           { key: "quiz-activity", label: "Quiz Activity", icon: ClipboardList, path: "/dashboard/quiz-activity" },
+        ],
+      },
+      {
+        key: "assessment",
+        label: "Assessment",
+        icon: Award,
+        children: [
+          { key: "assessment-plan", label: "Assessment Plan", icon: ClipboardList, path: "/dashboard/assessment-plan" },
+          { key: "assessment-group", label: "Assessment Group", icon: Award, path: "/dashboard/assessment-group" },
+          { key: "assessment-result", label: "Assessment Result", icon: Award, path: "/dashboard/assessment-result" },
+          { key: "assessment-criteria", label: "Assessment Criteria", icon: Award, path: "/dashboard/assessment-criteria" },
+          { key: "school-term-result", label: "School Term Result", icon: Award, path: "/dashboard/school-term-result-generator" },
         ],
       },
       {
@@ -948,6 +1066,7 @@ export const TEACHER_NAV = [
         children: [
           { key: "student-attendance-tool", label: "Student Attendance Tool", icon: Wrench, path: "/dashboard/student-attendance-tool" },
           { key: "assessment-result-tool", label: "Assessment Result Tool", icon: Wrench, path: "/dashboard/assessment-result-tool" },
+          { key: "school-term-result-gen", label: "School Term Result Generator", icon: Wrench, path: "/dashboard/school-term-result-generator" },
         ],
       },
       {
@@ -961,6 +1080,238 @@ export const TEACHER_NAV = [
     ],
   },
 ];
+
+
+
+// ─── BURSAR navigation ────────────────────────────────────────────────
+// Bursar sees: Dashboard, Fees (from Education), Selling, Accounting
+// Does NOT see: Education (students/classes), HR, Recruitment, Settings
+
+export const BURSAR_NAV = [
+  {
+    key: "dashboard",
+    label: "Dashboard",
+    icon: LayoutDashboard,
+    path: "/dashboard",
+  },
+  {
+    key: "fees",
+    label: "Fees",
+    icon: Wallet,
+    children: [
+      {
+        key: "fee-management",
+        label: "Fee Management",
+        icon: Wallet,
+        children: [
+          { key: "fee-structure", label: "Fee Structure", icon: FileText, path: "/dashboard/fee-structure" },
+          { key: "fee-category", label: "Fee Category", icon: Tag, path: "/dashboard/fee-category" },
+          { key: "fee-schedule", label: "Fee Schedule", icon: FileText, path: "/dashboard/fee-schedule" },
+          { key: "fees-list", label: "Fees", icon: Wallet, path: "/dashboard/fees" },
+          { key: "sales-invoices-fee", label: "Sales Invoice", icon: FileText, path: "/dashboard/sales-invoices" },
+        ],
+      },
+      {
+        key: "fee-reports",
+        label: "Reports",
+        icon: BarChart3,
+        children: [
+          { key: "student-fee-collection-report", label: "Student Fee Collection Report", icon: BarChart3, path: "/dashboard/student-fee-collection-report" },
+          { key: "class-fee-collection-report", label: "Class wise Fee Collection Report", icon: BarChart3, path: "/dashboard/class-fee-collection-report" },
+        ],
+      },
+    ],
+  },
+  {
+    key: "selling",
+    label: "Selling",
+    icon: Store,
+    children: [
+      { key: "selling-transactions", label: "Selling", icon: ShoppingBag, children: [
+        { key: "selling-customer", label: "Customer", icon: Users, path: "/dashboard/customers" },
+        { key: "quotation", label: "Quotation", icon: FileText, path: "/dashboard/quotations" },
+        { key: "sales-order", label: "Sales Order", icon: FileText, path: "/dashboard/sales-orders" },
+        { key: "selling-sales-invoice", label: "Sales Invoice", icon: FileText, path: "/dashboard/sales-invoices" },
+        { key: "blanket-order", label: "Blanket Order", icon: FileText, path: "/dashboard/blanket-orders" },
+        { key: "sales-partner", label: "Sales Partner", icon: FileText, path: "/dashboard/sales-partners" },
+        { key: "sales-person", label: "Sales Person", icon: FileText, path: "/dashboard/sales-persons" },
+      ]},
+      { key: "selling-items", label: "Items & Pricing", icon: Package, children: [
+        { key: "selling-item", label: "Item", icon: Package, path: "/dashboard/items" },
+        { key: "selling-item-price", label: "Item Price", icon: FileText, path: "/dashboard/item-prices" },
+        { key: "selling-price-list", label: "Price List", icon: FileText, path: "/dashboard/price-lists" },
+        { key: "selling-item-group", label: "Item Group", icon: FileText, path: "/dashboard/item-groups" },
+        { key: "selling-product-bundle", label: "Product Bundle", icon: FileText, path: "/dashboard/product-bundles" },
+        { key: "selling-pricing-rule", label: "Pricing Rule", icon: FileText, path: "/dashboard/pricing-rules" },
+      ]},
+      { key: "selling-settings", label: "Settings", icon: Settings, children: [
+        { key: "selling-settings-page", label: "Selling Settings", icon: Settings, path: "/dashboard/selling-settings" },
+        { key: "selling-taxes-template", label: "Sales Taxes and Charges Template", icon: FileText, path: "/dashboard/sales-taxes-templates" },
+        { key: "selling-terms", label: "Terms and Conditions", icon: FileText, path: "/dashboard/terms-and-conditions" },
+        { key: "customer-group", label: "Customer Group", icon: FileText, path: "/dashboard/customer-groups" },
+        { key: "territory", label: "Territory", icon: FileText, path: "/dashboard/territories" },
+      ]},
+      { key: "selling-key-reports", label: "Key Reports", icon: BarChart3, children: [
+        { key: "sales-analytics", label: "Sales Analytics", icon: BarChart3, path: "/dashboard/sales-analytics" },
+        { key: "sales-order-analysis", label: "Sales Order Analysis", icon: BarChart3, path: "/dashboard/sales-order-analysis" },
+        { key: "sales-order-trends", label: "Sales Order Trends", icon: BarChart3, path: "/dashboard/sales-order-trends" },
+        { key: "quotation-trends", label: "Quotation Trends", icon: BarChart3, path: "/dashboard/quotation-trends" },
+        { key: "item-wise-sales-history", label: "Item-wise Sales History", icon: BarChart3, path: "/dashboard/item-wise-sales-history" },
+      ]},
+      { key: "selling-other-reports", label: "Other Reports", icon: BarChart3, children: [
+        { key: "selling-sales-invoice-trends", label: "Sales Invoice Trends", icon: BarChart3, path: "/dashboard/selling-sales-invoice-trends" },
+        { key: "selling-customer-credit-balance", label: "Customer Credit Balance", icon: BarChart3, path: "/dashboard/customer-credit-balance" },
+        { key: "delivery-note-trends", label: "Delivery Note Trends", icon: BarChart3, path: "/dashboard/delivery-note-trends" },
+      ]},
+    ],
+  },
+  {
+    key: "accounting",
+    label: "Accounting",
+    icon: Wallet,
+    children: [
+      {
+        key: "accounting-payables",
+        label: "Payables",
+        icon: FileText,
+        children: [
+          {
+            key: "accounting-invoicing",
+            label: "Invoicing",
+            icon: ReceiptText,
+            children: [
+              { key: "purchase-invoices", label: "Purchase Invoice", icon: ReceiptText, path: "/dashboard/purchase-invoices" },
+              { key: "suppliers", label: "Supplier", icon: Building2, path: "/dashboard/suppliers" },
+            ],
+          },
+          {
+            key: "accounting-payments",
+            label: "Payments",
+            icon: Wallet,
+            children: [
+              { key: "payment-entries", label: "Payment Entry", icon: Wallet, path: "/dashboard/payment-entries" },
+              { key: "journal-entries", label: "Journal Entry", icon: FileText, path: "/dashboard/journal-entries" },
+              { key: "payment-reconciliation", label: "Payment Reconciliation", icon: ReceiptText, path: "/dashboard/payment-reconciliation" },
+            ],
+          },
+          {
+            key: "accounting-payables-reports",
+            label: "Reports",
+            icon: BarChart3,
+            children: [
+              { key: "accounts-payable", label: "Accounts Payable", icon: BarChart3, path: "/dashboard/accounts-payable" },
+              { key: "accounts-payable-summary", label: "Accounts Payable Summary", icon: BarChart3, path: "/dashboard/accounts-payable-summary" },
+              { key: "purchase-register", label: "Purchase Register", icon: BarChart3, path: "/dashboard/purchase-register" },
+              { key: "item-wise-purchase-register", label: "Item-wise Purchase Register", icon: BarChart3, path: "/dashboard/item-wise-purchase-register" },
+              { key: "supplier-ledger-summary", label: "Supplier Ledger Summary", icon: BarChart3, path: "/dashboard/supplier-ledger-summary" },
+            ],
+          },
+        ],
+      },
+      {
+        key: "accounting-receivables",
+        label: "Receivables",
+        icon: HandCoins,
+        children: [
+          {
+            key: "receivables-invoicing",
+            label: "Invoicing",
+            icon: ReceiptText,
+            children: [
+              { key: "sales-invoices", label: "Sales Invoice", icon: ReceiptText, path: "/dashboard/sales-invoices" },
+              { key: "customers", label: "Customer", icon: UsersRound, path: "/dashboard/customers" },
+            ],
+          },
+          {
+            key: "receivables-payments",
+            label: "Payments",
+            icon: Wallet,
+            children: [
+              { key: "receivables-payment-entry", label: "Payment Entry", icon: Wallet, path: "/dashboard/payment-entries" },
+              { key: "receivables-journal-entry", label: "Journal Entry", icon: FileText, path: "/dashboard/journal-entries" },
+              { key: "receivables-payment-reconciliation", label: "Payment Reconciliation", icon: ReceiptText, path: "/dashboard/payment-reconciliation" },
+            ],
+          },
+          {
+            key: "receivables-dunning",
+            label: "Dunning",
+            icon: Bell,
+            children: [
+              { key: "dunning", label: "Dunning", icon: Bell, path: "/dashboard/dunning" },
+              { key: "dunning-types", label: "Dunning Type", icon: Tag, path: "/dashboard/dunning-types" },
+            ],
+          },
+          {
+            key: "receivables-reports",
+            label: "Reports",
+            icon: BarChart3,
+            children: [
+              { key: "accounts-receivable", label: "Accounts Receivable", icon: BarChart3, path: "/dashboard/accounts-receivable" },
+              { key: "accounts-receivable-summary", label: "Accounts Receivable Summary", icon: BarChart3, path: "/dashboard/accounts-receivable-summary" },
+              { key: "sales-register", label: "Sales Register", icon: BarChart3, path: "/dashboard/sales-register" },
+              { key: "item-wise-sales-register", label: "Item-wise Sales Register", icon: BarChart3, path: "/dashboard/item-wise-sales-register" },
+              { key: "delivered-items-to-be-billed", label: "Delivered Items To Be Billed", icon: BarChart3, path: "/dashboard/delivered-items-to-be-billed" },
+            ],
+          },
+        ],
+      },
+      {
+        key: "financial-reports",
+        label: "Financial Reports",
+        icon: BarChart3,
+        children: [
+          {
+            key: "ledgers",
+            label: "Ledgers",
+            icon: BarChart3,
+            children: [
+              { key: "general-ledger", label: "General Ledger", icon: BarChart3, path: "/dashboard/general-ledger" },
+              { key: "customer-ledger-summary", label: "Customer Ledger Summary", icon: BarChart3, path: "/dashboard/customer-ledger-summary" },
+              { key: "supplier-ledger-summary", label: "Supplier Ledger Summary", icon: BarChart3, path: "/dashboard/supplier-ledger-summary" },
+            ],
+          },
+          {
+            key: "financial-statements",
+            label: "Financial Statements",
+            icon: BarChart3,
+            children: [
+              { key: "trial-balance", label: "Trial Balance", icon: BarChart3, path: "/dashboard/trial-balance" },
+              { key: "profit-and-loss", label: "Profit and Loss Statement", icon: BarChart3, path: "/dashboard/profit-and-loss" },
+              { key: "balance-sheet", label: "Balance Sheet", icon: BarChart3, path: "/dashboard/balance-sheet" },
+              { key: "cash-flow", label: "Cash Flow", icon: BarChart3, path: "/dashboard/cash-flow" },
+              { key: "consolidated-financial-statement", label: "Consolidated Financial Statement", icon: BarChart3, path: "/dashboard/consolidated-financial-statement" },
+            ],
+          },
+          {
+            key: "profitability",
+            label: "Profitability",
+            icon: BarChart3,
+            children: [
+              { key: "gross-profit", label: "Gross Profit", icon: BarChart3, path: "/dashboard/gross-profit" },
+              { key: "profitability-analysis", label: "Profitability Analysis", icon: BarChart3, path: "/dashboard/profitability-analysis" },
+              { key: "sales-invoice-trends", label: "Sales Invoice Trends", icon: BarChart3, path: "/dashboard/sales-invoice-trends" },
+              { key: "purchase-invoice-trends", label: "Purchase Invoice Trends", icon: BarChart3, path: "/dashboard/purchase-invoice-trends" },
+            ],
+          },
+          {
+            key: "other-reports",
+            label: "Other Reports",
+            icon: BarChart3,
+            children: [
+              { key: "trial-balance-for-party", label: "Trial Balance for Party", icon: BarChart3, path: "/dashboard/trial-balance-for-party" },
+              { key: "payment-period-based-on-invoice-date", label: "Payment Period Based On Invoice Date", icon: BarChart3, path: "/dashboard/payment-period-based-on-invoice-date" },
+              { key: "sales-partners-commission", label: "Sales Partners Commission", icon: BarChart3, path: "/dashboard/sales-partners-commission" },
+              { key: "customer-credit-balance", label: "Customer Credit Balance", icon: BarChart3, path: "/dashboard/customer-credit-balance" },
+              { key: "sales-payment-summary", label: "Sales Payment Summary", icon: BarChart3, path: "/dashboard/sales-payment-summary" },
+              { key: "address-and-contacts", label: "Address And Contacts", icon: BarChart3, path: "/dashboard/address-and-contacts" },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+
 
 /**
  * Recursively collect all `path` values from a nav tree so we can quickly

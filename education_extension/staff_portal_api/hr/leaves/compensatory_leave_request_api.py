@@ -11,9 +11,9 @@ def get_compensatory_leave_requests(page=1, page_size=20, search=None, employee=
     filters = {k: v for k, v in {"employee": employee, "leave_type": leave_type, "department": department}.items() if v}
     ors = [["name", "like", f"%{search}%"], ["employee_name", "like", f"%{search}%"]] if search else []
     fields = ["name", "employee", "employee_name", "department", "leave_type", "work_from_date", "work_end_date", "half_day", "leave_allocation", "docstatus"]
-    rows = frappe.get_all("Compensatory Leave Request", fields=fields, filters=filters, or_filters=ors, order_by="work_from_date desc, name desc", start=(page-1)*page_size, page_length=page_size)
+    rows = frappe.get_list("Compensatory Leave Request", fields=fields, filters=filters, or_filters=ors, order_by="work_from_date desc, name desc", start=(page-1)*page_size, page_length=page_size)
     for row in rows: row["can_edit"] = row.docstatus == 0 and frappe.has_permission("Compensatory Leave Request", "write", doc=row.name)
-    total = len(frappe.get_all("Compensatory Leave Request", filters=filters, or_filters=ors, pluck="name", limit_page_length=0))
+    total = len(frappe.get_list("Compensatory Leave Request", filters=filters, or_filters=ors, pluck="name", limit_page_length=0))
     return {"rows": rows, "count": total, "page": page, "page_size": page_size, "total_pages": (total+page_size-1)//page_size if page_size else 1}
 
 @frappe.whitelist()
@@ -50,8 +50,8 @@ def _safe(fn):
     try: return fn()
     except Exception as e: frappe.log_error(str(e), "Compensatory Leave Request API"); return []
 @frappe.whitelist()
-def get_employees(): return _safe(lambda: frappe.get_all("Employee", fields=["name", "employee_name", "department"], filters={"status":"Active"}, order_by="employee_name", limit_page_length=500))
+def get_employees(): return _safe(lambda: frappe.get_list("Employee", fields=["name", "employee_name", "department"], filters={"status":"Active"}, order_by="employee_name", limit_page_length=500))
 @frappe.whitelist()
-def get_compensatory_leave_types(): return _safe(lambda: frappe.get_all("Leave Type", fields=["name"], filters={"is_compensatory":1}, order_by="name", limit_page_length=500))
+def get_compensatory_leave_types(): return _safe(lambda: frappe.get_list("Leave Type", fields=["name"], filters={"is_compensatory":1}, order_by="name", limit_page_length=500))
 @frappe.whitelist()
-def get_departments(): return _safe(lambda: frappe.get_all("Department", fields=["name"], order_by="name", limit_page_length=500))
+def get_departments(): return _safe(lambda: frappe.get_list("Department", fields=["name"], order_by="name", limit_page_length=500))

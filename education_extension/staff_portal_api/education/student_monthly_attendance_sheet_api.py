@@ -21,7 +21,7 @@ def get_years():
 @frappe.whitelist()
 def get_student_groups():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Group", fields=["name", "student_group_name"],
             order_by="student_group_name", limit_page_length=500,
         )

@@ -19,7 +19,7 @@ def get_student_batch_names(page=1, page_size=20, search=None):
             ["batch_name", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Student Batch Name",
         fields=["name", "batch_name"],
         filters=filters,

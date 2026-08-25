@@ -60,7 +60,7 @@ def get_sales_invoices(
             ["customer_name", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Sales Invoice",
         fields=[
             "name", "student", "customer_name", "customer",
@@ -349,7 +349,7 @@ def cancel_sales_invoice(name):
 
 def _safe_get_all(label, doctype, **kwargs):
     try:
-        return frappe.get_all(doctype, limit_page_length=500, **kwargs)
+        return frappe.get_list(doctype, limit_page_length=500, **kwargs)
     except Exception as e:
         frappe.log_error(f"Error fetching {label}: {str(e)}", "Sales Invoice API")
         return []

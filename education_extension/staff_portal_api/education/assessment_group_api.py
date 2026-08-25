@@ -45,7 +45,7 @@ def get_assessment_groups():
     survive being cut into arbitrary pages, and Assessment Group is a
     small, bounded list (exam periods/terms), so returning everything at
     once mirrors what the real Desk tree view effectively shows too."""
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Assessment Group",
         fields=["name", "assessment_group_name", "parent_assessment_group", "is_group"],
     )

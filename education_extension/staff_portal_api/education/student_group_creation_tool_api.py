@@ -148,7 +148,7 @@ def create_student_groups(data):
 @frappe.whitelist()
 def get_programs():
     try:
-        return frappe.get_all("Program", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Program", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching programs: {str(e)}", "Student Group Creation Tool API")
         return []
@@ -157,7 +157,7 @@ def get_programs():
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Year", fields=["name", "academic_year_name"],
             order_by="year_start_date desc", limit_page_length=500,
         )
@@ -174,7 +174,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Term", fields=["name", "title"],
             filters=filters, order_by="term_start_date desc", limit_page_length=500,
         )
@@ -186,7 +186,7 @@ def get_academic_terms(academic_year=None):
 @frappe.whitelist()
 def get_student_batch_names():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Batch Name", fields=["name"],
             order_by="name", limit_page_length=500,
         )

@@ -21,7 +21,7 @@ def get_companies(page=1, page_size=20, search=None, country=None):
             ["abbr", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Company",
         fields=[
             "name", "company_name", "abbr", "domain", "country",
@@ -35,6 +35,7 @@ def get_companies(page=1, page_size=20, search=None, country=None):
     )
     for row in rows:
         row["can_edit"] = frappe.has_permission("Company", "write", doc=row.name)
+        row["can_delete"] = frappe.has_permission("Company", "delete", doc=row.name)
     total = frappe.db.count("Company", filters=filters)
     return {
         "rows": rows,
@@ -52,6 +53,7 @@ def get_company(name):
     doc = frappe.get_doc("Company", name)
     data = doc.as_dict()
     data["can_edit"] = doc.has_permission("write")
+    data["can_delete"] = doc.has_permission("delete")
     return data
 
 
@@ -120,7 +122,7 @@ def _filtered_link_options(doctype, filters, title_field=None):
     fields = ["name"]
     if title_field:
         fields.append(title_field)
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         doctype, fields=fields, filters=filters,
         order_by=title_field or "name", limit_page_length=500,
     )
@@ -394,7 +396,7 @@ def get_connections(company):
 @frappe.whitelist()
 def get_currencies():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Currency", fields=["name", "currency_name"],
             filters={"enabled": 1}, order_by="name", limit_page_length=500,
         )
@@ -406,7 +408,7 @@ def get_currencies():
 @frappe.whitelist()
 def get_countries():
     try:
-        return frappe.get_all("Country", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Country", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching countries: {str(e)}", "Company API")
         return []
@@ -415,7 +417,7 @@ def get_countries():
 @frappe.whitelist()
 def get_parent_companies():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Company", fields=["name", "company_name"],
             filters={"is_group": 1}, order_by="name", limit_page_length=500,
         )

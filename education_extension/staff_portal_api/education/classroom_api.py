@@ -22,7 +22,7 @@ def get_classrooms(
             ["room_number", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Room",
         fields=[
             "name",

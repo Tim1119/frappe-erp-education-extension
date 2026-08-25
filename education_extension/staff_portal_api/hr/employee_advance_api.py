@@ -19,7 +19,7 @@ def get_employee_advances(page=1, page_size=20, search=None, employee=None, stat
     filters = {k: v for k, v in {"employee": employee, "status": status, "department": department}.items() if v}
     or_filters = [["name", "like", f"%{search}%"], ["employee_name", "like", f"%{search}%"]] if search else []
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Employee Advance",
         fields=[
             "name", "employee", "employee_name", "posting_date", "department", "purpose",
@@ -33,7 +33,7 @@ def get_employee_advances(page=1, page_size=20, search=None, employee=None, stat
         r["can_edit"] = r.docstatus == 0 and frappe.has_permission("Employee Advance", "write", doc=r.name)
         r["can_delete"] = r.docstatus != 1 and frappe.has_permission("Employee Advance", "delete", doc=r.name)
 
-    total = len(frappe.get_all("Employee Advance", filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
+    total = len(frappe.get_list("Employee Advance", filters=filters, or_filters=or_filters, pluck="name", limit_page_length=0))
     return {
         "rows": rows, "count": total, "page": page, "page_size": page_size,
         "total_pages": (total + page_size - 1) // page_size if page_size else 1,
@@ -106,7 +106,7 @@ def cancel_employee_advance(name):
 @frappe.whitelist()
 def get_employees():
     """Mirrors employee_advance.js's frm.set_query('employee', {filters: {status: 'Active'}})."""
-    return frappe.get_all(
+    return frappe.get_list(
         "Employee", fields=["name", "employee_name", "company", "department"],
         filters={"status": "Active"}, order_by="employee_name", limit_page_length=500,
     )
@@ -114,7 +114,7 @@ def get_employees():
 
 @frappe.whitelist()
 def get_options(doctype):
-    return frappe.get_all(doctype, fields=["name"], order_by="name", limit_page_length=500)
+    return frappe.get_list(doctype, fields=["name"], order_by="name", limit_page_length=500)
 
 
 @frappe.whitelist()
@@ -132,7 +132,7 @@ def get_advance_accounts(company, currency=None):
     if currencies:
         filters["account_currency"] = ["in", currencies]
 
-    return frappe.get_all("Account", fields=["name"], filters=filters, order_by="name", limit_page_length=500)
+    return frappe.get_list("Account", fields=["name"], filters=filters, order_by="name", limit_page_length=500)
 
 
 @frappe.whitelist()

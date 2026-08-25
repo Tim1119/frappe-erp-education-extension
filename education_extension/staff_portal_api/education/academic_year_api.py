@@ -19,7 +19,7 @@ def get_academic_years(page=1, page_size=20, search=None):
             ["academic_year_name", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Academic Year",
         fields=["name", "academic_year_name", "year_start_date", "year_end_date"],
         filters=filters,

@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import AppShell from "@/components/layout/AppShell";
 
-import Login from "@/pages/auth/Login";
+// import Login from "@/pages/auth/Login";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import NotFound from "@/pages/NotFound";
 import PlaceholderPage from "@/pages/placeholder/PlaceholderPage";
@@ -530,15 +530,26 @@ function LoadingScreen() {
 
 // ─── Protected wrapper ─────────────────────────────────────────────────
 
+// function Protected({ children }) {
+//   const { authenticated, loading } = useAuth();
+//   const location = useLocation();
+//   if (loading) return <LoadingScreen />;
+//   return authenticated ? (
+//     children
+//   ) : (
+//     <Navigate to="/login" replace state={{ from: location }} />
+//   );
+// }
+
 function Protected({ children }) {
   const { authenticated, loading } = useAuth();
-  const location = useLocation();
   if (loading) return <LoadingScreen />;
-  return authenticated ? (
-    children
-  ) : (
-    <Navigate to="/login" replace state={{ from: location }} />
-  );
+  if (!authenticated) {
+    // Redirect to Frappe's built-in login page
+    window.location.href = `/login?redirect-to=${encodeURIComponent(window.location.pathname)}`;
+    return <LoadingScreen />;
+  }
+  return children;
 }
 
 // ─── Placeholder helper ────────────────────────────────────────────────
@@ -552,7 +563,7 @@ function PH({ title }) {
 export default function App() {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      {/* <Route path="/login" element={<Login />} /> */}
 
       <Route
         path="/dashboard"

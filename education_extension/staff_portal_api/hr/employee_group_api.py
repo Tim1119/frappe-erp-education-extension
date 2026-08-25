@@ -9,7 +9,7 @@ from frappe.utils import cint
 def get_employee_groups(page=1, page_size=20, search=None):
     page, page_size = cint(page), cint(page_size)
     filters = [["Employee Group", "employee_group_name", "like", f"%{search}%"]] if search else []
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Employee Group", fields=["name", "employee_group_name"], filters=filters,
         order_by="modified desc", start=(page - 1) * page_size, page_length=page_size,
     )
@@ -81,7 +81,7 @@ def delete_employee_group(name):
 @frappe.whitelist()
 def get_employees():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Employee", fields=["name", "employee_name", "user_id", "status"],
             order_by="employee_name", limit_page_length=500,
         )

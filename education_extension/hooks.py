@@ -1,3 +1,296 @@
+# app_name = "education_extension"
+# app_title = "Education Extension"
+# app_publisher = "Ajani Timothy"
+# app_description = "This is Rhocom education extension for frappe-education"
+# app_email = "t.ajani@rhocom.ng"
+# app_license = "mit"
+
+# # Apps
+# # ------------------
+
+# # required_apps = []
+
+# # Each item in the list will be shown as an app in the apps page
+# # add_to_apps_screen = [
+# # 	{
+# # 		"name": "education_extension",
+# # 		"logo": "/assets/education_extension/logo.png",
+# # 		"title": "Education Extension",
+# # 		"route": "/education_extension",
+# # 		"has_permission": "education_extension.api.permission.has_app_permission"
+# # 	}
+# # ]
+
+# # Includes in <head>
+# # ------------------
+
+# # include js, css files in header of desk.html
+# # app_include_css = "/assets/education_extension/css/education_extension.css"
+# # app_include_js = "/assets/education_extension/js/education_extension.js"
+
+# # include js, css files in header of web template
+# # web_include_css = "/assets/education_extension/css/education_extension.css"
+# # web_include_js = "/assets/education_extension/js/education_extension.js"
+
+# # include custom scss in every website theme (without file extension ".scss")
+# # website_theme_scss = "education_extension/public/scss/website"
+
+# # include js, css files in header of web form
+# # webform_include_js = {"doctype": "public/js/doctype.js"}
+# # webform_include_css = {"doctype": "public/css/doctype.css"}
+
+# # include js in page
+# # page_js = {"page" : "public/js/file.js"}
+
+# # include js in doctype views
+# # doctype_js = {"doctype" : "public/js/doctype.js"}
+# # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
+# # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
+# # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
+
+# # Svg Icons
+# # ------------------
+# # include app icons in desk
+# # app_include_icons = "education_extension/public/icons.svg"
+
+# # Home Pages
+# # ----------
+
+# # application home page (will override Website Settings)
+# # home_page = "login"
+
+# # website user home page (by Role)
+# # role_home_page = {
+# # 	"Role": "home_page"
+# # }
+
+# # Generators
+# # ----------
+
+# # automatically create page for each record of this doctype
+# # website_generators = ["Web Page"]
+
+# # Jinja
+# # ----------
+
+# # add methods and filters to jinja environment
+# # jinja = {
+# # 	"methods": "education_extension.utils.jinja_methods",
+# # 	"filters": "education_extension.utils.jinja_filters"
+# # }
+
+# # Installation
+# # ------------
+
+# # before_install = "education_extension.install.before_install"
+# # after_install = "education_extension.install.after_install"
+
+# # Uninstallation
+# # ------------
+
+# # before_uninstall = "education_extension.uninstall.before_uninstall"
+# # after_uninstall = "education_extension.uninstall.after_uninstall"
+
+# # Integration Setup
+# # ------------------
+# # To set up dependencies/integrations with other apps
+# # Name of the app being installed is passed as an argument
+
+# # before_app_install = "education_extension.utils.before_app_install"
+# # after_app_install = "education_extension.utils.after_app_install"
+
+# # Integration Cleanup
+# # -------------------
+# # To clean up dependencies/integrations with other apps
+# # Name of the app being uninstalled is passed as an argument
+
+# # before_app_uninstall = "education_extension.utils.before_app_uninstall"
+# # after_app_uninstall = "education_extension.utils.after_app_uninstall"
+
+# # Desk Notifications
+# # ------------------
+# # See frappe.core.notifications.get_notification_config
+
+# # notification_config = "education_extension.notifications.get_notification_config"
+
+# # Permissions
+# # -----------
+# # Permissions evaluated in scripted ways
+
+# # permission_query_conditions = {
+# # 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
+# # }
+# #
+# # has_permission = {
+# # 	"Event": "frappe.desk.doctype.event.event.has_permission",
+# # }
+
+# # DocType Class
+# # ---------------
+# # Override standard doctype classes
+
+# # override_doctype_class = {
+# # 	"ToDo": "custom_app.overrides.CustomToDo"
+# # }
+
+# # Document Events
+# # ---------------
+# # Hook on document methods and events
+
+# # doc_events = {
+# # 	"*": {
+# # 		"on_update": "method",
+# # 		"on_cancel": "method",
+# # 		"on_trash": "method"
+# # 	}
+# # }
+
+# # Scheduled Tasks
+# # ---------------
+
+# # scheduler_events = {
+# # 	"all": [
+# # 		"education_extension.tasks.all"
+# # 	],
+# # 	"daily": [
+# # 		"education_extension.tasks.daily"
+# # 	],
+# # 	"hourly": [
+# # 		"education_extension.tasks.hourly"
+# # 	],
+# # 	"weekly": [
+# # 		"education_extension.tasks.weekly"
+# # 	],
+# # 	"monthly": [
+# # 		"education_extension.tasks.monthly"
+# # 	],
+# # }
+
+# # Testing
+# # -------
+
+# # before_tests = "education_extension.install.before_tests"
+
+# # Overriding Methods
+# # ------------------------------
+# #
+# # override_whitelisted_methods = {
+# # 	"frappe.desk.doctype.event.event.get_events": "education_extension.event.get_events"
+# # }
+# #
+# # each overriding function accepts a `data` argument;
+# # generated from the base implementation of the doctype dashboard,
+# # along with any modifications made in other Frappe apps
+# # override_doctype_dashboards = {
+# # 	"Task": "education_extension.task.get_dashboard_data"
+# # }
+
+# # exempt linked doctypes from being automatically cancelled
+# #
+# # auto_cancel_exempted_doctypes = ["Auto Repeat"]
+
+# # Ignore links to specified DocTypes when deleting documents
+# # -----------------------------------------------------------
+
+# # ignore_links_on_delete = ["Communication", "ToDo"]
+
+# # Request Events
+# # ----------------
+# # before_request = ["education_extension.utils.before_request"]
+# # after_request = ["education_extension.utils.after_request"]
+
+# # Job Events
+# # ----------
+# # before_job = ["education_extension.utils.before_job"]
+# # after_job = ["education_extension.utils.after_job"]
+
+# # User Data Protection
+# # --------------------
+
+# # user_data_fields = [
+# # 	{
+# # 		"doctype": "{doctype_1}",
+# # 		"filter_by": "{filter_by}",
+# # 		"redact_fields": ["{field_1}", "{field_2}"],
+# # 		"partial": 1,
+# # 	},
+# # 	{
+# # 		"doctype": "{doctype_2}",
+# # 		"filter_by": "{filter_by}",
+# # 		"partial": 1,
+# # 	},
+# # 	{
+# # 		"doctype": "{doctype_3}",
+# # 		"strict": False,
+# # 	},
+# # 	{
+# # 		"doctype": "{doctype_4}"
+# # 	}
+# # ]
+
+# # Authentication and authorization
+# # --------------------------------
+
+# # auth_hooks = [
+# # 	"education_extension.auth.validate"
+# # ]
+
+# # Automatically update python controller files with type annotations for this app.
+# # export_python_type_annotations = True
+
+# # default_log_clearing_doctypes = {
+# # 	"Logging DocType Name": 30  # days to retain logs
+# # }
+
+# doc_events = {
+# 	"Assessment Criteria": {
+# 		"validate": "education_extension.overrides.assessment_criteria.validate_assessment_criteria"
+# 	}
+# }
+
+# # role_home_page = {
+# #     "Student": "/student-portal"
+# # }
+
+# # boot_session = "education_extension.custom_login.boot_session"
+
+
+# # get_home_page = "education_extension.custom_login.get_home_page"
+
+# # education_extension/hooks.py
+
+# # on_session_creation = [
+# #     "education_extension.custom_login.redirect_student"
+# # ]
+
+# get_website_user_home_page = "education_extension.custom_login.get_website_user_home_page"
+
+# role_home_page = {
+# 	"Guardian": "/guardian-dashboard",
+# 	"Student": "/student-portal",
+# }
+# # Scheduled Events
+# scheduler_events = {
+# 	"daily": [
+# 		"education_extension.education_extension.doctype.student_birthday_reminder.student_birthday_reminder.send_birthday_reminders"
+# 	]
+# }
+
+# website_route_rules = [
+#     {"from_route": "/guardian-dashboard", "to_route": "guardian-portal"},
+#     {"from_route": "/guardian-dashboard/<path:app_path>", "to_route": "guardian-portal"},
+#     {"from_route": "/student-portal", "to_route": "student-portal"},
+#     {"from_route": "/student-portal/<path:app_path>", "to_route": "student-portal"},
+    
+#     # Staff portal
+#     {"from_route": "/staff-dashboard", "to_route": "staff-dashboard"},
+#     {"from_route": "/staff-dashboard/<path:app_path>", "to_route": "staff-dashboard"},
+# ]
+
+# app_include_js = "/assets/education_extension/js/guardian_portal.js"
+
+
+
 app_name = "education_extension"
 app_title = "Education Extension"
 app_publisher = "Ajani Timothy"
@@ -5,242 +298,22 @@ app_description = "This is Rhocom education extension for frappe-education"
 app_email = "t.ajani@rhocom.ng"
 app_license = "mit"
 
-# Apps
-# ------------------
+# ── Home pages ──────────────────────────────────────────────────────────
 
-# required_apps = []
+get_website_user_home_page = "education_extension.custom_login.get_website_user_home_page"
 
-# Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "education_extension",
-# 		"logo": "/assets/education_extension/logo.png",
-# 		"title": "Education Extension",
-# 		"route": "/education_extension",
-# 		"has_permission": "education_extension.api.permission.has_app_permission"
-# 	}
-# ]
+role_home_page = {
+	"Guardian": "/guardian-dashboard",
+	"Student": "/student-portal",
+	# Staff portal roles — all land on the same SPA, frontend shows different nav
+ 	"Teacher": "/staff-dashboard",
+	"Instructor": "/staff-dashboard",
+	"Education Manager": "/staff-dashboard",
+	"Accounts User": "/staff-dashboard",
+	"Sales User": "/staff-dashboard",
+}
 
-# Includes in <head>
-# ------------------
-
-# include js, css files in header of desk.html
-# app_include_css = "/assets/education_extension/css/education_extension.css"
-# app_include_js = "/assets/education_extension/js/education_extension.js"
-
-# include js, css files in header of web template
-# web_include_css = "/assets/education_extension/css/education_extension.css"
-# web_include_js = "/assets/education_extension/js/education_extension.js"
-
-# include custom scss in every website theme (without file extension ".scss")
-# website_theme_scss = "education_extension/public/scss/website"
-
-# include js, css files in header of web form
-# webform_include_js = {"doctype": "public/js/doctype.js"}
-# webform_include_css = {"doctype": "public/css/doctype.css"}
-
-# include js in page
-# page_js = {"page" : "public/js/file.js"}
-
-# include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
-# doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
-# doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
-# doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
-
-# Svg Icons
-# ------------------
-# include app icons in desk
-# app_include_icons = "education_extension/public/icons.svg"
-
-# Home Pages
-# ----------
-
-# application home page (will override Website Settings)
-# home_page = "login"
-
-# website user home page (by Role)
-# role_home_page = {
-# 	"Role": "home_page"
-# }
-
-# Generators
-# ----------
-
-# automatically create page for each record of this doctype
-# website_generators = ["Web Page"]
-
-# Jinja
-# ----------
-
-# add methods and filters to jinja environment
-# jinja = {
-# 	"methods": "education_extension.utils.jinja_methods",
-# 	"filters": "education_extension.utils.jinja_filters"
-# }
-
-# Installation
-# ------------
-
-# before_install = "education_extension.install.before_install"
-# after_install = "education_extension.install.after_install"
-
-# Uninstallation
-# ------------
-
-# before_uninstall = "education_extension.uninstall.before_uninstall"
-# after_uninstall = "education_extension.uninstall.after_uninstall"
-
-# Integration Setup
-# ------------------
-# To set up dependencies/integrations with other apps
-# Name of the app being installed is passed as an argument
-
-# before_app_install = "education_extension.utils.before_app_install"
-# after_app_install = "education_extension.utils.after_app_install"
-
-# Integration Cleanup
-# -------------------
-# To clean up dependencies/integrations with other apps
-# Name of the app being uninstalled is passed as an argument
-
-# before_app_uninstall = "education_extension.utils.before_app_uninstall"
-# after_app_uninstall = "education_extension.utils.after_app_uninstall"
-
-# Desk Notifications
-# ------------------
-# See frappe.core.notifications.get_notification_config
-
-# notification_config = "education_extension.notifications.get_notification_config"
-
-# Permissions
-# -----------
-# Permissions evaluated in scripted ways
-
-# permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
-# }
-#
-# has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
-# }
-
-# DocType Class
-# ---------------
-# Override standard doctype classes
-
-# override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
-
-# Document Events
-# ---------------
-# Hook on document methods and events
-
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
-
-# Scheduled Tasks
-# ---------------
-
-# scheduler_events = {
-# 	"all": [
-# 		"education_extension.tasks.all"
-# 	],
-# 	"daily": [
-# 		"education_extension.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"education_extension.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"education_extension.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"education_extension.tasks.monthly"
-# 	],
-# }
-
-# Testing
-# -------
-
-# before_tests = "education_extension.install.before_tests"
-
-# Overriding Methods
-# ------------------------------
-#
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "education_extension.event.get_events"
-# }
-#
-# each overriding function accepts a `data` argument;
-# generated from the base implementation of the doctype dashboard,
-# along with any modifications made in other Frappe apps
-# override_doctype_dashboards = {
-# 	"Task": "education_extension.task.get_dashboard_data"
-# }
-
-# exempt linked doctypes from being automatically cancelled
-#
-# auto_cancel_exempted_doctypes = ["Auto Repeat"]
-
-# Ignore links to specified DocTypes when deleting documents
-# -----------------------------------------------------------
-
-# ignore_links_on_delete = ["Communication", "ToDo"]
-
-# Request Events
-# ----------------
-# before_request = ["education_extension.utils.before_request"]
-# after_request = ["education_extension.utils.after_request"]
-
-# Job Events
-# ----------
-# before_job = ["education_extension.utils.before_job"]
-# after_job = ["education_extension.utils.after_job"]
-
-# User Data Protection
-# --------------------
-
-# user_data_fields = [
-# 	{
-# 		"doctype": "{doctype_1}",
-# 		"filter_by": "{filter_by}",
-# 		"redact_fields": ["{field_1}", "{field_2}"],
-# 		"partial": 1,
-# 	},
-# 	{
-# 		"doctype": "{doctype_2}",
-# 		"filter_by": "{filter_by}",
-# 		"partial": 1,
-# 	},
-# 	{
-# 		"doctype": "{doctype_3}",
-# 		"strict": False,
-# 	},
-# 	{
-# 		"doctype": "{doctype_4}"
-# 	}
-# ]
-
-# Authentication and authorization
-# --------------------------------
-
-# auth_hooks = [
-# 	"education_extension.auth.validate"
-# ]
-
-# Automatically update python controller files with type annotations for this app.
-# export_python_type_annotations = True
-
-# default_log_clearing_doctypes = {
-# 	"Logging DocType Name": 30  # days to retain logs
-# }
+# ── Document events ────────────────────────────────────────────────────
 
 doc_events = {
 	"Assessment Criteria": {
@@ -248,43 +321,27 @@ doc_events = {
 	}
 }
 
-# role_home_page = {
-#     "Student": "/student-portal"
-# }
+# ── Scheduled events ───────────────────────────────────────────────────
 
-# boot_session = "education_extension.custom_login.boot_session"
-
-
-# get_home_page = "education_extension.custom_login.get_home_page"
-
-# education_extension/hooks.py
-
-# on_session_creation = [
-#     "education_extension.custom_login.redirect_student"
-# ]
-
-get_website_user_home_page = "education_extension.custom_login.get_website_user_home_page"
-
-role_home_page = {
-	"Guardian": "/guardian-dashboard",
-	"Student": "/student-portal",
-}
-# Scheduled Events
 scheduler_events = {
 	"daily": [
 		"education_extension.education_extension.doctype.student_birthday_reminder.student_birthday_reminder.send_birthday_reminders"
 	]
 }
 
+# ── Website route rules (SPA catch-all for each portal) ────────────────
+
 website_route_rules = [
     {"from_route": "/guardian-dashboard", "to_route": "guardian-portal"},
     {"from_route": "/guardian-dashboard/<path:app_path>", "to_route": "guardian-portal"},
     {"from_route": "/student-portal", "to_route": "student-portal"},
     {"from_route": "/student-portal/<path:app_path>", "to_route": "student-portal"},
-    
+
     # Staff portal
     {"from_route": "/staff-dashboard", "to_route": "staff-dashboard"},
     {"from_route": "/staff-dashboard/<path:app_path>", "to_route": "staff-dashboard"},
 ]
+
+# ── Includes ───────────────────────────────────────────────────────────
 
 app_include_js = "/assets/education_extension/js/guardian_portal.js"

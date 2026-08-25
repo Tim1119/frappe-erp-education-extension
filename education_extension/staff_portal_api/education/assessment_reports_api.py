@@ -4,7 +4,7 @@ import frappe
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Year", fields=["name"], order_by="name desc", limit_page_length=500,
         )
     except Exception as e:
@@ -18,7 +18,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Term", fields=["name"], filters=filters,
             order_by="name", limit_page_length=500,
         )
@@ -30,7 +30,7 @@ def get_academic_terms(academic_year=None):
 @frappe.whitelist()
 def get_courses():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Course", fields=["name", "course_name"],
             order_by="course_name", limit_page_length=500,
         )
@@ -42,7 +42,7 @@ def get_courses():
 @frappe.whitelist()
 def get_student_groups():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Group", fields=["name", "student_group_name"],
             order_by="student_group_name", limit_page_length=500,
         )
@@ -61,7 +61,7 @@ def get_batch_student_groups(academic_year=None):
         filters = {"group_based_on": "Batch"}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Group", fields=["name", "student_group_name"],
             filters=filters, order_by="student_group_name", limit_page_length=500,
         )
@@ -73,7 +73,7 @@ def get_batch_student_groups(academic_year=None):
 @frappe.whitelist()
 def get_assessment_groups():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Assessment Group", fields=["name", "assessment_group_name", "is_group"],
             order_by="lft", limit_page_length=500,
         )
@@ -88,7 +88,7 @@ def get_leaf_assessment_groups():
     assessment_group: filters: { is_group: 0 } -- only leaf (non-container)
     groups are valid here."""
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Assessment Group", fields=["name", "assessment_group_name"],
             filters={"is_group": 0}, order_by="assessment_group_name", limit_page_length=500,
         )

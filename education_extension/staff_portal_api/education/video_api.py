@@ -28,7 +28,7 @@ def get_videos(
             ["url", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Video",
         fields=[
             "name",

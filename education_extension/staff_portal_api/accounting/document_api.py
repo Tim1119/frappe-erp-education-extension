@@ -228,9 +228,9 @@ def get_documents(doctype,page=1,page_size=20,search=None,status=None,supplier_g
     search_fields=search_map.get(doctype,["name"]);ors=[[f,"like",f"%{search}%"] for f in search_fields] if search else []
     field_map={"Supplier":["supplier_name","supplier_group","supplier_type","country","disabled"],"Purchase Invoice":["supplier","supplier_name","posting_date","due_date","bill_no","grand_total","outstanding_amount","currency","status","docstatus"],"Payment Entry":["payment_type","party_type","party","party_name","posting_date","paid_amount","received_amount","status","docstatus"],"Journal Entry":["title","voucher_type","posting_date","company","total_debit","total_credit","difference","docstatus"],"Customer":["customer_name","customer_group","customer_type","territory","disabled"],"Dunning":["customer","customer_name","dunning_type","posting_date","dunning_fee","grand_total","status","docstatus"],"Dunning Type":["dunning_type","dunning_fee","rate_of_interest","company","is_default"]}
     fields=["name","modified"]+field_map.get(doctype,[])
-    rows=frappe.get_all(doctype,fields=fields,filters=filters,or_filters=ors,order_by="modified desc",start=(page-1)*page_size,page_length=page_size)
+    rows=frappe.get_list(doctype,fields=fields,filters=filters,or_filters=ors,order_by="modified desc",start=(page-1)*page_size,page_length=page_size)
     for r in rows:r["can_edit"]=(not meta_submitted(doctype,r)) and frappe.has_permission(doctype,"write",doc=r.name);r["can_delete"]=frappe.has_permission(doctype,"delete",doc=r.name) and (doctype in ("Supplier","Customer") or r.docstatus!=1)
-    total=len(frappe.get_all(doctype,filters=filters,or_filters=ors,pluck="name",limit_page_length=0));return {"rows":rows,"count":total,"page":page,"page_size":page_size}
+    total=len(frappe.get_list(doctype,filters=filters,or_filters=ors,pluck="name",limit_page_length=0));return {"rows":rows,"count":total,"page":page,"page_size":page_size}
 def meta_submitted(doctype,row):return frappe.get_meta(doctype).is_submittable and row.docstatus!=0
 
 @frappe.whitelist()
@@ -388,7 +388,7 @@ def get_link_options(link_doctype,company=None,supplier=None,fieldname=None,part
             if company:filters["company"]=company
     if link_doctype in ("Sales Taxes and Charges Template","Purchase Taxes and Charges Template"):filters.update({"company":company,"disabled":0})
     if link_doctype=="DocType" and fieldname=="party_type":
-        filters["name"]=["in",frappe.get_all("Party Type",pluck="name")]
+        filters["name"]=["in",frappe.get_list("Party Type",pluck="name")]
     if fieldname=="advance_reference":
         filters["docstatus"]=1
         if link_doctype=="Payment Entry" and party:filters.update({"party_type":"Supplier","party":party,"payment_type":"Pay"})
@@ -402,7 +402,7 @@ def get_link_options(link_doctype,company=None,supplier=None,fieldname=None,part
         meta=frappe.get_meta(link_doctype)
         title_field=meta.title_field if meta.title_field and meta.has_field(meta.title_field) else None
         fields=["name"]+([title_field] if title_field else [])
-        rows=frappe.get_all(link_doctype,fields=fields,filters=filters,order_by="name",limit_page_length=500)
+        rows=frappe.get_list(link_doctype,fields=fields,filters=filters,order_by="name",limit_page_length=500)
         for row in rows:row["label"]=row.get(title_field) if title_field else row.name
         return rows
     except Exception as e:frappe.log_error(str(e),"Accounting Document API");return []

@@ -38,7 +38,7 @@ def get_articles(
             ["content", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Article",
         fields=[
             "name",
@@ -132,7 +132,7 @@ def delete_article(name):
 @frappe.whitelist()
 def get_topics():
     try:
-        return frappe.get_all("Topic", fields=["name", "topic_name"], order_by="topic_name", limit_page_length=500)
+        return frappe.get_list("Topic", fields=["name", "topic_name"], order_by="topic_name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching topics: {str(e)}", "Article API")
         return []

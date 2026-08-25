@@ -40,7 +40,7 @@ def get_student_admissions(
             ["academic_year", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Student Admission",
         fields=[
             "name",
@@ -195,7 +195,7 @@ def delete_student_admission(name):
 @frappe.whitelist()
 def get_programs():
     try:
-        return frappe.get_all("Program", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Program", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching programs: {str(e)}", "Student Admission API")
         return []
@@ -204,7 +204,7 @@ def get_programs():
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all("Academic Year", fields=["name"], order_by="name desc", limit_page_length=500)
+        return frappe.get_list("Academic Year", fields=["name"], order_by="name desc", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching academic years: {str(e)}", "Student Admission API")
         return []

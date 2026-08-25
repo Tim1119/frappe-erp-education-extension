@@ -4,7 +4,7 @@ import frappe
 @frappe.whitelist()
 def get_students():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student", fields=["name", "student_name"],
             order_by="student_name", limit_page_length=500,
         )
@@ -16,7 +16,7 @@ def get_students():
 @frappe.whitelist()
 def get_programs():
     try:
-        return frappe.get_all("Program", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Program", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching classes: {str(e)}", "Student Report Generation Tool API")
         return []
@@ -25,7 +25,7 @@ def get_programs():
 @frappe.whitelist()
 def get_student_batches():
     try:
-        return frappe.get_all("Student Batch Name", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Student Batch Name", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching student batches: {str(e)}", "Student Report Generation Tool API")
         return []
@@ -34,7 +34,7 @@ def get_student_batches():
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Year", fields=["name"], order_by="name desc", limit_page_length=500,
         )
     except Exception as e:
@@ -48,7 +48,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Term", fields=["name"], filters=filters,
             order_by="name", limit_page_length=500,
         )
@@ -65,7 +65,7 @@ def get_group_assessment_groups():
     Plan Status's leaf-only is_group: 0 filter), since preview_report_card
     expands the selection to all of its child groups server-side."""
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Assessment Group", fields=["name", "assessment_group_name"],
             filters={"is_group": 1}, order_by="assessment_group_name", limit_page_length=500,
         )
@@ -77,7 +77,7 @@ def get_group_assessment_groups():
 @frappe.whitelist()
 def get_letter_heads():
     try:
-        return frappe.get_all("Letter Head", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Letter Head", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching letter heads: {str(e)}", "Student Report Generation Tool API")
         return []
@@ -86,7 +86,7 @@ def get_letter_heads():
 @frappe.whitelist()
 def get_terms_and_conditions():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Terms and Conditions", fields=["name", "title"],
             order_by="title", limit_page_length=500,
         )

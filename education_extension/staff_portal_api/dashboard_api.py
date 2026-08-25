@@ -41,7 +41,7 @@ def get_dashboard_stats():
             "present": present,
         })
 
-    recent_students = frappe.get_all(
+    recent_students = frappe.get_list(
         "Student",
         fields=["name", "student_name", "image", "enabled", "creation"],
         order_by="creation desc",

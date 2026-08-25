@@ -154,7 +154,7 @@ def get_assessment_groups():
     doctype; only leaf nodes (a specific term/exam period) are ever
     referenced by real Assessment Result rows."""
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Assessment Group", filters={"is_group": 0},
             fields=["name", "assessment_group_name"], order_by="name",
         )
@@ -166,7 +166,7 @@ def get_assessment_groups():
 @frappe.whitelist()
 def get_academic_years():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Year", fields=["name"], order_by="year_start_date desc", limit_page_length=500,
         )
     except Exception as e:
@@ -180,7 +180,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Term", fields=["name", "title"],
             filters=filters, order_by="term_start_date desc", limit_page_length=500,
         )
@@ -192,7 +192,7 @@ def get_academic_terms(academic_year=None):
 @frappe.whitelist()
 def get_student_groups():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Group", fields=["name", "student_group_name"],
             filters={"disabled": 0}, order_by="student_group_name", limit_page_length=500,
         )

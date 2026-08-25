@@ -74,7 +74,7 @@ def update_school_settings(data):
 @frappe.whitelist()
 def get_companies():
     try:
-        return frappe.get_all("Company", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Company", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching companies: {str(e)}", "School Settings API")
         return []
@@ -83,7 +83,7 @@ def get_companies():
 @frappe.whitelist()
 def get_print_formats():
     try:
-        return frappe.get_all("Print Format", fields=["name"], order_by="name", limit_page_length=500)
+        return frappe.get_list("Print Format", fields=["name"], order_by="name", limit_page_length=500)
     except Exception as e:
         frappe.log_error(f"Error fetching print formats: {str(e)}", "School Settings API")
         return []

@@ -20,7 +20,7 @@ def get_grading_scales(page=1, page_size=20, search=None):
             ["description", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Grading Scale",
         fields=["name", "grading_scale_name", "description", "docstatus"],
         filters=filters,

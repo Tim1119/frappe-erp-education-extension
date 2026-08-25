@@ -4,6 +4,10 @@ import frappe
 from frappe import _
 from frappe.utils import cint
 
+from education_extension.staff_portal_api.permissions import (
+    ensure_doctype_permission,
+)
+
 
 @frappe.whitelist()
 def get_assessment_plans(
@@ -20,6 +24,8 @@ def get_assessment_plans(
 ):
     page = cint(page)
     page_size = cint(page_size)
+
+    ensure_doctype_permission("Assessment Plan", "read")
 
     filters = {}
     if student_group:
@@ -44,7 +50,7 @@ def get_assessment_plans(
             ["assessment_name", "like", f"%{search}%"],
         ]
 
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Assessment Plan",
         fields=[
             "name",
@@ -83,11 +89,13 @@ def get_assessment_plan(name):
         frappe.throw(_("Assessment Plan name is required"))
 
     doc = frappe.get_doc("Assessment Plan", name)
+    ensure_doctype_permission("Assessment Plan", "read", doc)
     return doc.as_dict()
 
 
 @frappe.whitelist()
 def create_assessment_plan(data):
+    ensure_doctype_permission("Assessment Plan", "create")
     if isinstance(data, str):
         data = json.loads(data)
 
@@ -140,6 +148,7 @@ def update_assessment_plan(name, data):
         data = json.loads(data)
 
     doc = frappe.get_doc("Assessment Plan", name)
+    ensure_doctype_permission("Assessment Plan", "write", doc)
 
     for field in (
         "student_group", "assessment_name", "assessment_group", "grading_scale",
@@ -177,6 +186,7 @@ def delete_assessment_plan(name):
         frappe.throw(_("Assessment Plan name is required"))
 
     doc = frappe.get_doc("Assessment Plan", name)
+    ensure_doctype_permission("Assessment Plan", "delete", doc)
 
     if doc.docstatus == 1:
         frappe.throw(_("Cannot delete a submitted document. Please cancel it first."))
@@ -193,6 +203,7 @@ def submit_assessment_plan(name):
         frappe.throw(_("Assessment Plan name is required"))
 
     doc = frappe.get_doc("Assessment Plan", name)
+    ensure_doctype_permission("Assessment Plan", "submit", doc)
 
     if doc.docstatus == 1:
         frappe.throw(_("Document is already submitted"))
@@ -211,6 +222,7 @@ def cancel_assessment_plan(name):
         frappe.throw(_("Assessment Plan name is required"))
 
     doc = frappe.get_doc("Assessment Plan", name)
+    ensure_doctype_permission("Assessment Plan", "cancel", doc)
 
     if doc.docstatus == 2:
         frappe.throw(_("Document is already cancelled"))
@@ -291,7 +303,7 @@ def get_criteria_template(course, maximum_assessment_score=0):
 @frappe.whitelist()
 def get_student_groups():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Student Group", fields=["name", "student_group_name"],
             order_by="student_group_name", limit_page_length=500,
         )
@@ -305,7 +317,7 @@ def get_leaf_assessment_groups():
     """Mirrors assessment_plan.js's real set_query on assessment_group:
     filters: { is_group: 0 } -- only leaf (non-container) groups."""
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Assessment Group", fields=["name", "assessment_group_name"],
             filters={"is_group": 0}, order_by="assessment_group_name", limit_page_length=500,
         )
@@ -319,7 +331,7 @@ def get_submitted_grading_scales():
     """Mirrors assessment_plan.js's real set_query on grading_scale:
     filters: { docstatus: 1 } -- only submitted grading scales."""
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Grading Scale", fields=["name", "grading_scale_name"],
             filters={"docstatus": 1}, order_by="grading_scale_name", limit_page_length=500,
         )
@@ -356,7 +368,7 @@ def get_academic_terms(academic_year=None):
         filters = {}
         if academic_year:
             filters["academic_year"] = academic_year
-        return frappe.get_all(
+        return frappe.get_list(
             "Academic Term", fields=["name"], filters=filters,
             order_by="name", limit_page_length=500,
         )
@@ -368,7 +380,7 @@ def get_academic_terms(academic_year=None):
 @frappe.whitelist()
 def get_classrooms():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Room", fields=["name", "room_name"],
             order_by="room_name", limit_page_length=500,
         )
@@ -380,7 +392,7 @@ def get_classrooms():
 @frappe.whitelist()
 def get_instructors():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Instructor", fields=["name", "instructor_name"],
             order_by="instructor_name", limit_page_length=500,
         )
@@ -392,7 +404,7 @@ def get_instructors():
 @frappe.whitelist()
 def get_assessment_criteria_options():
     try:
-        return frappe.get_all(
+        return frappe.get_list(
             "Assessment Criteria", fields=["name"],
             order_by="name", limit_page_length=500,
         )

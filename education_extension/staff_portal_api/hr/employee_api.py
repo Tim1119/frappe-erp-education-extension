@@ -64,7 +64,7 @@ def get_employees(page=1, page_size=20, search=None, company=None, department=No
     if search:
         or_filters = [["name", "like", f"%{search}%"], ["employee_name", "like", f"%{search}%"],
                       ["employee_number", "like", f"%{search}%"]]
-    rows = frappe.get_all(
+    rows = frappe.get_list(
         "Employee", fields=["name", "employee_name", "employee_number", "image", "company",
                             "department", "designation", "branch", "status", "date_of_joining"],
         filters=filters, or_filters=or_filters, order_by="modified desc",
@@ -72,7 +72,8 @@ def get_employees(page=1, page_size=20, search=None, company=None, department=No
     )
     for row in rows:
         row["can_edit"] = frappe.has_permission("Employee", "write", doc=row.name)
-    total = len(frappe.get_all("Employee", filters=filters, or_filters=or_filters,
+        row["can_delete"] = frappe.has_permission("Employee", "delete", doc=row.name)
+    total = len(frappe.get_list("Employee", filters=filters, or_filters=or_filters,
                                pluck="name", limit_page_length=0))
     return {"rows": rows, "count": total, "page": page, "page_size": page_size,
             "total_pages": (total + page_size - 1) // page_size if page_size else 1}
@@ -85,6 +86,7 @@ def get_employee(name):
     doc = frappe.get_doc("Employee", name)
     data = doc.as_dict()
     data["can_edit"] = doc.has_permission("write")
+    data["can_delete"] = doc.has_permission("delete")
     return data
 
 
@@ -138,7 +140,7 @@ def _link_rows(doctype, filters=None):
     meta = frappe.get_meta(doctype)
     title = meta.title_field if meta.title_field and meta.has_field(meta.title_field) else None
     fields = ["name"] + ([title] if title and title != "name" else [])
-    rows = frappe.get_all(doctype, fields=fields, filters=filters or {}, order_by=title or "name", limit_page_length=500)
+    rows = frappe.get_list(doctype, fields=fields, filters=filters or {}, order_by=title or "name", limit_page_length=500)
     for row in rows:
         row["display_name"] = row.get(title) if title else row.name
     return rows

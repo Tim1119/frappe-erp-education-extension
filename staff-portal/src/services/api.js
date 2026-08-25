@@ -2,7 +2,8 @@
 
 export default async function api(method, args = {}) {
   // Get CSRF token from meta tag
-  let csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+  // let csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+  let csrfToken = window.csrf_token || document.querySelector('meta[name="csrf-token"]')?.content || '';
 
   try {
     const response = await fetch(`/api/method/${method}`, {
