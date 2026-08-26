@@ -206,7 +206,7 @@ export const ADMIN_NAV = [
           { key: "student-group-creation", label: "Student Group Creation Tool", icon: Wrench, path: "/dashboard/student-group-creation" },
           { key: "class-enrollment-tool", label: "Class Enrollment Tool", icon: Wrench, path: "/dashboard/class-enrollment-tool" },
           { key: "subject-scheduling-tool-2", label: "Subject Scheduling Tool", icon: Wrench, path: "/dashboard/subject-scheduling-tool-page" },
-          { key: "school-term-result-gen", label: "School Term Result Generator", icon: Wrench, path: "/dashboard/school-term-result-generator" },
+          { key: "school-term-result-gen", label: "School Term Result List", icon: Wrench, path: "/dashboard/school-term-result-generator" },
           { key: "bulk-term-result-gen", label: "Bulk School Term Result Generator", icon: Wrench, path: "/dashboard/bulk-term-result-generator" },
           { key: "term-result-recalculation", label: "Term Result Recalculation", icon: Wrench, path: "/dashboard/term-result-recalculation" },
         ],
@@ -1158,7 +1158,7 @@ export const TEACHER_NAV = [
         children: [
           { key: "student-attendance-tool", label: "Student Attendance Tool", icon: Wrench, path: "/dashboard/student-attendance-tool" },
           { key: "assessment-result-tool", label: "Assessment Result Tool", icon: Wrench, path: "/dashboard/assessment-result-tool" },
-          { key: "school-term-result-gen", label: "School Term Result Generator", icon: Wrench, path: "/dashboard/school-term-result-generator" },
+          { key: "school-term-result-gen", label: "School Term Result List", icon: Wrench, path: "/dashboard/school-term-result-generator" },
         ],
       },
       {
