@@ -147,10 +147,12 @@ function SearchableSelect({
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
 
+  const getOptionLabel = (option) => option.label || option.name;
+
   const selected = options.find(opt => opt.name === value);
 
   const filtered = options.filter(opt => 
-    opt.name.toLowerCase().includes(search.toLowerCase())
+    getOptionLabel(opt).toLowerCase().includes(search.toLowerCase())
   );
 
   useEffect(() => {
@@ -192,7 +194,7 @@ function SearchableSelect({
     if (!value) return placeholder;
     const selected = options.find(opt => opt.name === value);
     if (selected) {
-      return selected.name;
+      return getOptionLabel(selected);
     }
     return value;
   };
@@ -283,7 +285,7 @@ function SearchableSelect({
                     }
                   }}
                 >
-                  {option.name}
+                  {getOptionLabel(option)}
                 </div>
               );
             })
@@ -403,7 +405,12 @@ export default function FeeScheduleForm({ feeSchedule, onSave, onSubmit, onCance
           getCompanies(),
         ]);
         
-        setFeeStructureOptions(feeStructures || []);
+        setFeeStructureOptions((feeStructures || []).map((feeStructure) => ({
+          ...feeStructure,
+          label: [feeStructure.name, feeStructure.program, feeStructure.academic_year]
+            .filter(Boolean)
+            .join(" — "),
+        })));
         setProgramOptions(programs || []);
         setAcademicYearOptions(academicYears || []);
         setFeeCategoryOptions(feeCategories || []);
@@ -867,17 +874,19 @@ export default function FeeScheduleForm({ feeSchedule, onSave, onSubmit, onCance
             )}
           </div>
 
-          <div className="field">
-            <Label>Academic Term</Label>
-            <SearchableSelect
-              value={form.academic_term}
-              onChange={(val) => updateField("academic_term", val)}
-              options={academicTermOptions}
-              placeholder="Search term..."
-              label="Academic Term"
-              disabled={!form.academic_year || !canEdit || loadingOptions}
-            />
-          </div>
+          {isEditing && (
+            <div className="field">
+              <Label>Academic Term</Label>
+              <SearchableSelect
+                value={form.academic_term}
+                onChange={(val) => updateField("academic_term", val)}
+                options={academicTermOptions}
+                placeholder="Search term..."
+                label="Academic Term"
+                disabled={!form.academic_year || !canEdit || loadingOptions}
+              />
+            </div>
+          )}
 
           <div className="field">
             <Label required>Posting Date</Label>

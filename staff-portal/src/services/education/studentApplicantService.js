@@ -23,6 +23,20 @@ export function deleteStudentApplicant(name) {
   return callMethod(`${NS}.student_applicant_api.delete_student_applicant`, { name });
 }
 
+export function getStudentGroupsForProgram(program, academic_year) {
+  return callMethod(`${NS}.student_applicant_api.get_student_groups_for_enrollment`, {
+    program,
+    academic_year,
+  });
+}
+
+export function enrollStudentWithClassArm(student_applicant, student_group) {
+  return callMethod(`${NS}.student_applicant_api.enroll_student_with_class_arm`, {
+    student_applicant,
+    student_group: student_group || undefined,
+  });
+}
+
 export function getPrograms() {
   return callMethod(`${NS}.student_applicant_api.get_programs`, {});
 }

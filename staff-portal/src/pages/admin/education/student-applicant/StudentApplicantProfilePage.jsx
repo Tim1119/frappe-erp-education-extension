@@ -8,11 +8,22 @@ import {
 
 import { PageHeader, EmptyState } from "@/components/shared/OriginalPrimitives";
 import ConfirmModal from "@/components/shared/ConfirmDialog";
+import SearchableSelect from "@/components/shared/SearchableSelect";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 import {
   getStudentApplicant,
   deleteStudentApplicant,
   updateStudentApplicant,
+  enrollStudentWithClassArm,
+  getStudentGroupsForProgram,
 } from "@/services/education/studentApplicantService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 import { fmtDate } from "@/utils/format.js";
@@ -67,6 +78,10 @@ export default function StudentApplicantProfilePage() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("personal");
+  const [enrollModalOpen, setEnrollModalOpen] = useState(false);
+  const [studentGroups, setStudentGroups] = useState([]);
+  const [selectedStudentGroup, setSelectedStudentGroup] = useState("");
+  const [groupsLoading, setGroupsLoading] = useState(false);
 
   async function load() {
     try {
@@ -116,36 +131,33 @@ export default function StudentApplicantProfilePage() {
   const handleApprove = () => runStatusUpdate("Approved", "Applicant approved");
   const handleReject = () => runStatusUpdate("Rejected", "Applicant rejected");
 
+  async function openEnrollModal() {
+    setSelectedStudentGroup("");
+    setEnrollModalOpen(true);
+    setGroupsLoading(true);
+    try {
+      const groups = await getStudentGroupsForProgram(
+        applicant.program,
+        applicant.academic_year,
+      );
+      setStudentGroups(groups || []);
+    } catch (err) {
+      setStudentGroups([]);
+      toast.error(getErrorMessage(err));
+    } finally {
+      setGroupsLoading(false);
+    }
+  }
+
   async function handleEnroll() {
     setActionLoading(true);
     try {
-      // enroll_student expects `source_name` = the Student Applicant docname,
-      // not the whole form object.
-      const response = await fetch("/api/method/education.education.api.enroll_student", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Frappe-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content || "",
-        },
-        body: JSON.stringify({ source_name: name }),
-      });
-
-      if (!response.ok) {
-        const errBody = await response.json().catch(() => null);
-        throw new Error(errBody?.exception || errBody?.message || "Enrollment request failed");
-      }
-
-      const data = await response.json();
-
-      if (data.message) {
-        // Explicitly mark as Admitted regardless of what enroll_student does
-        // internally — keeps the frontend state authoritative and consistent.
-        await updateStudentApplicant(name, { application_status: "Admitted" });
-        await load();
-        toast.success("Student enrolled successfully");
-      } else {
-        toast.error("Failed to enroll student");
-      }
+      const student = await enrollStudentWithClassArm(name, selectedStudentGroup);
+      setEnrollModalOpen(false);
+      toast.success(selectedStudentGroup
+        ? "Student enrolled and added to the class arm"
+        : "Student enrolled successfully");
+      navigate(`/dashboard/students/${encodeURIComponent(student)}`);
     } catch (err) {
       toast.error(getErrorMessage(err));
     } finally {
@@ -173,7 +185,7 @@ export default function StudentApplicantProfilePage() {
     if (status === "Approved") {
       return (
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <button className="btn btn-primary" onClick={handleEnroll} disabled={actionLoading} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <button className="btn btn-primary" onClick={openEnrollModal} disabled={actionLoading} style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <UserCheck size={16} /> Enroll
           </button>
           <button className="btn btn-danger" onClick={handleReject} disabled={actionLoading} style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -375,7 +387,11 @@ export default function StudentApplicantProfilePage() {
             }}
           >
             {applicant.image ? (
-              <img src={applicant.image} alt={fullName} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <img
+                src={`${applicant.image}${applicant.image.includes("?") ? "&" : "?"}v=${encodeURIComponent(applicant.modified || "")}`}
+                alt={fullName}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
             ) : (
               <User size={32} style={{ color: "var(--ink-3)" }} />
             )}
@@ -447,6 +463,48 @@ export default function StudentApplicantProfilePage() {
         confirmLabel="Delete"
         variant="destructive"
       />
+      <Dialog
+        modal={false}
+        open={enrollModalOpen}
+        onOpenChange={(open) => !open && !actionLoading && setEnrollModalOpen(false)}
+      >
+        <DialogContent
+          className="sm:max-w-[500px]"
+          onInteractOutside={(event) => event.preventDefault()}
+          onPointerDownOutside={(event) => event.preventDefault()}
+        >
+          <DialogHeader>
+            <DialogTitle>Enroll Student Applicant</DialogTitle>
+            <DialogDescription>
+              Enroll {fullName || applicant.name} into {applicant.program || "the selected class"}?
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2 py-2">
+            <label className="label">Class Arm (optional)</label>
+            <SearchableSelect
+              value={selectedStudentGroup}
+              onChange={setSelectedStudentGroup}
+              options={studentGroups}
+              displayField="student_group_name"
+              showId
+              placeholder={groupsLoading ? "Loading class arms..." : "Select a class arm or assign later"}
+              disabled={groupsLoading || actionLoading}
+              linkedDoctype={null}
+            />
+            {!groupsLoading && !studentGroups.length && (
+              <p className="text-xs text-muted-foreground">
+                No active class arms with available seats match {applicant.program} for {applicant.academic_year || "this academic year"}. You can enroll now and assign one later.
+              </p>
+            )}
+          </div>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <button className="btn btn-secondary" onClick={() => setEnrollModalOpen(false)} disabled={actionLoading}>Cancel</button>
+            <button className="btn btn-primary" onClick={handleEnroll} disabled={actionLoading || groupsLoading}>
+              {actionLoading ? "Enrolling..." : "Enroll"}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

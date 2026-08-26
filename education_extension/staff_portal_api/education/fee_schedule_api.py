@@ -309,7 +309,13 @@ def generate_fees(name):
 @frappe.whitelist()
 def get_fee_structures():
     try:
-        return frappe.get_list("Fee Structure", fields=["name"], filters={"docstatus": 1}, order_by="name", limit_page_length=500)
+        return frappe.get_list(
+            "Fee Structure",
+            fields=["name", "program", "academic_year"],
+            filters={"docstatus": 1},
+            order_by="name",
+            limit_page_length=500,
+        )
     except Exception as e:
         frappe.log_error(f"Error fetching fee structures: {str(e)}", "Fee Schedule API")
         return []

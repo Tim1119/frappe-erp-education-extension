@@ -14,7 +14,13 @@ import {
   getStudentCategories,
   getGuardians,
   createGuardian,
+  updateStudentApplicant,
 } from "@/services/education/studentApplicantService.js";
+import {
+  getCsrfToken,
+  isExpiredSessionResponse,
+  redirectToLogin,
+} from "@/services/sessionExpiry.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
 
@@ -649,46 +655,71 @@ export default function StudentApplicantForm({ applicant, onSave, saving, editin
   async function uploadImage(file) {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("doctype", "Student Applicant");
-    formData.append("docname", applicant?.name || "");
-    formData.append("fieldname", "image");
 
-    try {
-      const response = await fetch("/api/method/upload_file", {
-        method: "POST",
-        body: formData,
-        credentials: "same-origin",
-        headers: {
-          Accept: "application/json",
-          "X-Frappe-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content || "",
-        },
-      });
-
-      const result = await response.json();
-      return result.message?.file_url || null;
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      return null;
+    // Frappe rejects an attachment when a doctype is supplied without a
+    // real document name. New applicants do not have a name yet, so upload
+    // their image unattached and persist the returned URL with the new doc.
+    // Existing applicants can attach the File directly to their image field.
+    if (applicant?.name) {
+      formData.append("doctype", "Student Applicant");
+      formData.append("docname", String(applicant.name));
+      formData.append("fieldname", "image");
     }
+
+    const csrfToken = getCsrfToken();
+    const response = await fetch("/api/method/upload_file", {
+      method: "POST",
+      body: formData,
+      credentials: "same-origin",
+      headers: {
+        Accept: "application/json",
+        ...(csrfToken ? { "X-Frappe-CSRF-Token": csrfToken } : {}),
+      },
+    });
+
+    const result = await response.json().catch(() => null);
+    if (!response.ok) {
+      if (isExpiredSessionResponse(response.status, result)) {
+        redirectToLogin();
+        throw new Error("Your session has expired. Redirecting to login.");
+      }
+      throw new Error(result?.message || result?.exception || "Failed to upload image");
+    }
+
+    const fileUrl = result?.message?.file_url;
+    if (!fileUrl) throw new Error("The upload completed without returning a file URL");
+    return fileUrl;
   }
 
   async function handleImageUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
 
-    const previewUrl = URL.createObjectURL(file);
-    setImagePreview(previewUrl);
+    const previousImage = form.image || "";
+    const localPreviewUrl = URL.createObjectURL(file);
+    setImagePreview(localPreviewUrl);
     setUploadingImage(true);
 
-    const uploadedUrl = await uploadImage(file);
-    setUploadingImage(false);
-
-    if (uploadedUrl) {
+    try {
+      const uploadedUrl = await uploadImage(file);
       setImagePreview(uploadedUrl);
       updateField("image", uploadedUrl);
+
+      // Existing applicants should retain the new image even if the user
+      // leaves the edit page without submitting the rest of the form.
+      if (editing && applicant?.name) {
+        await updateStudentApplicant(applicant.name, { image: uploadedUrl });
+      }
+
       toast.success("Image uploaded successfully");
-    } else {
-      toast.error("Failed to upload image. Please try again.");
+    } catch (error) {
+      setImagePreview(previousImage);
+      updateField("image", previousImage);
+      toast.error(getErrorMessage(error));
+    } finally {
+      URL.revokeObjectURL(localPreviewUrl);
+      setUploadingImage(false);
+      e.target.value = "";
     }
   }
 
@@ -702,11 +733,27 @@ export default function StudentApplicantForm({ applicant, onSave, saving, editin
   function validateForm() {
     const errors = {};
     if (!form.first_name.trim()) errors.first_name = "First name is required";
+    if (
+      form.student_email_id.trim()
+      && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.student_email_id.trim())
+    ) {
+      errors.student_email_id = "Enter a valid email address";
+    }
     if (!form.program) errors.program = "Class is required";
     if (!form.academic_year) errors.academic_year = "Academic year is required";
-    if (!form.student_email_id.trim()) errors.student_email_id = "Email address is required";
     setFieldErrors(errors);
-    return Object.keys(errors).length === 0;
+
+    if (Object.keys(errors).length) {
+      if (errors.first_name || errors.student_email_id) {
+        setActiveTab("personal");
+      } else {
+        setActiveTab("academic");
+      }
+      toast.error(Object.values(errors).join(". "));
+      return false;
+    }
+
+    return true;
   }
 
   async function handleSubmit(e) {
@@ -790,7 +837,7 @@ export default function StudentApplicantForm({ applicant, onSave, saving, editin
             </div>
 
             <div className="field">
-              <Label required>Email Address</Label>
+              <Label>Email Address</Label>
               <input type="email" className="input" value={form.student_email_id} onChange={(e) => updateField("student_email_id", e.target.value)} placeholder="email@example.com" />
               {fieldErrors.student_email_id && <div style={{ color: "var(--danger)", fontSize: "12px", marginTop: "4px" }}>{fieldErrors.student_email_id}</div>}
             </div>
@@ -1045,7 +1092,7 @@ export default function StudentApplicantForm({ applicant, onSave, saving, editin
         saving={savingSibling}
       />
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <div className="panel" style={{ overflow: "visible" }}>
           {/* Image beside header — Frappe style */}
           <div style={{ display: "flex", gap: "20px", padding: "16px 20px", borderBottom: "1px solid hsl(var(--border))", alignItems: "center", flexWrap: "wrap" }}>

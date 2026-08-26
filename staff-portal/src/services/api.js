@@ -38,14 +38,18 @@ export default async function api(method, args = {}) {
       if (data._server_messages) {
         try {
           const parsed = JSON.parse(data._server_messages);
-          serverMessage = parsed
+          const messages = parsed
             .map((m) => {
               try {
-                return JSON.parse(m).message;
+                return JSON.parse(m);
               } catch {
-                return m;
+                return { message: m };
               }
             })
+            .filter((item) => item?.message);
+          const raised = messages.filter((item) => item.raise_exception);
+          serverMessage = (raised.length ? raised : messages)
+            .map((item) => item.message)
             .join("\n");
         } catch {
           serverMessage = data._server_messages;

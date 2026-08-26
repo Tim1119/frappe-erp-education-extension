@@ -3,6 +3,8 @@ import json
 from frappe import _
 from frappe.utils import cint, today
 
+from education_extension.staff_portal_api.permissions import ensure_doctype_permission
+
 @frappe.whitelist()
 def get_student_applicants(
     page=1,
@@ -106,6 +108,117 @@ def get_student_applicant(name):
             result[child_table] = []
     
     return result
+
+
+@frappe.whitelist()
+def get_student_groups_for_enrollment(program, academic_year=None):
+    """Return permission-filtered class arms with room for another student."""
+    ensure_doctype_permission("Student Group", "read")
+    if not program:
+        return []
+
+    filters = {"program": program, "disabled": 0}
+    if academic_year:
+        filters["academic_year"] = academic_year
+
+    groups = frappe.get_list(
+        "Student Group",
+        filters=filters,
+        fields=["name", "student_group_name", "academic_year", "max_strength"],
+        order_by="student_group_name, name",
+        limit_page_length=100,
+    )
+
+    available_groups = []
+    for group in groups:
+        current_strength = frappe.db.count(
+            "Student Group Student", {"parent": group.name}
+        )
+        maximum_strength = cint(group.max_strength)
+        if maximum_strength and current_strength >= maximum_strength:
+            continue
+
+        group["current_strength"] = current_strength
+        group["available_seats"] = (
+            maximum_strength - current_strength if maximum_strength else None
+        )
+        available_groups.append(group)
+
+    return available_groups
+
+
+@frappe.whitelist()
+def enroll_student_with_class_arm(
+    student_applicant=None, student_group=None, source_name=None
+):
+    """Enroll an applicant and optionally add the new Student to a class arm."""
+    ensure_doctype_permission("Student Applicant", "write")
+    student_applicant = student_applicant or source_name
+    if not student_applicant:
+        frappe.throw(_("Student Applicant is required"))
+
+    applicant = frappe.get_doc("Student Applicant", student_applicant)
+    ensure_doctype_permission("Student Applicant", "write", applicant)
+
+    existing_student = frappe.db.get_value(
+        "Student", {"student_applicant": applicant.name}, "name"
+    )
+    if existing_student:
+        frappe.throw(
+            _("This applicant is already enrolled as Student {0}").format(
+                existing_student
+            )
+        )
+
+    group = None
+    if student_group:
+        group = frappe.get_doc("Student Group", student_group)
+        group.check_permission("write")
+        if group.disabled:
+            frappe.throw(_("The selected Class Arm is disabled"))
+        if group.program != applicant.program:
+            frappe.throw(
+                _("The selected Class Arm belongs to {0}, not {1}").format(
+                    group.program or _("another class"),
+                    applicant.program or _("the applicant's class"),
+                )
+            )
+        if applicant.academic_year and group.academic_year != applicant.academic_year:
+            frappe.throw(
+                _("The selected Class Arm is not for Academic Year {0}").format(
+                    applicant.academic_year
+                )
+            )
+        maximum_strength = cint(group.max_strength)
+        if maximum_strength and len(group.students) >= maximum_strength:
+            frappe.throw(
+                _(
+                    "Class Arm {0} is full ({1} of {2} students). "
+                    "Choose another Class Arm or increase its Max Strength."
+                ).format(group.name, len(group.students), maximum_strength)
+            )
+
+    from education.education.api import enroll_student
+
+    program_enrollment = enroll_student(applicant.name)
+    student = getattr(program_enrollment, "student", None)
+    if not student:
+        frappe.throw(_("Enrollment did not create a Student record"))
+
+    if group:
+        already_in_group = any(row.student == student for row in group.students)
+        if not already_in_group:
+            group.append("students", {"student": student, "active": 1})
+            group.save()
+
+    # Core enrollment may add non-fatal alerts (for example, a missing
+    # outgoing email account when it cannot send the new Student user's
+    # welcome email). Desk treats those as warnings, and the portal already
+    # shows its own success toast, so do not leak them as enrollment errors.
+    frappe.clear_messages()
+    frappe.db.commit()
+
+    return student
 
 @frappe.whitelist()
 def create_student_applicant(data):
