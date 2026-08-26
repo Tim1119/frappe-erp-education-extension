@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Layers3, Plus } from "lucide-react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -129,9 +129,14 @@ export default function AssessmentPlansPage() {
         title="Assessment Plans"
         description={loading ? "Loading…" : `${total} assessment plans`}
       >
-        <Button onClick={() => navigate("/dashboard/assessment-plan/new")}>
-          <Plus className="mr-2 h-4 w-4" /> Add Assessment Plan
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => navigate("/dashboard/assessment-plan/bulk")}>
+            <Layers3 className="mr-2 h-4 w-4" /> Bulk Create
+          </Button>
+          <Button onClick={() => navigate("/dashboard/assessment-plan/new")}>
+            <Plus className="mr-2 h-4 w-4" /> Add Assessment Plan
+          </Button>
+        </div>
       </PageHeader>
 
       <Toolbar

@@ -443,6 +443,7 @@ import AssessmentGroupFormPage from "@/pages/admin/education/assessment-group/As
 import AssessmentPlansPage from "@/pages/admin/education/assessment-plan/AssessmentPlansPage";
 import AssessmentPlanProfilePage from "@/pages/admin/education/assessment-plan/AssessmentPlanProfilePage";
 import AssessmentPlanFormPage from "@/pages/admin/education/assessment-plan/AssessmentPlanFormPage";
+import BulkAssessmentPlanPage from "@/pages/admin/education/assessment-plan/BulkAssessmentPlanPage";
 
 import AssessmentResultsPage from "@/pages/admin/education/assessment-result/AssessmentResultsPage";
 import AssessmentResultProfilePage from "@/pages/admin/education/assessment-result/AssessmentResultProfilePage";
@@ -1249,6 +1250,7 @@ export default function App() {
         <Route path="assessment-group/:id" element={<AssessmentGroupProfilePage />} />
         <Route path="assessment-plan" element={<AssessmentPlansPage />} />
         <Route path="assessment-plan/new" element={<AssessmentPlanFormPage />} />
+        <Route path="assessment-plan/bulk" element={<BulkAssessmentPlanPage />} />
         <Route path="assessment-plan/:id/edit" element={<AssessmentPlanFormPage />} />
         <Route path="assessment-plan/:id" element={<AssessmentPlanProfilePage />} />
         <Route path="assessment-result" element={<AssessmentResultsPage />} />
