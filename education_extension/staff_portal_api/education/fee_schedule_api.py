@@ -109,6 +109,20 @@ def get_fee_schedule(name):
     return result
 
 @frappe.whitelist()
+def get_connections(fee_schedule):
+    if not fee_schedule:
+        frappe.throw(_("Fee Schedule name is required"))
+
+    return {
+        "sales_invoices": frappe.db.count(
+            "Sales Invoice", {"fee_schedule": fee_schedule}
+        ),
+        "sales_orders": frappe.db.count(
+            "Sales Order", {"fee_schedule": fee_schedule}
+        ),
+    }
+
+@frappe.whitelist()
 def create_fee_schedule(data):
     if isinstance(data, str):
         data = json.loads(data)
@@ -266,13 +280,22 @@ def submit_fee_schedule(name):
     if doc.docstatus == 2:
         frappe.throw(_("Cannot submit a cancelled document"))
     
-    # Bypass validation on submit
+    pending_status = (
+        "Order Pending"
+        if frappe.db.get_single_value("Education Settings", "create_so")
+        else "Invoice Pending"
+    )
+
+    # Bypass the existing validation issue, but explicitly preserve the
+    # lifecycle status that Fee Schedule's Generate action depends on.
     doc.flags.ignore_validate = True
-    
     doc.submit()
+    doc.db_set("status", pending_status, update_modified=False)
     frappe.db.commit()
 
-    return doc.as_dict()
+    result = doc.as_dict()
+    result["status"] = pending_status
+    return result
 
 @frappe.whitelist()
 def cancel_fee_schedule(name):

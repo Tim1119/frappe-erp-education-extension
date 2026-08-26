@@ -45,7 +45,7 @@ export const CONFIG = {
 };
 
 CONFIG["blanket-order"].filterKeys = ["sales_order"];
-CONFIG["sales-order"].filterKeys = ["sales_invoice", "quotation"];
+CONFIG["sales-order"].filterKeys = ["sales_invoice", "quotation", "fee_schedule"];
 
 const mappedItems = (doc, extra = () => ({})) => (doc.items || []).map((row) => ({ item_code: row.item_code, item_name: row.item_name, description: row.description, qty: row.qty, uom: row.uom, stock_uom: row.stock_uom, conversion_factor: row.conversion_factor || 1, delivery_date: row.delivery_date, warehouse: row.warehouse, rate: row.rate, amount: row.amount, ...extra(row) }));
 CONFIG.quotation.getCreateActions = (doc) => doc.docstatus === 1 ? [{ label: "Sales Order", path: "/dashboard/sales-orders/new", prefill: (source) => ({ quotation: source.name, customer: source.party_name, customer_name: source.customer_name || source.party_name, company: source.company, currency: source.currency, selling_price_list: source.selling_price_list, conversion_rate: source.conversion_rate || 1, items: mappedItems(source, (row) => ({ prevdoc_docname: source.name, quotation_item: row.name })) }) }] : [];

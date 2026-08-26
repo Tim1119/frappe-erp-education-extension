@@ -11,7 +11,6 @@ import {
   updateFeeSchedule,
   submitFeeSchedule,
   cancelFeeSchedule,
-  generateFees,
 } from "@/services/education/feeScheduleService.js";
 
 import { getErrorMessage } from "@/utils/errors.js";
@@ -80,16 +79,6 @@ export default function FeeScheduleFormPage() {
     }
   }
 
-  async function generate(values) {
-    try {
-      await generateFees(id);
-      toast.success("Fees generation started");
-      navigate(`/dashboard/fee-schedule/${id}`);
-    } catch (err) {
-      toast.error(getErrorMessage(err));
-    }
-  }
-
   if (loading) {
     return <div className="muted">Loading fee schedule…</div>;
   }
@@ -110,7 +99,6 @@ export default function FeeScheduleFormPage() {
           onSave={save}
           onSubmit={submit}
           onCancel={cancel}
-          onGenerate={generate}
         />
       </div>
     </>

@@ -29,6 +29,10 @@ export function getFeeStructure(name) {
   });
 }
 
+export function getConnections(fee_structure) {
+  return api(`${METHOD}.get_connections`, { fee_structure });
+}
+
 export function createFeeStructure(data) {
   return api(`${METHOD}.create_fee_structure`, {
     data,

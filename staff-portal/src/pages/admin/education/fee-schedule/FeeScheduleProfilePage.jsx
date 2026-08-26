@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Link2 } from "lucide-react";
 
 import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import FeeScheduleDetails from "./components/FeeScheduleDetails.jsx";
@@ -12,6 +13,7 @@ import {
   submitFeeSchedule,
   cancelFeeSchedule,
   generateFees,
+  getConnections,
 } from "@/services/education/feeScheduleService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
@@ -26,6 +28,7 @@ export default function FeeScheduleProfilePage() {
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [generateModalOpen, setGenerateModalOpen] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
+  const [connections, setConnections] = useState(null);
 
   useEffect(() => {
     async function loadFeeSchedule() {
@@ -44,6 +47,13 @@ export default function FeeScheduleProfilePage() {
     if (id) {
       loadFeeSchedule();
     }
+  }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+    getConnections(id)
+      .then(setConnections)
+      .catch(() => setConnections({}));
   }, [id]);
 
   async function handleSubmit() {
@@ -82,8 +92,21 @@ export default function FeeScheduleProfilePage() {
       await generateFees(id);
       toast.success("Fees generation started");
       setGenerateModalOpen(false);
-      const data = await getFeeSchedule(id);
-      setFeeSchedule(data);
+
+      // The generation response can arrive just before Frappe's transaction
+      // and background status update are visible to the next request.
+      // Refresh briefly until the schedule reaches a terminal state.
+      for (let attempt = 0; attempt < 15; attempt += 1) {
+        await new Promise((resolve) => window.setTimeout(resolve, 1000));
+        const data = await getFeeSchedule(id);
+        setFeeSchedule(data);
+
+        if (["Invoice Created", "Order Created", "Failed"].includes(data.status)) {
+          const updatedConnections = await getConnections(id).catch(() => null);
+          if (updatedConnections) setConnections(updatedConnections);
+          break;
+        }
+      }
     } catch (err) {
       toast.error(getErrorMessage(err));
     } finally {
@@ -187,6 +210,37 @@ export default function FeeScheduleProfilePage() {
         <FeeScheduleDetails feeSchedule={feeSchedule} />
       </div>
 
+      <div className="panel" style={{ marginTop: 18 }}>
+        <div className="panel-head">
+          <div className="panel-title" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <Link2 size={15} style={{ color: "var(--ink-4)" }} />
+            Connections
+          </div>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-2" style={{ padding: "14px 20px 20px" }}>
+          <button
+            type="button"
+            className="flex items-center justify-between rounded-lg border px-3 py-2 text-left text-sm transition-colors hover:border-primary hover:bg-accent"
+            onClick={() => navigate(`/dashboard/sales-invoices?fee_schedule=${encodeURIComponent(id)}`)}
+          >
+            <span className="font-medium text-primary">Sales Invoices</span>
+            <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              {connections?.sales_invoices ?? "…"}
+            </span>
+          </button>
+          <button
+            type="button"
+            className="flex items-center justify-between rounded-lg border px-3 py-2 text-left text-sm transition-colors hover:border-primary hover:bg-accent"
+            onClick={() => navigate(`/dashboard/sales-orders?fee_schedule=${encodeURIComponent(id)}`)}
+          >
+            <span className="font-medium text-primary">Sales Orders</span>
+            <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              {connections?.sales_orders ?? "…"}
+            </span>
+          </button>
+        </div>
+      </div>
+
       {/* Submit Modal */}
       <ConfirmModal
         open={submitModalOpen}
@@ -195,7 +249,7 @@ export default function FeeScheduleProfilePage() {
         title="Submit Fee Schedule?"
         message="This will submit the fee schedule. Once submitted, it can only be cancelled."
         confirmLabel="Submit"
-        variant="primary"
+        variant="default"
         busy={actionLoading}
       />
 
@@ -206,7 +260,7 @@ export default function FeeScheduleProfilePage() {
         onConfirm={handleCancel}
         title="Cancel Fee Schedule?"
         message="This action will cancel the fee schedule. This cannot be undone."
-        confirmLabel="Cancel"
+        confirmLabel="Cancel Schedule"
         variant="destructive"
         busy={actionLoading}
       />
@@ -219,7 +273,7 @@ export default function FeeScheduleProfilePage() {
         title="Generate Fees?"
         message="This will generate fees for all students in the selected groups. Are you sure you want to continue?"
         confirmLabel="Generate"
-        variant="primary"
+        variant="default"
         busy={actionLoading}
       />
 

@@ -33,6 +33,10 @@ export function getFeeSchedule(name) {
   });
 }
 
+export function getConnections(fee_schedule) {
+  return api(`${METHOD}.get_connections`, { fee_schedule });
+}
+
 export function createFeeSchedule(data) {
   return api(`${METHOD}.create_fee_schedule`, {
     data,

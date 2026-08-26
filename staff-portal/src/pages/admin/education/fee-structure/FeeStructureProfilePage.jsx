@@ -106,7 +106,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Calendar, CheckCircle2, Ban } from "lucide-react";
+import { Calendar, CheckCircle2, Ban, Link2 } from "lucide-react";
 
 import { PageHeader } from "@/components/shared/OriginalPrimitives";
 import FeeStructureDetails from "./components/FeeStructureDetails.jsx";
@@ -117,6 +117,7 @@ import {
   deleteFeeStructure,
   submitFeeStructure,
   cancelFeeStructure,
+  getConnections,
 } from "@/services/education/feeStructureService.js";
 import { getErrorMessage } from "@/utils/errors.js";
 
@@ -129,6 +130,7 @@ export default function FeeStructureProfilePage() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [submitModalOpen, setSubmitModalOpen] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
+  const [connections, setConnections] = useState(null);
 
   async function loadFeeStructure() {
     try {
@@ -146,6 +148,13 @@ export default function FeeStructureProfilePage() {
       loadFeeStructure();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+    getConnections(id)
+      .then(setConnections)
+      .catch(() => setConnections({}));
   }, [id]);
 
   async function handleDelete() {
@@ -258,6 +267,27 @@ export default function FeeStructureProfilePage() {
 
       <div className="panel">
         <FeeStructureDetails feeStructure={feeStructure} />
+      </div>
+
+      <div className="panel" style={{ marginTop: 18 }}>
+        <div className="panel-head">
+          <div className="panel-title" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <Link2 size={15} style={{ color: "var(--ink-4)" }} />
+            Connections
+          </div>
+        </div>
+        <div style={{ padding: "14px 20px 20px" }}>
+          <button
+            type="button"
+            className="flex w-full max-w-sm items-center justify-between rounded-lg border px-3 py-2 text-left text-sm transition-colors hover:border-primary hover:bg-accent"
+            onClick={viewFeeSchedules}
+          >
+            <span className="font-medium text-primary">Fee Schedules</span>
+            <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              {connections?.fee_schedules ?? "…"}
+            </span>
+          </button>
+        </div>
       </div>
 
       <ConfirmModal

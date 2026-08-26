@@ -365,14 +365,13 @@ async function getFeeStructureDetails(name) {
   });
 }
 
-export default function FeeScheduleForm({ feeSchedule, onSave, onSubmit, onCancel, onGenerate }) {
+export default function FeeScheduleForm({ feeSchedule, onSave, onSubmit, onCancel }) {
   const [form, setForm] = useState(EMPTY_FORM);
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [fieldErrors, setFieldErrors] = useState({});
   const [actionLoading, setActionLoading] = useState(false);
   const [cancelModalOpen, setCancelModalOpen] = useState(false);
-  const [generateModalOpen, setGenerateModalOpen] = useState(false);
   
   // Options state
   const [feeStructureOptions, setFeeStructureOptions] = useState([]);
@@ -489,7 +488,9 @@ export default function FeeScheduleForm({ feeSchedule, onSave, onSubmit, onCance
             program: result.program || "",
             student_category: result.student_category || "",
             academic_year: result.academic_year || prev.academic_year,
-            academic_term: result.academic_term || prev.academic_term,
+            academic_term: isEditing
+              ? result.academic_term || prev.academic_term
+              : "",
             company: result.company || prev.company,
             receivable_account: result.receivable_account || prev.receivable_account,
             cost_center: result.cost_center || prev.cost_center,
@@ -513,7 +514,7 @@ export default function FeeScheduleForm({ feeSchedule, onSave, onSubmit, onCance
     }
     
     loadFeeStructureComponents();
-  }, [form.fee_structure]);
+  }, [form.fee_structure, isEditing]);
 
   useEffect(() => {
     if (!feeSchedule) {
@@ -697,18 +698,6 @@ export default function FeeScheduleForm({ feeSchedule, onSave, onSubmit, onCance
     }
   }
 
-  async function handleGenerateConfirm() {
-    setActionLoading(true);
-    try {
-      await onGenerate(form);
-      setGenerateModalOpen(false);
-    } catch (err) {
-      toast.error(getErrorMessage(err));
-    } finally {
-      setActionLoading(false);
-    }
-  }
-
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       {/* Cancel Modal */}
@@ -720,18 +709,6 @@ export default function FeeScheduleForm({ feeSchedule, onSave, onSubmit, onCance
         message="This action will cancel the fee schedule. This cannot be undone."
         confirmLabel="Cancel Schedule"
         variant="destructive"
-        busy={actionLoading}
-      />
-
-      {/* Generate Modal */}
-      <ConfirmModal
-        open={generateModalOpen}
-        onClose={() => setGenerateModalOpen(false)}
-        onConfirm={handleGenerateConfirm}
-        title="Generate Fees?"
-        message="This will generate fees for all students in the selected groups. Are you sure you want to continue?"
-        confirmLabel="Generate"
-        variant="primary"
         busy={actionLoading}
       />
 
@@ -788,16 +765,6 @@ export default function FeeScheduleForm({ feeSchedule, onSave, onSubmit, onCance
                   Cancel
                 </button>
               </>
-            )}
-            {isSubmitted && (
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => setGenerateModalOpen(true)}
-                disabled={actionLoading}
-              >
-                {actionLoading ? "Generating..." : "Generate Fees"}
-              </button>
             )}
           </div>
         </div>

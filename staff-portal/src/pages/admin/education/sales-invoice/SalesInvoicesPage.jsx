@@ -89,7 +89,7 @@ export default function SalesInvoicesPage() {
   const [search, setSearch] = useState("");
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [statusFilter, setStatusFilter] = useState("");
-  const [feeScheduleFilter, setFeeScheduleFilter] = useState("");
+  const [feeScheduleFilter, setFeeScheduleFilter] = useState(searchParams.get("fee_schedule") || "");
   const [academicYearFilter, setAcademicYearFilter] = useState("");
   const [academicTermFilter, setAcademicTermFilter] = useState("");
   const [feeScheduleOptions, setFeeScheduleOptions] = useState([]);

@@ -94,6 +94,17 @@ def get_fee_structure(name):
     return result
 
 @frappe.whitelist()
+def get_connections(fee_structure):
+    if not fee_structure:
+        frappe.throw(_("Fee Structure name is required"))
+
+    return {
+        "fee_schedules": frappe.db.count(
+            "Fee Schedule", {"fee_structure": fee_structure}
+        ),
+    }
+
+@frappe.whitelist()
 def create_fee_structure(data):
     if isinstance(data, str):
         data = json.loads(data)
