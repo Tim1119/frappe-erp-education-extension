@@ -90,7 +90,7 @@ export function AuthProvider({ children }) {
       setPermissions({});
       setInstructor(null);
       setSchool(null);
-      window.location.href = "/login";
+      window.location.replace("/login?redirect-to=%2Fstaff-dashboard");
     }
   }, []);
 

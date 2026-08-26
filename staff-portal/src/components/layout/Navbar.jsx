@@ -1,6 +1,4 @@
-import { useNavigate } from "react-router-dom";
 import { ChevronDown, LogOut, Menu, Moon, Sun } from "lucide-react";
-import toast from "react-hot-toast";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
 import { initials } from "@/utils/format";
@@ -23,15 +21,12 @@ import ThemePicker from "./ThemePicker";
 export default function Navbar({ onMobileMenuToggle }) {
   const { user, logout, isAdmin, school } = useAuth();
   const { mode, toggleMode } = useTheme();
-  const navigate = useNavigate();
 
   const roleLabel = isAdmin ? "Administrator" : "Teacher";
   const fullName = user?.full_name || roleLabel;
 
   async function handleLogout() {
     await logout();
-    toast.success("Signed out");
-    navigate("/login", { replace: true });
   }
 
   return (
