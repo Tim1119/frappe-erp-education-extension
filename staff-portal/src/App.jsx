@@ -2,6 +2,18 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import AppShell from "@/components/layout/AppShell";
+import {
+  SalaryComponents, SalaryStructures, IncomeTaxSlabs, PayrollPeriods,
+  SalaryStructureAssignments, SalarySlips, PayrollEntries,
+  SalaryWithholdings, EmployeeIncentives,
+  RetentionBonuses,
+} from "@/pages/admin/payroll";
+import {
+  SalaryRegisterPage, BankRemittancePage,
+  SalaryPaymentsBasedOnPaymentModePage, SalaryPaymentsViaECSPage,
+  IncomeTaxComputationPage, ProvidentFundDeductionsPage,
+  ProfessionalTaxDeductionsPage, IncomeTaxDeductionsPage,
+} from "@/pages/admin/payroll/PayrollReports";
 
 // import Login from "@/pages/auth/Login";
 import Dashboard from "@/pages/dashboard/Dashboard";
@@ -1263,6 +1275,56 @@ export default function App() {
         <Route path="bulk-term-result-generator" element={<BulkTermResultGeneratorPage />} />
         <Route path="term-result-recalculation" element={<TermResultRecalculationPage />} />
         <Route path="student-guardian-contacts" element={<StudentGuardianContactsPage />} />
+
+        {/* Salary Payout */}
+        <Route path="salary-components" element={<SalaryComponents.List />} />
+        <Route path="salary-components/new" element={<SalaryComponents.Form />} />
+        <Route path="salary-components/:id/edit" element={<SalaryComponents.Form />} />
+        <Route path="salary-components/:id" element={<SalaryComponents.Profile />} />
+        <Route path="salary-structures" element={<SalaryStructures.List />} />
+        <Route path="salary-structures/new" element={<SalaryStructures.Form />} />
+        <Route path="salary-structures/:id/edit" element={<SalaryStructures.Form />} />
+        <Route path="salary-structures/:id" element={<SalaryStructures.Profile />} />
+        <Route path="income-tax-slabs" element={<IncomeTaxSlabs.List />} />
+        <Route path="income-tax-slabs/new" element={<IncomeTaxSlabs.Form />} />
+        <Route path="income-tax-slabs/:id/edit" element={<IncomeTaxSlabs.Form />} />
+        <Route path="income-tax-slabs/:id" element={<IncomeTaxSlabs.Profile />} />
+        <Route path="payroll-periods" element={<PayrollPeriods.List />} />
+        <Route path="payroll-periods/new" element={<PayrollPeriods.Form />} />
+        <Route path="payroll-periods/:id/edit" element={<PayrollPeriods.Form />} />
+        <Route path="payroll-periods/:id" element={<PayrollPeriods.Profile />} />
+        <Route path="salary-structure-assignments" element={<SalaryStructureAssignments.List />} />
+        <Route path="salary-structure-assignments/new" element={<SalaryStructureAssignments.Form />} />
+        <Route path="salary-structure-assignments/:id/edit" element={<SalaryStructureAssignments.Form />} />
+        <Route path="salary-structure-assignments/:id" element={<SalaryStructureAssignments.Profile />} />
+        <Route path="salary-slips" element={<SalarySlips.List />} />
+        <Route path="salary-slips/new" element={<SalarySlips.Form />} />
+        <Route path="salary-slips/:id/edit" element={<SalarySlips.Form />} />
+        <Route path="salary-slips/:id" element={<SalarySlips.Profile />} />
+        <Route path="payroll-entries" element={<PayrollEntries.List />} />
+        <Route path="payroll-entries/new" element={<PayrollEntries.Form />} />
+        <Route path="payroll-entries/:id/edit" element={<PayrollEntries.Form />} />
+        <Route path="payroll-entries/:id" element={<PayrollEntries.Profile />} />
+        <Route path="salary-withholdings" element={<SalaryWithholdings.List />} />
+        <Route path="salary-withholdings/new" element={<SalaryWithholdings.Form />} />
+        <Route path="salary-withholdings/:id/edit" element={<SalaryWithholdings.Form />} />
+        <Route path="salary-withholdings/:id" element={<SalaryWithholdings.Profile />} />
+        <Route path="employee-incentives" element={<EmployeeIncentives.List />} />
+        <Route path="employee-incentives/new" element={<EmployeeIncentives.Form />} />
+        <Route path="employee-incentives/:id/edit" element={<EmployeeIncentives.Form />} />
+        <Route path="employee-incentives/:id" element={<EmployeeIncentives.Profile />} />
+        <Route path="retention-bonuses" element={<RetentionBonuses.List />} />
+        <Route path="retention-bonuses/new" element={<RetentionBonuses.Form />} />
+        <Route path="retention-bonuses/:id/edit" element={<RetentionBonuses.Form />} />
+        <Route path="retention-bonuses/:id" element={<RetentionBonuses.Profile />} />
+        <Route path="salary-register" element={<SalaryRegisterPage />} />
+        <Route path="bank-remittance" element={<BankRemittancePage />} />
+        <Route path="salary-payments-based-on-payment-mode" element={<SalaryPaymentsBasedOnPaymentModePage />} />
+        <Route path="salary-payments-via-ecs" element={<SalaryPaymentsViaECSPage />} />
+        <Route path="income-tax-computation" element={<IncomeTaxComputationPage />} />
+        <Route path="provident-fund-deductions" element={<ProvidentFundDeductionsPage />} />
+        <Route path="professional-tax-deductions" element={<ProfessionalTaxDeductionsPage />} />
+        <Route path="income-tax-deductions" element={<IncomeTaxDeductionsPage />} />
       </Route>
 
       {/* Standalone report print view -- deliberately OUTSIDE the

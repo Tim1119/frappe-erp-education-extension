@@ -330,6 +330,16 @@ export const ADMIN_NAV = [
             ],
           },
           {
+            key: "lifecycle-separation-and-transfer",
+            label: "Separation & Transfer",
+            icon: UserCog,
+            children: [
+              { key: "employee-separations", label: "Employee Separation", icon: FileText, path: "/dashboard/employee-separations" },
+              { key: "employee-transfers", label: "Employee Transfer", icon: FileText, path: "/dashboard/employee-transfers" },
+              { key: "employee-separation-templates", label: "Employee Separation Template", icon: FileText, path: "/dashboard/employee-separation-templates" },
+            ],
+          },
+          {
             key: "lifecycle-reports",
             label: "Reports",
             icon: BarChart3,
@@ -492,7 +502,16 @@ export const ADMIN_NAV = [
               { key: "shift-schedule", label: "Shift Schedule", icon: FileText, path: "/dashboard/shift-schedules" },
               { key: "shift-schedule-assignment", label: "Shift Schedule Assignment", icon: FileText, path: "/dashboard/shift-schedule-assignments" },
               { key: "shift-request", label: "Shift Request", icon: FileText, path: "/dashboard/shift-requests" },
+              { key: "roster", label: "Roster", icon: CalendarDays, path: "/dashboard/roster" },
               { key: "shift-assignment-tool", label: "Shift Assignment Tool", icon: Wrench, path: "/dashboard/shift-assignment-tool" },
+            ],
+          },
+          {
+            key: "sa-overtime",
+            label: "Overtime",
+            icon: Clock,
+            children: [
+              { key: "overtime-slips", label: "Overtime Slip", icon: FileText, path: "/dashboard/overtime-slips" },
             ],
           },
           {
@@ -592,6 +611,67 @@ export const ADMIN_NAV = [
               { key: "expense-general-ledger", label: "General Ledger", icon: BarChart3, path: "/dashboard/general-ledger" },
             ],
           },
+        ],
+      },
+    ],
+  },
+  {
+    key: "salary-payout",
+    label: "Salary Payout",
+    icon: Wallet,
+    children: [
+      {
+        key: "salary-payout-masters",
+        label: "Masters",
+        icon: Settings,
+        children: [
+          { key: "salary-components", label: "Salary Component", icon: FileText, path: "/dashboard/salary-components" },
+          { key: "salary-structures", label: "Salary Structure", icon: FileText, path: "/dashboard/salary-structures" },
+          { key: "income-tax-slabs", label: "Income Tax Slab", icon: FileText, path: "/dashboard/income-tax-slabs" },
+          { key: "payroll-periods", label: "Payroll Period", icon: CalendarDays, path: "/dashboard/payroll-periods" },
+        ],
+      },
+      {
+        key: "salary-payout-payroll",
+        label: "Payroll",
+        icon: ReceiptText,
+        children: [
+          { key: "salary-structure-assignments", label: "Salary Structure Assignment", icon: FileText, path: "/dashboard/salary-structure-assignments" },
+          { key: "bulk-salary-structure-assignments", label: "Bulk Salary Structure Assignment", icon: Wrench, path: "/dashboard/bulk-salary-structure-assignments" },
+          { key: "salary-slips", label: "Salary Slip", icon: ReceiptText, path: "/dashboard/salary-slips" },
+          { key: "payroll-entries", label: "Payroll Entry", icon: Wallet, path: "/dashboard/payroll-entries" },
+          { key: "salary-withholdings", label: "Salary Withholding", icon: FileText, path: "/dashboard/salary-withholdings" },
+        ],
+      },
+      {
+        key: "salary-payout-incentives",
+        label: "Incentives",
+        icon: HandCoins,
+        children: [
+          { key: "employee-incentives", label: "Employee Incentive", icon: Award, path: "/dashboard/employee-incentives" },
+          { key: "retention-bonuses", label: "Retention Bonus", icon: Award, path: "/dashboard/retention-bonuses" },
+        ],
+      },
+      {
+        key: "salary-payout-reports",
+        label: "Payroll Reports",
+        icon: BarChart3,
+        children: [
+          { key: "salary-register", label: "Salary Register", icon: BarChart3, path: "/dashboard/salary-register" },
+          { key: "bank-remittance", label: "Bank Remittance", icon: BarChart3, path: "/dashboard/bank-remittance" },
+          { key: "salary-payments-based-on-payment-mode", label: "Salary Payments Based On Payment Mode", icon: BarChart3, path: "/dashboard/salary-payments-based-on-payment-mode" },
+          { key: "salary-payments-via-ecs", label: "Salary Payments via ECS", icon: BarChart3, path: "/dashboard/salary-payments-via-ecs" },
+          { key: "income-tax-computation", label: "Income Tax Computation", icon: BarChart3, path: "/dashboard/income-tax-computation" },
+        ],
+      },
+      {
+        key: "salary-payout-deduction-reports",
+        label: "Deduction Reports",
+        icon: BarChart3,
+        children: [
+          { key: "provident-fund-deductions", label: "Provident Fund Deductions", icon: BarChart3, path: "/dashboard/provident-fund-deductions" },
+          { key: "professional-tax-deductions", label: "Professional Tax Deductions", icon: BarChart3, path: "/dashboard/professional-tax-deductions" },
+          { key: "income-tax-deductions", label: "Income Tax Deductions", icon: BarChart3, path: "/dashboard/income-tax-deductions" },
         ],
       },
     ],
@@ -727,6 +807,18 @@ export const ADMIN_NAV = [
     icon: Wallet,
     children: [
       {
+        key: "accounting-setup",
+        label: "Setup",
+        icon: Settings,
+        children: [
+          { key: "chart-of-accounts", label: "Chart of Accounts", icon: FileText, path: "/dashboard/chart-of-accounts" },
+          { key: "chart-of-cost-centers", label: "Chart of Cost Centers", icon: FileText, path: "/dashboard/cost-centers" },
+          { key: "accounts-settings", label: "Accounts Settings", icon: Settings, path: "/dashboard/accounts-settings" },
+          { key: "accounting-dimensions", label: "Accounting Dimension", icon: FileText, path: "/dashboard/accounting-dimensions" },
+          { key: "currencies", label: "Currency", icon: FileText, path: "/dashboard/currencies" },
+        ],
+      },
+      {
         key: "accounting-payables",
         label: "Payables",
         icon: FileText,
@@ -776,7 +868,7 @@ export const ADMIN_NAV = [
             label: "Invoicing",
             icon: ReceiptText,
             children: [
-              { key: "sales-invoices", label: "Sales Invoice", icon: ReceiptText, path: "/dashboard/sales-invoices" },
+              { key: "accounting-sales-invoices", label: "Sales Invoice", icon: ReceiptText, path: "/dashboard/sales-invoices" },
               { key: "customers", label: "Customer", icon: UsersRound, path: "/dashboard/customers" },
             ],
           },
@@ -825,7 +917,7 @@ export const ADMIN_NAV = [
             children: [
               { key: "general-ledger", label: "General Ledger", icon: BarChart3, path: "/dashboard/general-ledger" },
               { key: "customer-ledger-summary", label: "Customer Ledger Summary", icon: BarChart3, path: "/dashboard/customer-ledger-summary" },
-              { key: "supplier-ledger-summary", label: "Supplier Ledger Summary", icon: BarChart3, path: "/dashboard/supplier-ledger-summary" },
+              { key: "ledger-supplier-ledger-summary", label: "Supplier Ledger Summary", icon: BarChart3, path: "/dashboard/supplier-ledger-summary" },
             ],
           },
           {
@@ -852,7 +944,7 @@ export const ADMIN_NAV = [
             ],
           },
           {
-            key: "other-reports",
+            key: "accounting-other-reports",
             label: "Other Reports",
             icon: BarChart3,
             children: [

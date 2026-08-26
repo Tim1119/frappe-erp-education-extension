@@ -1,9 +1,14 @@
 // services/api.js
+import {
+  getCsrfToken,
+  isExpiredSessionResponse,
+  redirectToLogin,
+} from "./sessionExpiry";
 
 export default async function api(method, args = {}) {
   // Get CSRF token from meta tag
   // let csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
-  let csrfToken = window.csrf_token || document.querySelector('meta[name="csrf-token"]')?.content || '';
+  const csrfToken = getCsrfToken();
 
   try {
     const response = await fetch(`/api/method/${method}`, {
@@ -20,6 +25,11 @@ export default async function api(method, args = {}) {
     const data = await response.json();
 
     if (!response.ok) {
+      if (isExpiredSessionResponse(response.status, data)) {
+        console.error("Session expired.", data);
+        redirectToLogin();
+        throw new Error("Your session has expired. Redirecting to login.");
+      }
       // Extract the real backend message first — Frappe puts the
       // human-readable validation message in _server_messages, and
       // the exception type/name in exc_type / exception.
@@ -56,16 +66,6 @@ export default async function api(method, args = {}) {
       // ordinary validation errors like the one above. Only treat it
       // as a session/CSRF problem if nothing else explains it AND the
       // message actually mentions CSRF/session.
-      const looksLikeCsrfIssue =
-        !serverMessage ||
-        /csrf/i.test(serverMessage) ||
-        data.exc_type === "CSRFTokenError";
-
-      if (response.status === 417 && looksLikeCsrfIssue) {
-        console.error("CSRF Token Error.", data);
-        throw new Error("Session validation failed. Please refresh and try again.");
-      }
-
       throw new Error(serverMessage || "Something went wrong.");
     }
 

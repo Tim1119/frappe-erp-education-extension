@@ -132,7 +132,8 @@ def options(doctype, filters=None):
 
 def employee_details(employee):
     details = frappe.db.get_value("Employee", employee,
-        ["employee_name", "department", "company", "designation", "shift_request_approver", "leave_approver"], as_dict=True) or {}
+        ["employee_name", "department", "company", "designation", "date_of_joining",
+         "salary_currency", "shift_request_approver", "leave_approver"], as_dict=True) or {}
     if details.get("shift_request_approver") or not details.get("department"):
         return details
 

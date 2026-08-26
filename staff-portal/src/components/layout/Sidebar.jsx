@@ -281,6 +281,7 @@ function getNavForRole(role) {
   const dashboard = TEACHER_NAV.find((item) => item.key === "dashboard");
   const education = TEACHER_NAV.find((item) => item.key === "education");
   const hr = ADMIN_NAV.find((item) => item.key === "hr");
+  const salaryPayout = ADMIN_NAV.find((item) => item.key === "salary-payout");
   const shiftAndAttendance = hr?.children?.find(
     (item) => item.key === "shift-and-attendance",
   );
@@ -295,7 +296,7 @@ function getNavForRole(role) {
 
   // Frappe Desk presents Shift & Attendance as its own workspace. Keep the
   // teacher portal hierarchy identical instead of nesting it below HR.
-  return [dashboard, teacherHr, shiftAndAttendance, education].filter(Boolean);
+  return [dashboard, teacherHr, education, salaryPayout, shiftAndAttendance].filter(Boolean);
 }
 
 // Frappe DocTypes represented by teacher Education navigation entries.
@@ -386,6 +387,17 @@ const TEACHER_HR_WORKSPACE_KEYS = new Set([
   "expense-employee-advance-summary",
 ]);
 
+// The Teacher role receives a smaller Salary Payout workspace in Desk. These
+// are the document pages from that workspace which the portal implements.
+const TEACHER_SALARY_WORKSPACE_KEYS = new Set([
+  "salary-components",
+  "payroll-periods",
+  "salary-slips",
+  "salary-withholdings",
+  "employee-incentives",
+  "retention-bonuses",
+]);
+
 function filterTeacherNav(
   items,
   can,
@@ -425,10 +437,12 @@ export default function Sidebar() {
     ? roleNav.flatMap((item) => filterTeacherNav(
         [item],
         can,
-        item.key === "hr" || item.key === "shift-and-attendance"
-          ? TEACHER_HR_WORKSPACE_KEYS
-          : null,
-        item.key === "shift-and-attendance",
+        item.key === "salary-payout"
+          ? TEACHER_SALARY_WORKSPACE_KEYS
+          : item.key === "hr" || item.key === "shift-and-attendance"
+            ? TEACHER_HR_WORKSPACE_KEYS
+            : null,
+        item.key === "shift-and-attendance" || item.key === "salary-payout",
       ))
     : roleNav;
 

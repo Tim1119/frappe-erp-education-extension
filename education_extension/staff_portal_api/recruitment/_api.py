@@ -62,7 +62,16 @@ def expose(namespace, doctype, fields, list_fields, search_fields, tables=None, 
     values = locals()
     for name in ("get_list", "get_single", "create", "update", "delete", "get_connections",
                  "get_lookup_options", "get_employee_details", "get_linked_details"):
-        namespace[name] = values[name]
+        method = values[name]
+        # These functions are created in this factory but exposed from the
+        # caller's API module. Register that real module path with Frappe's
+        # whitelist; otherwise HTTP requests are rejected as
+        # ``recruitment._api.<method> is not whitelisted`` even though direct
+        # Python execution succeeds.
+        method.__module__ = namespace["__name__"]
+        method = frappe.whitelist()(method)
+        method.__module__ = namespace["__name__"]
+        namespace[name] = method
     if submittable:
         @frappe.whitelist()
         @guarded(f"{doctype} submit")
@@ -70,4 +79,10 @@ def expose(namespace, doctype, fields, list_fields, search_fields, tables=None, 
         @frappe.whitelist()
         @guarded(f"{doctype} cancel")
         def cancel(name): return cancel_doc(doctype, name)
+        submit.__module__ = namespace["__name__"]
+        cancel.__module__ = namespace["__name__"]
+        submit = frappe.whitelist()(submit)
+        cancel = frappe.whitelist()(cancel)
+        submit.__module__ = namespace["__name__"]
+        cancel.__module__ = namespace["__name__"]
         namespace["submit"], namespace["cancel"] = submit, cancel

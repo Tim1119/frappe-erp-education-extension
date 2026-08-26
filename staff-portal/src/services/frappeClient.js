@@ -24,6 +24,12 @@
 //   POST   /api/method/<dotted.path>                → call a whitelisted method
 // ─────────────────────────────────────────────────────────────────────────
 
+import {
+	getCsrfToken,
+	isExpiredSessionResponse,
+	redirectToLogin,
+} from "./sessionExpiry";
+
 const BASE = ""; // relative — same origin as the Frappe site
 
 class FrappeError extends Error {
@@ -46,12 +52,14 @@ function qs(params = {}) {
 }
 
 async function request(path, { method = "GET", body, headers } = {}) {
+	const csrfToken = method === "GET" ? "" : getCsrfToken();
 	const res = await fetch(`${BASE}${path}`, {
 		method,
 		credentials: "same-origin", // send the Frappe session cookie
 		headers: {
 			Accept: "application/json",
 			...(body ? { "Content-Type": "application/json" } : {}),
+			...(csrfToken ? { "X-Frappe-CSRF-Token": csrfToken } : {}),
 			...headers,
 		},
 		body: body ? JSON.stringify(body) : undefined,
@@ -61,6 +69,10 @@ async function request(path, { method = "GET", body, headers } = {}) {
 	const payload = isJson ? await res.json().catch(() => null) : await res.text();
 
 	if (!res.ok) {
+		if (isExpiredSessionResponse(res.status, payload)) {
+			redirectToLogin();
+			throw new FrappeError("Your session has expired. Redirecting to login.", res.status, payload);
+		}
 		const message = payload?._server_messages
 			? safeParseServerMessages(payload._server_messages)
 			: payload?.message || payload?.exception || res.statusText || "Request failed";
